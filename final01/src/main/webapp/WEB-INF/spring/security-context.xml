@@ -19,7 +19,7 @@
 	</security:http>
 	
 	<bean id="userDetailService" class="co.yedam.app.emp.service.Impl.CustomUserDetailsService"/>
-	
+	<!--장서영  -->
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service> 
