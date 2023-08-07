@@ -25,6 +25,7 @@
 			<security:user-service> 
 				<security:user name="user" password="{noop}1234" authorities="ROLE_USER" />
 				<security:user name="admin" password="{noop}1234" authorities="ROLE_ADMIN" />
+				<!-- 주석 -->
 			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
