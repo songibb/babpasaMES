@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.equip.mapper.EquipMapper">
+  <!-- 설비 전체조회  -->
+  <select id="selectEquipAllList" resultType="EquipVO"> 
+  	SELECT *
+  	FROM EQ_EQUIP
+  	ORDER BY EQ_CODE
+  </select>
+  	
+  <!-- 설비등록 -->
+  <insert id="insertEquipInfo" parameterType="EquipVO">	
+  		INSERT INTO EQ_EQUIP
+  					(
+  						EQ_CODE
+  						,ACT_CODE
+  						,EQ_NAME
+  						,MODEL_NAME
+  						,MAKE_DATE
+  						,BUY_DATE
+  						,CHK_CYCLE
+  						,EQ_STS
+  						,EQ_IMG
+  						,EQ_TYPE
+  						,HIGH_TEMP
+  						,LOW_TEMP
+  						,PRCS_TYPE
+  					)
+  					VALUES
+  					(
+					#{eqCode}
+					,#{actCode}
+					,#{eqName}
+					,#{modelName}
+					,#{makeDate}
+					,#{buyDate}
+					,#{chkCycle}
+					,#{eqSts}
+					,#{eqImg}
+					,#{eqType}
+					,#{highTemp}
+					,#{lowTemp}
+					,#{prcsType}					
+  					)
+  </insert>
+  </mapper>
