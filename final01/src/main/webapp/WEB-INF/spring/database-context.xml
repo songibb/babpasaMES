@@ -23,6 +23,7 @@
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" 
 	destroy-method="close">
 		<constructor-arg ref="hikariConfig" />
+		<property name="maximumPoolSize" value="2"></property>
 	</bean>
 	
 	<!-- mybatis SqlSessionFactory -->

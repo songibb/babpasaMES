@@ -21,8 +21,11 @@
 	<bean id="userDetailService" class="co.yedam.app.emp.service.Impl.CustomUserDetailsService"/>
 	
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="userDetailService">
-
+		<security:authentication-provider>
+			<security:user-service> 
+				<security:user name="user" password="{noop}1234" authorities="ROLE_USER" />
+				<security:user name="admin" password="{noop}1234" authorities="ROLE_ADMIN" />
+			</security:user-service>
 		</security:authentication-provider>
 	</security:authentication-manager>
 
