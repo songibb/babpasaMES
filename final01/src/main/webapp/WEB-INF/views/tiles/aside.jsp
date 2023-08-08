@@ -23,7 +23,7 @@
             </a>
             <div class="collapse" id="ui-basic">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">사원 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="empinfo">사원 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">공통 코드 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">품목 코드 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">공정 코드 관리</a></li>
