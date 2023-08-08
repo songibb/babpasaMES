@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.prcs.plan.mapper.PrcsPlanMapper">
+
+	<!-- 생산계획 조회 -->
+	<select id="selectPrcsPlanList" resultType="prcsPlanVO">
+		SELECT prcs_plan_code,
+			   prcs_plan_name,
+			   prcs_plan_date,
+			   emp_code,
+			   prcs_dir_yn,
+			   prcs_start_date,
+			   prcs_end_date
+		  FROM prcs_plan
+		 ORDER BY prcs_plan_code
+	</select>
+
+	
+<!-- 생산계획 등록 -->
+<!-- 생산계획 수정 -->
+<!-- 생산계획 삭제 -->
+	
+	
+	<!-- 상세생산계획 조회 -->
+	<select id="selectPrcsPlanDeList" resultType="prcsPlanVO">
+		SELECT prcs_plan_de_code,
+			   prcs_plan_code,
+			   prod_code,
+			   ord_total_amt,
+			   prcs_plan_amt,
+			   prcs_prio,
+			   prcs_dir_amt,
+			   prcs_dir_sts,
+			   prcs_amt
+		  FROM prcs_plan_de
+		 ORDER BY prcs_plan_de_code
+	</select>
+
+	
+<!-- 상세생산계획 등록 -->
+<!-- 상세생산계획 수정 -->
+<!-- 상세생산계획 삭제 -->
+
+</mapper>

@@ -19,7 +19,7 @@ public class PrcsProdController {
 	
 	//제품별공정 조회 - 호출
 	@GetMapping("prcsProdList")
-	public String getPrcsProdList(Model model){
+	public String getPrcsProdAllList(Model model){
 		model.addAttribute("prcsProdList",prcsProdService.getPrcsProdList());
 		return "process/prcsProdList";
 	}

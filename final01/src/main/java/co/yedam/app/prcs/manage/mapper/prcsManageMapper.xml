@@ -7,20 +7,20 @@
 
 	<!-- 공정관리 조회 -->
 	<select id="selectPrcsManageList" resultType="prcsManageVO">
-		SELECT prcs_code
-				,prcs_type
-				,prcs_name
-				,semi_yn
+		SELECT prcs_code,
+			   prcs_type,
+			   prcs_name,
+			   semi_yn
 		  FROM prcs_manage
 		 ORDER BY prcs_code
 	</select>
 	
 	<!-- 공정관리 조회 - 검색 -->
 	<select id="selectPrcsManageSearch" resultType="prcsManageVO">
-		SELECT prcs_code
-				,prcs_type
-				,prcs_name
-				,semi_yn
+		SELECT prcs_code,
+			   prcs_type,
+			   prcs_name,
+			   semi_yn
 		  FROM prcs_manage
 		 WHERE prcs_name LIKE '%' || #{prcsSearch} || '%'
 	</select>
