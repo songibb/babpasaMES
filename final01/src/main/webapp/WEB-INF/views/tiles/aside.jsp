@@ -83,12 +83,12 @@
             </a>
             <div class="collapse" id="tables">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 계획 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 지시</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">공정 실적 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">공정 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">제품 공정 흐름도</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 계획 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 지시</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">공정 실적 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsManageList">공정 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsProdList">제품 공정 흐름도</a></li>
               	</ul>
             </div>
 		</li>

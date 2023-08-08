@@ -180,8 +180,7 @@
            <div class="card-body">
                <div class="table-responsive pt-3">
                    <button type="button" class="btn btn-info btn-icon-text excelDownload">
-                       Excel
-                      <i class="bi bi-printer"></i>                                                                              
+                       Excel <i class="bi bi-printer"></i>                                                                              
                    </button>
                   <div id="customtemplateSearchAndButton">
                   <p>검색조건</p>
