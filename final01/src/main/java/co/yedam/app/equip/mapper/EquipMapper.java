@@ -5,9 +5,9 @@ import java.util.List;
 import co.yedam.app.equip.service.EquipVO;
 
 public interface EquipMapper {
-	//¼³ºñ ÀüÃ¼ Á¶È¸
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½È¸
 	public List<EquipVO> selectEquipAllList();
 	
-	//¼³ºñ µî·Ï
-	public int insertEquipInfo(EquipVO equip);
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+	public int insertEquipInfo(EquipVO equipVO);
 }
