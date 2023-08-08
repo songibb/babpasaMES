@@ -115,9 +115,10 @@
             </a>
             <div class="collapse" id="auth">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html">설비관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/register.html">비가동 설비 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/register.html">설비 점검 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="EquipList">설비조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="equipInsert">설비관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="offequip">비가동 설비 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="equipchkList">설비 점검 관리</a></li>
               	</ul>
             </div>
 		</li>

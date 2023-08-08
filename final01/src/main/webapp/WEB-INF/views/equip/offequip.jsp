@@ -88,17 +88,28 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>설비 조회</h1>
+	<h1>비가동 설비 조회</h1>
 	<div class="col-lg-12 stretch-card">
     	<div class="card">
         	<div class="card-body">
             	<div class="table-responsive pt-3">
             		<div id="customtemplateSearchAndButton">
-						<p>설비명</p>
-						<input type="text" placeholder="설비명을 입력하세요">
+						<p>검색조건</p>
+						<input type="text" placeholder="검색어를 입력하세요">
   						<i class="fas fa-search" id="actModal" data-toggle="modal" data-target="#searchModal"></i>
-				
-						<button type="button" class="btn btn-info btn-icon-text">초기화</button>					
+						<input type="text" class="blackcolorInputBox" readonly>
+						<br>
+						<p>검색조건</p>
+						<input type="text" placeholder="검색어를 입력하세요">
+						<i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
+						<input type="text" class="blackcolorInputBox" readonly>
+						<button type="button" class="btn btn-info btn-icon-text">
+							<i class="fas fa-search"></i>
+							검색
+						</button>
+						<button type="button" class="btn btn-info btn-icon-text">
+							초기화
+						</button>
 					</div>
 					<div id="grid"></div>
                 </div>
@@ -113,7 +124,7 @@
 	<script>
 		window.onload = function(){
 			$.ajax({
-		        url : "selectEquipAllList",
+		        url : "selectOffEquipAllList",
 		        method :"GET",
 		        success : function(result){
 		            grid.resetData(result);
@@ -133,30 +144,29 @@
 				},
 		        columns:  [
 	 	      {
-		 	        header: '설비코드',
-		 	        name: 'eqCode',
+		 	        header: '비가동번호',
+		 	        name: 'offNo',
 		 	        filter: 'select'
 		 	      },
 		 	      {
-		 	        header: '설비명',
-		 	        name: 'eqName'
+		 	        header: '설비코드',
+		 	        name: 'eqCode'
 		 	      },
 		 	      {
-		 	        header: '모델명',
-		 	        name: 'modelName'
+		 	        header: '비가동타입',
+		 	        name: 'offType'
 		 	      },
 		 	      {
-		 	        header: '설비상태',
-		 	        name: 'eqSts'
+		 	        header: '비가동내역',
+		 	        name: 'offInfo'
 		 	      },
 		 	      {
-		 	        header: '설비구분',
-		 	        name: 'eqType'
+		 	        header: '담당자',
+		 	        name: 'empCode'
 		 	      }
 		 	    ]
 		      })  
 			}
-		
 
 	</script>
 </body>

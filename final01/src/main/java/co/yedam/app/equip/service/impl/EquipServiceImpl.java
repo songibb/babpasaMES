@@ -15,7 +15,7 @@ public class EquipServiceImpl implements EquipService {
 	@Autowired
 	EquipMapper equipMapper;
 	
-	//¼³ºñ ÀüÃ¼ Á¶È¸
+	//ì„¤ë¹„ ì „ì²´ ì¡°íšŒ
 	@Override
 	public List<EquipVO> getEquipList() {
 		// TODO Auto-generated method stub
@@ -23,13 +23,13 @@ public class EquipServiceImpl implements EquipService {
 	}
 	
 	@Override
-	//µî·Ï
+	//ë“±ë¡
 	public String insertEquipInfo(EquipVO equipVO) {
 		int result = equipMapper.insertEquipInfo(equipVO);
 		if(result == 1) {
 			return equipVO.getEqCode();
 		}else {
-			return "µî·Ï½ÇÆĞ";
+			return "ë“±ë¡ì‹¤íŒ¨";
 		}
 	}
 

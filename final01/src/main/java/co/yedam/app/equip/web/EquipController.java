@@ -1,10 +1,13 @@
 package co.yedam.app.equip.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.equip.service.EquipService;
 import co.yedam.app.equip.service.EquipVO;
@@ -15,23 +18,31 @@ public class EquipController {
 	@Autowired
 	EquipService equipService;
 	
-	//ÀüÃ¼ ¼³ºñ Á¶È¸
+	//ì „ì²´ ì„¤ë¹„
 	@GetMapping("/EquipList")
 	public String selectEquipAllList(Model model) {
 		model.addAttribute("EquipList", equipService.getEquipList());
 		return "equip/EquipList";
 	}
 	
-	//¼³ºñ µî·Ï ÆäÀÌÁö
-	@GetMapping("/equipInsert")
-	public String equipInsertForm() {
-		return "equip/equipInsert";
+	@GetMapping("selectEquipAllList") //Equiplist.jspì˜ ajax urlê³¼ ì—°ê²°ë˜ëŠ” ê²ƒ 
+	@ResponseBody
+	public List<EquipVO> getEquipList(){
+		List<EquipVO> list = equipService.getEquipList();
+		return list;
 	}
 	
-	//µî·Ï Ã³¸®
-	@PostMapping("/equipInsert")
-	public String equipInsertProcess(EquipVO equipVO) {
-		equipService.insertEquipInfo(equipVO);
-		return  "redirect:EquipList";
-	}
+	//ì„¤ë¹„ ë“±ë¡ í˜ì´ì§€
+		@GetMapping("/equipInsert")
+		public String equipInsertForm() {
+			return "equip/equipInsert";
+		}
+		
+		//ë“±ë¡ ì²˜ë¦¬
+		@PostMapping("/equipInsert")
+		public String equipInsertProcess(EquipVO equipVO) {
+			equipService.insertEquipInfo(equipVO);
+			return  "redirect:EquipList";
+		}
+	
 }

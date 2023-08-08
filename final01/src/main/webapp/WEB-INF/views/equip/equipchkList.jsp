@@ -88,17 +88,32 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>설비 조회</h1>
+	<h1>설비 점검</h1>
 	<div class="col-lg-12 stretch-card">
     	<div class="card">
         	<div class="card-body">
             	<div class="table-responsive pt-3">
             		<div id="customtemplateSearchAndButton">
-						<p>설비명</p>
-						<input type="text" placeholder="설비명을 입력하세요">
-  						<i class="fas fa-search" id="actModal" data-toggle="modal" data-target="#searchModal"></i>
-				
-						<button type="button" class="btn btn-info btn-icon-text">초기화</button>					
+            			<p>설비구분</p>
+            			<select name="job">
+						    <option value="">설비구분</option>
+						    <option value="증숙">증숙</option>
+						    <option value="혼합">혼합</option>
+						    <option value="냉동">냉동</option>
+						</select><br>
+						
+						<p>판정구분</p>
+						<select name="job">
+						    <option value="">판정구분</option>
+						    <option value="합격">합격</option>
+						    <option value="불합격">불합격</option>
+						    <option value="기타">기타</option>
+						</select>
+						<br>
+						<p>점검일자</p>
+						 <p><input type="date"></p> ~ <p> <input type="date"></p>
+						<button type="button" class="btn btn-info btn-icon-text">검색</button>
+						<button type="button" class="btn btn-info btn-icon-text">초기화</button>
 					</div>
 					<div id="grid"></div>
                 </div>
@@ -113,7 +128,7 @@
 	<script>
 		window.onload = function(){
 			$.ajax({
-		        url : "selectEquipAllList",
+		        url : "selectEquipChkList",
 		        method :"GET",
 		        success : function(result){
 		            grid.resetData(result);
@@ -133,30 +148,29 @@
 				},
 		        columns:  [
 	 	      {
-		 	        header: '설비코드',
-		 	        name: 'eqCode',
+		 	        header: '설비점검코드',
+		 	        name: 'eqChkCode',
 		 	        filter: 'select'
 		 	      },
 		 	      {
-		 	        header: '설비명',
-		 	        name: 'eqName'
+		 	        header: '점검날짜',
+		 	        name: 'chkDate'
 		 	      },
 		 	      {
-		 	        header: '모델명',
-		 	        name: 'modelName'
+		 	        header: '설비코드',
+		 	        name: 'eqCode'
 		 	      },
 		 	      {
-		 	        header: '설비상태',
-		 	        name: 'eqSts'
+		 	        header: '담당자',
+		 	        name: 'empCode'
 		 	      },
 		 	      {
-		 	        header: '설비구분',
-		 	        name: 'eqType'
+		 	        header: '비고',
+		 	        name: 'chkNote'
 		 	      }
 		 	    ]
 		      })  
 			}
-		
 
 	</script>
 </body>
