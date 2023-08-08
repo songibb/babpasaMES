@@ -99,7 +99,7 @@
      margin-top:-100px; margin-left:-200px;
      text-align:center;
      box-sizing:border-box;
-     line-height:23px;
+     line-height:23px; cursor:pointer;
    }
    
    .m_head{
@@ -264,20 +264,9 @@
         //   readData: { url: '/api/readData', method: 'GET' }
         // }
               //column의 name속성을 필드명으로 사용해야 함
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-
+         
+              
+        
        ],
        scrollX: false,
        scrollY: false,
