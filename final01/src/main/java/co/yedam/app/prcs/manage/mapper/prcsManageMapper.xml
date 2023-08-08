@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.yedam.app.prcs.manage.mapper.PrcsManageMapper">
+
+	<!-- 공정관리 조회 -->
+	<select id="selectPrcsManageList" resultType="prcsManageVO">
+		SELECT prcs_code
+				,prcs_type
+				,prcs_name
+				,semi_yn
+		  FROM prcs_manage
+		 ORDER BY prcs_code
+	</select>
+	
+	<!-- 공정관리 조회 - 검색 -->
+	<select id="selectPrcsManageSearch" resultType="prcsManageVO">
+		SELECT prcs_code
+				,prcs_type
+				,prcs_name
+				,semi_yn
+		  FROM prcs_manage
+		 WHERE prcs_name LIKE '%' || #{prcsSearch} || '%'
+	</select>
+	
+
+	
+
+</mapper>
