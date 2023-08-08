@@ -18,6 +18,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+
 <style>
    body {
       font-family: 'Nanum Gothic', sans-serif;
@@ -81,6 +83,7 @@
     }
     
   
+
    /*모달시작*/
    #actModal{ 
      cursor:pointer;
@@ -170,6 +173,26 @@
       width : 221px;
    }
 
+
+#actModal{ 
+  cursor:pointer;
+}
+
+.modal{ 
+  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
+}
+
+.modal_content{
+  width:400px; height:200px;
+  background:#fff; border-radius:10px;
+  position:relative; top:50%; left:50%;
+  margin-top:-100px; margin-left:-200px;
+  text-align:center;
+  box-sizing:border-box; padding:74px 0;
+  line-height:23px; cursor:pointer;
+}
+
+    
 </style>
 </head>
 <body>
@@ -180,8 +203,7 @@
            <div class="card-body">
                <div class="table-responsive pt-3">
                    <button type="button" class="btn btn-info btn-icon-text excelDownload">
-                       Excel
-                      <i class="bi bi-printer"></i>                                                                              
+                       Excel <i class="bi bi-printer"></i>                                                                              
                    </button>
                   <div id="customtemplateSearchAndButton">
                   <p>검색조건</p>
@@ -193,9 +215,6 @@
                   <input type="text" placeholder="검색어를 입력하세요">
                   <i class="bi bi-search"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" readonly>
-                  <br>
-                  <p>날짜검색</p>
-                  <input id="searchMinDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="searchMaxDate" type="date">
                   <button type="button" class="btn btn-info btn-icon-text">
                      <i class="fas fa-search"></i>
                      검색
@@ -210,41 +229,36 @@
       </div>
    </div> 
    
+   
 
 <div class="modal">
-   
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>거래처 목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
+    여기에 모달창 내용을 적어줍니다.<br>
+    이미지여도 좋고 글이어도 좋습니다.
   </div>
 </div>
-
-<script>
    
-   //모달 시작
-   $(function(){ 
+   
+
+
+   
+   
+   
+<script>
+
+$(function(){ 
 
      $("#actModal").click(function(){
        $(".modal").fadeIn();
-       initGrid();
      });
      
-     $("#close_btn").click(function(){
+     $(".modal_content").click(function(){
        $(".modal").fadeOut();
      });
      
    });
-   //모달 끝
+
    
    const excelDownload = document.querySelector('.excelDownload');
    
@@ -255,16 +269,28 @@
    })
 
   
-   function initGrid() {
-      const grid = new tui.Grid({
-      
-       el: document.getElementById('modal_label'),
+  const grid = new tui.Grid({
+       el: document.getElementById('grid'),
        data: [
         // api: {
         //   readData: { url: '/api/readData', method: 'GET' }
         // }
               //column의 name속성을 필드명으로 사용해야 함
-         
+
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+
               
         
        ],
@@ -301,25 +327,14 @@
            name: 'genre'
          }
        ]
-      
      });
-      
-   
-   }
-   
-   
   
      
-   
-   
-   //이전 날짜 선택불가
-    $( '#searchMinDate' ).on( 'change', function() {
-      $( '#searchMaxDate' ).attr( 'min',  $( '#searchMinDate' ).val() );
-    } );
-   //이후날짜 선택불가
-    $( '#searchMaxDate' ).on( 'change', function() {
-         $( '#searchMinDate' ).attr( 'max',  $( '#searchMaxDate' ).val() );
-       } );
+   const options = {
+           includeHiddenColumns: true,
+           onlySelected: true,
+           fileName: 'myExport',
+         };
    
 
 </script>

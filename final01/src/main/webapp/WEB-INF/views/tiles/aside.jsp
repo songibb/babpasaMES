@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script src="${pageContext.request.contextPath}/resources/js/template.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/off-canvas.js"></script>
@@ -43,15 +43,14 @@
             </a>
             <div class="collapse" id="form-elements">
               	<ul class="nav flex-column sub-menu">
+              		<li class="nav-item"><a class="nav-link" href="orderList">주문 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">주문 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 출고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="outList">완제품 출고 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 출고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="rtList">완제품 반품 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 반품 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 입고 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 재고 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 정산</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">생산 요청 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">제품 안전 재고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 재고 관리</a></li>
               	</ul>
             </div>
 		</li>
@@ -84,12 +83,12 @@
             </a>
             <div class="collapse" id="tables">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 계획 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 지시</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">생산 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">공정 실적 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">공정 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/tables/basic-table.html">제품 공정 흐름도</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 계획 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 지시</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">공정 실적 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsManageList">공정 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsProdList">제품 공정 흐름도</a></li>
               	</ul>
             </div>
 		</li>
@@ -115,9 +114,10 @@
             </a>
             <div class="collapse" id="auth">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html">설비관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/register.html">비가동 설비 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/samples/register.html">설비 점검 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="EquipList">설비조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="equipInsert">설비관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="offequip">비가동 설비 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="equipchkList">설비 점검 관리</a></li>
               	</ul>
             </div>
 		</li>

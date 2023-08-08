@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.yedam.app.prcs.prod.mapper.PrcsProdMapper">
+
+	<!-- 제품별공정 조회 -->
+	<select id="selectPrcsProdList" resultType="prcsProdVO">
+		SELECT prcs_prod_code
+				,prod_code  
+				,prcs_code 
+				,prcs_seq     
+		  FROM prcs_prod
+		 ORDER BY prcs_prod_code
+	</select>
+</mapper>

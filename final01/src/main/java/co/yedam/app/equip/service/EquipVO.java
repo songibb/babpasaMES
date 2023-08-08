@@ -2,15 +2,19 @@ package co.yedam.app.equip.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
 public class EquipVO {
-	private String eqCode; //설비코드
-	private String actCode; //
-	private String eqName; //설비명
-	private String modelName; //모델명
+	private String eqCode; 
+	private String actCode; 
+	private String eqName; 
+	private String modelName;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date makeDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date buyDate;
 	private int chkCycle;
 	private String eqSts;

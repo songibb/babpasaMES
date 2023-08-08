@@ -3,9 +3,9 @@ package co.yedam.app.equip.service;
 import java.util.List;
 
 public interface EquipService {
-	//¼³ºñ ÀüÃ¼ Á¶È¸
+	//ì „ì²´ ì„¤ë¹„ ì¡°íšŒ
 	public List<EquipVO> getEquipList();
 	
-	//¼³ºñ µî·Ï
+	//ì„¤ë¹„ ë“±ë¡
 	public String insertEquipInfo(EquipVO equipVO);
 }
