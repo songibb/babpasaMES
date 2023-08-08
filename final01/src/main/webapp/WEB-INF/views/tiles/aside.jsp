@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script src="${pageContext.request.contextPath}/resources/js/template.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/off-canvas.js"></script>
@@ -43,15 +43,14 @@
             </a>
             <div class="collapse" id="form-elements">
               	<ul class="nav flex-column sub-menu">
+              		<li class="nav-item"><a class="nav-link" href="orderList">주문 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">주문 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 출고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="outList">완제품 출고 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 출고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="rtList">완제품 반품 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 반품 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 입고 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 재고 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 정산</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">생산 요청 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">제품 안전 재고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 재고 관리</a></li>
               	</ul>
             </div>
 		</li>

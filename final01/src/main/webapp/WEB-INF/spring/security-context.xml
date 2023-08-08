@@ -18,7 +18,7 @@
 		<security:csrf disabled="true"/>
 	</security:http>
 	
-	<bean id="userDetailService" class="co.yedam.app.emp.service.Impl.CustomUserDetailsService"/>
+	<bean id="CustomUserDetailsService" class="co.yedam.app.emp.service.Impl.CustomUserDetailsService"/>
 	<!--장서영  -->
 	<security:authentication-manager>
 		<security:authentication-provider>

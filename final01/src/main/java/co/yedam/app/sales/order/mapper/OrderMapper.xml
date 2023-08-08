@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.sales.order.mapper.OrderMapper">
+  <!-- 전체조회 -->
+  <select id="selectOrderAllList" resultType="OrderVO">
+	SELECT d.sales_ord_de_code sales_ord_de_code
+			, o.ord_date ord_date
+			, a.act_name act_name
+			, o.ord_sts ord_sts
+			, p.prod_name prod_name
+			, d.prcs_rq_amt prcs_rq_amt
+			, d.dev_date dev_date
+			, d.dev_yn dev_yn
+	FROM sales_ord o JOIN sales_ord_de d
+						ON (o.ord_code = d.ord_code)
+						JOIN com_prod p
+						ON (d.prod_code = p.prod_code)
+						JOIN com_act a
+						ON (o.act_code = a.act_code)
+	ORDER BY o.ord_code DESC
+  </select>
+  
+  
+  </mapper>
