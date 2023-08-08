@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.material.semi.in.mapper.SemiInMapper">
+	<select id="selectSemiInList" resultType="SemiInVO">
+		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		FROM semi_in a JOIN com_prod b
+			ON(a.prod_code = b.prod_code)
+				JOIN com_emp c
+					ON(a.emp_code = c.emp_code)
+		<where>
+			<if test="productCode != null">
+				AND a.prod_code = #{productCode}
+			</if>
+			<if test="startDate != null">
+				AND a.semi_ind <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null">
+				AND a.semi_ind <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY a.semi_ind DESC
+	</select>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.material.in.mapper.MatInMapper">
+	<select id="selectMatInList" resultType="MatInVO">
+		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, c.act_name act_name, a.mat_in_amt mat_in_amt, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
+		FROM mat_in a JOIN com_mat b
+			ON(a.mat_code = b.mat_code)
+				JOIN com_act c
+					ON(a.act_code = c.act_code)
+						JOIN com_emp d
+							ON(a.emp_code = d.emp_code)
+		<where>
+			<if test="materialCode != null">
+				AND a.mat_code = #{materialCode}
+			</if>
+			<if test="accountCode != null">
+				AND a.act_code = #{accountCode}
+			</if>
+			<if test="startDate != null">
+				AND a.mat_ind <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null">
+				AND a.mat_ind <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY a.mat_ind DESC
+	</select>
+
+</mapper>

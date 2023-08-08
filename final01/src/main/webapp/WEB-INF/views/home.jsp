@@ -84,6 +84,96 @@
     
   
 
+   /*모달시작*/
+   #actModal{ 
+     cursor:pointer;
+   }
+   
+   .modal{ 
+     position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
+   }
+   
+   .modal_content{
+     /*모달창 크기 조절*/
+     width:600px; height:600px;
+     background:#fff; border-radius:10px;
+     /*모달창 위치 조절*/
+     position:relative; top:33%; left:45%;
+     margin-top:-100px; margin-left:-200px;
+     text-align:center;
+     box-sizing:border-box;
+     line-height:23px; cursor:pointer;
+   }
+   
+   .m_head{
+        height: 10%;
+        margin : 0;
+        /*제목 높낮이 조절*/
+        padding: 17px;
+        display: flex;
+        justify-content: space-between;
+        background-color:rgb(232, 143, 33);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      
+      .close_btn{
+        font-size: 20px;
+        color: black;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      
+      .modal_btn{
+        width: 80px;
+        height: 30px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bolder;
+        padding-top: 5px;
+        margin-left: 5px;
+        font-family: sans-serif;
+      }
+      .m_head{
+        height: 10%;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        font-family: sans-serif;
+      }
+      
+      .m_body{
+        height: 80%;
+        padding: 20px;
+      }
+      
+      .m_footer{
+        height: 10%;
+        padding: 15px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        display: flex;
+        justify-content: end;
+      }
+      .cancle{
+        background-color: black;
+        color: white;
+      }
+      .save{
+        background-color: black;
+        color: white;
+      }
+   /*모달끝*/
+   
+   /*날짜 input 크기*/
+   input[type="date"]{
+      width : 221px;
+   }
+
+
 #actModal{ 
   cursor:pointer;
 }
@@ -186,6 +276,7 @@ $(function(){
         //   readData: { url: '/api/readData', method: 'GET' }
         // }
               //column의 name속성을 필드명으로 사용해야 함
+
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
@@ -199,6 +290,7 @@ $(function(){
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
               { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+
               
         
        ],
