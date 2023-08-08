@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.material.semi.out.mapper.SemiOutMapper">
+	<select id="selectSemiOutList" resultType="SemiOutVO">
+		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_out_amt semi_out_amt, a.prcs_list_code prcs_list_code, c.emp_name emp_name, a.semi_out_date semi_out_date, a.semi_exd semi_exd 
+		FROM semi_out a JOIN com_prod b
+			ON(a.prod_code = b.prod_code)
+				JOIN com_emp c
+					ON(a.emp_code = c.emp_code)
+		<where>
+			<if test="productCode != null">
+				AND a.prod_code = #{productCode}
+			</if>
+			<if test="startDate != null">
+				AND a.semi_outd <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null">
+				AND a.semi_outd <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY a.semi_outd DESC
+	</select>
+
+</mapper>
