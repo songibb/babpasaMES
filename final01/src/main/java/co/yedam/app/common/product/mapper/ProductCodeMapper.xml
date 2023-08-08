@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="co.yedam.app.common.product.mapper.ProductCodeMapper">
+  <select id="selectProdCodeList" resultType="ProductCodeVO">
+	  	SELECT  prod_code,
+				prod_kind,
+				prod_name,
+				prod_unit,
+				prod_std
+		FROM com_prod
+	ORDER BY prod_code
+  </select>
+  </mapper>
