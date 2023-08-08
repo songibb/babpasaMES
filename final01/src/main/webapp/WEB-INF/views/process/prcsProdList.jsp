@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공정 관리</title>
+<title>제품 공정 흐름도</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -169,7 +168,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>공정 관리</h1>
+	<h1>제품 공정 흐름도</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -179,9 +178,22 @@
 					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
+							<p>제품명</p>
+								<input type="text" placeholder="검색어를 입력하세요">
+								<i class="bi bi-search" id="actModal"></i>
+								<input type="text" class="blackcolorInputBox" readonly>			
+								<br>
 							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
+								<input type="text" placeholder="검색어를 입력하세요" value="${param.search}">
+								<i class="bi bi-search"></i>
+								<input type="text" class="blackcolorInputBox" readonly>
+								<br>
+							<p>날짜검색</p>
+								<input id="searchMinDate" type="date">
+								&nbsp;&nbsp;-&nbsp;&nbsp;
+								<input id="searchMaxDate" type="date">
 							
+
 							<button type="button" class="btn btn-info btn-icon-text" >
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -197,35 +209,16 @@
     
 	<script>
 	
-	//공정관리 조회
+	//제품별공정 조회
 	$.ajax({
-        url : "selectPrcsManageList",
+        url : "selectPrcsProdList",
         method :"GET",
         success : function(result){
             grid.resetData(result);
         } 
 	});
 	
-	
-	//공정관리 조회 - 검색
-	$('button:contains("검색")').on('submit', ajaxSearch);
-	
-	function ajaxSearch(e){
-		e.preventDefault();
-		
-		$.ajax({
-			url : "selectPrcsManageSearch",
-	        method :"post",      
-	        data : $('form').serialize(),
-	        success : function(result){
-	        	console.log(result);
-	            grid.resetData(result);
-	        } 
-		});
 
-	}
-	
-	
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
         scrollX: false,
@@ -239,24 +232,31 @@
 		},
         columns: [
           {
+            header: '제품코드',
+            name: 'prodCode',
+          },
+          {
+        	header: '제품명',
+        	name: 'prodName'
+          },
+          {
             header: '공정코드',
-            name: 'prcsCode',
+            name: 'prcsCode'
           },
           {
-            header: '공정구분',
-            name: 'prcsType',
+        	header: '공정이름',
+        	name: 'prcsName'
           },
           {
-            header: '공정이름',
-            name: 'prcsName'
-          },
-          {
-            header: '반제품',
-            name: 'semiYn'
+            header: '공정순서',
+            name: 'prcsSeq'
           }		          
         ]
       })  
-
+    
+	
+	
+			
 
 	</script>
 </body>

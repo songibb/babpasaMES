@@ -20,10 +20,9 @@ public class PrcsManageController {
 
 	//공정관리 조회 - 호출
 	@GetMapping("prcsManageList")
-	public String getPrcsManageList(Model model){
-		model.addAttribute("prcsManageList",prcsManageService.getPrcsManageList());
-		return "proces"
-				+ "s/prcsManageList";
+	public String getPrcsManageAllList(Model model){
+		//model.addAttribute("prcsManageList",prcsManageService.getPrcsManageList());
+		return "process/prcsManageList";
 	}
 	
 	//공정관리 조회 - 리스트

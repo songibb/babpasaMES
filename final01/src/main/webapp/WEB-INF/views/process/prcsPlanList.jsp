@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공정 관리</title>
+<title>생산 계획 관리</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -169,7 +169,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>공정 관리</h1>
+	<h1>생산 계획 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -197,37 +197,22 @@
     
 	<script>
 	
-	//공정관리 조회
-	$.ajax({
-        url : "selectPrcsManageList",
-        method :"GET",
-        success : function(result){
-            grid.resetData(result);
-        } 
-	});
-	
-	
-	//공정관리 조회 - 검색
-	$('button:contains("검색")').on('submit', ajaxSearch);
-	
-	function ajaxSearch(e){
-		e.preventDefault();
-		
-		$.ajax({
-			url : "selectPrcsManageSearch",
-	        method :"post",      
-	        data : $('form').serialize(),
-	        success : function(result){
-	        	console.log(result);
-	            grid.resetData(result);
-	        } 
-		});
-
-	}
-	
-	
+	//생산계획 조회
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
+        data: [
+	           <c:forEach items="${planList}" var="p">
+	           	{
+	           		prcsPlanCode : "${p.prcsPlanCode}",
+	           		prcsPlanName :"${p.prcsPlanName}",
+	           		prcsPlanDate :"${p.prcsPlanDate}",
+	           		empCode :"${p.empCode}",
+	           		prcsDirYn : "${p.prcsDirYn}",
+	           		prcsStartDate : "${p.prcsStartDate}",
+	           		prcsEndDate : "${p.prcsEndDate}",
+	           	} <c:if test="${p.prcsEndDate eq false}">,</c:if>,
+	           </c:forEach>
+	          ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -239,25 +224,37 @@
 		},
         columns: [
           {
-            header: '공정코드',
-            name: 'prcsCode',
+            header: '계획코드',
+            name: 'prcsPlanCode'
           },
           {
-            header: '공정구분',
-            name: 'prcsType',
+            header: '계획명',
+            name: 'prcsPlanName'
           },
           {
-            header: '공정이름',
-            name: 'prcsName'
+            header: '계획일자',
+            name: 'prcsPlanDate'
           },
           {
-            header: '반제품',
-            name: 'semiYn'
-          }		          
+            header: '담당자',
+            name: 'empCode'
+          },
+          {
+            header: '생산지시여부',
+            name: 'prcsDirYn'
+          },prcsDirYn
+          {
+            header: '예상생산시작일',
+            name: 'prcsStartDate'
+          },
+          {
+              header: '예상생산종료일',
+              name: 'prcsEndDate'
+          }
         ]
       })  
 
-
+	//상세생산계획 조회
 	</script>
 </body>
 </html>
