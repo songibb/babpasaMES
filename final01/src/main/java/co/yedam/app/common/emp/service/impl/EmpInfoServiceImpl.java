@@ -23,5 +23,11 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 		return empInfoMapper.selectEmpInfoList();
 	}
 
+	@Override
+	public List<EmpInfoVO> searchSelectEmp(String empName) {
+		
+		return empInfoMapper.searchSelectEmp(empName);
+	}
+
 	
 }

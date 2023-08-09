@@ -9,7 +9,8 @@ public interface EmpInfoMapper {
 	//전체사원조회
 	public List<EmpInfoVO> selectEmpInfoList();
 	
-//	public List<EmpInfoVO> selectEmpInfoList(SearchVO searchVO);
+	//검색조회
+	public List<EmpInfoVO> searchSelectEmp(String empName);
 	
 	
 	

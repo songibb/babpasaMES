@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.common.act.mapper.ActCodeMapper">
+  
+  	<select id="selectActCodeList" resultType="ActCodeVO">
+  		SELECT  a.act_code,
+				a.act_name,
+				a.act_num,
+				a.act_tel,
+				a.act_sts,
+				c.commde_name,
+				e.emp_name
+		FROM com_act a LEFT JOIN com_commde c
+								 ON(a.act_kind = c.commde_code)
+                       LEFT JOIN com_emp e
+                                 ON(a.emp_code=e.emp_code)
+  	</select>
+  	
+  	<select id="searchSelectActCode" resultType="ActCodeVO">
+  		SELECT  a.act_code,
+				a.act_name,
+				a.act_num,
+				a.act_tel,
+				a.act_sts,
+				c.commde_name,
+				e.emp_name
+		FROM com_act a LEFT JOIN com_commde c
+								 ON(a.act_kind = c.commde_code)
+                       LEFT JOIN com_emp e
+                                 ON(a.emp_code=e.emp_code)
+        where c.commde_name = #{commdeName}
+  	</select>
+  </mapper>

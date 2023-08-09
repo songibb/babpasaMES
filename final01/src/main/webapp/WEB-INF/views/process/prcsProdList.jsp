@@ -215,7 +215,10 @@
         method :"GET",
         success : function(result){
             grid.resetData(result);
-        } 
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
 	});
 	
 

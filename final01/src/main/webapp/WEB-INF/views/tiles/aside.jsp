@@ -23,15 +23,15 @@
             </a>
             <div class="collapse" id="ui-basic">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="empinfo">사원 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">공통 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">품목 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">공정 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">자재 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">거래처 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">불량 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">검사 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">BOM 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="empinfo">사원 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">공통 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="prodCodeList">제품 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">공정 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">자재 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">거래처 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">불량 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">검사 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="bomCodeList">BOM 조회</a></li>
               	</ul>
             </div>
 		</li>
@@ -85,7 +85,7 @@
               	<ul class="nav flex-column sub-menu">
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsPlanList">생산 계획 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 지시</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsDirList">생산 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">공정 실적 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsManageList">공정 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsProdList">제품 공정 흐름도</a></li>

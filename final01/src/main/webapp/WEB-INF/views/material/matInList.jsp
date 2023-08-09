@@ -82,7 +82,7 @@
     
   
    /*모달시작*/
-   #actModal{ 
+   #actModal, #matModal{ 
      cursor:pointer;
    }
    
@@ -186,17 +186,17 @@
                   <div id="customtemplateSearchAndButton">
                   <p>자재명</p>
                   <input type="text" placeholder="검색어를 입력하세요">
-                    <i class="bi bi-search" id="actModal"></i>
+                  <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" readonly>
                   <br>
                   <p>업체명</p>
-                  <input type="text" placeholder="검색어를 입력하세요">
-                  <i class="bi bi-search"></i> <!-- 돋보기 아이콘 -->
+                  <input type="text" placeholder="검색어를 입력하세요" id="MaterialNameSearch">
+                    <i class="bi bi-search" id="actModal"></i>
                   <input type="text" class="blackcolorInputBox" readonly>
                   <br>
                   <p>입고일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
                   </button>
@@ -230,20 +230,31 @@
 </div>
 
 <script>
+
    
    //모달 시작
-   $(function(){ 
-
+  
+	 var Grid;
      $("#actModal").click(function(){
        $(".modal").fadeIn();
-       initGrid();
+       Grid = createActGrid();
+     });
+     
+     
+     $("#matModal").click(function(){
+       $(".modal").fadeIn();
+       Grid = createMatGrid();
      });
      
      $("#close_btn").click(function(){
        $(".modal").fadeOut();
+       
+		Grid.destroy();
      });
      
-   });
+     
+     
+  
    //모달 끝
    
    //엑셀 다운로드
@@ -254,6 +265,120 @@
          grid.export('xlsx');
       })
    })
+   
+   //거래처 모달 그리드
+   function createActGrid(){
+	   var actGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: 'Name',
+	               name: 'name',
+	               filter: 'select'
+	             },
+	             {
+	               header: 'Artist',
+	               name: 'artist'
+	             },
+	             {
+	               header: 'Type',
+	               name: 'type'
+	             },
+	             {
+	               header: 'Release',
+	               name: 'release'
+	             },
+	             {
+	               header: 'Genre',
+	               name: 'genre'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return actGrid;
+   }
+   
+ //자재 모달 그리드
+   function createMatGrid(){
+	   var matGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	             
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: 'Name',
+	               name: 'name',
+	               filter: 'select'
+	             },
+	             {
+	               header: 'Artist',
+	               name: 'artist'
+	             },
+	             {
+	               header: 'Type',
+	               name: 'type'
+	             },
+	             {
+	               header: 'Release',
+	               name: 'release'
+	             },
+	             {
+	               header: 'Genre',
+	               name: 'genre'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return matGrid;
+   }
+   
+   
 
 	
    //전체조회 그리드
@@ -262,7 +387,7 @@
 	       data: [
 	           <c:forEach items="${inList}" var="mat">
 	           	{
-	           	matLot : "${mat.matLot}"
+	           	matLot : "${mat.matLot}",
 	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
 	           	actName :"${mat.actName}",
@@ -277,6 +402,7 @@
 	       scrollY: false,
 	       minBodyHeight: 30,
 	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
 	       pagination: true,
 	       pageOptions: {
 	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
@@ -320,6 +446,27 @@
 	      
 	     });
    
+ 
+   $('#searchBtn').on('click', searchMatIn);
+   function searchMatIn(e){
+	   let content = $('#MaterialNameSearch').val();
+	   let search = { materialCode : content };
+	   $.ajax({
+		   url : 'getMatInFilter',
+		   method : 'GET',
+		   data : search ,
+		   success : function(data){
+			   grid.resetData(data);
+		   },
+		   error : function(reject){
+			   console.log(reject);
+		   }
+	   });
+   }
+   
+ 
+   
+
    
    
   

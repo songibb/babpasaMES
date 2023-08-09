@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.common.bom.mapper.BomCodeMapper">
+  
+	  <!-- bom 전체조회 -->
+	  	<select id="selectBomCodeList" resultType="BomCodeVO">
+		  		SELECT  b.bom_no,
+						b.prod_code,
+						b.bom_wdate,
+						b.bom_udate,
+						b.bom_yn,
+						b.bom_prcs_yn,
+						c.prod_name
+				FROM bom_header b left join com_prod c
+		    	ON(b.prod_code=c.prod_code)
+	    	ORDER BY b.bom_no
+	    	
+	  	
+	  	</select>
+  	
+  	<!-- bom 검색 조회  -->
+  	  	<select id="searchSelectBom" resultType="BomCodeVO">
+		  		SELECT  b.bom_no,
+						b.prod_code,
+						b.bom_wdate,
+						b.bom_udate,
+						b.bom_yn,
+						b.bom_prcs_yn,
+						c.prod_name
+				FROM bom_header b join com_prod c
+		    	ON(b.prod_code=c.prod_code)
+		    	WHERE c.prod_name LIKE '%' || #{prodName} || '%'
+	    	ORDER BY b.bom_no
+  	
+  	</select>
+  	
+  	<!-- bom상세조회 -->
+  	<select id="selectDeBomCodeList" resultType="BomCodeVO">
+	  		select  bom_code,
+					prcs_code,
+					mp_kind,
+					mp_code,
+					bom_unit,
+					bom_amt,
+					bom_no
+			from bom_detail
+			WHERE bom_no = #{bomNo}
+  	</select>
+  </mapper>

@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
+<!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
 		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp
 		FROM mat_order_de a JOIN mat_order b
@@ -14,11 +15,11 @@
             JOIN com_mat e
             ON (a.mat_code = e.mat_code)
             <where>
-				<if test="startDate != null">
-					AND a.mat_od_rq <![CDATA[>=]]> #{startDate}
+				<if test="startDate != null and startDate != ''">
+					AND a.mat_od_rq <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
 				</if>
-				<if test="endDate != null">
-					AND a.mat_od_rq <![CDATA[<=]]> #{endDate}
+				<if test="endDate != null and endDate != ''">
+					AND a.mat_od_rq <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
 				</if>
 			</where>
 			ORDER BY a.mat_od_de_cd

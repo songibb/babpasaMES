@@ -15,10 +15,10 @@ import co.yedam.app.material.order.de.service.MatOrderDeVO;
 
 @Controller
 public class MatOrderDeController {
-	
+	//전체조회
 	@Autowired
 	MatOrderDeService mods;
-	
+	//전체조회
 	@GetMapping("MatOrderList")
 	public String getMatOrderList(@RequestParam(value="startDate", required=false) String startDate,@RequestParam(value="endDate", required=false) String endDate, Model model) {
 		List<MatOrderDeVO> mo = mods.selectMatOrderList(startDate, endDate);

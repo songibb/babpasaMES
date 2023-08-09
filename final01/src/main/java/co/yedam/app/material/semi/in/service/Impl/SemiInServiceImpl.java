@@ -11,10 +11,10 @@ import co.yedam.app.material.semi.in.service.SemiInVO;
 
 @Service
 public class SemiInServiceImpl implements SemiInService {
-	
+	//전체조회
 	@Autowired
 	SemiInMapper sim;
-
+	//전체조회
 	@Override
 	public List<SemiInVO> selectSemiInList(String productCode, String startDate, String endDate) {
 		

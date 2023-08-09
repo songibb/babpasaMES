@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.equip.service.EquipService;
@@ -25,6 +26,7 @@ public class EquipController {
 		return "equip/EquipList";
 	}
 	
+	//Ajax 연결 - 전체 설비 리스트
 	@GetMapping("selectEquipAllList") //Equiplist.jsp의 ajax url과 연결되는 것 
 	@ResponseBody
 	public List<EquipVO> getEquipList(){
@@ -44,5 +46,23 @@ public class EquipController {
 			equipService.insertEquipInfo(equipVO);
 			return  "redirect:EquipList";
 		}
+		
+		/*
+		 * //모달 설비 조회
+		 * 
+		 * @GetMapping("/ModalEquip") public String EquipModalList(Model model) {
+		 * model.addAttribute("ModalEquip", equipService.getModalEquipList()); return
+		 * "equip/equipInsert"; }
+		 */
 	
+	//설비 수정
+		
+	//설비 삭제
+	@GetMapping("/equipDelete")
+	@ResponseBody
+	public String equipDelete(@RequestParam(name="eqCode", defaultValue="0")String eqCode) {
+		equipService.deleteEquipInfo(eqCode);
+		return "redirect:equipInsert";
+	}
+	//설비 단건 조회
 }

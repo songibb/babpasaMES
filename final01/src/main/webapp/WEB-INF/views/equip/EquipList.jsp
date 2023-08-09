@@ -106,22 +106,27 @@
 		</div>
 	</div> 
 
-
-<body>
-	<div id="grid"></div>
-	
 	<script>
-		window.onload = function(){
-			$.ajax({
-		        url : "selectEquipAllList",
-		        method :"GET",
-		        success : function(result){
-		            grid.resetData(result);
-		        } 
-			});
 		
 		    var grid = new tui.Grid({
 		        el: document.getElementById('grid'),
+		        data :[
+		        	<c:forEach items="${EquipList}" var="equip"  varStatus="status">
+		        	{
+		        		eqCode : "${equip.eqCode}",
+		        		actCode : "${equip.actCode}",
+		        		eqName :"${equip.eqName}", 
+		        		modelName : "${equip.modelName}",
+		        		makeDate : "${equip.makeDate}",
+		        		buyDate : "${equip.buyDate}",
+		        		chkCycle : "${equip.chkCycle}",
+		        		eqSts : "${equip.eqSts}",
+		        		eqType : "${equip.eqType}",
+		        		highTemp : "${equip.highTemp}",
+		        		lowTemp : "${equip.lowTemp}",   		
+		        	}<c:if test="${not status.last}">,</c:if>
+		        	 </c:forEach>
+		        ],
 		        scrollX: false,
 		        scrollY: false,
 		        minBodyHeight: 30,
@@ -131,31 +136,58 @@
 				useClient: true,
 				perPage: 10,
 				},
-		        columns:  [
-	 	      {
-		 	        header: '설비코드',
-		 	        name: 'eqCode',
-		 	        filter: 'select'
-		 	      },
-		 	      {
-		 	        header: '설비명',
-		 	        name: 'eqName'
-		 	      },
-		 	      {
-		 	        header: '모델명',
-		 	        name: 'modelName'
-		 	      },
-		 	      {
-		 	        header: '설비상태',
-		 	        name: 'eqSts'
-		 	      },
-		 	      {
-		 	        header: '설비구분',
-		 	        name: 'eqType'
-		 	      }
-		 	    ]
+			        columns:  [
+		 	      	  {
+			 	        header: '설비코드',
+			 	        name: 'eqCode'
+			 	      
+			 	      },
+			 	      {
+			 	    	  header : '설비업체명',
+			 	    	  name : 'actCode'		 	    	  
+			 	      },
+			 	      {
+			 	        header: '설비명',
+			 	        name: 'eqName',
+			 	        filter: 'text'
+			 	      },
+			 	      {
+			 	        header: '모델명',
+			 	        name: 'modelName'
+			 	      },
+			 	      {
+			 	    	  header :'제작일자',
+			 	    	  name : 'makeDate'
+			 	      },
+			 	      {
+			 	    	  header :'구입일자',
+			 	    	  name : 'buyDate'
+			 	      },
+			 	      {
+			 	    	  header : '점검주기',
+			 	    	  name : 'chkCycle'
+			 	      },
+			 	      
+			 	      {
+			 	        header: '설비상태',
+			 	        name: 'eqSts'
+			 	      },
+			 	      {
+			 	        header: '설비구분',
+			 	        name: 'eqType'
+			 	      },
+			 	      {
+			 	    	  header :'최고온도',
+			 	    	  name : 'highTemp'
+			 	      },
+			 	      {
+			 	    	 hedaer : '최저온도',
+			 	    	 name : 'lowTemp'
+			 	      }
+			 	      
+			 	    ]
 		      })  
-			}
+			
 		
 
 	</script>

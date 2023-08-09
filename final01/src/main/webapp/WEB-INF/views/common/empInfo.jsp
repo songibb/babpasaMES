@@ -203,23 +203,14 @@ input[type="date"] {
                       <i class="bi bi-printer"></i>                                                                              
                    </button>
                    <form action="" method="get" name="formInfo">
-                  <div id="customtemplateSearchAndButton">
-                  <p>검색조건</p>
-                  <select name="searchType">
-                  	<option value="emp_code"<c:if test="list.search">selected</c:if>>사원번호</option>
-                  	<option value="emp_name"<c:if test="list.search">selected</c:if>>사원이름</option>
-                  	<option value="dept_name"<c:if test="list.search">selected</c:if>>부서명</option>
-                  	<option value="emp_role"<c:if test="list.search">selected</c:if>>권한</option>
-                  </select> 
-                  <input type="text" placeholder="검색어를 입력하세요" name="keyword">
-                  <button type="submit" class="btn btn-info btn-icon-text" >
-                     <i class="fas fa-search"></i>
-                     검색
-                  </button>
-                  <button type="reset" class="btn btn-info btn-icon-text">
-                     초기화
-                  </button>
-               </div>
+                  <div id="customtemplateSearchAndButton">		
+							<p>사원명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id="empSearch">
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+		            	</div>
                </form>
                <div id="grid"></div>
                 </div>
@@ -228,61 +219,77 @@ input[type="date"] {
    </div> 
 <script>
 
-	$.ajax({
-        url : "empList",
-        method :"GET",
-        success : function(result){
-            grid.resetData(result);
-        } 
-	});
-var grid = new tui.Grid({
-	      
-	       el: document.getElementById('grid'),
-		   scrollX: false,
-	       scrollY: false,
-	       minBodyHeight: 30,
-	       rowHeaders: ['rowNum'],
-	       pagination: true,
-	       pageOptions: {
-	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	         useClient: true,
-	         perPage: 10
-	       },
-	       columns: [
-	         {
-	           header: '사원번호',
-	           name: 'empCode',
-	           filter: 'select'
-	       
-	         },
-	         {
-	           header: '이름',
-	           name: 'empName'
-	         },
-	         {
-	           header: '입사일',
-	           name: 'empDate'
-	         },
-	         {
-	           header: '권한',
-	           name: 'empRole'
-	         },
-	         {
-	           header: '부서번호',
-	           name: 'deptCode'
-	         },
-	         {
-	           header: '부서명',
-	           name: 'deptName'
-	         },
-	         {
-	           header: '연락처',
-	           name: 'empTel'
-	         }
-	       ]
-	      
-	     });
-
+//사원명검색조회
+	$('#searchBtn').on('click', searchEmpIn);
+	function searchEmpIn(e){
+		   let content = $('#empSearch').val();
+		   let search = { empName : content};
+		   $.ajax({
+			   url : 'getempFilter',
+			   method : 'GET',
+			   data : search,
+			   success : function(data){
+				   grid.resetData(data);
+			   },
+			   error : function(reject){
+				   console.log(reject);
+			   }
+		   })
+	}
+	var grid = new tui.Grid({
+		      
+		       el: document.getElementById('grid'),
+		       data: [
+		           <c:forEach items="${empList}" var="e" varStatus="status">
+		           	{
+		           		empCode : "${e.empCode}",
+		           		empName : "${e.empName}",
+		           		empDate : "${e.empDate}",
+		           		empRole : "${e.empRole}",
+		           		commdeName : "${e.commdeName}",
+		           		empTel : "${e.empTel}"
+		           	} <c:if test="${not status.last}">,</c:if>
+		           </c:forEach>
+		          ],
+			   scrollX: false,
+		       scrollY: false,
+		       minBodyHeight: 30,
+		       rowHeaders: ['rowNum'],
+		       pagination: true,
+		       pageOptions: {
+		         useClient: true,
+		         perPage: 10,
+		       },
+		       columns: [
+		         {
+		           header: '사원번호',
+		           name: 'empCode',
+		           filter: 'select'
+		         },
+		         {
+		           header: '사원명',
+		           name: 'empName'
+		         },
+		         {
+		           header: '입사일',
+		           name: 'empDate'
+		         },
+		         {
+		           header: '권한',
+		           name: 'empRole'
+		         },
+		         {
+		           header: '부서명',
+		           name: 'commdeName'
+		         },
+		         {
+		           header: '연락처',
+		           name: 'empTel'
+		         }
+		       ]
+		      
+		     });
+	
 
 </script>
 </body>

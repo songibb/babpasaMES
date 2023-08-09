@@ -2,11 +2,18 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="co.yedam.app.equip.mapper.OffEquipMapper">
+  <mapper namespace="co.yedam.app.equip.mapper.OffEquipMapper">  
   	<!--비가동 설비 조회 -->
   	<select id="selectOffEquipAllList" resultType="OffEquipVO">
   		SELECT *
   		FROM EQ_OFF
   		ORDER BY OFF_NO
+  	</select>
+  	
+  	<!--전체 설비 조회  -->
+  	<select id="selectAllequip" resultType="EquipVO">
+  		SELECT *
+  		FROM EQ_EQUIP
+  		ORDER BY EQ_CODE
   	</select>
   </mapper>
