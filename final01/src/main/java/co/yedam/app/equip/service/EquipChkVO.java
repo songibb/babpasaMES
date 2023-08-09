@@ -15,4 +15,5 @@ public class EquipChkVO {
 	private String chkType;
 	private Date chkNdate;
 	private String chkNote;
+	private String empCode;
 }

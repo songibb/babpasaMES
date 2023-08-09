@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.emp.service.EmpInfoVO;
-import co.yedam.app.common.emp.service.SearchVO;
+
 
 
 

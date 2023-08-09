@@ -45,4 +45,45 @@
 					,#{prcsType}					
   					)
   </insert>
+  
+  <!--모달안에서의 설비 조회  -->
+  <select id="EquipModalList" resultType="EquipVO"> 
+  	SELECT *
+  	FROM EQ_EQUIP
+  	ORDER BY EQ_CODE
+  </select>
+  
+  <!-- 단건조회 -->
+  <select id="selectEquipInfo" resultType="EquipVO">
+  	SELECT *
+  	FROM EQ_EQUIP
+  	WHERE EQ_CODE =#{eqCode}
+  </select>
+  
+  <!-- 수정 -->
+  <update id="updateEquip" parameterType="EquipVO">
+  	UPDATE EQ_EQUIP
+  	<set>
+  		EQ_CODE =#{eqCode}
+  		,ACT_CODE =#{actCode}
+  		,EQ_NAME =#{eqName}
+  		,MODEL_NAME =#{modelName}
+  		,MAKE_DATE =#{makeDate}
+  		,BUY_DATE =#{buyDate}
+  		,CHK_CYCLE =#{chkCycle}
+  		,EQ_STS =#{eqSts}
+  		,EQ_IMG =#{eqImg}
+  		,EQ_TYPE =#{eqType}
+  		,HIGH_TEMP =#{highTemp}
+  		,LOW_TEMP =#{lowTemp}
+  		,PRCS_TYPE =#{prcsType}
+  	</set>
+  	WHERE EQ_CODE =#{eqCode}
+  </update>
+  
+  <!-- 삭제  -->
+  <delete id="deleteEquip" parameterType="int">
+  	DELETE FROM EQ_EQUIP
+  	WHERE EQ_CODE = #{eqCode}
+  </delete>
   </mapper>

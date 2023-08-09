@@ -21,6 +21,7 @@ public class OffEquipController {
 	@GetMapping("/offequip")
 	public String getOffEquipList(Model model) {
 		model.addAttribute("offequip",offEquipService.getOffEquipList());
+		model.addAttribute("allequip", offEquipService.getAllEquip());
 		return "equip/offequip";
 	}
 	
@@ -31,4 +32,6 @@ public class OffEquipController {
 			List<OffEquipVO> list = offEquipService.getOffEquipList();
 			return list;
 		}
+		
+	
 }
