@@ -27,8 +27,8 @@ public class ActCodeController {
 	//검색조회
 	@GetMapping("/ActCodeSearch")
 	@ResponseBody
-	public List<ActCodeVO>  ActCodeSearch(@RequestParam String commdeName){
-		List<ActCodeVO> vo = actCodeService.searchSelectActCode(commdeName);
+	public List<ActCodeVO>  ActCodeSearch(@RequestParam String actName){
+		List<ActCodeVO> vo = actCodeService.searchSelectActCode(actName);
 		return vo;
 	}
 }

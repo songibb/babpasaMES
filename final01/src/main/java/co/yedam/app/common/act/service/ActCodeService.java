@@ -8,6 +8,6 @@ public interface ActCodeService {
 		public List<ActCodeVO> selectActCodeList();
 		
 		//검색조회
-		public List<ActCodeVO> searchSelectActCode(String commdeName);
+		public List<ActCodeVO> searchSelectActCode(String actName);
 
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -193,7 +194,7 @@ input[type="date"] {
 </head>
 <body>
 <div class="black_bg"></div>
-   <h1>사원조회</h1>
+   <h3>사원조회</h3>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
@@ -244,7 +245,7 @@ input[type="date"] {
 		           	{
 		           		empCode : "${e.empCode}",
 		           		empName : "${e.empName}",
-		           		empDate : "${e.empDate}",
+		           		empDate : "<fmt:formatDate value='${e.empDate}' pattern='yyyy-MM-dd'/>",
 		           		empRole : "${e.empRole}",
 		           		commdeName : "${e.commdeName}",
 		           		empTel : "${e.empTel}"
@@ -275,7 +276,7 @@ input[type="date"] {
 		           name: 'empDate'
 		         },
 		         {
-		           header: '권한',
+		           header: '직급정보',
 		           name: 'empRole'
 		         },
 		         {
