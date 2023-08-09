@@ -2,6 +2,8 @@ package co.yedam.app.sales.order.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -16,15 +18,25 @@ public class OrderVO {
  */
 	
 	private String ordCode;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date ordDate;
 	private String ordSts;
 	private String actCode;
 	private String empCode;
 	private String prcsPlanCode;
 	private String salesOrdDeCode;
+	
 	private String actName;
 	private String prodName;
 	private int prcsRqAmt;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date devDate;
 	private String devYn;
+	
+	private String actSts;
+	private String actKind;
+	
+	private String prodCode;
+	private String prodUnit;
+	private String prodStd;
 }

@@ -2,11 +2,17 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="co.yedam.app.sales.in.mapper.InMapper">
-  <!-- 전체조회 -->
-  <select id="selectInAllList" resultType="InVO">
-  	SELECT *
-  	FROM sales_in
-  </select>
-  
-  </mapper>
+<mapper namespace="co.yedam.app.sales.in.mapper.InMapper">
+	<!-- 전체조회 -->
+	<select id="selectInAllList" resultType="InVO">
+		SELECT i.prod_lot prod_lot
+		, p.prod_name prod_name
+		, i.sales_in_date sales_in_date
+		, i.sales_in_amt sales_in_amt
+		, i.prod_save_amt prod_save_amt
+		, i.sales_in_exd sales_in_exd
+		FROM sales_in i join com_prod p
+		ON (i.prod_code = p.prod_code)
+	</select>
+
+</mapper>

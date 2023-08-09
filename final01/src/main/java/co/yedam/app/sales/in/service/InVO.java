@@ -24,4 +24,5 @@ public class InVO {
 	private Date salesInExd;
 	private String empCode;
 	private String testNum;
+	private String prodName;
 }

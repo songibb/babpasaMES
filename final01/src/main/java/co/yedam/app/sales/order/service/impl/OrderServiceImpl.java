@@ -14,10 +14,25 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	OrderMapper orderMapper;
-	
+
 	@Override
 	public List<OrderVO> getOrderList() {
 		return orderMapper.selectOrderAllList();
+	}
+
+	@Override
+	public List<OrderVO> searchOrderList(String actCode, String prodName, String ordDate) {
+		return orderMapper.selectAllOrder(actCode, prodName, ordDate);
+	}
+
+	@Override
+	public List<OrderVO> actAllList() {
+		return orderMapper.selectActAllList();
+	}
+
+	@Override
+	public List<OrderVO> prodAllList() {
+		return orderMapper.selectProdAllList();
 	}
 
 }

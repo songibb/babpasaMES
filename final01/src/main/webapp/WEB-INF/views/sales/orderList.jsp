@@ -88,9 +88,9 @@ body {
 }
 
 /*모달시작*/
-#actModal {
-	cursor: pointer;
-}
+#actModal, #prodModal{ 
+     cursor:pointer;
+   }
 
 .modal {
 	position: absolute;
@@ -204,18 +204,18 @@ input[type="date"] {
 					</button>
 					<div id="customtemplateSearchAndButton">
 						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요"> <i
+						<input type="text" id="actInsert" placeholder="검색어를 입력하세요"> <i
 							class="bi bi-search" id="actModal"></i> <input type="text"
 							class="blackcolorInputBox" readonly> <br>
 						<p>제품명</p>
 						<input type="text" placeholder="검색어를 입력하세요"> <i
-							class="bi bi-search" id="actModal"></i>
+							class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" readonly> <br>
 						<p>주문일자</p>
 						<input id="searchMinDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input
 							id="searchMaxDate" type="date">
-						<button type="button" class="btn btn-info btn-icon-text">
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text">
@@ -230,36 +230,15 @@ input[type="date"] {
 
 
 	<div class="modal">
-		<!-- 조건검색 : 거래처 검색 -->
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
 				<div class="modal_title">
-					<h3>거래처 목록</h3>
+					<h3>목록</h3>
 				</div>
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
-				<div id="act_search"></div>
-			</div>
-			<div class="m_footer">
-				<div class="modal_btn cancle" id="close_btn">CANCLE</div>
-				<div class="modal_btn save" id="save_btn">SAVE</div>
-			</div>
-		</div>
-
-	</div>
-
-	<div class="modal">
-		<!-- 조건검색 : 제품명 검색 -->
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
-			<div class="m_head">
-				<div class="modal_title">
-					<h3>제품 목록</h3>
-				</div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<div id="prod_search"></div>
+				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
 				<div class="modal_btn cancle" id="close_btn">CANCLE</div>
@@ -267,11 +246,10 @@ input[type="date"] {
 			</div>
 		</div>
 	</div>
-
 
 	<script>
-	//거래처목록출력
-	var grid = new tui.Grid({
+	//주문서목록출력
+	var orderList = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [
 	           <c:forEach items="${orderList}" var="order">
@@ -331,22 +309,26 @@ input[type="date"] {
 	 	    ]
 	      
 	     });
+	
+	//검색기능
+	$('#searchBtn').on('click', searchOrderList);
+	   function searchOrderList(e){
+		   let content = $('#actInsert').val();
+		   let search = { actCode : content };
+		   $.ajax({
+			   url : 'orderListFilter',
+			   method : 'GET',
+			   data : search ,
+			   success : function(data){
+				   orderList.resetData(data);
+			   },
+			   error : function(reject){
+				   console.log(reject);
+			   }
+		   })
+	   }
    
-   //모달 시작
-   $(function(){ 
-
-     $("#actModal").click(function(){
-       $(".modal").fadeIn();
-       initGrid();
-     });
-     
-     $("#close_btn").click(function(){
-       $(".modal").fadeOut();
-     });
-     
-   });
-   //모달 끝
-   
+   //엑셀
    const excelDownload = document.querySelector('.excelDownload');
    
    document.addEventListener('DOMContentLoaded', ()=>{
@@ -355,30 +337,62 @@ input[type="date"] {
       })
    })
 
+   //거래처목록 모달 시작
+	var Grid;
+     $("#actModal").click(function(){
+       $(".modal").fadeIn();
+       Grid = actSearch();
+       
+       //리스트 모달창 값 가져와서 빈칸에 채워넣기
+       Grid.on('click', () => {
+         	let rowKey = Grid.getFocusedCell().rowKey;
+         	let actCode = Grid.getValue(rowKey, 'actCode');
+   			console.log('actCode');
+         	$.ajax({
+     			url : 'orderList',
+     			method : 'GET',
+     			data : { actCode : actCode },
+     			success : function(data){
+//      				alert("값받아오기 성공");
+     				//칸에 값 입력하기
+     				$("#actInsert").val(actCode);
+     				//모달창 닫기
+     				$(".modal").fadeOut();
+     		       	Grid.destroy();
+      		    },
+     			error : function(reject){
+     	 			console.log(reject);
+     	 		}	
+     		})
+       	});
+     });
+     
+     //제품목록 모달 시작
+     $("#prodModal").click(function(){
+         $(".modal").fadeIn();
+         Grid = prodSearch();
+         
+       });
+     //모달창 닫기
+     $("#close_btn").click(function(){
+       $(".modal").fadeOut();
+       Grid.destroy();
+     });
+
   //조건검색 : 거래처 검색
-   function initGrid() {
-      var grid = new tui.Grid({
+  function actSearch() {
+      var actGrid = new tui.Grid({
       
-       el: document.getElementById('act_search'),
+       el: document.getElementById('modal_label'),
        data: [
-        // api: {
-        //   readData: { url: '/api/readData', method: 'GET' }
-        // }
-              //column의 name속성을 필드명으로 사용해야 함
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-
+    	   <c:forEach items="${actList}" var="a" varStatus="status">
+          	{
+          		actCode : "${a.actCode}",
+          		actName :"${a.actName}",
+          		actSts :"${a.actSts}",
+          		actKind :"${a.actKind}"
+          	} <c:if test="${not status.last}">,</c:if>
+          </c:forEach>
        ],
        scrollX: false,
        scrollY: false,
@@ -392,57 +406,43 @@ input[type="date"] {
        },
        columns: [
          {
-           header: 'Name',
-           name: 'name',
-           filter: 'select'
+           header: '거래처코드',
+           name: 'actCode',
          },
          {
-           header: 'Artist',
-           name: 'artist'
+           header: '거래처명',
+           name: 'actName'
          },
          {
-           header: 'Type',
-           name: 'type'
+           header: '거래상태',
+           name: 'actSts'
          },
          {
-           header: 'Release',
-           name: 'release'
-         },
-         {
-           header: 'Genre',
-           name: 'genre'
+           header: '거래처구분',
+           name: 'actKind'
          }
        ]
       
      });
       
-   
+      return actGrid;
+
    }
-   
+     
    //조건검색 : 제품명 검색
-    function initGrid() {
-      var grid = new tui.Grid({
+   function prodSearch() {
+      var prodGrid = new tui.Grid({
       
-       el: document.getElementById('prod_search'),
+       el: document.getElementById('modal_label'),
        data: [
-        // api: {
-        //   readData: { url: '/api/readData', method: 'GET' }
-        // }
-              //column의 name속성을 필드명으로 사용해야 함
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-
+    	   <c:forEach items="${prodList}" var="p" varStatus="status">
+          	{
+          		prodCode : "${p.prodCode}",
+          		prodName :"${p.prodName}",
+          		prodUnit :"${p.prodUnit}",
+          		prodStd :"${p.prodStd}"
+          	} <c:if test="${not status.last}">,</c:if>
+          </c:forEach>
        ],
        scrollX: false,
        scrollY: false,
@@ -456,33 +456,27 @@ input[type="date"] {
        },
        columns: [
          {
-           header: 'Name',
-           name: 'name',
-           filter: 'select'
+           header: '제품코드',
+           name: 'prodCode',
          },
          {
-           header: 'Artist',
-           name: 'artist'
+           header: '제품명',
+           name: 'prodName'
          },
          {
-           header: 'Type',
-           name: 'type'
+           header: '제품단위',
+           name: 'prodUnit'
          },
          {
-           header: 'Release',
-           name: 'release'
-         },
-         {
-           header: 'Genre',
-           name: 'genre'
+           header: '제품규격',
+           name: 'prodStd'
          }
        ]
       
      });
-      
-   
+      return prodGrid;
    }
-  
+     
    //이전 날짜 선택불가
     $( '#searchMinDate' ).on( 'change', function() {
       $( '#searchMaxDate' ).attr( 'min',  $( '#searchMinDate' ).val() );
