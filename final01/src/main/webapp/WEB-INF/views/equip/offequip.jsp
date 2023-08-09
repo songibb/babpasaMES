@@ -94,45 +94,73 @@
         	<div class="card-body">
             	<div class="table-responsive pt-3">
             		<div id="customtemplateSearchAndButton">
-						<p>검색조건</p>
-						<input type="text" placeholder="검색어를 입력하세요">
-  						<i class="fas fa-search" id="actModal" data-toggle="modal" data-target="#searchModal"></i>
-						<input type="text" class="blackcolorInputBox" readonly>
-						<br>
-						<p>검색조건</p>
-						<input type="text" placeholder="검색어를 입력하세요">
-						<i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
-						<input type="text" class="blackcolorInputBox" readonly>
+					
+						<p>비가동시작일</p>
+						<input type="date">
+						~
+						<input type="date">
 						<button type="button" class="btn btn-info btn-icon-text">
 							<i class="fas fa-search"></i>
+							<!-- 돋보기 누르면 설비코드 설비명 가동여부 3개 컬럼 리스트로 출력됨(eq_equip table) -->
 							검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text">
 							초기화
-						</button>
+						</button>					
 					</div>
 					<div id="grid"></div>
                 </div>
+                <div><hr>
+                <h3>비가동 등록</h3>
+			    <table>
+				      <tr>
+				         <th>설비코드</th>
+				        	 <td><input type="text" name="eqCode"></td>
+				        	 <i class="fas fa-search"></i> 
+				        	 <!--설비코드 모달 리스트로 검색해서 데이터 갖고오기  -->
+				         <th>설비명</th>
+				        	 <td><input type="text" name="eqName"></td>
+				         <th>비가동코드</th>
+				        	 <td><input type="text" name="modelName"></td>  
+				      </tr>
+				      <tr>
+				         <th>비가동구분</th>
+				         	<td><input type="text" name="eqSts"></td>
+				         	<!--select box식으로 구분 선택하도록  -->
+				         <th>작업내용</th>
+				         	<td><input type="text" name="eqSts"></td>
+				         	<!--작업 내용은 입력 가능 -->
+				      </tr>
+				       <tr>
+				         <th>비가동시작시간</th>
+				         	<td><input type="text" name="prcsType"></td> <!--최초에는 시작 버튼만 활성화..  -->
+				         <th>비가동종료시간</th>
+				         	<td><input type="text" name="highTemp"></td>    
+				      </tr>
+			   </table>
+			   <button type="submit">비가동 등록/해제</button>
+			   </div>
 			</div>
 		</div>
 	</div> 
 
-
-<body>
-	<div id="grid"></div>
-	
 	<script>
-		window.onload = function(){
-			$.ajax({
-		        url : "selectOffEquipAllList",
-		        method :"GET",
-		        success : function(result){
-		            grid.resetData(result);
-		        } 
-			});
 		
 		    var grid = new tui.Grid({
 		        el: document.getElementById('grid'),
+		        //전체설비랑 join을해서 갖고와야되나..
+		        data :[
+		        	<c:forEach items="${offequip}" var="off"  varStatus="status">
+		        	{
+		        		offNo : "${off.offNo}",
+		        		eqCode : "${off.eqCode}",
+		        		offType : "${off.offType}",
+		        		offInfo : "${off.offInfo}",
+		        		offStime : "${off.offStime}",
+		        		offEtime : "${off.offEtime}",
+		        	}<c:if test="${not status.last}">,</c:if>
+		        	 </c:forEach>
+		        ],
 		        scrollX: false,
 		        scrollY: false,
 		        minBodyHeight: 30,
@@ -144,29 +172,42 @@
 				},
 		        columns:  [
 	 	      {
-		 	        header: '비가동번호',
-		 	        name: 'offNo',
-		 	        filter: 'select'
+		 	        header: '비가동코드',
+		 	        name: 'offNo'
+		 	    
 		 	      },
 		 	      {
 		 	        header: '설비코드',
 		 	        name: 'eqCode'
 		 	      },
 		 	      {
-		 	        header: '비가동타입',
+			 	    header: '설비명',
+			 	    name: ''
+			 	  },
+		 	      {
+		 	        header: '비가동구분',
 		 	        name: 'offType'
 		 	      },
 		 	      {
-		 	        header: '비가동내역',
-		 	        name: 'offInfo'
-		 	      },
-		 	      {
-		 	        header: '담당자',
-		 	        name: 'empCode'
-		 	      }
+			 	     header: '작업내용',
+			 	     name: 'offInfo'
+			 	  },
+			 	 {
+				 	 header: '시작시간',
+				 	 name: 'offStime'
+				 },
+				 {
+			 	     header: '종료시간',
+			 	     name: 'offEtime'
+			 	  },
+		 	      
+  
 		 	    ]
 		      })  
-			}
+		    
+		    /* 설비코드 join해서 가져오기? */
+			
+			
 
 	</script>
 </body>

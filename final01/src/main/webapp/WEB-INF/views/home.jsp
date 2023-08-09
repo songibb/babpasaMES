@@ -336,6 +336,136 @@ $(function(){
            fileName: 'myExport',
          };
    
+   var Grid;
+   $("#actModal").click(function(){
+     $(".modal").fadeIn();
+     Grid = createActGrid();
+   });
+   
+   
+   $("#matModal").click(function(){
+     $(".modal").fadeIn();
+     Grid = createMatGrid();
+   });
+   
+   $("#close_btn").click(function(){
+     $(".modal").fadeOut();
+     
+		Grid.destroy();
+   });
+
+그리드 생성 scrypt======================================
+function createActGrid(){
+	   var actGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: 'Name',
+	               name: 'name',
+	               filter: 'select'
+	             },
+	             {
+	               header: 'Artist',
+	               name: 'artist'
+	             },
+	             {
+	               header: 'Type',
+	               name: 'type'
+	             },
+	             {
+	               header: 'Release',
+	               name: 'release'
+	             },
+	             {
+	               header: 'Genre',
+	               name: 'genre'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return actGrid;
+ }
+ 
+//자재 모달 그리드
+ function createMatGrid(){
+	   var matGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	             
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: 'Name',
+	               name: 'name',
+	               filter: 'select'
+	             },
+	             {
+	               header: 'Artist',
+	               name: 'artist'
+	             },
+	             {
+	               header: 'Type',
+	               name: 'type'
+	             },
+	             {
+	               header: 'Release',
+	               name: 'release'
+	             },
+	             {
+	               header: 'Genre',
+	               name: 'genre'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return matGrid;
+ }
+
 
 </script>
 </body>

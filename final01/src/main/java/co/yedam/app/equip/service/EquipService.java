@@ -8,4 +8,18 @@ public interface EquipService {
 	
 	//설비 등록
 	public String insertEquipInfo(EquipVO equipVO);
+	
+	//모달 안에서의 전체 설비 조회
+	public List<EquipVO> getModalEquipList();
+	
+	//설비 삭제
+	public int deleteEquipInfo(String eqCode);
+	
+	//설비 단건조회
+	public EquipVO getEquipInfo(EquipVO equipVO);
+	
+	//설비 수정
+	public String updateEquipInfo(EquipVO equipVO);
+
+
 }
