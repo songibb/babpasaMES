@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +12,7 @@
     <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-        
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>    
 <style>
    body {
       font-family: 'Nanum Gothic', sans-serif;
@@ -173,34 +173,12 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
-					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>제품명</p>
-								<input type="text" placeholder="검색어를 입력하세요">
-								<i class="bi bi-search" id="actModal"></i>
-								<input type="text" class="blackcolorInputBox" readonly>			
-								<br>
-							<p>검색</p>
-								<input type="text" placeholder="검색어를 입력하세요" value="${param.search}">
-								<i class="bi bi-search"></i>
-								<input type="text" class="blackcolorInputBox" readonly>
-								<br>
-							<p>날짜검색</p>
-								<input id="searchMinDate" type="date">
-								&nbsp;&nbsp;-&nbsp;&nbsp;
-								<input id="searchMaxDate" type="date">
-							
-
-							<button type="button" class="btn btn-info btn-icon-text" >
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
-	            	</form>
 	           		<div id="grid"></div>
+	           		<div>
+	           			<span>제품명 : </span> 
+	           			<input type="text" name="prodName" id="prodName" readonly>
+	           		</div>
+	           		<div id="grid2"></div>
 				</div>
 	   		</div>
 		</div>
@@ -209,21 +187,43 @@
     
 	<script>
 	
-	//제품별공정 조회
-	$.ajax({
-        url : "selectPrcsProdList",
-        method :"GET",
-        success : function(result){
-            grid.resetData(result);
-        },
-        error : function(reject){
- 			console.log(reject);
- 		}
-	});
-	
-
-    var grid = new tui.Grid({
+	//제품 조회
+	var grid = new tui.Grid({
         el: document.getElementById('grid'),
+        data: [
+	           <c:forEach items="${prodList}" var="p" varStatus="status">
+	           	{
+	           		prodCode : "${p.prodCode}",
+	           		prodName : "${p.prodName}"
+	           	} <c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
+	          ],
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 30,
+		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 10,
+		},
+		 
+        columns: [
+          {
+            header: '제품코드',
+            name: 'prodCode'
+          },
+          {
+            header: '제품명',
+            name: 'prodName'
+          }
+        ]
+    })  
+	
+	
+	//제품별공정 조회
+    var grid2 = new tui.Grid({
+        el: document.getElementById('grid2'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -234,14 +234,6 @@
 			perPage: 10,
 		},
         columns: [
-          {
-            header: '제품코드',
-            name: 'prodCode',
-          },
-          {
-        	header: '제품명',
-        	name: 'prodName'
-          },
           {
             header: '공정코드',
             name: 'prcsCode'
@@ -255,10 +247,30 @@
             name: 'prcsSeq'
           }		          
         ]
-      })  
+    })  
     
+	//제품 클릭시 해당 제품의 공정목록 조회
+	grid.on('click', () => {
+    	//클릭한 제품의 제품코드 가져오기
+    	let rowKey = grid.getFocusedCell().rowKey;
+    	let prodCode = grid.getValue(rowKey, 'prodCode');
+    	let prodName = grid.getValue(rowKey, 'prodName');
+    	$('#prodName').val(prodName);
+    	
+    	$.ajax({
+			url : 'selectPrcsProdList',
+			method : 'GET',
+			data : { prodCode : prodCode },
+			success : function(data){
+ 				grid2.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+  	});
 	
-	
+
 			
 
 	</script>

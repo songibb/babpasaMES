@@ -16,6 +16,15 @@
 		  FROM prcs_prod p 
 		  		JOIN com_prod c ON p.prod_code = c.prod_code
     	  		JOIN prcs_manage m ON p.prcs_code = m.prcs_code
+    	 where p.prod_code = #{prodCode}
     	 ORDER BY prcs_prod_code
+	</select>
+	
+	<!-- 제품 목록 조회 -->
+	<select id="selectProdList" resultType="prcsProdVO">
+		SELECT prod_code, 
+			   prod_name
+		  FROM com_prod
+		 WHERE prod_kind = 'C'
 	</select>
 </mapper>

@@ -189,9 +189,9 @@
 							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
 		            	</div>
 	            	</form>
-	           		<div id="grid"></div>
-	           		<div id="grid2"></div>
-	           		<div id="grid3"></div>
+	           		<div id="dirGrid"></div>
+	           		<div id="dirDeGrid"></div>
+	           		<div id="ingGrid"></div>
 				</div>
 	   		</div>
 		</div>
@@ -201,17 +201,17 @@
 	<script>
 	
 	//생산지시 조회
-    var grid = new tui.Grid({
-        el: document.getElementById('grid'),
+    var dirGrid = new tui.Grid({
+        el: document.getElementById('dirGrid'),
         data: [
 	           <c:forEach items="${dirList}" var="d" varStatus="status">
 	           	{
 	           		prcsDirCode : "${d.prcsDirCode}",
-	           		prcsPlanCode :"${d.prcsPlanCode}",
-	           		prcsDirName :"${d.prcsDirName}",
-	           		prcsDirDate :"<fmt:formatDate value='${d.prcsDirDate}' pattern='yyyy-MM-dd'/>",
+	           		prcsPlanCode : "${d.prcsPlanCode}",
+	           		prcsDirName : "${d.prcsDirName}",
+	           		prcsDirDate : "<fmt:formatDate value='${d.prcsDirDate}' pattern='yyyy-MM-dd'/>",
 	           		prcsDirSts : "${d.prcsDirSts}",
-	           		empCode :"${d.empCode}"
+	           		empCode : "${d.empCode}"
 	           	} <c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
@@ -255,8 +255,8 @@
 
 	
 	//상세생산지시 조회
-	var grid2 = new tui.Grid({
-        el: document.getElementById('grid2'),
+	var dirDeGrid = new tui.Grid({
+        el: document.getElementById('dirDeGrid'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -302,82 +302,76 @@
         ]
       })  
 	
-    prcsIngCode;
-	private String prcsDirDeCode;
-	private String prodCode;
-	private String prcsCode;
-	private int prcsSeq;
-	private int inputAmt;
-	private int errAmt;
-	private int prcsAmt;
-	private String prcsDirIngSts;
-	
 	
  	//진행 공정 조회
-// 	var grid3 = new tui.Grid({
-//         el: document.getElementById('grid3'),
-//         scrollX: false,
-//         scrollY: false,
-//         minBodyHeight: 30,
-// 		rowHeaders: ['rowNum'],
-// 		pagination: true,
-// 		pageOptions: {
-// 			useClient: true,
-// 			perPage: 10,
-// 		},
-//         columns: [
-//           {
-//             header: '',
-//             name: 'prcsIngCode'
-//           },
-//           {
-//             header: '',
-//             name: 'prcsDirDeCode'
-//           },
-//           {
-//             header: '',
-//             name: 'prodCode'
-//           },
-//           {
-//             header: '',
-//             name: 'prcsCode'
-//           },
-//           {
-//             header: '',
-//             name: 'prcsSeq'
-//           },
-//           {
-//             header: '',
-//             name: 'inputAmt'
-//           },
-//           {
-//             header: '',
-//             name: 'errAmt'
-//           },
-//           {
-//             header: '',
-//             name: 'prcsAmt'
-//           },
-//           {
-//             header: '',
-//             name: 'prcsDirIngSts'
-//           },
+	var ingGrid = new tui.Grid({
+        el: document.getElementById('ingGrid'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 30,
+		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 10,
+		},
+        columns: [
+        	//지울부분----------
+          {
+            header: '진행공정관리코드',
+            name: 'prcsIngCode'
+          },
+          
+          {
+            header: '상세지시코드',
+            name: 'prcsDirDeCode'
+          },
+          {
+            header: '제품코드',
+            name: 'prodCode'
+          },
+          //지울부분----------
+          {
+            header: '공정코드',
+            name: 'prcsCode'
+          },
+          {
+            header: '공정순서',
+            name: 'prcsSeq'
+          },
+          {
+            header: '투입량',
+            name: 'inputAmt'
+          },
+          {
+            header: '불량량',
+            name: 'errAmt'
+          },
+          {
+            header: '생산량',
+            name: 'prcsAmt'
+          },
+          {
+            header: '공정상태',
+            name: 'prcsDirIngSts'
+          },
 
-//         ]
-//       })  
+        ]
+      })  
 	
-	//생산 지시 클릭시 해당 지시의 상세생산지시 조회
-    grid.on('click', () => {
+	
+	//생산지시 클릭시 해당 지시의 상세 생산지시 조회
+    dirGrid.on('click', () => {
     	//클릭한 지시의 지시코드 가져오기
-    	let rowKey = grid.getFocusedCell().rowKey;
-    	let dirCode = grid.getValue(rowKey, 'prcsDirCode');
+    	let rowKey = dirGrid.getFocusedCell().rowKey;
+    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
 
     	$.ajax({
 			url : 'prcsDirDeList',
 			method : 'GET',
 			data : { prcsDirCode : dirCode },
 			success : function(data){
- 				grid2.resetData(data);
+				dirDeGrid.resetData(data);
  		    },
 			error : function(reject){
 	 			console.log(reject);
@@ -386,24 +380,28 @@
   	});
 	
 	
-//   	//상세 생산 지시 클릭시 해당 지시의 상세생산지시 조회
-//      grid2.on('click', () => {
-//     	//클릭한 상세 지시의 상세지시코드 가져오기
-//     	let rowKey = grid.getFocusedCell().rowKey;
-//     	let dirCode = grid.getValue(rowKey, 'prcsDirDeCode');
-// 		//클릭한 상세 지시의 제품코드 가져오기
-//     	$.ajax({
-// 			url : 'prcsIngList',
-// 			method : '',
-// 			data : { prcsDirDeCode : dirDeCode },
-// 			success : function(data){
-//  				grid2.resetData(data);
-//  		    },
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}	
-// 		})
-//   	});
+  	//상세 생산지시 클릭시 해당 지시의 진행 공정 조회
+    dirDeGrid.on('click', () => {
+    	//클릭한 상세 지시의 상세지시코드, 제품코드 가져오기
+    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
+    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+		//클릭한 상세 지시의 제품코드 가져오기
+    	$.ajax({
+			url : 'prcsIngList',
+			method : 'GET',
+			data : { prcsDirDeCode : dirDeCode, prodCode : prodCode },
+			success : function(data){
+				ingGrid.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+
+
+
+  	});
     
     
     

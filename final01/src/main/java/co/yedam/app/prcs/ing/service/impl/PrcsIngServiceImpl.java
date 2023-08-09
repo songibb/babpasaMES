@@ -14,10 +14,11 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	
 	@Autowired
 	PrcsIngMapper prcsIngMapper;
+
 	
 	@Override
-	public List<PrcsIngVO> getPrcsIngList(String prcsIngCode) {
-		return prcsIngMapper.selectPrcsIngList(prcsIngCode);
+	public List<PrcsIngVO> getPrcsIngList(String prcsDirDeCode, String prodCode) {
+		return prcsIngMapper.selectPrcsIngList(prcsDirDeCode, prodCode);
 	}
 
 }
