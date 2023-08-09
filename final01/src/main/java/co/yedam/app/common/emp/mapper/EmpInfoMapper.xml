@@ -6,21 +6,32 @@
   	
   	<!-- 사원 전체조회 -->
   	<select id="selectEmpInfoList" resultType="EmpInfoVO">
-	  		SELECT  emp_code,
-					emp_name,
-					emp_date,
-					emp_pw,
-					emp_role,
-					dept_code,
-					dept_name,
-					emp_tel
-			FROM com_emp
-			<where>
-			<if test="content != null and search != null">
-				#{searchType} LIKE '%' || #{keyword} || '%'
-			</if>
-		</where>
+  		  		SELECT  e.emp_code,
+					e.emp_name,
+					e.emp_date,
+					e.emp_pw,
+					e.emp_role,
+					c.commde_name,
+					e.emp_tel
+			FROM com_emp e left join com_commde c
+                            on(e.dept_code = c.commde_code)
 		ORDER BY emp_code
   	</select>
   	
+  	  	<select id="searchSelectEmp" resultType="EmpInfoVO">
+			SELECT  e.emp_code,
+					e.emp_name,
+					e.emp_date,
+					e.emp_pw,
+					e.emp_role,
+					c.commde_name,
+					e.emp_tel
+			FROM com_emp e left join com_commde c
+                            on(e.dept_code = c.commde_code)
+			WHERE  emp_name LIKE '%' || #{empName} || '%'
+		ORDER BY emp_code
+  	</select>
+  	
+  	
+  
   </mapper>
