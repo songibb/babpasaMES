@@ -184,7 +184,7 @@
    <button type="button" id="actModal">설비조회</button>
       <tr>
          <th>설비코드</th>
-         <td><input type="text" name="eqCode"></td>
+         <td><input type="text" name="eqCode" id="eqCode"></td>
          <th>거래처</th>
          <td><input type="text" name="actCode"></td>
       </tr>
@@ -250,6 +250,24 @@ var Grid;
 $("#actModal").click(function(){
   $(".modal").fadeIn();
   Grid = createActGrid();
+  Grid.on('click', () => {
+		//클릭한 계획의 계획코드 가져오기
+		let rowKey = Grid.getFocusedCell().rowKey;
+		let eqCode = Grid.getValue(rowKey, 'eqCode');
+
+		$.ajax({
+			url : 'getEquip',
+			method : 'GET',
+			data : { eqCode : eqCode },
+			success : function(data){
+					//console.log(data);
+					$('#eqCode').val(data.eqCode);
+			    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+		});
   $.ajax({
 	    url : "selectEquipAllList",
 	    method :"GET",
@@ -312,8 +330,12 @@ function createActGrid(){
 			    ]
 		    })
 	   
+	   
+	   
 	   return actGrid;
 }
+
+
 
 
 
