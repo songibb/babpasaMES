@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -185,14 +186,14 @@
                    </button>
                   <div id="customtemplateSearchAndButton">
                   <p>자재명</p>
-                  <input type="text" placeholder="검색어를 입력하세요">
+                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
                   <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" readonly>
+                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                   <br>
                   <p>업체명</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="MaterialNameSearch">
+                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
                     <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" readonly>
+                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                   <br>
                   <p>입고일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
@@ -200,7 +201,7 @@
                      <i class="fas fa-search"></i>
                      검색
                   </button>
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
                </div>
@@ -238,12 +239,36 @@
      $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
-     });
+       Grid.on('click', () => {
+        	let rowKey = Grid.getFocusedCell().rowKey;
+        	let actCode = Grid.getValue(rowKey, 'actCode');
+        
+    		$("#actCodeInput").val(actCode);
+    		//모달창 닫기
+    		$(".modal").fadeOut();
+    		Grid.destroy();
+
+    		});
+      	});
+     
      
      
      $("#matModal").click(function(){
        $(".modal").fadeIn();
        Grid = createMatGrid();
+       Grid.on('click', () => {
+       	let rowKey = Grid.getFocusedCell().rowKey;
+       	let actCode = Grid.getValue(rowKey, 'actCode');
+    	let actName = Grid.getValue(rowKey, 'actName');
+		$("#actCodeInput").val(actCode);
+		$("#actNameFix").val(actName);
+       
+   		$("#matCodeInput").val(matCode);
+   		//모달창 닫기
+   		$(".modal").fadeOut();
+   		Grid.destroy();
+
+   		});
      });
      
      $("#close_btn").click(function(){
@@ -271,20 +296,14 @@
 	   var actGrid = new tui.Grid({
 	       el: document.getElementById('modal_label'),
 	       data: [
-	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-
+	    	   <c:forEach items="${actList}" var="a" varStatus="status">
+	          	{
+	          		actCode : "${a.actCode}",
+	          		actName :"${a.actName}",
+	          		actSts :"${a.actSts}",
+	          		actKind :"${a.actKind}"
+	          	} <c:if test="${not status.last}">,</c:if>
+	          </c:forEach>
 	          ],
 		   scrollX: false,
 	       scrollY: false,
@@ -299,25 +318,20 @@
 	       },
 	       columns: [
 	    	   {
-	               header: 'Name',
-	               name: 'name',
-	               filter: 'select'
+	               header: '거래처코드',
+	               name: 'actCode',
 	             },
 	             {
-	               header: 'Artist',
-	               name: 'artist'
+	               header: '거래처명',
+	               name: 'actName'
 	             },
 	             {
-	               header: 'Type',
-	               name: 'type'
+	               header: '거래상태',
+	               name: 'actSts'
 	             },
 	             {
-	               header: 'Release',
-	               name: 'release'
-	             },
-	             {
-	               header: 'Genre',
-	               name: 'genre'
+	               header: '거래처구분',
+	               name: 'actKind'
 	             }
 	 	    ]
 	      
@@ -393,8 +407,8 @@
 	           	actName :"${mat.actName}",
 	           	matInAmt : "${mat.matInAmt}",
 	           	empName : "${mat.empName}",
-	           	matInd :"${mat.matInd}",
-	           	matExd : "${mat.matExd}"
+	           	matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy년 MM월 dd일"/>`,
+	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy년 MM월 dd일"/>`
 	           	},
 	           </c:forEach>
 	          ],
@@ -449,13 +463,31 @@
  
    $('#searchBtn').on('click', searchMatIn);
    function searchMatIn(e){
-	   let content = $('#MaterialNameSearch').val();
-	   let search = { materialCode : content };
+	   let mat = $('#matCodeInput').val();
+	   let act = $('#actCodeInput').val();
+	   let sd = $('#startDate').val();
+	   let ed = $('#endDate').val();	   
+		  
+	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
 	   $.ajax({
 		   url : 'getMatInFilter',
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
+			   
+			  for(let i of data){
+					let date = new Date(i.matInd);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+			   		i.matInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					
+					date = new Date(i.matExd);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+			   		i.matExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			  }
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -464,6 +496,13 @@
 	   });
    }
    
+   //초기화 버튼
+   $('#searchResetBtn').on('click', resetInput);
+   function resetInput(e){
+	   $('input').each(function(idx, obj){
+		   obj.value = '';
+	   })
+   }
  
    
 
@@ -474,12 +513,12 @@
    
    
    //이전 날짜 선택불가
-    $( '#searchMinDate' ).on( 'change', function() {
-      $( '#searchMaxDate' ).attr( 'min',  $( '#searchMinDate' ).val() );
+    $( '#startDate' ).on( 'change', function() {
+      $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
     } );
    //이후날짜 선택불가
-    $( '#searchMaxDate' ).on( 'change', function() {
-         $( '#searchMinDate' ).attr( 'max',  $( '#searchMaxDate' ).val() );
+    $( '#endDate' ).on( 'change', function() {
+         $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
    
 

@@ -3,7 +3,6 @@ package co.yedam.app.material.order.de.service.Impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.material.order.de.mapper.MatOrderDeMapper;
@@ -17,8 +16,8 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	MatOrderDeMapper modm;
 	//전체조회
 	@Override
-	public List<MatOrderDeVO> selectMatOrderList(String startDate, String endDate) {
-		return modm.selectMatOrderList(startDate, endDate);
+	public List<MatOrderDeVO> selectMatOrderList(String materialCode, String accountCode, String startDate, String endDate) {
+		return modm.selectMatOrderList(materialCode, accountCode, startDate, endDate);
 	}
 
 }

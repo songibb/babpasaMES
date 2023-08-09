@@ -15,6 +15,12 @@
             JOIN com_mat e
             ON (a.mat_code = e.mat_code)
             <where>
+            	<if test="materialCode != null and materialCode != ''">
+					AND a.mat_code LIKE '%' || #{materialCode} || '%'
+				</if>
+				<if test="accountCode != null and accountCode != ''">
+					AND b.act_code LIKE '%' || #{accountCode} || '%'
+				</if>
 				<if test="startDate != null and startDate != ''">
 					AND a.mat_od_rq <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
 				</if>
