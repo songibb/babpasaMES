@@ -13,4 +13,15 @@
 		FROM com_prod
 	ORDER BY prod_code
   </select>
+  
+  <select id="searchSelectProdCode" resultType="ProductCodeVO">
+  	  	SELECT  prod_code,
+				prod_kind,
+				prod_name,
+				prod_unit,
+				prod_std
+		FROM com_prod
+		WHERE prod_name LIKE '%' || #{prodName} || '%'
+	ORDER BY prod_code
+  </select>
   </mapper>

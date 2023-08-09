@@ -21,4 +21,10 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 		return productCodeMapper.selectProdCodeList();
 	}
 
+	@Override
+	public List<ProductCodeVO> searchSelectProdCode(String prodName) {
+		
+		return productCodeMapper.searchSelectProdCode(prodName);
+	}
+
 }
