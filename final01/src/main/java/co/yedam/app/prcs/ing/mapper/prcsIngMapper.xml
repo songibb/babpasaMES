@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="co.yedam.app.prcs.ing.mapper.PrcsIngMapper">
+	<!-- 진행 공정 조회 -->
+	<select id="selectPrcsDirList" resultType="prcsDirVO">
+		SELECT prcs_dir_code,
+			   prcs_plan_code,
+			   prcs_dir_name,
+			   prcs_dir_date,
+			   prcs_start_date,
+			   prcs_end_date,
+			   prcs_dir_sts,
+			   emp_code
+		  FROM prcs_dir
+		 ORDER BY prcs_dir_code
+	</select>
+	
+</mapper>

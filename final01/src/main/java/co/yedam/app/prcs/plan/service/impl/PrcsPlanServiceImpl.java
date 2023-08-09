@@ -23,8 +23,8 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//상세생산계획 조회
 	@Override
-	public List<PrcsPlanVO> getPrcsPlanDeList() {
-		return prcsPlanMapper.selectPrcsPlanDeList();
+	public List<PrcsPlanVO> getPrcsPlanDeList(String prcsPlanCode) {
+		return prcsPlanMapper.selectPrcsPlanDeList(prcsPlanCode);
 	}
 	
 

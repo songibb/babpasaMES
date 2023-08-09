@@ -35,6 +35,7 @@
 			   prcs_dir_sts,
 			   prcs_amt
 		  FROM prcs_plan_de
+		 WHERE prcs_plan_code = #{prcsPlanCode}
 		 ORDER BY prcs_plan_de_code
 	</select>
 
