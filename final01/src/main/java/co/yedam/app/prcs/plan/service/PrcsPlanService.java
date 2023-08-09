@@ -12,7 +12,7 @@ public interface PrcsPlanService {
 	
 	
 	//상세생산계획 조회
-	public List<PrcsPlanVO> getPrcsPlanDeList();
+	public List<PrcsPlanVO> getPrcsPlanDeList(String prcsPlanCode);
 	
 	//상세생산계획 등록
 	//상세생산계획 수정
