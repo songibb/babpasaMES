@@ -238,7 +238,7 @@ input[type="date"] {
 	</div>
 	
 	<script>
-	//거래처목록출력
+	//반품목록출력
 	var grid = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [

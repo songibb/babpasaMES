@@ -245,19 +245,17 @@ input[type="date"] {
 
 
 	<script>
-	//거래처목록출력
+	//입고 및 재고 목록출력
 	var grid = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [
 	           <c:forEach items="${inList}" var="in">
 	           	{prodLot : "${in.prodLot}",
-	           	 prodCode : "${in.prodCode}",
+	           		prodName : "${in.prodName}",
 	           	salesInDate : "${in.salesInDate}",
 	           	salesInAmt : "${in.salesInAmt}",
 	           	prodSaveAmt : "${in.prodSaveAmt}",
-	           	salesInExd : "${in.salesInExd}",
-	           	empCode : "${in.empCode}"
-           		testNum : "${in.testNum}"},
+	           	salesInExd : "${in.salesInExd}"},
 	           </c:forEach>
 	          ],
 		   scrollX: false,
@@ -276,8 +274,8 @@ input[type="date"] {
 		           name: 'prodLot',
 		         },
 		         {
-		           header: '제품코드',
-		           name: 'prodCode'
+		           header: '제품명',
+		           name: 'prodName'
 		         },
 		         {
 		           header: '입고날짜',
@@ -294,14 +292,6 @@ input[type="date"] {
 		         {
 		           header: '유통기한',
 		           name: 'salesInExd'
-		         },
-		         {
-		           header: '사원코드',
-		           name: 'empCode'
-		         },
-		         {
-		           header: '검사번호',
-		           name: 'testNum'
 		         }
 	 	    ]
 	      

@@ -21,6 +21,44 @@
 						ON (o.act_code = a.act_code)
 	ORDER BY o.ord_code DESC
   </select>
-  
-  
+  <!-- 검색 -->
+  <select id="selectAllOrder" resultType="OrderVO">
+  SELECT d.sales_ord_de_code sales_ord_de_code
+			, o.ord_date ord_date
+			, a.act_name act_name
+			, o.ord_sts ord_sts
+			, p.prod_name prod_name
+			, d.prcs_rq_amt prcs_rq_amt
+			, d.dev_date dev_date
+			, d.dev_yn dev_yn
+	FROM sales_ord o JOIN sales_ord_de d
+						ON (o.ord_code = d.ord_code)
+						JOIN com_prod p
+						ON (d.prod_code = p.prod_code)
+						JOIN com_act a
+						ON (o.act_code = a.act_code)
+	<where>
+			<if test="actCode != null and actCode != ''">
+				AND a.act_code LIKE '%' || #{actCode} || '%'
+			</if>
+			<if test="prodName != null and prodName != ''">
+				AND p.prod_name LIKE '%' || #{prodName} || '%'
+			</if>
+			<if test="ordDate != null and ordDate != ''">
+				AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD')
+			</if>
+	</where>					
+	ORDER BY o.ord_code DESC
+	</select>
+	<!-- 거래처 목록 -->
+	<select id="selectActAllList" resultType="OrderVO">
+	SELECT act_code, act_name, act_sts, act_kind
+	FROM com_act
+	</select>
+	<!-- 제품 목록 -->
+	<select id="selectProdAllList" resultType="OrderVO">
+	SELECT prod_code, prod_name, prod_unit, prod_std
+	FROM com_prod
+	WHERE prod_kind = 'C'
+	</select>
   </mapper>

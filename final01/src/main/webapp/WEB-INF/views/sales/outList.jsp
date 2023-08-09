@@ -270,7 +270,7 @@ input[type="date"] {
 
 
 	<script>
-	//거래처목록출력
+	//출고목록출력
 	var grid = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [
