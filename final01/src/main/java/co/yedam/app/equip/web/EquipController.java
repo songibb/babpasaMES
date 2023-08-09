@@ -65,4 +65,12 @@ public class EquipController {
 		return "redirect:equipInsert";
 	}
 	//설비 단건 조회
+	@GetMapping("getEquip") //Equiplist.jsp의 ajax url과 연결되는 것 
+	@ResponseBody
+	public EquipVO getEquipOne(@RequestParam String eqCode){
+		EquipVO vo = new EquipVO();
+		vo.setEqCode(eqCode);
+		EquipVO findVO = equipService.getEquipInfo(vo);
+		return findVO;
+	}
 }
