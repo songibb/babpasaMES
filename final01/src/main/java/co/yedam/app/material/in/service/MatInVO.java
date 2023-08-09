@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class MatInVO {
-	
+	//조회
 	private String matLot;
 	private String matCode;
 	private String matName;
@@ -19,7 +19,7 @@ public class MatInVO {
 	//private String empCode;
 	private String empName;
 	//private String actCode;
-	private String actCode;
+	private String actName;
 	
 	private String matTestCode;
 	

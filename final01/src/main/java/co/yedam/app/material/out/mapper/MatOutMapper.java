@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import co.yedam.app.material.out.service.MatOutVO;
 
 public interface MatOutMapper {
+	//전체조회
 	public List<MatOutVO> selectMatOutList(@Param("materialCode")String materialCode, @Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
 }
