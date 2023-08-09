@@ -11,13 +11,12 @@ import co.yedam.app.material.semi.out.service.SemiOutVO;
 
 @Service
 public class SemiOutServiceImpl implements SemiOutService {
-	
+	//전체조회
 	@Autowired
 	SemiOutMapper som;
-	
+	//전체조회
 	@Override
 	public List<SemiOutVO> selectSemiOutList(String productCode, String startDate, String endDate) {
-		
 		return som.selectSemiOutList(productCode, startDate, endDate);
 	}
 

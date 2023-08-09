@@ -11,10 +11,10 @@ import co.yedam.app.material.rt.service.MatRtVO;
 
 @Service
 public class MatRtServiceImpl implements MatRtService {
-	
+	//전체조회
 	@Autowired
 	MatRtMapper mrm;
-	
+	//전체조회
 	@Override
 	public List<MatRtVO> selectMatRtList(String materialCode, String accountCode, String startDate, String endDate) {
 		
