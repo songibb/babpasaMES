@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import co.yedam.app.material.semi.in.service.SemiInVO;
 
 public interface SemiInMapper {
+	//전체조회
 	public List<SemiInVO> selectSemiInList(@Param("productCode")String productCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
 }

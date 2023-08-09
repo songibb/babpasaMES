@@ -10,10 +10,10 @@ import co.yedam.app.material.semi.out.service.SemiOutService;
 
 @Controller
 public class SemiOutController {
-	
+	//전체조회
 	@Autowired
 	SemiOutService sos;
-	
+	//전체조회
 	@GetMapping("semiOutList")
 	public String getSemiOutList(@RequestParam(value="productCode", required=false) String productCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate, Model model) {
 		model.addAttribute("outList", sos.selectSemiOutList(productCode, startDate, endDate));

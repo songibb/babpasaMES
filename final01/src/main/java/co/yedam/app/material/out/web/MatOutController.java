@@ -10,10 +10,10 @@ import co.yedam.app.material.out.service.MatOutService;
 
 @Controller
 public class MatOutController {
-	
+	//전체조회
 	@Autowired
 	MatOutService mos;
-	
+	//전체조회
 	@GetMapping("matOutList")
 	public String getMatOutList(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate, Model model) {
 		model.addAttribute("outList", mos.selectMatOutList(materialCode, accountCode, startDate, endDate));
