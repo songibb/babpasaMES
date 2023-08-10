@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="co.yedam.app.common.act.mapper.ActCodeMapper">
   
+  	<!-- 전체 거래처조회 -->
   	<select id="selectActCodeList" resultType="ActCodeVO">
   		SELECT  a.act_code,
 				a.act_name,
@@ -18,6 +19,7 @@
                                  ON(a.emp_code=e.emp_code)
   	</select>
   	
+  	<!-- 거래처명 검색 조회 -->
   	<select id="searchSelectActCode" resultType="ActCodeVO">
   		SELECT  a.act_code,
 				a.act_name,
@@ -30,6 +32,6 @@
 								 ON(a.act_kind = c.commde_code)
                        LEFT JOIN com_emp e
                                  ON(a.emp_code=e.emp_code)
-        where c.commde_name = #{commdeName}
+        WHERE a.act_name LIKE '%' || #{actName} || '%'
   	</select>
   </mapper>
