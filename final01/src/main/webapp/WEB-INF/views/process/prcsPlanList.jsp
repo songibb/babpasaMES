@@ -7,13 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>생산 계획 관리</title>
-	<!-- 토스트 페이지 네이션 -->
-    <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-    <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-    <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-    <!-- 페이지 네이션 끝 -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<!-- 토스트 페이지 네이션 -->
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<!-- 페이지 네이션 끝 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
         
 <style>
 body {

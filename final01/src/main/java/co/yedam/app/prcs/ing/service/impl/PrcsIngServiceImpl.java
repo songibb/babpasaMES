@@ -15,7 +15,7 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	@Autowired
 	PrcsIngMapper prcsIngMapper;
 
-	
+	//진행 공정 조회
 	@Override
 	public List<PrcsIngVO> getPrcsIngList(String prcsDirDeCode, String prodCode) {
 		return prcsIngMapper.selectPrcsIngList(prcsDirDeCode, prodCode);

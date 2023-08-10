@@ -26,5 +26,17 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	public List<PrcsDirVO> getPrcsDirDeList(String prcsDirCode) {
 		return prcsDirMapper.selectPrcsDirDeList(prcsDirCode);
 	}
+	
+	//생산지시 등록
+	@Override
+	public int insertPrcsDir(PrcsDirVO prcsDirVO) {
+		int result = prcsDirMapper.insertPrcsDir(prcsDirVO);
+		if(result > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	
+	}
 
 }

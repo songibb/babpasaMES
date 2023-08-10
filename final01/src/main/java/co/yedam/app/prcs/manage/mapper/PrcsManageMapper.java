@@ -13,7 +13,11 @@ public interface PrcsManageMapper {
 	public List<PrcsManageVO> selectPrcsManageSearch(PrcsManageVO prcsManageVO);
 	
 	//공정관리 등록
+	public int insertPrcsManage(PrcsManageVO prcsManageVO);
+	
 	//공정관리 수정
+	public int updatePrcsManage(PrcsManageVO prcsManageVO);
+	
 	//공정관리 삭제
 	
 	

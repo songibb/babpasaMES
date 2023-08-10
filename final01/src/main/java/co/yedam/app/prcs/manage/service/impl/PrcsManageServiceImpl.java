@@ -26,6 +26,20 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 	public List<PrcsManageVO> getPrcsManageSearch(PrcsManageVO prcsManageVO) {
 		return prcsManageMapper.selectPrcsManageSearch(prcsManageVO);
 	}
+
+	//공정관리 등록
+	@Override
+	public int insertPrcsManage() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	//공정관리 삭제
+	@Override
+	public int updatePrcsManage() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 	
