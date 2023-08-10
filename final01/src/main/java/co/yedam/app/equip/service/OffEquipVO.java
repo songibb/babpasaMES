@@ -14,4 +14,7 @@ public class OffEquipVO {
 	private Date offEtime;
 	private String offNote;
 	private String empCode;
+	
+	private String eqName;
+	private String eqType;
 }

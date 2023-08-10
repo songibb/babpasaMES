@@ -12,4 +12,7 @@ public interface OffEquipMapper {
 	
 	//전체조회
 	public List<OffEquipVO> selectOffEquipAllList();
+	
+	//비가동 설비 등록
+	public int insertOffEquip(OffEquipVO offequipVO);
 }

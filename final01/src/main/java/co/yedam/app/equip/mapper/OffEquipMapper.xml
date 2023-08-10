@@ -5,9 +5,10 @@
   <mapper namespace="co.yedam.app.equip.mapper.OffEquipMapper">  
   	<!--비가동 설비 조회 -->
   	<select id="selectOffEquipAllList" resultType="OffEquipVO">
-  		SELECT *
-  		FROM EQ_OFF
-  		ORDER BY OFF_NO
+  		SELECT A.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.EQ_STS, B.EQ_CODE, B.OFF_NO, B.OFF_TYPE, B.OFF_INFO, B.OFF_STIME, B.OFF_ETIME, B.OFF_NOTE, B.EMP_CODE
+  		FROM EQ_EQUIP A JOIN EQ_OFF B
+  			ON(A.EQ_CODE = B.EQ_CODE)
+  		ORDER BY B.OFF_NO DESC
   	</select>
   	
   	<!--전체 설비 조회  -->
@@ -16,4 +17,26 @@
   		FROM EQ_EQUIP
   		ORDER BY EQ_CODE
   	</select>
+  	
+  	<!--비가동 설비 등록  -->
+  	<insert id="insertOffEquip" parameterType="OffEquipVO">
+  		INSERT INTO OFF_EQUIP
+  					(
+  					OFF_NO,
+  					OFF_TYPE,
+  					OFF_INFO,
+  					OFF_STIME,
+  					OFF_NOTE,
+  					EMP_CODE
+  					)
+  					VALUES
+  					(
+  					#{offNo}
+  					,#{offType}
+  					,#{offInfo}
+  					,#{offNote}
+  					,#{empCode}
+  					)
+ 	
+  	</insert>
   </mapper>

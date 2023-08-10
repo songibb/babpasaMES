@@ -27,4 +27,16 @@ public class OffEquipServiceImpl implements OffEquipService {
 	public List<EquipVO> getAllEquip(){
 		return offEquipMapper.selectAllequip();
 	}
+	
+	@Override
+	//등록
+	public String insertOffEquip(OffEquipVO offequipVO) {
+		int result = offEquipMapper.insertOffEquip(offequipVO);
+		if(result == 1) {
+			return offequipVO.getEqCode();
+					
+		}else {
+			return "등록실패";
+		}
+	}
 }

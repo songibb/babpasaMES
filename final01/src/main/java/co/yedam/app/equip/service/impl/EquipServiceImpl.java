@@ -53,12 +53,12 @@ public class EquipServiceImpl implements EquipService {
 	
 	@Override
 	//설비 삭제
-	public int deleteEquipInfo(String eqCode) {
+	public String deleteEquipInfo(String eqCode) {
 		int result = equipMapper.deleteEquip(eqCode);
 		if(result == 1) {
-			return 0;
+			return "삭제 성공";
 		}else {
-			return -1;
+			return "삭제 실패";
 		}
 	}
 	
