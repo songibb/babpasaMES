@@ -26,4 +26,7 @@ public class RtVO {
 	private String actName;
 	private int salesOutAmt;
 	private int total;
+	
+	private String prodUnit;
+	private String prodStd;
 }
