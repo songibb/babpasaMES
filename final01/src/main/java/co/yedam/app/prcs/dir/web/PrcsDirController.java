@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
@@ -54,8 +55,10 @@ public class PrcsDirController {
 	//생산지시 등록
 	@PostMapping("prcsDirInsert")
 	@ResponseBody
-	public String prcsDirInsert(@RequestBody PrcsDirVO prcsDirVO) {
-		 prcsDirService.insertPrcsDir(prcsDirVO);
-		 return "redirect:prcsDir";
+	public int prcsDirInsert(@RequestBody PrcsDirVO prcsDirVO, RedirectAttributes rtt) {
+		 int result = prcsDirService.insertPrcsDir(prcsDirVO);
+		 return result;
 	}
+	
+	
 }

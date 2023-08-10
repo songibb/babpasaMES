@@ -32,7 +32,7 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	public int insertPrcsDir(PrcsDirVO prcsDirVO) {
 		int result = prcsDirMapper.insertPrcsDir(prcsDirVO);
 		if(result > 0) {
-			return 1;
+			return result;
 		} else {
 			return -1;
 		}

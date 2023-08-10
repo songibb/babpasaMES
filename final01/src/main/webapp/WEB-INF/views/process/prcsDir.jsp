@@ -193,6 +193,7 @@ input[type="date"]{
 	            	<button id="save">저장</button>
 	            	<button id="dirAdd">행추가</button>
 	           		<div id="dirGrid"></div>
+	           		<div id="dirDeGrid"></div>
 	           		<div id="matGrid"></div>
 				</div>
 	   		</div>
@@ -202,33 +203,69 @@ input[type="date"]{
     
 	<script>
 	
-    const dataSource = {
-      	api: {
-		    readData: {
-			    url: 'selectPrcsDirList',
-			    method: 'GET'
-		    }
-	  	}
+	document.getElementById('save').addEventListener('click', saveServer);
+	document.getElementById('dirAdd').addEventListener('click', addDirRow);
+
+	//페이지 호출시 생산지시 등록하는 행 자동 생성
+	window.onload = function addRow(){
+		dirGrid.appendRow();
+	} 
+
+	//행추가 버튼 클릭시 상세생산지시 행 추가
+	function addDirRow(){
+		dirDeGrid.appendRow();
+	}
+		
+	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
+	function saveServer() {	
+		//생산지시 객체 -> insert
+		let rowKey = dirGrid.getFocusedCell().rowKey;
+	
+		let obj = {};
+
+		obj['prcsPlanCode'] = dirGrid.getValue(rowKey, 'prcsPlanCode');
+		obj['prcsDirName'] = dirGrid.getValue(rowKey, 'prcsDirName');
+		obj['prcsStartDate'] = dirGrid.getValue(rowKey, 'prcsStartDate');
+		obj['empCode'] = dirGrid.getValue(rowKey, 'empCode');
+		
+		$.ajax({
+			url : 'prcsDirInsert',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(data){
+				console.log(data);
+				dirGrid.clear();
+				dirGrid.appendRow();
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}		
+		})
+		
+		//상세생산지시 객체 -> insert
+// 		let objDe = {}
+		
+// 		$.each()
+// 		obj[]
+		
+// 		list.push(objDe);
+		
 	};
-    
+	
+	
+	
 	//생산지시 form
     var dirGrid = new tui.Grid({
         el: document.getElementById('dirGrid'),
-        data: dataSource,
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
 		rowHeaders: ['rowNum'],		
-		pagination: true,
-		pageOptions: {
-			useClient: true,
-			perPage: 10,
-		},
         columns: [
           {
             header: '지시코드',
-            name: 'prcsDirCode',
-            editor: 'text'
+            name: 'prcsDirCode'
           },
           {
             header: '계획코드',
@@ -241,12 +278,21 @@ input[type="date"]{
             editor: 'text'
           },
           {
-            header: '지시일자',
+            header: '지시등록일자',
             name: 'prcsDirDate',
           },
           {
-            header: '지시상태',
-            name: 'prcsDirSts',
+			header: '생산시작일자',
+            name: 'prcsStartDate',
+            editor: 'text'
+          },
+          {
+            header: '생산종료일자',
+            name: 'prcsEndDate'
+          },
+          {
+            header: '전체공정진행상태',
+            name: 'prcsDirSts'
           },
           {
             header: '담당자',
@@ -254,89 +300,35 @@ input[type="date"]{
             editor: 'text'
           }
         ]
-      })  
+	})  
 	
-    dirGrid.readData(1);
-    dirGrid.getModifiedRows();
-
-	
-	
-	
-//     document.getElementById('save').addEventListener('click', saveServer);
-//  	document.getElementById('dirAdd').addEventListener('click', addDirRow);
-	
-// 	//페이지 호출시 생산지시 등록하는 행 자동 생성
-// 	window.onload = function addRow(){
-// 		//dirGrid.appendRow();
-// 		dirGrid.appendRow( { prcsDirCode : "", prcsPlanCode : "", prcsDirName : "", empCode : "" }  )
-// 	} 
-	
-	//행추가 버튼 클릭시 상세생산지시 행 추가
-// 	function addDirRow(){
-// 		dirDeGrid.appendRow();
-// 	}
-	
-//     const dataSource = {
-// 		api: {
-//     			createData: { url: 'prcsDir', method: 'POST' }
-//     	    }
-//         };
-// 	//
-// 	function saveServer() {
-// 		const { rowKey, columnName } = dirGrid.getFocusedCell();
-
-// 		  if (rowKey && columnName) {
-// 			  let que = dirGrid.finishEditing(rowKey, columnName);
-// 			  console.log(que);
-// 		  }
-		
-// 		  dirGrid.request('createData', {
-// 			  checkedOnly: false,
-// 			  modifiedOnly: true,
-// 			  showConfirm: true,
-// 			  withCredentials: false
-// 		  });
-
-
-// 		  $.ajax({
-// 			  url : 'prcsDirInsert',
-// 			  method : 'POST',
-// 			  data : dataSource,
-			  
-// 		  })
-		  
-// 	}
-	
-	
-	
-
 	//상세생산지시 form
-// 	var matGrid = new tui.Grid({
-//         el: document.getElementById('matGrid'),
-//         scrollX: false,
-//         scrollY: false,
-//         minBodyHeight: 30,
-// 		rowHeaders: ['rowNum'],
-//         columns: [
-//           {
-//             header: '상세지시코드',
-//             name: 'matCode'
-//           },
-//           {
-//             header: '제품코드',
-//             name: 'matName'
-//           },
-//           {
-//             header: '생산계획량',
-//             name: 'matUnit'
-//           },
-//           {
-//             header: '지시수량',
-//             name: 'matSts'
-//           },
+	var matGrid = new tui.Grid({
+        el: document.getElementById('matGrid'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 30,
+		rowHeaders: ['rowNum'],
+        columns: [
+          {
+            header: '상세지시코드',
+            name: 'matCode'
+          },
+          {
+            header: '제품코드',
+            name: 'matName'
+          },
+          {
+            header: '생산계획량',
+            name: 'matUnit'
+          },
+          {
+            header: '지시수량',
+            name: 'matSts'
+          },
 
-//         ]
-//       })
+        ]
+      })
 
 
 	
