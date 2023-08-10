@@ -17,8 +17,14 @@ public class PrcsProdServiceImpl implements PrcsProdService {
 	
 	//제품별공정 조회
 	@Override
-	public List<PrcsProdVO> getPrcsProdList() {
-		return prcsProdMapper.selectPrcsProdList();
+	public List<PrcsProdVO> getPrcsProdList(String prodCode) {
+		return prcsProdMapper.selectPrcsProdList(prodCode);
+	}
+	
+	//제품 목록 조회
+	@Override
+	public List<PrcsProdVO> getProdList() {
+		return prcsProdMapper.selectProdList();
 	}
 
 

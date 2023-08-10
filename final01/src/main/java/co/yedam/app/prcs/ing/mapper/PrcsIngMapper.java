@@ -8,5 +8,7 @@ import co.yedam.app.prcs.ing.service.PrcsIngVO;
 
 public interface PrcsIngMapper {
 	//진행공정 조회
-	public List<PrcsIngVO> selectPrcsIngList(@Param("prcsIngCode") String prcsIngCode);
+	public List<PrcsIngVO> selectPrcsIngList(@Param("prcsDirDeCode") String prcsDirDeCode, 
+											 @Param("prodCode") String prodCode);
+
 }

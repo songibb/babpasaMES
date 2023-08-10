@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.prcs.prod.service.PrcsProdService;
@@ -20,16 +21,20 @@ public class PrcsProdController {
 	//제품별공정 조회 - 호출
 	@GetMapping("prcsProdList")
 	public String getPrcsProdAllList(Model model){
-		//model.addAttribute("prcsProdList",prcsProdService.getPrcsProdList());
+
+		//제품 목록 조회
+		model.addAttribute("prodList", prcsProdService.getProdList());
+		
 		return "process/prcsProdList";
 	}
 	
 	//제품별공정 조회 - 리스트
 	@GetMapping("selectPrcsProdList")
 	@ResponseBody
-	public List<PrcsProdVO> getPrcsProdList(){
-		List<PrcsProdVO> list = prcsProdService.getPrcsProdList();
+	public List<PrcsProdVO> getPrcsProdList(@RequestParam String prodCode){
+		List<PrcsProdVO> list = prcsProdService.getPrcsProdList(prodCode);
 		return list;
 	}
-		
+	
+
 }

@@ -17,6 +17,9 @@ public class PrcsIngVO {
 	private int prcsAmt;
 	private String prcsDirIngSts;
 	
+	//Join
+	private String prcsName;
+	
 	//공정 실적 관리
 	private String eqCode;
 	private Date prcsStartTime;
