@@ -100,7 +100,7 @@
      margin-top:-100px; margin-left:-200px;
      text-align:center;
      box-sizing:border-box;
-     line-height:23px; cursor:pointer;
+     line-height:23px;
    }
    
    .m_head{
@@ -224,7 +224,7 @@
             <div id="modal_label"></div>
        </div>
        <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
+       		<div class="modal_btn cancle" id="close_btn">CANCLE</div>
             <div class="modal_btn save" id="save_btn">SAVE</div>
     </div>
   </div>
@@ -239,14 +239,19 @@
      $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
+       
        Grid.on('click', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
-        
+        	let actName = Grid.getValue(rowKey, 'actName');
     		$("#actCodeInput").val(actCode);
+    		$("#actNameFix").val(actName);
     		//모달창 닫기
-    		$(".modal").fadeOut();
-    		Grid.destroy();
+    		console.log(rowKey);
+    		if(rowKey != null){
+    			$(".modal").fadeOut();
+        		Grid.destroy();
+    		}
 
     		});
       	});
@@ -258,17 +263,19 @@
        Grid = createMatGrid();
        Grid.on('click', () => {
        	let rowKey = Grid.getFocusedCell().rowKey;
-       	let actCode = Grid.getValue(rowKey, 'actCode');
-    	let actName = Grid.getValue(rowKey, 'actName');
-		$("#actCodeInput").val(actCode);
-		$("#actNameFix").val(actName);
+       	let matCode = Grid.getValue(rowKey, 'matCode');
+    	let matName = Grid.getValue(rowKey, 'matName');
+		$("#matCodeInput").val(matCode);
+		$("#matNameFix").val(matName);
        
    		$("#matCodeInput").val(matCode);
    		//모달창 닫기
-   		$(".modal").fadeOut();
-   		Grid.destroy();
+   		if(rowKey != null){
+			$(".modal").fadeOut();
+    		Grid.destroy();
 
-   		});
+   		}
+     })
      });
      
      $("#close_btn").click(function(){
@@ -345,12 +352,13 @@
 	   var matGrid = new tui.Grid({
 	       el: document.getElementById('modal_label'),
 	       data: [
-	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-	             
+	    	   <c:forEach items="${matList}" var="m" varStatus="status">
+	          	{
+	          		matCode : "${m.matCode}",
+	          		matName :"${m.matName}",
+	          		matStd :"${m.matStd}",
+	          	} <c:if test="${not status.last}">,</c:if>
+	          </c:forEach>
 	          ],
 		   scrollX: false,
 	       scrollY: false,
@@ -364,26 +372,17 @@
 	         perPage: 10
 	       },
 	       columns: [
-	    	   {
-	               header: 'Name',
-	               name: 'name',
-	               filter: 'select'
+	    	     {
+	               header: '자재코드',
+	               name: 'matCode',
 	             },
 	             {
-	               header: 'Artist',
-	               name: 'artist'
+	               header: '자재명',
+	               name: 'matName'
 	             },
 	             {
-	               header: 'Type',
-	               name: 'type'
-	             },
-	             {
-	               header: 'Release',
-	               name: 'release'
-	             },
-	             {
-	               header: 'Genre',
-	               name: 'genre'
+	               header: '규격',
+	               name: 'matStd'
 	             }
 	 	    ]
 	      

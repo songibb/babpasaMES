@@ -10,6 +10,16 @@
 			ON(a.prod_code = b.prod_code)
 				JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
+		ORDER BY a.semi_ind DESC
+	</select>
+	
+	<!-- 전체조회 검색 -->
+	<select id="selectSemiInSearch" resultType="SemiInVO">
+		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		FROM semi_in a JOIN com_prod b
+			ON(a.prod_code = b.prod_code)
+				JOIN com_emp c
+					ON(a.emp_code = c.emp_code)
 		<where>
 			<if test="productCode != null and productCode != ''">
 				AND a.prod_code LIKE '%' || #{productCode} || '%'
@@ -23,5 +33,13 @@
 		</where>
 		ORDER BY a.semi_ind DESC
 	</select>
+	
+	<!-- 반제품 목록 모달 -->
+	<select id="getSemiModal" resultType="SemiInVO">
+		SELECT prod_code, prod_name
+		FROM com_prod
+		WHERE prod_kind = 'S' 
+	</select>
+	
 
 </mapper>
