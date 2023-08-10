@@ -20,4 +20,14 @@ public class RtServiceImpl implements RtService {
 		return rtMapper.selectRtAllList();
 	}
 
+	@Override
+	public List<RtVO> prodAllList() {
+		return rtMapper.selectProdAllList();
+	}
+
+	@Override
+	public List<RtVO> searchRtList(String prodCode) {
+		return rtMapper.selectAllRt(prodCode);
+	}
+
 }

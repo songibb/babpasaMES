@@ -25,4 +25,10 @@ public class OutVO {
 	private String prodName;
 	private String actName;
 	private Date salesInExd;
+	
+	private String prodUnit;
+	private String prodStd;
+	
+	private Date startDate;
+	private Date endDate;
 }

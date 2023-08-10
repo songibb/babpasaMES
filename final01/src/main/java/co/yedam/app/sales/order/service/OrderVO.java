@@ -18,7 +18,7 @@ public class OrderVO {
  */
 	
 	private String ordCode;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date ordDate;
 	private String ordSts;
 	private String actCode;
@@ -29,7 +29,7 @@ public class OrderVO {
 	private String actName;
 	private String prodName;
 	private int prcsRqAmt;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date devDate;
 	private String devYn;
 	
@@ -39,4 +39,7 @@ public class OrderVO {
 	private String prodCode;
 	private String prodUnit;
 	private String prodStd;
+	
+	private Date startDate;
+	private Date endDate;
 }

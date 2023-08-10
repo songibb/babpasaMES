@@ -21,8 +21,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderVO> searchOrderList(String actCode, String prodName, String ordDate) {
-		return orderMapper.selectAllOrder(actCode, prodName, ordDate);
+	public List<OrderVO> searchOrderList(String actCode, String prodCode, String startDate, String endDate) {
+		return orderMapper.selectAllOrder(actCode, prodCode, startDate, endDate);
 	}
 
 	@Override
@@ -33,6 +33,16 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderVO> prodAllList() {
 		return orderMapper.selectProdAllList();
+	}
+
+	@Override
+	public String insertOrder(OrderVO orderVO) {
+		int result = orderMapper.insertOrder(orderVO);
+		if(result == 1) {
+			return orderVO.getOrdCode();
+		}else {
+			return "NO";
+		}
 	}
 
 }

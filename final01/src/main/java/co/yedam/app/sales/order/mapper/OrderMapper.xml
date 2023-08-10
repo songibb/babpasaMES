@@ -41,12 +41,18 @@
 			<if test="actCode != null and actCode != ''">
 				AND a.act_code LIKE '%' || #{actCode} || '%'
 			</if>
-			<if test="prodName != null and prodName != ''">
-				AND p.prod_name LIKE '%' || #{prodName} || '%'
+			<if test="prodCode != null and prodCode != ''">
+				AND p.prod_code LIKE '%' || #{prodCode} || '%'
 			</if>
-			<if test="ordDate != null and ordDate != ''">
-				AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD')
-			</if>
+<!-- 			<if test="ordDate != null and ordDate != ''"> -->
+<!-- 				AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD') -->
+<!-- 			</if> -->
+			<if test="startDate != null and startDate != ''">
+            	AND o.ord_date <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+         	</if>
+         	<if test="endDate != null and endDate != ''">
+           		AND o.ord_date <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+         	</if>
 	</where>					
 	ORDER BY o.ord_code DESC
 	</select>
@@ -54,11 +60,70 @@
 	<select id="selectActAllList" resultType="OrderVO">
 	SELECT act_code, act_name, act_sts, act_kind
 	FROM com_act
+	ORDER BY act_code DESC
+	
 	</select>
 	<!-- 제품 목록 -->
 	<select id="selectProdAllList" resultType="OrderVO">
 	SELECT prod_code, prod_name, prod_unit, prod_std
 	FROM com_prod
 	WHERE prod_kind = 'C'
+	ORDER BY prod_code DESC
 	</select>
+	
+	<insert id="insertOrder" parameterType="OrderVO">
+<!-- 	<selectKey keyProperty="ordCode" resultType="String" order="BEFORE"> -->
+<!-- 	SELECT NVL(MAX(bno), ) + 1  -->
+<!-- 	FROM sales_ord -->
+<!-- 	</selectKey> -->
+	INSERT ALL
+	    INTO sales_ord
+	    (
+	    ord_code
+	    , ord_date
+	    , act_code
+	    , emp_code
+	    <if test="ordSts != null and !ordSts.equals('')">
+	    , ord_sts
+	    </if>
+	    <if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
+	    , prcs_plan_code
+	    </if>
+	    )
+        VALUES
+        (
+        #{ordCode}
+        , #{ordDate}
+        , #{actCode}
+        , #{empCode}
+        <if test="ordSts != null and !ordSts.equals('')">
+        , #{ordSts}
+        </if>
+        <if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
+        , #{prcsPlanCode}
+        </if>
+        )
+    	INTO sales_ord_de
+    	(
+    	sales_ord_de_code
+    	, ord_code
+    	, prod_code
+    	, prcs_rq_amt
+    	, dev_date
+    	<if test="devYn != null and !devYn.equals('')">
+    	, dev_yn
+    	</if>
+    	)
+        VALUES
+        (
+        #{salesOrdDeCode}
+        , #{ordCode}
+        , #{prodCode}
+        , #{prcsRqAmt}
+        , #{devDate}
+        <if test="devYn != null and !devYn.equals('')">
+        , #{devYn}
+        </if>
+        )
+	</insert>
   </mapper>
