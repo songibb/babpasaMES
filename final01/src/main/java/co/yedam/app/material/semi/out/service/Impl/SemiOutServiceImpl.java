@@ -16,8 +16,16 @@ public class SemiOutServiceImpl implements SemiOutService {
 	SemiOutMapper som;
 	//전체조회
 	@Override
-	public List<SemiOutVO> selectSemiOutList(String productCode, String startDate, String endDate) {
-		return som.selectSemiOutList(productCode, startDate, endDate);
+	public List<SemiOutVO> selectSemiOutList() {
+		return som.selectSemiOutList();
+	}
+	
+	//전체조회 중 검색
+
+	@Override
+	public List<SemiOutVO> selectSemiOutSearch(String productCode, String startDate, String endDate) {
+		
+		return som.selectSemiOutSearch(productCode, startDate, endDate);
 	}
 
 }

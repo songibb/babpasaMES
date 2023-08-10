@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -233,9 +234,10 @@
    
    //모달 시작
    var Grid;
-     $("#actModal").click(function(){
+   $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
+       
        Grid.on('click', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
@@ -243,27 +245,34 @@
     		$("#actCodeInput").val(actCode);
     		$("#actNameFix").val(actName);
     		//모달창 닫기
-    		$(".modal").fadeOut();
-    		Grid.destroy();
+    		console.log(rowKey);
+    		if(rowKey != null){
+    			$(".modal").fadeOut();
+        		Grid.destroy();
+    		}
 
     		});
       	});
      
      
-     
-     $("#matModal").click(function(){
+   $("#matModal").click(function(){
        $(".modal").fadeIn();
        Grid = createMatGrid();
        Grid.on('click', () => {
        	let rowKey = Grid.getFocusedCell().rowKey;
        	let matCode = Grid.getValue(rowKey, 'matCode');
+    	let matName = Grid.getValue(rowKey, 'matName');
+		$("#matCodeInput").val(matCode);
+		$("#matNameFix").val(matName);
        
    		$("#matCodeInput").val(matCode);
    		//모달창 닫기
-   		$(".modal").fadeOut();
-   		Grid.destroy();
+   		if(rowKey != null){
+			$(".modal").fadeOut();
+    		Grid.destroy();
 
-   		});
+   		}
+     })
      });
      
      $("#close_btn").click(function(){
@@ -322,61 +331,53 @@
      }
    
    //자재 모달 그리드
-     function createMatGrid(){
-  	   var matGrid = new tui.Grid({
-  	       el: document.getElementById('modal_label'),
-  	       data: [
-  	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-  	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-  	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-  	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-  	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-  	             
-  	          ],
-  		   scrollX: false,
-  	       scrollY: false,
-  	       minBodyHeight: 30,
-  	       rowHeaders: ['rowNum'],
-  	       selectionUnit: 'row',
-  	       pagination: true,
-  	       pageOptions: {
-  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-  	         useClient: true,
-  	         perPage: 10
-  	       },
-  	       columns: [
-  	    	   {
-  	               header: 'Name',
-  	               name: 'name',
-  	               filter: 'select'
-  	             },
-  	             {
-  	               header: 'Artist',
-  	               name: 'artist'
-  	             },
-  	             {
-  	               header: 'Type',
-  	               name: 'type'
-  	             },
-  	             {
-  	               header: 'Release',
-  	               name: 'release'
-  	             },
-  	             {
-  	               header: 'Genre',
-  	               name: 'genre'
-  	             }
-  	 	    ]
-  	      
-  	     });
-  	   
-  	   return matGrid;
-     }
+      function createMatGrid(){
+	   var matGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	   <c:forEach items="${matList}" var="m" varStatus="status">
+	          	{
+	          		matCode : "${m.matCode}",
+	          		matName :"${m.matName}",
+	          		matStd :"${m.matStd}",
+	          	} <c:if test="${not status.last}">,</c:if>
+	          </c:forEach>
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	     {
+	               header: '자재코드',
+	               name: 'matCode',
+	             },
+	             {
+	               header: '자재명',
+	               name: 'matName'
+	             },
+	             {
+	               header: '규격',
+	               name: 'matStd'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return matGrid;
+   }
    //모달 끝
    
    //검색
-   $('#searchBtn').on('click', searchMatOrder);
-   function searchMatOrder(e){
+    $('#searchBtn').on('click', searchMatIn);
+   function searchMatIn(e){
 	   let mat = $('#matCodeInput').val();
 	   let act = $('#actCodeInput').val();
 	   let sd = $('#startDate').val();
@@ -390,17 +391,11 @@
 		   success : function(data){
 			   
 			  for(let i of data){
-					let date = new Date(i.matInd);
+					let date = new Date(i.matOdAcp);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.matInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-					
-					date = new Date(i.matExd);
-					year = date.getFullYear();    //0000년 가져오기
-					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-					day = date.getDate();        //일자 가져오기
-			   		i.matExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.matOdAcp = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
 			  }
 			   grid.resetData(data);
 		   },
@@ -441,7 +436,7 @@
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
 	           	actName :"${mat.actName}",
 	           	empName : "${mat.empName}",
-	           	matOdAcp :"${mat.matOdAcp}"
+	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}}" pattern="yyyy년 MM월 dd일"/>`
 	           	},
 	           </c:forEach>
 	          ],

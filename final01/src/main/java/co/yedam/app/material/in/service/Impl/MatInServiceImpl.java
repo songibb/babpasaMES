@@ -17,10 +17,16 @@ public class MatInServiceImpl implements MatInService {
 	
 	//조회
 	@Override
-	public List<MatInVO> selectMatInList(String materialCode, String accountCode, String startDate,
-			String endDate) {
+	public List<MatInVO> selectMatInList() {
 		
-		return mim.selectMatInList(materialCode, accountCode, startDate, endDate);
+		return mim.selectMatInList();
+	}
+	
+	//조회페이지에서 검색
+	@Override
+	public List<MatInVO> selectMatInSearch(String materialCode, String accountCode, String startDate, String endDate) {
+		// TODO Auto-generated method stub
+		return mim.selectMatInSearch(materialCode, accountCode, startDate, endDate);
 	}
 
 }

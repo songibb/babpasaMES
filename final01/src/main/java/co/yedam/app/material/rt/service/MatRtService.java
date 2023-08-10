@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface MatRtService {
 	//전체조회
-	public List<MatRtVO> selectMatRtList(String materialCode, String accountCode, String startDate, String endDate);
+	public List<MatRtVO> selectMatRtList();
+	public List<MatRtVO> selectMatRtSearch(String materialCode, String accountCode, String startDate, String endDate);
 	
 }

@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface SemiOutService {
 	//전체조회
-	public List<SemiOutVO> selectSemiOutList(String productCode, String startDate, String endDate);
+	public List<SemiOutVO> selectSemiOutList();
+	public List<SemiOutVO> selectSemiOutSearch(String productCode, String startDate, String endDate);
 }	
