@@ -189,18 +189,23 @@
                     <i class="bi bi-search" id="actModal"></i>
                   <input type="text" class="blackcolorInputBox" readonly>
                   <br>
-                  <p>업체명</p>
-                  <input type="text" placeholder="검색어를 입력하세요">
-                  <i class="bi bi-search"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" readonly>
+                  <p>자재명</p>
+                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                  <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
+                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                   <br>
-                  <p>입고일자</p>
+                  <p>업체명</p>
+                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                    <i class="bi bi-search" id="actModal"></i>
+                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
+                  <br>
+                  <p>반품요청일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
                   </button>
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
                </div>
@@ -231,20 +236,192 @@
 
 <script>
    
-   //모달 시작
-   $(function(){ 
+//모달 시작
+var Grid;
+  $("#actModal").click(function(){
+    $(".modal").fadeIn();
+    Grid = createActGrid();
+    Grid.on('click', () => {
+     	let rowKey = Grid.getFocusedCell().rowKey;
+     	let actCode = Grid.getValue(rowKey, 'actCode');
+     	let actName = Grid.getValue(rowKey, 'actName');
+ 		$("#actCodeInput").val(actCode);
+ 		$("#actNameFix").val(actName);
+ 		//모달창 닫기
+ 		$(".modal").fadeOut();
+ 		Grid.destroy();
 
-     $("#actModal").click(function(){
-       $(".modal").fadeIn();
-       initGrid();
-     });
-     
-     $("#close_btn").click(function(){
-       $(".modal").fadeOut();
-     });
-     
-   });
-   //모달 끝
+ 		});
+   	});
+  
+  
+  
+  $("#matModal").click(function(){
+    $(".modal").fadeIn();
+    Grid = createMatGrid();
+    Grid.on('click', () => {
+    	let rowKey = Grid.getFocusedCell().rowKey;
+    	let matCode = Grid.getValue(rowKey, 'matCode');
+    
+		$("#matCodeInput").val(matCode);
+		//모달창 닫기
+		$(".modal").fadeOut();
+		Grid.destroy();
+
+		});
+  });
+  
+  $("#close_btn").click(function(){
+      $(".modal").fadeOut();
+      
+		Grid.destroy();
+    });
+  
+//거래처 모달 그리드
+  function createActGrid(){
+	   var actGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	   <c:forEach items="${actList}" var="a" varStatus="status">
+	          	{
+	          		actCode : "${a.actCode}",
+	          		actName :"${a.actName}",
+	          		actSts :"${a.actSts}",
+	          		actKind :"${a.actKind}"
+	          	} <c:if test="${not status.last}">,</c:if>
+	          </c:forEach>
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: '거래처코드',
+	               name: 'actCode',
+	             },
+	             {
+	               header: '거래처명',
+	               name: 'actName'
+	             },
+	             {
+	               header: '거래상태',
+	               name: 'actSts'
+	             },
+	             {
+	               header: '거래처구분',
+	               name: 'actKind'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return actGrid;
+  }
+
+//자재 모달 그리드
+  function createMatGrid(){
+	   var matGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+	             
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	   {
+	               header: 'Name',
+	               name: 'name',
+	               filter: 'select'
+	             },
+	             {
+	               header: 'Artist',
+	               name: 'artist'
+	             },
+	             {
+	               header: 'Type',
+	               name: 'type'
+	             },
+	             {
+	               header: 'Release',
+	               name: 'release'
+	             },
+	             {
+	               header: 'Genre',
+	               name: 'genre'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return matGrid;
+  }
+//모달 끝
+
+//검색
+$('#searchBtn').on('click', searchMatRt);
+function searchMatRt(e){
+	   let mat = $('#matCodeInput').val();
+	   let act = $('#actCodeInput').val();
+	   let sd = $('#startDate').val();
+	   let ed = $('#endDate').val();	   
+		  
+	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+	   $.ajax({
+		   url : 'getMatRtFilter',
+		   method : 'GET',
+		   data : search ,
+		   success : function(data){
+			   
+			  for(let i of data){
+					let date = new Date(i.matInd);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+			   		i.matInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					
+					date = new Date(i.matExd);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+			   		i.matExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			  }
+			   grid.resetData(data);
+		   },
+		   error : function(reject){
+			   console.log(reject);
+		   }
+	   });
+}
+
+//초기화
+$('#searchResetBtn').on('click', resetInput);
+function resetInput(e){
+	   $('input').each(function(idx, obj){
+		   obj.value = '';
+	   })
+}
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -262,7 +439,7 @@
 	       data: [
 	           <c:forEach items="${rtList}" var="mat">
 	           	{
-	           	matOdDeCd : "${mat.matOdDeCd}"
+	           	matOdDeCd : "${mat.matOdDeCd}",
 	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
 	           	actName :"${mat.actName}",
