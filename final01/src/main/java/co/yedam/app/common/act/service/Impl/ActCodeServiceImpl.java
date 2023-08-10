@@ -27,4 +27,26 @@ public class ActCodeServiceImpl implements ActCodeService{
 		return actCodeMapper.searchSelectActCode(actName);
 	}
 
+	@Override
+	public int insertActInfo(ActCodeVO actCodeVO) {
+		int result = actCodeMapper.insertActInfo(actCodeVO);
+		if(result ==1) {
+			return 1;
+		}else {
+			return -1;
+		}
+	}
+
+	@Override
+	public int updateActInfo(ActCodeVO actCodeVO) {
+		
+		return 0;
+	}
+
+	@Override
+	public int deleteActInfo(ActCodeVO actCodeVO) {
+		
+		return 0;
+	}
+
 }

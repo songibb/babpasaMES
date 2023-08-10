@@ -10,5 +10,10 @@ public interface EmpInfoService {
 	//검색조회
 	public List<EmpInfoVO> searchSelectEmp(String empName);
 	
+	//사원코드 단건조회
+	public EmpInfoVO getEmpInfoOne(EmpInfoVO empInfoVO);
+	
+	
+	
 
 }

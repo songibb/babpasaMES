@@ -169,7 +169,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>제품조회</h3>
+	<h3>품질검사코드조회</h3>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -179,8 +179,8 @@
 					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>제품명</p>
-							<input type="text" placeholder="검색어를 입력하세요" id="prodSearch">
+							<p>검사명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id="errSearch">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -198,12 +198,12 @@
 	
 	//제품검색조회
 	
-	$('#searchBtn').on('click', searchProdIn);
-   function searchProdIn(e){
-	   let content = $('#prodSearch').val();
-	   let search = { prodName : content };
+	$('#searchBtn').on('click', searchErrIn);
+   function searchErrIn(e){
+	   let content = $('#errSearch').val();
+	   let search = { errName : content };
 	   $.ajax({
-		   url : 'getProdCodeFilter',
+		   url : 'errCodeSearch',
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
@@ -218,13 +218,11 @@
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
         data: [
-	           <c:forEach items="${prodList}" var="p" varStatus="status">
+	           <c:forEach items="${errList}" var="e" varStatus="status">
 	           	{
-	           		prodCode : "${p.prodCode}",
-	           		prodName :"${p.prodName}",
-	           		prodKind :"${p.prodKind}",
-	           		prodUnit :"${p.prodUnit}",
-	           		prodStd : "${p.prodStd}"
+	           		errCode : "${e.errCode}",
+	           		errName :"${e.errName}",
+	           		errInfo :"${e.errInfo}"
 	           	} <c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
@@ -239,27 +237,18 @@
 		},
         columns: [
           {
-            header: '제품코드',
-            name: 'prodCode',
+            header: '불량코드',
+            name: 'errCode',
             filter: 'text'
           },
           {
-            header: '제품명',
-            name: 'prodName',
+            header: '불량명',
+            name: 'errName',
             filter: 'text'
           },
           {
-            header: '반/완제품구분',
-            name: 'prodKind',
-            filter: 'select'
-          },
-          {
-            header: '단위',
-            name: 'prodUnit'
-          },
-          {
-            header: '규격',
-            name: 'prodStd'
+            header: '불량내용',
+            name: 'errInfo'
           }
         ]
       })  
