@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
 
@@ -43,6 +45,13 @@ public class PrcsManageController {
 		return list;
 	}
 	
+	
+	//공정관리 등록 - 리스트가져오기
+
+	
+	//공정관리 수정
+	
+	//공정관리 삭제
 	
 	
 	

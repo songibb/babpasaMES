@@ -20,11 +20,35 @@
 		SELECT prcs_code,
 			   prcs_type,
 			   prcs_name,
-			   semi_yn
+			   
 		  FROM prcs_manage
 		 WHERE prcs_name LIKE '%' || #{prcsSearch} || '%'
 	</select>
 	
+	<!-- 공정관리 등록 -->
+	<insert id="insertPrcsManage" parameterType="prcsManageVO">
+		<selectKey keyProperty="prcs_code" resultType="String" order="BEFORE">
+			SELECT 'PRCS-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_code, -3)),0) + 1, 3, '0')
+			FROM prcs_dir
+			WHERE SUBSTR(prcs_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd');
+		</selectKey>
+		INSERT INTO prcs_dir (
+								prcs_code
+								, prcs_type
+								, prcs_name
+								, prcs_semi_yn
+							 )
+			 VALUES (
+						#{prcsCode}
+						, #{prcsType}
+						, #{prcsName}
+						, #{prcsSemiYn}
+					 )
+	</insert>
+	
+	<!-- 공정관리 수정 -->
+	<update id="updatePrcsManage">
+	</update>
 
 	
 

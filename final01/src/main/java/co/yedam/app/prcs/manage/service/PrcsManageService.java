@@ -11,7 +11,11 @@ public interface PrcsManageService {
 		public List<PrcsManageVO> getPrcsManageSearch(PrcsManageVO prcsManageVO);
 		
 		//공정관리 등록
+		public int insertPrcsManage();
+		
 		//공정관리 수정
+		public int updatePrcsManage();
+		
 		//공정관리 삭제
 		
 		

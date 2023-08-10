@@ -83,7 +83,7 @@
             <div class="collapse" id="tables">
               	<ul class="nav flex-column sub-menu">
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsPlanList">생산 계획 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">생산 지시</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsDir">생산 지시</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsDirList">생산 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">공정 실적 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsManageList">공정 관리</a></li>

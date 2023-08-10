@@ -11,5 +11,6 @@ public interface PrcsDirService {
 	//상세생산지시 조회
 	public List<PrcsDirVO> getPrcsDirDeList(String prcsDirCode);
 	
-	
+	//생산지시 등록
+	public int insertPrcsDir(PrcsDirVO prcsDirVo);
 }

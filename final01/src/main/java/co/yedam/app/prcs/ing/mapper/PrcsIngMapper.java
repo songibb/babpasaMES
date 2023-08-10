@@ -11,4 +11,7 @@ public interface PrcsIngMapper {
 	public List<PrcsIngVO> selectPrcsIngList(@Param("prcsDirDeCode") String prcsDirDeCode, 
 											 @Param("prodCode") String prodCode);
 
+	
+	
+
 }
