@@ -16,9 +16,14 @@ public class MatRtServiceImpl implements MatRtService {
 	MatRtMapper mrm;
 	//전체조회
 	@Override
-	public List<MatRtVO> selectMatRtList(String materialCode, String accountCode, String startDate, String endDate) {
+	public List<MatRtVO> selectMatRtList() {
 		
-		return mrm.selectMatRtList(materialCode, accountCode, startDate, endDate);
+		return mrm.selectMatRtList();
+	}
+	@Override
+	public List<MatRtVO> selectMatRtSearch(String materialCode, String accountCode, String startDate, String endDate) {
+		
+		return mrm.selectMatRtSearch(materialCode, accountCode, startDate, endDate);
 	}
 
 }

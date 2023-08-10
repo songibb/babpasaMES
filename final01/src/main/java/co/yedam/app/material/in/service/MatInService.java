@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MatInService {
 	//조회
-	public List<MatInVO> selectMatInList(String materialCode, String accountCode, String startDate, String endDate);
+	public List<MatInVO> selectMatInList();
+	public List<MatInVO> selectMatInSearch(String materialCode, String accountCode, String startDate, String endDate);
 }

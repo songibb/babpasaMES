@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -232,38 +233,47 @@
    
 //모달 시작
 var Grid;
-  $("#actModal").click(function(){
-    $(".modal").fadeIn();
-    Grid = createActGrid();
-    Grid.on('click', () => {
-     	let rowKey = Grid.getFocusedCell().rowKey;
-     	let actCode = Grid.getValue(rowKey, 'actCode');
-     	let actName = Grid.getValue(rowKey, 'actName');
- 		$("#actCodeInput").val(actCode);
- 		$("#actNameFix").val(actName);
- 		//모달창 닫기
- 		$(".modal").fadeOut();
- 		Grid.destroy();
+     $("#actModal").click(function(){
+       $(".modal").fadeIn();
+       Grid = createActGrid();
+       
+       Grid.on('click', () => {
+        	let rowKey = Grid.getFocusedCell().rowKey;
+        	let actCode = Grid.getValue(rowKey, 'actCode');
+        	let actName = Grid.getValue(rowKey, 'actName');
+    		$("#actCodeInput").val(actCode);
+    		$("#actNameFix").val(actName);
+    		//모달창 닫기
+    		console.log(rowKey);
+    		if(rowKey != null){
+    			$(".modal").fadeOut();
+        		Grid.destroy();
+    		}
 
- 		});
-   	});
+    		});
+      	});
   
   
   
-  $("#matModal").click(function(){
-    $(".modal").fadeIn();
-    Grid = createMatGrid();
-    Grid.on('click', () => {
-    	let rowKey = Grid.getFocusedCell().rowKey;
-    	let matCode = Grid.getValue(rowKey, 'matCode');
-    
-		$("#matCodeInput").val(matCode);
-		//모달창 닫기
-		$(".modal").fadeOut();
-		Grid.destroy();
+     $("#matModal").click(function(){
+         $(".modal").fadeIn();
+         Grid = createMatGrid();
+         Grid.on('click', () => {
+         	let rowKey = Grid.getFocusedCell().rowKey;
+         	let matCode = Grid.getValue(rowKey, 'matCode');
+      	let matName = Grid.getValue(rowKey, 'matName');
+  		$("#matCodeInput").val(matCode);
+  		$("#matNameFix").val(matName);
+         
+     		$("#matCodeInput").val(matCode);
+     		//모달창 닫기
+     		if(rowKey != null){
+  			$(".modal").fadeOut();
+      		Grid.destroy();
 
-		});
-  });
+     		}
+       })
+       });
   
   $("#close_btn").click(function(){
       $(".modal").fadeOut();
@@ -339,11 +349,11 @@ function searchMatOut(e){
 		   success : function(data){
 			   
 			  for(let i of data){
-					let date = new Date(i.matInd);
+					let date = new Date(i.matOutd);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.matInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.matOutd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
 					
 					date = new Date(i.matExd);
 					year = date.getFullYear();    //0000년 가져오기
@@ -390,8 +400,8 @@ function resetInput(e){
 	           	matOutAmt : "${mat.matOutAmt}",
 	           	prcsDirDeCode : "${mat.prcsDirDeCode}",
 	           	empName : "${mat.empName}",
-	           	matOutd :"${mat.matOutd}",
-	           	matExd : "${mat.matExd}"
+	           	matOutd :`<fmt:formatDate value="${mat.matOutd}" pattern="yyyy년 MM월 dd일"/>`,
+	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy년 MM월 dd일"/>`
 	           	},
 	           </c:forEach>
 	          ],
@@ -452,14 +462,14 @@ function resetInput(e){
      
    
    
-   //이전 날짜 선택불가
-    $( '#searchMinDate' ).on( 'change', function() {
-      $( '#searchMaxDate' ).attr( 'min',  $( '#searchMinDate' ).val() );
-    } );
-   //이후날짜 선택불가
-    $( '#searchMaxDate' ).on( 'change', function() {
-         $( '#searchMinDate' ).attr( 'max',  $( '#searchMaxDate' ).val() );
-       } );
+ //이전 날짜 선택불가
+   $( '#startDate' ).on( 'change', function() {
+     $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+   } );
+  //이후날짜 선택불가
+   $( '#endDate' ).on( 'change', function() {
+        $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+      } );
    
 
 </script>

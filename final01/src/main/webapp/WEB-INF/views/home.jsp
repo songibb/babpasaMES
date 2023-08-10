@@ -354,7 +354,7 @@ $(function(){
 		Grid.destroy();
    });
 
-그리드 생성 scrypt======================================
+
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 	       el: document.getElementById('modal_label'),

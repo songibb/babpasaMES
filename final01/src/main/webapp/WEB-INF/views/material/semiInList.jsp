@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -185,18 +186,17 @@
                    </button>
                   <div id="customtemplateSearchAndButton">
                   <p>반제품명</p>
-                  <input type="text" placeholder="검색어를 입력하세요">
-                    <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" readonly>
+                  <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+                  <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
+                  <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
                   <br>
-      
                   <p>입고일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
                   </button>
-                  <button type="button" class="btn btn-info btn-icon-text">
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
                </div>
@@ -228,18 +228,71 @@
 <script>
    
    //모달 시작
-   $(function(){ 
-
-     $("#actModal").click(function(){
+   var Grid;
+     $("#prodModal").click(function(){
        $(".modal").fadeIn();
-       initGrid();
-     });
+       Grid = createProdGrid();
+       
+       Grid.on('click', () => {
+        	let rowKey = Grid.getFocusedCell().rowKey;
+        	let prodCode = Grid.getValue(rowKey, 'prodCode');
+        	let prodName = Grid.getValue(rowKey, 'prodName');
+    		$("#prodCodeInput").val(prodCode);
+    		$("#prodNameFix").val(prodName);
+    		//모달창 닫기
+    		console.log(rowKey);
+    		if(rowKey != null){
+    			$(".modal").fadeOut();
+        		Grid.destroy();
+    		}
+
+    		});
+      	});
      
      $("#close_btn").click(function(){
-       $(".modal").fadeOut();
-     });
+         $(".modal").fadeOut();
+         
+  		Grid.destroy();
+       });
      
-   });
+   //반제품 모달 그리드
+     function createProdGrid(){
+  	   var prodGrid = new tui.Grid({
+  	       el: document.getElementById('modal_label'),
+  	       data: [
+  	    	   <c:forEach items="${prodList}" var="p" varStatus="status">
+  	          	{
+  	          		prodCode : "${p.prodCode}",
+  	          		prodName :"${p.prodName}"
+  	          	} <c:if test="${not status.last}">,</c:if>
+  	          </c:forEach>
+  	          ],
+  		   scrollX: false,
+  	       scrollY: false,
+  	       minBodyHeight: 30,
+  	       rowHeaders: ['rowNum'],
+  	       selectionUnit: 'row',
+  	       pagination: true,
+  	       pageOptions: {
+  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+  	         useClient: true,
+  	         perPage: 10
+  	       },
+  	       columns: [
+  	    	     {
+  	               header: '반제품코드',
+  	               name: 'prodCode',
+  	             },
+  	             {
+  	               header: '반제품명',
+  	               name: 'prodName'
+  	             }
+  	 	    ]
+  	      
+  	     });
+  	   
+  	   return prodGrid;
+     }
    //모달 끝
    
    //엑셀 다운로드
@@ -258,13 +311,13 @@
 	       data: [
 	           <c:forEach items="${inList}" var="semi">
 	           	{
-	           	semiLot : "${semi.semiLot}"
+	           	semiLot : "${semi.semiLot}",
 	           	prodCode :"${semi.prodCode}",
 	           	prodName :"${semi.prodName}",
 	           	semiInAmt :"${semi.semiInAmt}",
 	           	empName : "${semi.empName}",
-	           	semiInd : "${semi.semiInd}",
-	           	semiExd :"${semi.semiExd}"
+	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy년 MM월 dd일"/>`,
+	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy년 MM월 dd일"/>`
 	           	},
 	           </c:forEach>
 	          ],
@@ -312,20 +365,62 @@
 	      
 	     });
    
+   $('#searchBtn').on('click', searchSemiIn);
+   function searchSemiIn(e){
+	   let prod = $('#prodCodeInput').val();
+	   let sd = $('#startDate').val();
+	   let ed = $('#endDate').val();	   
+		  
+	   let search = { productCode : prod , startDate : sd , endDate : ed };
+	   $.ajax({
+		   url : 'getSemiInFilter',
+		   method : 'GET',
+		   data : search ,
+		   success : function(data){
+			   
+			  for(let i of data){
+					let date = new Date(i.semiInd);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+			   		i.semiInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					
+					date = new Date(i.semiExd);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+			   		i.semiExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			  }
+			   grid.resetData(data);
+		   },
+		   error : function(reject){
+			   console.log(reject);
+		   }
+	   });
+   }
+   
+   //초기화 버튼
+   $('#searchResetBtn').on('click', resetInput);
+   function resetInput(e){
+	   $('input').each(function(idx, obj){
+		   obj.value = '';
+	   })
+   }
+   
    
    
   
      
    
    
-   //이전 날짜 선택불가
-    $( '#searchMinDate' ).on( 'change', function() {
-      $( '#searchMaxDate' ).attr( 'min',  $( '#searchMinDate' ).val() );
-    } );
-   //이후날짜 선택불가
-    $( '#searchMaxDate' ).on( 'change', function() {
-         $( '#searchMinDate' ).attr( 'max',  $( '#searchMaxDate' ).val() );
-       } );
+ //이전 날짜 선택불가
+   $( '#startDate' ).on( 'change', function() {
+     $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+   } );
+  //이후날짜 선택불가
+   $( '#endDate' ).on( 'change', function() {
+        $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+      } );
    
 
 </script>

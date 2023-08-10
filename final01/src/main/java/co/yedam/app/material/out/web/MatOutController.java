@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.out.service.MatOutService;
 import co.yedam.app.material.out.service.MatOutVO;
 import co.yedam.app.sales.order.service.OrderService;
@@ -22,18 +23,23 @@ public class MatOutController {
 	//거래처 모달
 	@Autowired
 	OrderService orderService;
+	
+	//자재목록 모달
+	@Autowired
+	MatModalService mms;
 		
 	//전체조회
 	@GetMapping("matOutList")
 	public String getMatOutList(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate, Model model) {
 		model.addAttribute("outList", mos.selectMatOutList(materialCode, accountCode, startDate, endDate));
 		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("matList", mms.getMetList());
 		return "material/matOutList";
 	}
 	//검색 ajax
 	@GetMapping("getMatOutFilter")
 	@ResponseBody
-	public List<MatOutVO> getMatOutFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate, Model model) {
+	public List<MatOutVO> getMatOutFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
 		List<MatOutVO> vo = mos.selectMatOutList(materialCode, accountCode, startDate, endDate);
 		return vo;
 	}
