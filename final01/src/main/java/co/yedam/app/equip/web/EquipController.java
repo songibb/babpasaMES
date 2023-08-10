@@ -60,10 +60,11 @@ public class EquipController {
 	//설비 삭제
 	@GetMapping("/equipDelete")
 	@ResponseBody
-	public String equipDelete(@RequestParam(name="eqCode", defaultValue="0")String eqCode) {
+	public String equipDelete(@RequestParam(name="eqCode", value="eqCode")String eqCode) {
 		equipService.deleteEquipInfo(eqCode);
-		return "redirect:equipInsert";
+		return "equip/EquipList";
 	}
+	
 	//설비 단건 조회
 	@GetMapping("getEquip") //Equiplist.jsp의 ajax url과 연결되는 것 
 	@ResponseBody

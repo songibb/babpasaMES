@@ -11,7 +11,7 @@
   </select>
   	
   <!-- 설비등록 -->
-  <insert id="insertEquipInfo" parameterType="EquipVO">	
+  <insert id="insertEquipInfo" parameterType="EquipVO">
   		INSERT INTO EQ_EQUIP
   					(
   						EQ_CODE
@@ -26,7 +26,6 @@
   						,EQ_TYPE
   						,HIGH_TEMP
   						,LOW_TEMP
-  						,PRCS_TYPE
   					)
   					VALUES
   					(
@@ -41,8 +40,7 @@
 					,#{eqImg}
 					,#{eqType}
 					,#{highTemp}
-					,#{lowTemp}
-					,#{prcsType}					
+					,#{lowTemp}					
   					)
   </insert>
   
@@ -82,7 +80,7 @@
   </update>
   
   <!-- 삭제  -->
-  <delete id="deleteEquip" parameterType="int">
+  <delete id="deleteEquip" parameterType="String">
   	DELETE FROM EQ_EQUIP
   	WHERE EQ_CODE = #{eqCode}
   </delete>

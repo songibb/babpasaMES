@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.equip.service.OffEquipService;
@@ -33,5 +34,11 @@ public class OffEquipController {
 			return list;
 		}
 		
+	//비가동 설비 등록
+	@PostMapping("/insertOffEquip")
+	public String OffEquipInsert(OffEquipVO offequipVO) {
+		offEquipService.insertOffEquip(offequipVO);
+		return "redirect:offequip";
+	}
 	
 }

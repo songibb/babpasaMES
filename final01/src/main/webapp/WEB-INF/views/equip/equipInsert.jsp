@@ -186,48 +186,49 @@
          <th>설비코드</th>
          <td><input type="text" name="eqCode" id="eqCode"></td>
          <th>거래처</th>
-         <td><input type="text" name="actCode"></td>
+         <td><input type="text" name="actCode" id="actCode"></td>
       </tr>
       <tr>
-         <th>설비구분 <i class="bi bi-search" id="actModal2"></i></th>
-         <td><input type="text" name="eqType"></td>
+         <th>설비구분</th> <i class="bi bi-search" id="actModal2"></i>
+         <td><input type="text" name="eqType" id="eqType"></td>
          <th>설비명</th>
-         <td><input type="text" name="eqName"></td>
+         <td><input type="text" name="eqName" id="eqName"></td>
       </tr>
       <tr>
          <th>모델명</th>
-         <td><input type="text" name="modelName"></td>
+         <td><input type="text" name="modelName" id="modelName"></td>
          <th>제작일자</th>
-         <td><input type="text" name="makeDate"></td>
+         <td><input type="text" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>구매일자</th>
-         <td><input type="text" name="buyDate"></td>
+         <td><input type="text" name="buyDate" id="buyDate"></td>
          <th>점검주기</th>
-         <td><input type="text" name="chkCycle"></td>
+         <td><input type="text" name="chkCycle" id="chkCycle"></td>
       </tr>
       <tr>
          <th>가동여부</th>
-         <td><input type="text" name="eqSts"></td>
-         <th>공정코드</th>
-         <td><input type="text" name="prcsType"></td>
+         <td><input type="text" name="eqSts" id="eqSts"></td>
       </tr>
       <tr>
          <th>최고온도</th>
-         <td><input type="text" name="highTemp"></td>
+         <td><input type="text" name="highTemp" id="highTemp"></td>
          <th>최저온도</th>
-         <td><input type="text" name="lowTemp"></td>
+         <td><input type="text" name="lowTemp" id="lowTemp"></td>
       </tr>
       <tr>
          <th>설비이미지</th>
-         <td><input type="text" name="eqImg"></td>
+         <td><input type="text" name="eqImg" id="eqImg"></td>
       </tr>
    </table>
    <br>
-   <button type="submit">등록</button>
-   <button type="button" onclick="location.href='equipDelete?eqCode=${equipInsert.eqCode}'">삭제</button>
+   <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
+   <button type="submit" value="insert">등록</button>
+   <button type="submit" value="update">수정</button>
+<%--    <button type="button" onclick="location.href='equipDelete?eqCode=${equipInsert.eqCode}'">삭제</button> --%>
+   <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
-   
+</form>   
    
 <div class="modal">
    
@@ -243,7 +244,7 @@
   </div>
 </div>
 
-</form>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 var Grid;
@@ -262,6 +263,22 @@ $("#actModal").click(function(){
 			success : function(data){
 					//console.log(data);
 					$('#eqCode').val(data.eqCode);
+					$('#actCode').val(data.actCode);
+					$('#eqName').val(data.eqName);
+					$('#modelName').val(data.modelName);
+					$('#makeDate').val(data.makeDate);
+					$('#buyDate').val(data.buyDate);
+					$('#chkCycle').val(data.chkCycle);
+					$('#eqSts').val(data.eqSts);
+					$('#eqImg').val(data.eqImg);
+					$('#eqType').val(data.eqType);
+					$('#highTemp').val(data.highTemp);
+					$('#lowTemp').val(data.lowTemp);	
+					
+					$(".modal").fadeOut();
+     		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
+     		       	
+					console.log(data);
 			    },
 			error : function(reject){
 	 			console.log(reject);
@@ -280,13 +297,29 @@ $("#actModal").click(function(){
 	});
 });
 
-
 $("#close_btn").click(function(){
   $(".modal").fadeOut(); 
 	Grid.destroy();
 });
 
-
+//삭제
+$('#deleteEq').click(function(){
+	var eqCode = $('#eqCode').val();
+	console.log(eqCode);
+	$.ajax({
+		url : 'equipDelete',
+		method : 'GET',
+		data : { eqCode : eqCode },
+		success : function(data){
+			//삭제 후 <input> 태그 칸 값 비우기
+			$('input').val("");
+			alert('삭제가 완료되었습니다.');
+		    },
+		error : function(reject){
+ 			console.log(reject);
+ 		}	
+	})
+});
 
 
 function createActGrid(){

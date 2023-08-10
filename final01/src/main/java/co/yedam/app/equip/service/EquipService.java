@@ -13,7 +13,7 @@ public interface EquipService {
 	public List<EquipVO> getModalEquipList();
 	
 	//설비 삭제
-	public int deleteEquipInfo(String eqCode);
+	public String deleteEquipInfo(String eqCode);
 	
 	//설비 단건조회
 	public EquipVO getEquipInfo(EquipVO equipVO);

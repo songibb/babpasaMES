@@ -8,4 +8,7 @@ public interface OffEquipService {
 	
 	//전체 설비 조회
 	public List<EquipVO> getAllEquip();
+	
+	//비가동 등록
+	public String insertOffEquip(OffEquipVO offequipVO);
 }
