@@ -18,8 +18,8 @@ public class OrderController {
 
 	@Autowired
 	OrderService orderService;
-	
-	//전체조회
+
+	// 전체조회
 	@GetMapping("/orderList")
 	public String orderList(Model model) {
 		model.addAttribute("orderList", orderService.getOrderList());
@@ -27,15 +27,18 @@ public class OrderController {
 		model.addAttribute("prodList", orderService.prodAllList());
 		return "sales/orderList";
 	}
-	
-	//검색 ajax
-		@GetMapping("/orderListFilter")
-		@ResponseBody
-		public List<OrderVO> orderListFilter(@RequestParam(value = "actCode", required = false) String actCode
-											, @RequestParam(value = "prodName", required = false) String prodName
-											, @RequestParam(value = "ordDate", required = false) String ordDate) {
-			List<OrderVO> vo = orderService.searchOrderList(actCode, prodName, ordDate);
-			return vo;
-		}
-	
+
+	// 검색 ajax
+	@GetMapping("/orderListFilter")
+	@ResponseBody
+	public List<OrderVO> orderListFilter(@RequestParam(value = "actCode", required = false) String actCode,
+			@RequestParam(value = "prodCode", required = false) String prodCode,
+			@RequestParam(value = "ordDate", required = false) String ordDate,
+			@RequestParam(value="startDate", required=false) String startDate, 
+			@RequestParam(value="endDate", required=false) String endDate){
+		List<OrderVO> vo = orderService.searchOrderList(actCode, prodCode, startDate, endDate);
+		return vo;
+	}
+	//거래처 등록
+
 }

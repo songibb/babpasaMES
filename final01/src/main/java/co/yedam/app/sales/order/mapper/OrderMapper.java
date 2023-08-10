@@ -10,9 +10,14 @@ public interface OrderMapper {
 	//전체조회
 	public List<OrderVO> selectOrderAllList();
 	//검색
-	public List<OrderVO> selectAllOrder(@Param("actCode")String actCode, @Param("prodName")String prodName, @Param("ordDate")String ordDate);
+	public List<OrderVO> selectAllOrder(@Param("actCode")String actCode
+			, @Param("prodCode")String prodCode
+			, @Param("startDate")String startDate
+			, @Param("endDate")String endDate);
 	//거래처 목록
 	public List<OrderVO> selectActAllList();
 	//제품목록
 	public List<OrderVO> selectProdAllList();
+	//주문 등록
+	public int insertOrder(OrderVO orderVO);
 }
