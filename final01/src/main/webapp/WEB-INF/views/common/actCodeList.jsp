@@ -264,7 +264,8 @@
           },
           {
               header: '거래처구분',
-              name: 'commdeName'
+              name: 'commdeName',
+              filter: 'select'
             },
           {
               header: '담당자',

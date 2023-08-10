@@ -32,6 +32,10 @@
 		ORDER BY emp_code
   	</select>
   	
-  	
-  
+  	<!-- 사원코드로 사원단건조회 -->
+  	<select id="getEmpInfoOne" resultType="EmpInfoVO">
+  		select *
+  		from com_emp
+  		where emp_code = #{empCode}
+  	</select>
   </mapper>

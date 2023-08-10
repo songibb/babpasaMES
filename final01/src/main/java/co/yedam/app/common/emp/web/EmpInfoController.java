@@ -29,13 +29,25 @@ public class EmpInfoController {
 		return "common/empInfo";
 	}
 	
-	//검색조회
+	//사원명 검색조회
 	@GetMapping("/getempFilter")
 	@ResponseBody
 	public List<EmpInfoVO> getempFilter(@RequestParam String empName){
 		List<EmpInfoVO> vo = empInfoService.searchSelectEmp(empName);
 		return vo;
 	}
+	
+	
+	//사원코드 단건조회
+	@GetMapping("getComEmpCode")
+	@ResponseBody
+	public EmpInfoVO getComEmpCode(@RequestParam String empCode) {
+		EmpInfoVO vo = new EmpInfoVO();
+		vo.setEmpCode(empCode);
+		EmpInfoVO findVO = empInfoService.getEmpInfoOne(vo);
+		return findVO;
+	}
+	
 
 	
 }

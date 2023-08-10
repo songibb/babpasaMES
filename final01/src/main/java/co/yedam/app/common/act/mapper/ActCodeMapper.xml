@@ -34,4 +34,35 @@
                                  ON(a.emp_code=e.emp_code)
         WHERE a.act_name LIKE '%' || #{actName} || '%'
   	</select>
+  	
+  	<insert id="deleteActInfo" parameterType="ActCodeVO">
+  		<selectKey keyProperty="actCode" resultType="int" order="BEFORE">
+  			SELECT 'ACT-' || LPAD((NVL(MAX(SUBSTR(ACT_CODE, -4)),0)+1),4,'0')
+			FROM COM_ACT;
+  		</selectKey>
+  		INSERT INTO com_act
+  							(
+  							act_code
+							,act_name
+							,act_num
+							,act_tel
+							,act_sts
+							,act_kind
+							<if test="empCode != null and !empCode.equals('')">
+							,emp_code
+							</if>
+  							)
+  		VALUES
+  				(
+  				#{actCode}
+  				,#{actName}
+  				,#{actNum}
+  				,#{actTel}
+  				,'D1'
+  				,#{actKind}
+  				<if test="empCode != null and !empCode.equals('')">
+  				,#{empCode}
+  				</if>
+  				)
+  	</insert>
   </mapper>

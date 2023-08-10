@@ -264,8 +264,7 @@ input[type="date"] {
 		       columns: [
 		         {
 		           header: '사원번호',
-		           name: 'empCode',
-		           filter: 'select'
+		           name: 'empCode'
 		         },
 		         {
 		           header: '사원명',
@@ -281,7 +280,8 @@ input[type="date"] {
 		         },
 		         {
 		           header: '부서명',
-		           name: 'commdeName'
+		           name: 'commdeName',
+		           filter: 'select'
 		         },
 		         {
 		           header: '연락처',
