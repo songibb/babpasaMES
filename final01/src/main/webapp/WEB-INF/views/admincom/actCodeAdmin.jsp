@@ -1,11 +1,13 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page session="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>거래처관리</title>
+<title>주문 조회</title>
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -18,9 +20,11 @@
 	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
+	rel="stylesheet">
 <style>
 body {
 	font-family: 'Nanum Gothic', sans-serif;
@@ -86,7 +90,7 @@ body {
 }
 
 /*모달시작*/
-#actModal {
+#actModal, #prodModal {
 	cursor: pointer;
 }
 
@@ -213,8 +217,8 @@ input[type="date"] {
 				</tr>
 				<tr>
 					<th>담당자</th>
-					<td><input type="text" name="empCode" id="empCode"></td>
-					<td><button type="button" id="actModal">사원조회</button></td>
+					<td><input type="text" name="empName" id="empName"></td>
+					<td><button type="button" id="empModal">사원조회</button></td>
 				</tr>
 			</table>
 			<button type="submit">등록</button>
@@ -259,78 +263,76 @@ input[type="date"] {
 
 
 	<script>
-	//거래처 리스트 조회
-	$.ajax({
-        url : "ajaxActCodeList",
-        method :"GET",
-        success : function(result){
-            grid.resetData(result);
-        },
-        error : function(reject){
- 			console.log(reject);
- 		}
-	});
 	
-	//거래처명 검색조회
-	
-	$('#searchBtn').on('click', searchActIn);
-   function searchActIn(e){
-	   let content = $('#actSearch').val();
-	   let search = { actName : content };
-	   $.ajax({
-		   url : 'ActCodeSearch',
-		   method : 'GET',
-		   data : search ,
-		   success : function(data){
-			   grid.resetData(data);
-		   },
-		   error : function(reject){
-			   console.log(reject);
-		   }
-	   })
-   }
-   
    //거래처 등록
    //사원 모달창
-   $("#actModal").click(function(){
-  $(".modal").fadeIn();
-  Grid = createActGrid();
-  Grid.on('click', () => {
+   var Grid;
+	  $("#empModal").click(function(){
+		  $(".modal").fadeIn();
+		  Grid = createEmpGrid();
+		  
+		  Grid.on('click', () => {	
+				let rowKey = Grid.getFocusedCell().rowKey;
+				let empName = Grid.getValue(rowKey, 'empName');
+				$("#empName").val(empName);
+				
+		          if(rowKey != null){
+		             $(".modal").fadeOut();
+		              Grid.destroy();
+		          }
+		  
+				});
+				});
+
 		
-		let rowKey = Grid.getFocusedCell().rowKey;
-		let empCode = Grid.getValue(rowKey, 'empCode');
-
-		$.ajax({
-			url : 'getComEmpCode',
-			method : 'GET',
-			data : { empCode : empCode },
-			success : function(data){
-					//console.log(data);
-					$('#empCode').val(data.empName);
-			    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}	
-		})
+		$("#close_btn").click(function(){
+		  $(".modal").fadeOut(); 
+			Grid.destroy();
 		});
-  $.ajax({
-	    url : "empinfo",
-	    method :"GET",
-	    success : function(result){
-	        Grid.resetData(result);
-	    },
-	    error : function(reject){
-				console.log(reject);
-			}
-	});
-});
-
-
-$("#close_btn").click(function(){
-  $(".modal").fadeOut(); 
-	Grid.destroy();
-});
-
+		
+		//사원조회 모달 그리드
+		 function createEmpGrid(){
+		      var empGrid = new tui.Grid({
+		          el: document.getElementById('modal_label'),
+		          data: [
+		             <c:forEach items="${empList}" var="e" varStatus="status">
+		                {
+		                	empCode : "${e.empCode}",
+		                	empName :"${e.empName}",
+		                	commdeName :"${e.commdeName}"
+		                } <c:if test="${not status.last}">,</c:if>
+		             </c:forEach>
+		             ],
+		         scrollX: false,
+		          scrollY: false,
+		          minBodyHeight: 30,
+		          rowHeaders: ['rowNum'],
+		          selectionUnit: 'row',
+		          pagination: true,
+		          pageOptions: {
+		          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		            useClient: true,
+		            perPage: 10
+		          },
+		          columns: [
+		             {
+		                  header: '사원코드',
+		                  name: 'empCode',
+		                },
+		                {
+		                  header: '사원명',
+		                  name: 'empName'
+		                },
+		                {
+		                  header: '부서명',
+		                  name: 'commdeName'
+		                }
+		           ]
+		         
+		        });
+		      
+		      return empGrid;
+		   }
 /*    document.querySelector('form[name="actInsertForm"]')
    					.addEventListener("submit" , function(e){
 					e.preventDefault();
@@ -373,6 +375,36 @@ $("#close_btn").click(function(){
 	  return false;
 	  
    }); */
+ //거래처 리스트 조회
+	$.ajax({
+       url : "ajaxActCodeList",
+       method :"GET",
+       success : function(result){
+           grid.resetData(result);
+       },
+       error : function(reject){
+			console.log(reject);
+		}
+	});
+	
+	//거래처명 검색조회
+	$('#searchBtn').on('click', searchActIn);
+  function searchActIn(e){
+	   let content = $('#actSearch').val();
+	   let search = { actName : content };
+	   $.ajax({
+		   url : 'ActCodeSearch',
+		   method : 'GET',
+		   data : search ,
+		   success : function(data){
+			   grid.resetData(data);
+		   },
+		   error : function(reject){
+			   console.log(reject);
+		   }
+	   })
+  }
+  
    
    function serializeObject(){
 	   let formData = $('form').serializeArray();
