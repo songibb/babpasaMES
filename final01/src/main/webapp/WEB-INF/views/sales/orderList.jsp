@@ -290,7 +290,7 @@
       })
    })
    
-   //거래처 리스드 모달 그리드
+   //거래처 리스트 모달 그리드
    function createActGrid(){
       var actGrid = new tui.Grid({
           el: document.getElementById('modal_label'),

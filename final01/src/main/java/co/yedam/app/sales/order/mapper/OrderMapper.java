@@ -20,4 +20,8 @@ public interface OrderMapper {
 	public List<OrderVO> selectProdAllList();
 	//주문 등록
 	public int insertOrder(OrderVO orderVO);
+	//주문 상세 등록
+	public int insertOrderDe(OrderVO orderVO);
+	//주문 관리 - 미계획 주문 목록
+	public List<OrderVO> selectAllNoPlanList();
 }

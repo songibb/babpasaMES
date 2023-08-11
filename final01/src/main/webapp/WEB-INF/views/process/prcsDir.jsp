@@ -103,6 +103,7 @@
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
+
 		//생산지시 -> insert
 		let rowKey = dirGrid.getFocusedCell().rowKey;
 		let columnName = dirGrid.getFocusedCell().columnName;
@@ -120,6 +121,7 @@
 
 // 		//담당자 세션으로 가져와서 객체에 담기
 // 		obj['empCode'] = dirGrid.getValue(rowKey, 'empCode');
+
 
 		$.ajax({
 			url : 'prcsDirInsert',

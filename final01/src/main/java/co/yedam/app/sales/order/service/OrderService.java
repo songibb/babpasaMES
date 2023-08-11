@@ -12,5 +12,7 @@ public interface OrderService {
 	//제품목록
 	public List<OrderVO> prodAllList();
 	//주문등록
-	public String insertOrder(OrderVO orderVO);
+	public int insertOrder(OrderVO orderVO);
+	//주문서 관리 - 미계획 주문서 목록
+	public List<OrderVO> getNoPlan();
 }

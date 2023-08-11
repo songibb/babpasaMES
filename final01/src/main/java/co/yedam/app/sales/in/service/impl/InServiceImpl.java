@@ -20,4 +20,14 @@ public class InServiceImpl implements InService {
 		return inMapper.selectInAllList();
 	}
 
+	@Override
+	public List<InVO> searchInList(String prodCode, String startDate, String endDate) {
+		return inMapper.selectAllIn(prodCode, startDate, endDate);
+	}
+
+	@Override
+	public List<InVO> prodAllList() {
+		return inMapper.selectProdAllList();
+	}
+
 }
