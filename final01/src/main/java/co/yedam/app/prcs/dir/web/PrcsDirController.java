@@ -52,7 +52,7 @@ public class PrcsDirController {
 	@GetMapping("prcsDir")
 	public String getPrcsDirInsert() {
 	
-		return "process/prcsDir";
+		return "process/prcsDirInsert";
 	}
 	
 	//생산지시 등록

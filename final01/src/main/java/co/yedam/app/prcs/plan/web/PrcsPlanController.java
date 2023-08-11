@@ -7,11 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 @Controller
 public class PrcsPlanController {
@@ -25,14 +28,6 @@ public class PrcsPlanController {
 		model.addAttribute("planList", prcsPlanService.getPrcsPlanList());	
 		return "process/prcsPlanList";
 	}
-
-	
-//	//상세생산계획 조회
-//	@GetMapping("prcsPlanDeList")
-//	public List<PrcsPlanVO> getPrcsPlanDeList(Model model) {
-//		model.addAttribute("planDeList", prcsPlanService.getPrcsPlanDeList());
-//		return "process/prcsPlanList";
-//	}
 	
 	//상세생산계획 조회 - 리스트
 	@GetMapping("prcsPlanDeList")
@@ -42,7 +37,26 @@ public class PrcsPlanController {
 		return list;
 	}
 	
+	//생산계획 + 상세생산계획 등록 - 페이지 호출
+	@GetMapping("prcsPlanInsert")
+	public String prcsPlanInsertPage(){
+		return "process/prcsPlanInsert";
+	}
+	
+	//생산계획 + 상세생산계획 등록
+	@PostMapping("prcsPlanInsert")
+	@ResponseBody
+	public int PrcsPlanInsert(@RequestBody PrcsPlanVO prcsPlanVO) {
+		int result = prcsPlanService.prcsPlanInsert(prcsPlanVO);
+		return result;
+	}
 
-    	
+	//미계획 주문서 조회 	
+	@GetMapping("notPlanOrderList")
+	@ResponseBody
+	public List<OrderVO> getNotPlanOrderList(){
+		List<OrderVO> list = prcsPlanService.getNotPlanOrderList();
+		return list;
+	}
 
 }

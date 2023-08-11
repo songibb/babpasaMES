@@ -4,14 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>거래처 목록</title>
+<title>미계획 주문서 목록</title>
 </head>
 <body>
 
 	<div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>거래처 목록</h3></div>
+				<div class="modal_title"><h3>미계획 주문서 목록</h3></div>
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
@@ -22,10 +22,10 @@
 <!-- 			</div> -->
 		</div>
 	</div>
-
-	<script type="text/javascript">
-	//거래처 모달
-	$("#actModal").click(function(){
+	
+	<script type="text/javascript">	
+	//미계획 주문서 모달
+	$("#orderModal").click(function(){
 	    $(".modal").fadeIn();
 	    Grid = createActGrid();
 	    
@@ -45,7 +45,7 @@
 	});
 	
 	function createActGrid(){
-	    var actGrid = new tui.Grid({
+	    var orderGrid = new tui.Grid({
 	        el: document.getElementById('modal_label'),
 	        scrollX: false,
 	        scrollY: false,
@@ -59,47 +59,46 @@
 	        },
 	        columns: [
 	            {
-	                header: '거래처코드',
-	                name: 'actCode',
+	                header: '주문코드',
+	                name: 'ordCode',
 	            },
 	            {
-	                header: '거래처명',
-	                name: 'actName'
+	                header: '주문날짜',
+	                name: 'ordDate'
 	            },
 	            {
-	                header: '거래상태',
-	                name: 'actSts'
+	                header: '제품코드',
+	                name: 'prodCode'
 	            },
 	            {
-	                header: '거래처구분',
-	                name: 'actKind'
+	                header: '주문수량',
+	                name: 'prcsRqAmt'
+	            },
+	            {
+	                header: '납기일자',
+	                name: 'devDate'
 	            }
 	        ]       
 	    });
 		
 		$.ajax({
-		    url : 'ajaxActCodeList',
+		    url : 'notPlanOrderList',
 		    method : 'GET',
 		    success : function(data){
-		        actGrid.resetData(data);
+		    	orderGrid.resetData(data);
 		    },
 		    error : function(reject){
 		        console.log(reject);
 		    }	
 		})
-	    return actGrid;
+	    return orderGrid;
 	}
 	
 	
 	$("#close_btn").click(function(){
 	    $(".modal").fadeOut();
 	  	Grid.destroy();
-	});
+	});	
 	</script>
-
-
-
-
 </body>
-
 </html>

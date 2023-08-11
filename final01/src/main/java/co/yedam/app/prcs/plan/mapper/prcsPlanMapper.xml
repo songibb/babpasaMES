@@ -31,60 +31,66 @@
 		 WHERE prcs_plan_code = #{prcsPlanCode}
 		 ORDER BY prcs_plan_de_code
 	</select>
-
+	
 	<!-- 생산계획 등록 -->
+<!-- 	<insert id="insertPrcsPlan" parameterType="prcsPlanVO"> -->
+<!-- 		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE"> -->
+<!-- 			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0') -->
+<!-- 			FROM prcs_plan -->
+<!-- 			WHERE SUBSTR(prcs_plan_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd') -->
+<!-- 		</selectKey> -->
+<!-- 		INSERT INTO prcs_plan ( -->
+<!-- 								prcs_plan_code -->
+<!-- 								, prcs_plan_code -->
+<!-- 								, prcs_dir_name -->
+<!-- 								, prcs_start_date -->
+<!-- 								<if test="prcsEndDate != null"> -->
+<!-- 								, prcs_end_date -->
+<!-- 								</if> -->
+<!-- 								, emp_code -->
+<!-- 							  ) -->
+<!-- 			 VALUES ( -->
+<!-- 						#{prcsDirCode} -->
+<!-- 						, #{prcsPlanCode} -->
+<!-- 						, #{prcsDirName} -->
+<!-- 						, #{prcsStartDate} -->
+<!-- 						<if test="prcsEndDate != null"> -->
+<!-- 						, #{prcsEndDate} -->
+<!-- 						</if> -->
+<!-- 						, #{empCode} -->
+<!-- 					 ) -->
+<!-- 	</insert> -->
+	
+
+	
+	<!-- 생산계획 + 상세생산계획 등록 -->
 	<insert id="insertPrcsPlan" parameterType="prcsPlanVO">
 		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
 			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
 			FROM prcs_plan
 			WHERE SUBSTR(prcs_plan_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
-		INSERT INTO prcs_plan (
-								prcs_plan_code
-								, prcs_plan_code
-								, prcs_dir_name
-								, prcs_start_date
-								<if test="prcsEndDate != null">
-								, prcs_end_date
-								</if>
-								, emp_code
-							  )
-			 VALUES (
-						#{prcsDirCode}
-						, #{prcsPlanCode}
-						, #{prcsDirName}
-						, #{prcsStartDate}
-						<if test="prcsEndDate != null">
-						, #{prcsEndDate}
-						</if>
-						, #{empCode}
-					 )
-	</insert>
-	
-	<!-- 생산계획 + 상세생산계획 등록 -->
-	<insert id="insertPlanList" parameterType="prcsPlanVO">
-		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
-			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
-			FROM prcs_plan
-			WHERE SUBSTR(prcs_plan_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
-		</selectKey>
 		BEGIN
-			<!-- 첫번째 쿼리 -->
 			INSERT INTO prcs_plan (
 									prcs_plan_code
-									, prcs_plan_name
-									, emp_code
+									, prcs_plan_code
+									, prcs_dir_name
 									, prcs_start_date
+									<if test="prcsEndDate != null">
 									, prcs_end_date
+									</if>
+									, emp_code
 								  )
 				 VALUES (
-							#{prcsPlanCode}
-							, #{prcsPlanName}
-							, #{empCode}
+							#{prcsDirCode}
+							, #{prcsPlanCode}
+							, #{prcsDirName}
 							, #{prcsStartDate}
+							<if test="prcsEndDate != null">
 							, #{prcsEndDate}
+							</if>
+							, #{empCode}
 						)
-			<!-- 두번째 쿼리 -->
 			<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
 			INSERT INTO prcs_plan_de (
 										prcs_plan_de_code
@@ -111,6 +117,18 @@
            	</foreach>	
 		END;
 	</insert>
+	
+	<!-- 미계획 주문서 조회 -->
+	<select id="selectNotPlanOrderList" resultType="orderVO">
+		SELECT s.ord_sts, 
+			   s.ord_code,
+			   s.ord_date, 
+			   d.prod_code, 
+			   d.prcs_rq_amt, 
+			   d.dev_date
+		  FROM sales_ord s JOIN sales_ord_de d 
+							 ON s.ord_code = d.ord_code
+	</select>
 	
 	
 	
