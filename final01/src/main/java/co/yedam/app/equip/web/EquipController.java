@@ -1,12 +1,14 @@
 package co.yedam.app.equip.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -56,6 +58,10 @@ public class EquipController {
 		 */
 	
 	//설비 수정
+	@PostMapping("/equipUpdate")
+	public Map<String, String> equipUpdateProcess(@RequestBody EquipVO equipVo ){
+		return equipService.updateEquip(equipVo);
+	}
 		
 	//설비 삭제
 	@GetMapping("/equipDelete")

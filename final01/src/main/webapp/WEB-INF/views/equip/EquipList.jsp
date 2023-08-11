@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 
 <!DOCTYPE html>
@@ -117,8 +118,8 @@
 		        		actCode : "${equip.actCode}",
 		        		eqName :"${equip.eqName}", 
 		        		modelName : "${equip.modelName}",
-		        		makeDate : "${equip.makeDate}",
-		        		buyDate : "${equip.buyDate}",
+		        		makeDate : "<fmt:formatDate value='${equip.makeDate}' pattern='yyyy-MM-dd'/>",		        		
+		        		buyDate : "<fmt:formatDate value='${equip.buyDate}' pattern='yyyy-MM-dd'/>",
 		        		chkCycle : "${equip.chkCycle}",
 		        		eqSts : "${equip.eqSts}",
 		        		eqType : "${equip.eqType}",

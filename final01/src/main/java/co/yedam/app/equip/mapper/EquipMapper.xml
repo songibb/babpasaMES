@@ -12,6 +12,10 @@
   	
   <!-- 설비등록 -->
   <insert id="insertEquipInfo" parameterType="EquipVO">
+  		<selectKey keyProperty="eqCode" resultType="String" order="BEFORE">
+			SELECT 'EQ-' || LPAD(NVL(MAX(SUBSTR(EQ_CODE, -3)),0) + 1, 3, '0')
+			FROM EQ_EQUIP
+		</selectKey>
   		INSERT INTO EQ_EQUIP
   					(
   						EQ_CODE

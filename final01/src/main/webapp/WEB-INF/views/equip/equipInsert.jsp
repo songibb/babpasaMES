@@ -80,6 +80,9 @@
        float : right;
     }
     
+    #eqCode{
+    	background-color: #bcbcbc;
+    }
   
    /*모달시작*/
    #actModal, #matModal{ 
@@ -198,11 +201,11 @@
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
          <th>제작일자</th>
-         <td><input type="text" name="makeDate" id="makeDate"></td>
+         <td><input type="date" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>구매일자</th>
-         <td><input type="text" name="buyDate" id="buyDate"></td>
+         <td><input type="date" name="buyDate" id="buyDate"></td>
          <th>점검주기</th>
          <td><input type="text" name="chkCycle" id="chkCycle"></td>
       </tr>
@@ -212,9 +215,9 @@
       </tr>
       <tr>
          <th>최고온도</th>
-         <td><input type="text" name="highTemp" id="highTemp"></td>
+         <td><input type="text" name="highTemp" id="highTemp">~ </td> 
          <th>최저온도</th>
-         <td><input type="text" name="lowTemp" id="lowTemp"></td>
+         <td><input type="text" name="lowTemp" id="lowTemp">℃ </td>
       </tr>
       <tr>
          <th>설비이미지</th>
@@ -224,8 +227,7 @@
    <br>
    <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
    <button type="submit" value="insert">등록</button>
-   <button type="submit" value="update">수정</button>
-<%--    <button type="button" onclick="location.href='equipDelete?eqCode=${equipInsert.eqCode}'">삭제</button> --%>
+   <button type="submit" id="update">수정</button>
    <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
 </form>   
@@ -247,12 +249,12 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+//코드설비 클릭하면 값 다 갖고오기
 var Grid;
 $("#actModal").click(function(){
   $(".modal").fadeIn();
   Grid = createActGrid();
   Grid.on('click', () => {
-		//클릭한 계획의 계획코드 가져오기
 		let rowKey = Grid.getFocusedCell().rowKey;
 		let eqCode = Grid.getValue(rowKey, 'eqCode');
 
@@ -325,16 +327,6 @@ $('#deleteEq').click(function(){
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 		      el: document.getElementById('actGrid'),
-		      /* data: [
-		    	  <c:forEach items="${ModalEquip}" var="equip"  varStatus="status">
-		      	{
-		      		eqCode : "${equip.eqCode}",
-		      		actCode : "${equip.actCode}",
-		      		eqName :"${equip.eqName}",   		
-		      	}<c:if test="${not status.last}">,</c:if>
-		      	 </c:forEach>
-
-		         ], */
 			   scrollX: false,
 		      scrollY: false,
 		      minBodyHeight: 30,
@@ -368,6 +360,38 @@ function createActGrid(){
 	   return actGrid;
 }
 
+/* $('form').on('submit',ajaxEquipUpdate);
+
+// 2) form 태그 내의 정보를 가져옴
+function serializeObject(){
+	let formData=$('form').serializeArray();// 객체 배열: 객체 하나 -> input태그 하나
+	
+	let objectData={};//변수선언
+	$.each(formData,function(idx,obj){
+		objectData[obj.name]=obj.value;
+	});
+	return objectData;
+}
+
+	// 3) ajax를 통해 통신을요청해야됨
+	function ajaxEquipUpdate(e){
+		e.preventDefault();
+		
+		
+		let obj=serializeObject();
+		
+		
+		$.ajax({				
+		url: 'equipUpdate',
+		type:'post',
+		contentType:'application/json',
+		data:JSON.stringify(obj)
+	})
+	.done(data => {
+		alert("수정완료");
+	})
+	.fail(reject =>console.log(reject));
+	}; */
 
 
 

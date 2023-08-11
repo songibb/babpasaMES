@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page session="false" %>
 
 <!DOCTYPE html>
@@ -197,7 +198,7 @@
                 <div><hr>
                 
        
-<form>
+<form name="insertForm" action="insertOffEquip" method="post"> 
      	<h3>비가동 등록</h3>
 		    <table>
 			      <tr>
@@ -208,21 +209,24 @@
 			         <th>설비명</th>
 			        	 <td><input type="text" name="eqName" id="eqName"></td>
 			         <th>비가동코드</th>
-			        	 <td><input type="text" name="modelName" id="modelName"></td>  
+			        	 <td><input type="text" name="offNo" id="offNo"></td>  
 			      </tr>
 			      <tr>
 			         <th>비가동구분</th>
-			         	<td><input type="text" name="eqSts" id="eqSts"></td>
+			         	<td><input type="text" name="offType" id="offType"></td>
 			         	<!--select box식으로 구분 선택하도록  -->
 			         <th>작업내용</th>
-			         	<td><input type="text" name="eqInfo" id="eqInfo"></td>
+			         	<td><input type="text" name="offInfo" id="offInfo"></td>
 			         	<!--작업 내용은 입력 가능 -->
 			      </tr>
 			       <tr>
 			         <th>비가동시작시간</th>
-			         	<td><input type="text" name="prcsType" id="prcsType"></td> <!--최초에는 시작 버튼만 활성화..  -->
+			         	<td><input type="text" name="offStime" id="offStime">
+			         	 <input type="button" value="시작" onclick="setCurrentTime()" /></td>
+			         	 <!--최초에는 시작 버튼만 활성화..  -->
 			         <th>비가동종료시간</th>
-			         	<td><input type="text" name="highTemp" id="highTemp"></td>    
+			         	<td><input type="text" name="offEtime" id="offEtime">
+			         	 <input type="button" value="종료" onclick="setCurrentTime2()" /></td>    
 			      </tr>
 		   </table>
 	  
@@ -233,6 +237,19 @@
 	</div> 
 </form>
 
+	<script>
+		function setCurrentTime() { //시작시간
+		  var currentTime = new Date().toLocaleString(); // 현재시각, 날짜 생성
+		  document.getElementById('offStime').value = currentTime; // 생성된 걸 값 뿌리기
+		}
+		
+		
+		function setCurrentTime2() { //종료시간
+			  var currentTime = new Date().toLocaleString(); // 현재시각, 날짜 생성
+			  document.getElementById('offEtime').value = currentTime; // 생성된 걸 값 뿌리기
+			}			
+	</script>
+	
 <div class="modal">  
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
@@ -245,12 +262,11 @@
        </div>
   </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		
+			//전체 비가동 설비 조회 그리드창
 		    var grid = new tui.Grid({
 		        el: document.getElementById('grid'),
-		        //전체설비랑 join을해서 갖고와야되나..
 		        data :[
 		        	<c:forEach items="${offequip}" var="off"  varStatus="status">
 		        	{
@@ -259,8 +275,8 @@
 		        		eqName : "${off.eqName}",
 		        		offType : "${off.offType}",
 		        		offInfo : "${off.offInfo}",
-		        		offStime : "${off.offStime}",
-		        		offEtime : "${off.offEtime}",
+		        		offStime : "<fmt:formatDate value='${off.offStime}' pattern='yyyy-MM-dd'/>",
+		        		offEtime : "<fmt:formatDate value='${off.offEtime}' pattern='yyyy-MM-dd'/>",
 		        	}<c:if test="${not status.last}">,</c:if>
 		        	 </c:forEach>
 		        ],
@@ -302,29 +318,26 @@
 				 {
 			 	     header: '종료시간',
 			 	     name: 'offEtime'
-			 	  },
+			 	  }
 		 	      
   
 		 	    ]
 		      })  
 		    
-		    /* 설비코드 join해서 가져오기? */
 			
 var Grid;
 $("#actModal").click(function(){
   $(".modal").fadeIn();
   Grid = createActGrid();
   Grid.on('click', () => {
-		//클릭한 계획의 계획코드 가져오기
 		let rowKey = Grid.getFocusedCell().rowKey;
 		let eqCode = Grid.getValue(rowKey, 'eqCode');
 
 		$.ajax({
-			url : 'getEquip',
+			url : 'getOffEquipInfo',
 			method : 'GET',
 			data : { eqCode : eqCode },
 			success : function(data){
-					console.log(data);
 					$('#eqCode').val(data.eqCode);
 					$('#eqName').val(data.eqName);
 					$('#offNo').val(data.offNo);
@@ -333,6 +346,7 @@ $("#actModal").click(function(){
 					$('#offStime').val(data.offStime);
 					$('#offEtime').val(data.offEtime);							
 					console.log(data);
+					
 					$(".modal").fadeOut();
      		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
 			    },
@@ -344,7 +358,7 @@ $("#actModal").click(function(){
 		});
   
   $.ajax({
-	    url : "selectEquipAllList",
+	    url : "selectOffEquipAllList",
 	    method :"GET",
 	    success : function(result){
 	        Grid.resetData(result);
@@ -368,16 +382,6 @@ $("#close_btn").click(function(){
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 		      el: document.getElementById('actGrid'),
-		      /* data: [
-		    	  <c:forEach items="${ModalEquip}" var="equip"  varStatus="status">
-		      	{
-		      		eqCode : "${equip.eqCode}",
-		      		actCode : "${equip.actCode}",
-		      		eqName :"${equip.eqName}",   		
-		      	}<c:if test="${not status.last}">,</c:if>
-		      	 </c:forEach>
-
-		         ], */
 			   scrollX: false,
 		      scrollY: false,
 		      minBodyHeight: 30,
@@ -385,9 +389,8 @@ function createActGrid(){
 		      selectionUnit: 'row',
 		      pagination: true,
 		      pageOptions: {
-		      //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		        useClient: true,
-		        perPage: 10
+		      useClient: true,
+		      perPage: 10
 		      },
 		      columns: [
 		    	      {
@@ -404,10 +407,7 @@ function createActGrid(){
 			 	    	  name : 'eqSts'		 	    	  
 			 	      },
 			    ]
-		    })
-	   
-	   
-	   
+		    })   
 	   return actGrid;
 }
 			

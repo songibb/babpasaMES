@@ -8,11 +8,14 @@ import co.yedam.app.equip.service.OffEquipVO;
 public interface OffEquipMapper {
 	
 	//설비 전체 조회
-	public List<EquipVO> selectAllequip();
+	public List<OffEquipVO> selectAllequip();
 	
-	//전체조회
+	//비가동 설비 전체조회
 	public List<OffEquipVO> selectOffEquipAllList();
 	
 	//비가동 설비 등록
 	public int insertOffEquip(OffEquipVO offequipVO);
+	
+	//모달 조회된 전체설비 단건으로 가져오기(조회)
+	public OffEquipVO selectOffEquipInfo(OffEquipVO offequipVO);
 }
