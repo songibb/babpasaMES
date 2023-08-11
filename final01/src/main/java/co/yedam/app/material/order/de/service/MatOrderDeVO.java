@@ -18,12 +18,12 @@ public class MatOrderDeVO {
 	private String actName;
 	private String empName;
 
-	//private String matOdDeCd;
-	//private String matCode;
-	//private String matTestYn;
-	//private String empCode;
-	//private Date matOdRq;
-	//private String actCode;
+	private String empCode;
+	private String actCode;
+	private String matOdDeCd;
+	private String matCode;
+	private String matTestYn;
+	private Date matOdRq;
 	
 	
 	

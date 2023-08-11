@@ -427,17 +427,17 @@
    var grid = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [
-	           <c:forEach items="${matOrderList}" var="mat">
+	           <c:forEach items="${matOrderList}" var="mat" varStatus="status">
 	           	{
-	           	matOdCd : "${mat.matOdCd}"
+	           	matOdCd : "${mat.matOdCd}",
 	           	matName :"${mat.matName}",
 	           	matPrice :"${mat.matPrice}",
 	           	matAmt :"${mat.matAmt}",
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
 	           	actName :"${mat.actName}",
 	           	empName : "${mat.empName}",
-	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}}" pattern="yyyy년 MM월 dd일"/>`
-	           	},
+	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy년 MM월 dd일"/>`
+	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
 		   scrollX: false,
@@ -473,13 +473,18 @@
 	 	        name: 'matTotalPrice'
 	 	      },
 	 	      {
-		 	    header: '업체명',
+		 	    header: '거래처명',
 		 	    name: 'actName'
 		 	  },
 		 	  {
 		 	    header: '담당자',
 		 	    name: 'empName'
 		 	  },
+		 	  {
+	 	 	        header: '발주일자',
+	 	 	        name: 'matOdRq',
+	 	 	        editor : 'text'
+	 	 	  },
 		 	  {
 			 	header: '납기요청일',
 			 	name: 'matOdAcp'

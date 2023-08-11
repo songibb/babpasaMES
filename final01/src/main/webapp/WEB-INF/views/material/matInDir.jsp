@@ -212,25 +212,25 @@ input[type="date"]{
 
     
 	<script>
+	document.getElementById('save').addEventListener('click', saveServer);
+	document.getElementById('dirAdd').addEventListener('click', addDirRow);
+
+	//페이지 호출시 생산지시 등록하는 행 자동 생성
+	window.onload = function addRow(){
+		dirGrid.appendRow();
+	} 
+
+	//행추가 버튼 클릭시 상세생산지시 행 추가
+	function addDirRow(){
+		dirDeGrid.appendRow();
+	}
    
-    $('#save').on('click', create);
-    
-    function create(e){
-    	initGrid();
-    }
+   
  
 
 	//생산지시 form
-	function initGrid(){
-		var grid = new tui.Grid({
+	var grid = new tui.Grid({
 	        el: document.getElementById('grid'),
-	        data: {
-	            api: {
-	              readData: { url: 'getMatAll', method: 'GET' }
-	    		  
-	            }
-	    
-	          },
 	        scrollX: false,
 	        scrollY: false,
 	        minBodyHeight: 30,
@@ -241,39 +241,90 @@ input[type="date"]{
 	        columns: [
 	        	 {
 	 	 	        header: '자재 LOT',
-	 	 	        name: 'mat_lot',
+	 	 	        name: 'matLot'
 	 	 	      },
 	 	 	      {
 	 	 	        header: '자재코드',
-	 	 	        name: 'mat_code'
+	 	 	        name: 'matCode'
 	 	 	      },
 	 	 	      {
 	 	 	        header: '자재명',
-	 	 	        name: 'mat_name'
+	 	 	        name: 'matName',
+	 	 	        editor : 'text'
 	 	 	      },
 	 	 	      {
-	 	 	        header: '업체명',
-	 	 	        name: 'act_name'
+	 	 	        header: '거래처명',
+	 	 	        name: 'actName'
 	 	 	      },
+	 	 	      {
+                      header: '거래처코드',            // [필수] 컬럼 이름
+                      name: 'actCode',                 // [필수] 컬럼 매핑 이름 값
+                      hidden: true,                   // [선택] 숨김 여부
+                  },
 	 	 	      {
 	 	 	        header: '입고량',
-	 	 	        name: 'mat_in_amt'
+	 	 	        name: 'matInAmt',
+	 	 	        editor : 'text'
 	 	 	      },
 	 	 	      {
 	 		 	    header: '담당자',
-	 		 	    name: 'emp_name'
+	 		 	    name: 'empName'
 	 		 	  },
 	 		 	  {
+                      header: '담당자코드',            // [필수] 컬럼 이름
+                      name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
+                      hidden: true,                   // [선택] 숨김 여부
+                  },
+	 		 	  {
 	 		 	    header: '입고일자',
-	 		 	    name: 'mat_ind'
+	 		 	    name: 'matInd',
+	 	 	        editor : 'text'
 	 		 	  },
 	 		 	  {
 	 			 	header: '유통기한',
-	 			 	name: 'mat_exd'
+	 			 	name: 'matExd',
+	 	 	        editor : 'text'
 	 			  }
 	        ]
 	      });  
 	}
+	
+	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
+	function saveServer() {	
+		
+		//생산지시 객체 -> insert
+		let rowKey = grid.getFocusedCell().rowKey;
+		let columnName = dirGrid.getFocusedCell().columnName;
+		
+		dirGrid.finishEditing(rowKey, columnName);
+		let obj = {};
+
+		obj['matCode'] = dirGrid.getValue(rowKey, 'matCode');
+		obj['actCode'] = dirGrid.getValue(rowKey, 'actCode');
+		//name을 code로 가져와야됨..........
+		obj['matInAmt'] = dirGrid.getValue(rowKey, 'matInAmt');
+		obj['empCode'] = dirGrid.getValue(rowKey, 'empCode');
+		//name을 code로 가져와야됨..........
+		obj['matInd'] = dirGrid.getValue(rowKey, 'matInd');
+		obj['matExd'] = dirGrid.getValue(rowKey, 'matExd');
+		
+		$.ajax({
+			url : 'prcsDirInsert',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(data){
+				console.log(data);
+				dirGrid.clear();
+				dirGrid.appendRow();
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}		
+		})
+	}
+		
+		
     
 	
 	
@@ -282,81 +333,7 @@ input[type="date"]{
 	
 	
 	
-//     document.getElementById('save').addEventListener('click', saveServer);
- 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
-	
-// 	//페이지 호출시 생산지시 등록하는 행 자동 생성
-// 	window.onload = function addRow(){
-// 		//dirGrid.appendRow();
-// 		dirGrid.appendRow( { prcsDirCode : "", prcsPlanCode : "", prcsDirName : "", empCode : "" }  )
-// 	} 
-	
-	//행추가 버튼 클릭시 상세생산지시 행 추가
-	function addDirRow(){
-		dirDeGrid.appendRow();
-	}
-	
-//     const dataSource = {
-// 		api: {
-//     			createData: { url: 'prcsDir', method: 'POST' }
-//     	    }
-//         };
-// 	//
-// 	function saveServer() {
-// 		const { rowKey, columnName } = dirGrid.getFocusedCell();
 
-// 		  if (rowKey && columnName) {
-// 			  let que = dirGrid.finishEditing(rowKey, columnName);
-// 			  console.log(que);
-// 		  }
-		
-// 		  dirGrid.request('createData', {
-// 			  checkedOnly: false,
-// 			  modifiedOnly: true,
-// 			  showConfirm: true,
-// 			  withCredentials: false
-// 		  });
-
-
-// 		  $.ajax({
-// 			  url : 'prcsDirInsert',
-// 			  method : 'POST',
-// 			  data : dataSource,
-			  
-// 		  })
-		  
-// 	}
-	
-	
-	
-
-	//상세생산지시 form
-// 	var matGrid = new tui.Grid({
-//         el: document.getElementById('matGrid'),
-//         scrollX: false,
-//         scrollY: false,
-//         minBodyHeight: 30,
-// 		rowHeaders: ['rowNum'],
-//         columns: [
-//           {
-//             header: '상세지시코드',
-//             name: 'matCode'
-//           },
-//           {
-//             header: '제품코드',
-//             name: 'matName'
-//           },
-//           {
-//             header: '생산계획량',
-//             name: 'matUnit'
-//           },
-//           {
-//             header: '지시수량',
-//             name: 'matSts'
-//           },
-
-//         ]
-//       })
 
 
 	
