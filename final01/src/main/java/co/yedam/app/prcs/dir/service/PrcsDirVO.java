@@ -15,6 +15,10 @@ public class PrcsDirVO {
 	private String prcsDirName;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date prcsDirDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date prcsStartDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date prcsEndDate;
 	private String prcsDirSts;
 	private String empCode;
 	
