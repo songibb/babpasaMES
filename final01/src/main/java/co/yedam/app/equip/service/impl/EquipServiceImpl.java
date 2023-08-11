@@ -1,6 +1,8 @@
 package co.yedam.app.equip.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,14 +42,20 @@ public class EquipServiceImpl implements EquipService {
 	}
 	
 	@Override
-	//설비 수정
-	public String updateEquipInfo(EquipVO equipVO) {
+	public Map<String, String> updateEquip(EquipVO equipVO){
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("설비코드",String.valueOf(equipVO.getEqCode()));
+		
 		int result = equipMapper.updateEquip(equipVO);
-		if(result ==1) {
-			return equipVO.getEqCode();
+		
+		if(result == 1) {
+			map.put("결과", "success");
 		}else {
-			return "수정실패";
+			map.put("결과", "fail");
 		}
+		return map;
+		
 	}
 	
 	

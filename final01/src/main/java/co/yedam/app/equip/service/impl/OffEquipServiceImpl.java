@@ -17,6 +17,7 @@ public class OffEquipServiceImpl implements OffEquipService {
 	@Autowired
 	OffEquipMapper offEquipMapper;
 	
+	//비가동 설비 전체 조회
 	@Override
 	public List<OffEquipVO> getOffEquipList() {
 		// TODO Auto-generated method stub
@@ -24,7 +25,7 @@ public class OffEquipServiceImpl implements OffEquipService {
 	}
 
 	@Override
-	public List<EquipVO> getAllEquip(){
+	public List<OffEquipVO> getAllEquip(){
 		return offEquipMapper.selectAllequip();
 	}
 	
@@ -38,5 +39,11 @@ public class OffEquipServiceImpl implements OffEquipService {
 		}else {
 			return "등록실패";
 		}
+	}
+	
+	//모달 단건 조회 
+	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO) {
+		return offEquipMapper.selectOffEquipInfo(offequipVO);
+		
 	}
 }

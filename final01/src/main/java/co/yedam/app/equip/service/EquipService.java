@@ -1,6 +1,7 @@
 package co.yedam.app.equip.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EquipService {
 	//전체 설비 조회
@@ -19,7 +20,7 @@ public interface EquipService {
 	public EquipVO getEquipInfo(EquipVO equipVO);
 	
 	//설비 수정
-	public String updateEquipInfo(EquipVO equipVO);
+	public Map<String, String> updateEquip(EquipVO equipVO);
 
 
 }
