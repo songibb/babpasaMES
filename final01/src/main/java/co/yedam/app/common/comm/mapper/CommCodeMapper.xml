@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.common.comm.mapper.CommCodeMapper">
+  	
+  	<!-- 공통코드 전체 조회 -->
+  	<select id="selectCommCodeList" resultType="CommCodeVO">
+  			SELECT  comm_code,
+					comm_name,
+					comm_info
+			FROM com_comm
+		ORDER BY comm_code
+  	</select>
+  	
+  	<!-- 상세공통코드 조회 -->
+  	<select id="selectCommDeCodeList" resultType="CommCodeVO">
+  		SELECT  commde_code,
+				comm_code,
+				commde_name,
+				commde_info,
+				commde_use
+		FROM com_commde
+	ORDER BY commde_code
+  	</select>
+  	
+  	<!-- act type만 조회하는 경우 -->
+  	<select id="selectActTypeList" resultType="CommCodeVO">
+  			SELECT  commde_code,
+				comm_code,
+				commde_name,
+				commde_info,
+				commde_use
+		FROM com_commde
+        where comm_code = 'ACT-TYPE'
+	ORDER BY commde_code 
+  	</select>
+  	
+  </mapper>

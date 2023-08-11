@@ -1,6 +1,7 @@
 package co.yedam.app.common.act.service;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ActCodeService {
 	
@@ -11,7 +12,7 @@ public interface ActCodeService {
 		public List<ActCodeVO> searchSelectActCode(String actName);
 		
 		//거래처 등록
-		public int insertActInfo(ActCodeVO actCodeVO);
+		public Map<String, String> insertActInfo(ActCodeVO actCodeVO);
 		
 		//거래처 수정
 		public int updateActInfo(ActCodeVO actCodeVO);
