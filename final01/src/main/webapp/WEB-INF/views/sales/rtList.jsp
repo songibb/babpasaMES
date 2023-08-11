@@ -364,13 +364,13 @@
         });
    
  	//검색 버튼
-   $('#searchBtn').on('click', searchOrderList);
-   function searchOrderList(e){
+   $('#searchBtn').on('click', searchRtList);
+   function searchRtList(e){
 	  let prodInsert = $('#prodCodeInput').val();
         
       let search = { prodCode : prodInsert };
       $.ajax({
-         url : 'orderListFilter',
+         url : 'rtListFilter',
          method : 'GET',
          data : search ,
          success : function(data){
