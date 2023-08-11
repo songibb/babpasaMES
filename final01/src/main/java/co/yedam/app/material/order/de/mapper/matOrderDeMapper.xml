@@ -5,20 +5,20 @@
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp
+		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
-            JOIN com_act c
+            LEFT JOIN com_act c
             ON (b.act_code = c.act_code)
-            JOIN com_emp d 
+            LEFT JOIN com_emp d 
             ON (b.emp_code = d.emp_code)
-            JOIN com_mat e
+            LEFT JOIN com_mat e
             ON (a.mat_code = e.mat_code)
 		ORDER BY a.mat_od_de_cd
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp
+		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             JOIN com_act c
@@ -43,6 +43,48 @@
 			</where>
 			ORDER BY a.mat_od_de_cd
 	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertMatOrderList" parameterType="MatOrderDeVO">
+		<selectKey keyProperty="matOdCd" resultType="String" order="BEFORE">
+			SELECT 'MOC-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(mat_od_cd, -3)),0) + 1, 3, '0')
+			FROM mat_order
+			WHERE SUBSTR(mat_od_cd, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		BEGIN
+			<!-- 첫번째 쿼리 -->
+			INSERT 	INTO
+				mat_order
+			VALUES(
+				#{matOdCd}
+				,#{orderList[0].empCode}
+				,#{orderList[0].actCode}
+			);
+			<!-- 두번째 쿼리 -->
+			<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
+			INSERT INTO 
+				mat_order_de(MAT_OD_DE_CD,
+								MAT_OD_CD,
+								MAT_AMT,
+								MAT_CODE,
+								MAT_OD_ACP,
+								MAT_TEST_YN,
+								MAT_PRICE,
+								MAT_OD_RQ)
+            VALUES
+            
+                (get_primaryCode('matOdDeCd'), 
+                 #{matOdCd}, 
+                 #{order.matAmt}, 
+                 #{order.matCode}, 
+                 #{order.matOdAcp}, 
+                 'N', 
+                 #{order.matPrice}, 
+                 #{order.matOdRq});
+            </foreach>
+            
+		END;
+	</insert>
 	
 
 </mapper>

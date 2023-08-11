@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,10 +42,33 @@ public class MatOrderDeController {
 	}
 	
 	//검색 ajax
-		@GetMapping("getMatOrderFilter")
-		@ResponseBody
-		public List<MatOrderDeVO> getMatOrderFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
-			List<MatOrderDeVO> vo = mods.selectMatOrderSearch(materialCode, accountCode, startDate, endDate);
-			return vo;
-		}
+	@GetMapping("getMatOrderFilter")
+	@ResponseBody
+	public List<MatOrderDeVO> getMatOrderFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
+		List<MatOrderDeVO> vo = mods.selectMatOrderSearch(materialCode, accountCode, startDate, endDate);
+		return vo;
+	}
+	
+	//관리페이지
+	@GetMapping("matOrderDir")
+	public String getMatOrderDir(Model model) {
+		List<MatOrderDeVO> mo = mods.selectMatOrderList();
+		model.addAttribute("matOrderList", mo);
+		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("matList", mms.getMetList());
+		return "material/matOrderDir";
+	}
+		
+	//등록
+	@PostMapping("matOrderDirInsert")
+	@ResponseBody
+	public String matOrderDirInsert(@RequestBody List<MatOrderDeVO>  orderList) {
+		 int result = mods.insertMatOrderList(orderList);
+		 
+		 if(result > 0) {
+			 return "success";
+		 } else {
+			 return "fail";
+		 }
+	} 
 }

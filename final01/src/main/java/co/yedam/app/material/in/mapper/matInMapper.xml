@@ -39,4 +39,7 @@
 		</where>
 		ORDER BY a.mat_ind DESC
 	</select>
+	
+	<!-- 등록 -->
+	
 </mapper>

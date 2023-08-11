@@ -27,5 +27,11 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		
 		return modm.selectMatOrderSearch(materialCode, accountCode, startDate, endDate);
 	}
+	
+	//등록
+	@Override
+	public int insertMatOrderList(List<MatOrderDeVO> orderList) {
+		return modm.insertMatOrderList(orderList);
+	}
 
 }

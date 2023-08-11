@@ -18,7 +18,7 @@ public class MatInVO {
 	private Date matInd;
 	//private String empCode;
 	private String empName;
-	//private String actCode;
+	private String actCode;
 	private String actName;
 	
 	private String matTestCode;
