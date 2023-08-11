@@ -36,13 +36,18 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public String insertOrder(OrderVO orderVO) {
+	public int insertOrder(OrderVO orderVO) {
 		int result = orderMapper.insertOrder(orderVO);
-		if(result == 1) {
-			return orderVO.getOrdCode();
+		if(result > 0) {
+			return result;
 		}else {
-			return "NO";
+			return -1;
 		}
+	}
+
+	@Override
+	public List<OrderVO> getNoPlan() {
+		return orderMapper.selectAllNoPlanList();
 	}
 
 }

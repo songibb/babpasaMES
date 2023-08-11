@@ -6,13 +6,45 @@
 	<!-- 전체조회 -->
 	<select id="selectInAllList" resultType="InVO">
 		SELECT i.prod_lot prod_lot
-		, p.prod_name prod_name
-		, i.sales_in_date sales_in_date
-		, i.sales_in_amt sales_in_amt
-		, i.prod_save_amt prod_save_amt
-		, i.sales_in_exd sales_in_exd
-		FROM sales_in i join com_prod p
-		ON (i.prod_code = p.prod_code)
+				, p.prod_name prod_name
+				, i.sales_in_date sales_in_date
+				, i.sales_in_amt sales_in_amt
+				, i.prod_save_amt prod_save_amt
+				, i.sales_in_exd sales_in_exd
+		FROM sales_in i JOIN com_prod p
+						ON (i.prod_code = p.prod_code)
+		ORDER BY prod_lot DESC
 	</select>
 
+<!-- 검색 -->
+  <select id="selectAllIn" resultType="InVO">
+ 		SELECT i.prod_lot prod_lot
+				, p.prod_name prod_name
+				, i.sales_in_date sales_in_date
+				, i.sales_in_amt sales_in_amt
+				, i.prod_save_amt prod_save_amt
+				, i.sales_in_exd sales_in_exd
+		FROM sales_in i JOIN com_prod p
+						ON (i.prod_code = p.prod_code)
+	<where>
+			<if test="prodCode != null and prodCode != ''">
+				AND p.prod_code LIKE '%' || #{prodCode} || '%'
+			</if>
+			<if test="startDate != null and startDate != ''">
+            	AND i.sales_in_date <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+         	</if>
+         	<if test="endDate != null and endDate != ''">
+           		AND i.sales_in_date <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+         	</if>
+	</where>					
+	ORDER BY prod_lot DESC
+	</select>
+	
+	<!-- 제품 목록 -->
+	<select id="selectProdAllList" resultType="InVO">
+	SELECT prod_code, prod_name, prod_unit, prod_std
+	FROM com_prod
+	WHERE prod_kind = 'C'
+	ORDER BY prod_code DESC
+	</select>
 </mapper>

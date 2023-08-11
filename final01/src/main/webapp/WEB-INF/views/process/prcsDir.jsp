@@ -219,7 +219,10 @@ input[type="date"]{
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
 		//생산지시 객체 -> insert
-		let rowKey = dirGrid.getFocusedCell().rowKey;
+		let rowKey = dirGri d.getFocusedCell().rowKey;
+		let columnName = dirGrid.getFocusedCell().columnName;
+		
+		dirGrid.finishEditing(rowKey, columnName);
 	
 		let obj = {};
 

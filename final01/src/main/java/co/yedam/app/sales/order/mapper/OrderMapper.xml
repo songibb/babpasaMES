@@ -21,6 +21,7 @@
 						ON (o.act_code = a.act_code)
 	ORDER BY o.ord_code DESC
   </select>
+  
   <!-- 검색 -->
   <select id="selectAllOrder" resultType="OrderVO">
   SELECT d.sales_ord_de_code sales_ord_de_code
@@ -125,5 +126,19 @@
         , #{devYn}
         </if>
         )
+        <selectKey order="AFTER">
+        	SELECT * FROM dual
+        </selectKey>
 	</insert>
+	
+	<!-- 주문서 관리 - 미계획 주문서 목록 -->
+	<select id="selectAllNoPlanList" resultType="OrderVO">
+		SELECT d.sales_ord_de_code, d.ord_code, p.prod_name, d.prcs_rq_amt, d.dev_date, o.ord_sts
+		FROM sales_ord_de d JOIN com_prod p
+                    ON (d.prod_code = p.prod_code)
+                    JOIN sales_ord o
+                    ON (d.ord_code = o.ord_code)
+		WHERE o.ord_sts = 'p1'
+		ORDER BY d.dev_date
+	</select>
   </mapper>
