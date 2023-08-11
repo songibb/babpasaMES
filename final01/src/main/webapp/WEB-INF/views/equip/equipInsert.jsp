@@ -226,8 +226,8 @@
    </table>
    <br>
    <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
-   <button type="submit" value="insert">등록</button>
-   <button type="submit" id="update">수정</button>
+   <button type="submit" id="insert">등록</button>
+   <button type="button" id="update">수정</button>
    <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
 </form>   
@@ -360,7 +360,7 @@ function createActGrid(){
 	   return actGrid;
 }
 
-/* $('form').on('submit',ajaxEquipUpdate);
+ $('#update').on('click',ajaxEquipUpdate);
 
 // 2) form 태그 내의 정보를 가져옴
 function serializeObject(){
@@ -375,8 +375,6 @@ function serializeObject(){
 
 	// 3) ajax를 통해 통신을요청해야됨
 	function ajaxEquipUpdate(e){
-		e.preventDefault();
-		
 		
 		let obj=serializeObject();
 		
@@ -388,10 +386,11 @@ function serializeObject(){
 		data:JSON.stringify(obj)
 	})
 	.done(data => {
+		console.log(data);
 		alert("수정완료");
 	})
 	.fail(reject =>console.log(reject));
-	}; */
+	}; 
 
 
 

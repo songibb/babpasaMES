@@ -332,27 +332,20 @@ $("#actModal").click(function(){
   Grid.on('click', () => {
 		let rowKey = Grid.getFocusedCell().rowKey;
 		let eqCode = Grid.getValue(rowKey, 'eqCode');
+		let eqName = Grid.getValue(rowKey, 'eqName');
+		let eqSts = Grid.getValue(rowKey, 'eqSts');
+	
+		
 
-		$.ajax({
-			url : 'getOffEquipInfo',
-			method : 'GET',
-			data : { eqCode : eqCode },
-			success : function(data){
-					$('#eqCode').val(data.eqCode);
-					$('#eqName').val(data.eqName);
-					$('#offNo').val(data.offNo);
-					$('#offType').val(data.offType);
-					$('#offInfo').val(data.offInfo);
-					$('#offStime').val(data.offStime);
-					$('#offEtime').val(data.offEtime);							
-					console.log(data);
+		
+					$('#eqCode').val(eqCode);							
+					$('#eqName').val(eqName);							
+					$('#eqSts').val(eqSts);							
+					
 					
 					$(".modal").fadeOut();
      		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
-			    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}	
+			
 			    
 		})
 		});
@@ -372,7 +365,7 @@ $("#close_btn").click(function(){
 	  $(".modal").fadeOut(); 
 		Grid.destroy();
 	});
-});
+
 
 
 
@@ -382,6 +375,15 @@ $("#close_btn").click(function(){
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 		      el: document.getElementById('actGrid'),
+		      data : [
+		    	  <c:forEach items="${allequip}" var="ap" varStatus="status">
+		          	{
+		          		eqCode : "${ap.eqCode}",
+		          		eqName :"${ap.eqName}",
+		          		eqSts :"${ap.eqSts}",
+		          	} <c:if test="${not status.last}">,</c:if>
+		          </c:forEach>
+		      ],
 			   scrollX: false,
 		      scrollY: false,
 		      minBodyHeight: 30,

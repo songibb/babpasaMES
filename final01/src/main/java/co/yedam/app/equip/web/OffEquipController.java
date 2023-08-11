@@ -25,17 +25,12 @@ public class OffEquipController {
 	@GetMapping("/offequip")
 	public String getOffEquipList(Model model) {
 		model.addAttribute("offequip",offEquipService.getOffEquipList());
+		
 		model.addAttribute("allequip", offEquipService.getAllEquip());
 		return "equip/offequip";
 	}
 	
-	//AJAX 연결
-			@GetMapping("selectOffEquipAllList")  
-			@ResponseBody
-			public List<OffEquipVO> getOffEquipChkAllList(){
-				List<OffEquipVO> list = offEquipService.getAllEquip();
-				return list;
-			}
+	
 		
 	//등록페이지
 	@GetMapping("/insertOffEquip")

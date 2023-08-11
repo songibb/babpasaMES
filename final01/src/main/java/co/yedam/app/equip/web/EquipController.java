@@ -59,6 +59,7 @@ public class EquipController {
 	
 	//설비 수정
 	@PostMapping("/equipUpdate")
+	@ResponseBody
 	public Map<String, String> equipUpdateProcess(@RequestBody EquipVO equipVo ){
 		return equipService.updateEquip(equipVo);
 	}
