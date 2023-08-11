@@ -16,4 +16,7 @@ public class ActCodeVO {
 	//조인
 	private String commdeName;
 	private String empName;
+	
+	private String kind;
+	private String sts;
 }

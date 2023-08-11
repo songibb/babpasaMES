@@ -27,16 +27,12 @@
                 	<li class="nav-item"> <a class="nav-link" href="#">사원 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">공통 코드 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">공통 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="prodCodeList">제품 코드 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="#">제품 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="#">자재 코드 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="#">자재 코드 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="prodCodeList">제품 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">제품 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">자재 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="#">자재 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="ActCodeList">거래처 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="actCodeAdmin">거래처 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="errCodeList">불량 코드 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="#">불량 코드 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="testCodeList">검사 코드 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="#">검사 코드 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="bomCodeList">BOM 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">BOM 관리</a></li>
               	</ul>

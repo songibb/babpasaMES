@@ -1,19 +1,21 @@
 package co.yedam.app.common.act.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.act.service.ActCodeService;
 import co.yedam.app.common.act.service.ActCodeVO;
+import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
-import co.yedam.app.prcs.manage.service.PrcsManageVO;
 
 @Controller
 public class ActCodeController {
@@ -23,6 +25,9 @@ public class ActCodeController {
 	
 	@Autowired
 	EmpInfoService empInfoService;
+	
+	@Autowired
+	CommCodeService commCodeService;
 	
 	//전체조회
 	@GetMapping("/ActCodeList")
@@ -44,6 +49,7 @@ public class ActCodeController {
 	@GetMapping("actCodeAdmin")
 	public String actCodeAdmin(Model model) {
 		model.addAttribute("empList", empInfoService.selectEmpInfoList());
+		model.addAttribute("actTypeList", commCodeService.selectActTypeList());
 		return "admincom/actCodeAdmin";
 	}
 	
@@ -59,16 +65,8 @@ public class ActCodeController {
 	//거래처 등록
 	@PostMapping("actCodeInsert")
 	@ResponseBody
-	public boolean actCodeInsert(ActCodeVO actCodeVO){
-		boolean result = false;
-		int inResult = actCodeService.insertActInfo(actCodeVO);
-		
-		if(inResult >-1) {
-			result = true;
-		}
-		
-		return result;
-		
+	public Map<String, String> actCodeInsert(@RequestBody ActCodeVO actCodeVO){
+		return actCodeService.insertActInfo(actCodeVO);
 	}
 	
 }

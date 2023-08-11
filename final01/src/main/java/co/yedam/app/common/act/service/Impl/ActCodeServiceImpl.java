@@ -1,6 +1,8 @@
 package co.yedam.app.common.act.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,15 +30,20 @@ public class ActCodeServiceImpl implements ActCodeService{
 	}
 
 	@Override
-	public int insertActInfo(ActCodeVO actCodeVO) {
+	public Map<String, String> insertActInfo(ActCodeVO actCodeVO) {
+		
+		Map<String, String> map = new HashMap<>();
+		
 		int result = actCodeMapper.insertActInfo(actCodeVO);
-		if(result ==1) {
-			return 1;
-		}else {
-			return -1;
+		
+		if(result == 1) {
+			map.put("결과", "Success");
+		} else {
+			map.put("결과", "Fail");
 		}
+		return map;
 	}
-
+	
 	@Override
 	public int updateActInfo(ActCodeVO actCodeVO) {
 		
@@ -48,5 +55,7 @@ public class ActCodeServiceImpl implements ActCodeService{
 		
 		return 0;
 	}
+
+
 
 }

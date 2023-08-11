@@ -6,17 +6,21 @@
   
   	<!-- 전체 거래처조회 -->
   	<select id="selectActCodeList" resultType="ActCodeVO">
-  		SELECT  a.act_code,
+    SELECT  a.act_code,
 				a.act_name,
 				a.act_num,
 				a.act_tel,
 				a.act_sts,
-				c.commde_name,
-				e.emp_name
+				c.commde_name kind,
+				e.emp_name,
+				o.commde_name sts
 		FROM com_act a LEFT JOIN com_commde c
 								 ON(a.act_kind = c.commde_code)
                        LEFT JOIN com_emp e
                                  ON(a.emp_code=e.emp_code)
+                       LEFT JOIN com_commde o
+                       			 ON(a.act_sts = o.commde_code)
+       ORDER BY act_code
   	</select>
   	
   	<!-- 거래처명 검색 조회 -->
@@ -33,12 +37,13 @@
                        LEFT JOIN com_emp e
                                  ON(a.emp_code=e.emp_code)
         WHERE a.act_name LIKE '%' || #{actName} || '%'
+        ORDER BY act_code
   	</select>
   	
-  	<insert id="deleteActInfo" parameterType="ActCodeVO">
-  		<selectKey keyProperty="actCode" resultType="int" order="BEFORE">
+  	<insert id="insertActInfo" parameterType="ActCodeVO">
+  		<selectKey keyProperty="actCode" resultType="String" order="BEFORE">
   			SELECT 'ACT-' || LPAD((NVL(MAX(SUBSTR(ACT_CODE, -4)),0)+1),4,'0')
-			FROM COM_ACT;
+			FROM COM_ACT
   		</selectKey>
   		INSERT INTO com_act
   							(
