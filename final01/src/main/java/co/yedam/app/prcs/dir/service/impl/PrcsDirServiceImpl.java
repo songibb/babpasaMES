@@ -1,6 +1,8 @@
 package co.yedam.app.prcs.dir.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,14 +31,28 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	
 	//생산지시 등록
 	@Override
-	public int insertPrcsDir(PrcsDirVO prcsDirVO) {
+	public String insertPrcsDir(PrcsDirVO prcsDirVO) {
+		//selectKey 값 가져오기
 		int result = prcsDirMapper.insertPrcsDir(prcsDirVO);
+		String prcsDirCode = String.valueOf(prcsDirVO.getPrcsDirCode());
 		if(result > 0) {
-			return result;
+			return prcsDirCode;
+		} else {
+			return "실패";
+		}
+
+	}
+	
+	//상세생산지시 등록
+	@Override
+	public int insertPrcsDirDe(PrcsDirVO prcsDirVO) {
+		int result = prcsDirMapper.insertPrcsDirDe(prcsDirVO);
+		if(result > 0) {
+			return 1;
 		} else {
 			return -1;
 		}
-	
+		
 	}
 
 }

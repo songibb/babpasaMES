@@ -66,18 +66,18 @@
 	<insert id="insertPrcsDirDe" parameterType="prcsDirVO">
 		<selectKey keyProperty="prcsDirDeCode" resultType="String" order="BEFORE">
 			SELECT 'DIRDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_de_code, -3)),0) + 1, 3, '0')
-			FROM prcs_dir
+			FROM prcs_dir_de
 			WHERE SUBSTR(prcs_dir_de_code, 7, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
-		INSERT INTO prcs_dir (
+		INSERT INTO prcs_dir_de (
 								prcs_dir_de_code
-								, prcs_dir_code,
-							    , prod_code,
-							    , prcs_plan_amt,
-							    , prcs_dir_amt,
-							    , prcs_start_de_date,
+								, prcs_dir_code
+							    , prod_code
+							    , prcs_plan_amt
+							    , prcs_dir_amt
+							    , prcs_start_de_date
 							    <if test="prcsEndDeDate != null">
-							    , prcs_end_de_date,
+							    , prcs_end_de_date
 							    </if>
 							    , emp_code
 							  )
@@ -85,7 +85,7 @@
 						#{prcsDirDeCode}
 						, #{prcsDirCode}
 						, #{prodCode}
-						, #{prcsPlanAamt}
+						, #{prcsPlanAmt}
 						, #{prcsDirAmt}
 						, #{prcsStartDeDate}
 						<if test="prcsEndDeDate != null">
@@ -95,6 +95,8 @@
 					 )
 	</insert>
 	
+	<!-- 상세생산지시할때 해당 생산지시 코드 가져오기 -->
+
 	
 	<!-- 생산지시 수정 -->
 	<update id="updatePrcsDir">
