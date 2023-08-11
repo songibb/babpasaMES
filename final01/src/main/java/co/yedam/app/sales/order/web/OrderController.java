@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
@@ -19,7 +21,7 @@ public class OrderController {
 	@Autowired
 	OrderService orderService;
 
-	// 전체조회
+	// 조회
 	@GetMapping("/orderList")
 	public String orderList(Model model) {
 		model.addAttribute("orderList", orderService.getOrderList());
@@ -39,6 +41,26 @@ public class OrderController {
 		List<OrderVO> vo = orderService.searchOrderList(actCode, prodCode, startDate, endDate);
 		return vo;
 	}
-	//거래처 등록
+	
+	//거래처 등록 - 페이지 호출
+	@GetMapping("/orderMng")
+	public String orderInsertPage() {
+		return "sales/orderMng";
+	}
+	
+	//거래처 등록 - 실행
+	@PostMapping("/orderInsert")
+	@ResponseBody
+	public int orderInsert(@RequestBody OrderVO orderVO, RedirectAttributes rtt) {
+		int result = orderService.insertOrder(orderVO);
+		return result;
+	}
+	
+	// 주문 관리 조회들
+		@GetMapping("/orderMngList")
+		public String orderMngList(Model model) {
+			model.addAttribute("noPlanList", orderService.getNoPlan());
+			return "sales/orderMng";
+		}
 
 }

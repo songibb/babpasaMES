@@ -25,4 +25,10 @@ public class InVO {
 	private String empCode;
 	private String testNum;
 	private String prodName;
+	
+	private String prodUnit;
+	private String prodStd;
+	
+	private Date startDate;
+	private Date endDate;
 }
