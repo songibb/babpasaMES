@@ -5,7 +5,7 @@ import java.util.List;
 public interface EmpInfoService {
 	
 	//전체사원조회
-	public List<EmpInfoVO> getEmpInfoAll();
+	public List<EmpInfoVO> selectEmpInfoList();
 	
 	//검색조회
 	public List<EmpInfoVO> searchSelectEmp(String empName);

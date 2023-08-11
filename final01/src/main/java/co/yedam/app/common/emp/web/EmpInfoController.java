@@ -25,7 +25,7 @@ public class EmpInfoController {
 	//사원전체조회
 	@GetMapping("/empinfo")
 	public String getEmpInfoAllLIst(Model model) {
-		model.addAttribute("empList", empInfoService.getEmpInfoAll());
+		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		return "common/empInfo";
 	}
 	

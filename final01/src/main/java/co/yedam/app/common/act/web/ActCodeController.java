@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.act.service.ActCodeService;
 import co.yedam.app.common.act.service.ActCodeVO;
+import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
 
 @Controller
@@ -20,10 +21,14 @@ public class ActCodeController {
 	@Autowired
 	ActCodeService actCodeService;
 	
+	@Autowired
+	EmpInfoService empInfoService;
+	
 	//전체조회
 	@GetMapping("/ActCodeList")
 	public String ActCodeList(Model model) {
 		model.addAttribute("actList", actCodeService.selectActCodeList());
+		
 		return "common/actCodeList";
 	}
 	//검색조회
@@ -38,7 +43,7 @@ public class ActCodeController {
 	//거래처 관리페이지
 	@GetMapping("actCodeAdmin")
 	public String actCodeAdmin(Model model) {
-		//model.addAttribute("actList", actCodeService.selectActCodeList());
+		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		return "admincom/actCodeAdmin";
 	}
 	
