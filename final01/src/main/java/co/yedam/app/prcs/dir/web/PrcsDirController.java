@@ -48,10 +48,9 @@ public class PrcsDirController {
 	}
 	
 	
-	//생산지시 등록 - 페이지 호출
-	@GetMapping("prcsDir")
-	public String getPrcsDirInsert() {
-	
+	//생산지시 + 상세생산지시 등록 - 페이지 호출
+	@GetMapping("prcsDirInsert")
+	public String getPrcsDirInsert() {	
 		return "process/prcsDirInsert";
 	}
 	

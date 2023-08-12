@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 계획 등록</h2>
+	<h2>생산 계획 관리</h2>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -27,13 +27,17 @@
 					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
+							<p>계획일자</p>
+                  			<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+							<br>
 							
-							<button type="button" class="btn btn-info btn-icon-text" >
+							<p>계획명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
+							
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 		            	</div>
 	            	</form>
 	           		<button id="save">저장</button>
@@ -54,9 +58,146 @@
 	
 	<script>
 	
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
+	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
+	//행추가
 	document.getElementById('deAdd').addEventListener('click', addDeRow);
 	
+	//검색 -> 상세계획 클릭시 'Y' / 주문서조회 -> 상세계획 클릭시 'N'
+	var gridClick = null;
+	
+	//검색 -> 조건별 생산계획 조회
+	function searchPlanList(){
+		let planName = $('#searchPlanName').val();
+		let sd = $('#startDate').val();
+		let ed = $('#endDate').val();	 
+		
+// 		//생산계획 -> insert
+// 		let rowKey = planGrid.getFocusedCell().rowKey;
+// 		let columnName = planGrid.getFocusedCell().columnName;
+// 		//편집종료
+// 		planGrid.finishEditing(rowKey, columnName);
+
+		$.ajax({
+			url : 'searchPlanList',
+			method : 'GET',
+			data : { searchPlanName : planName, startDate : sd , endDate : ed },
+			success : function(data){
+				planGrid.resetData(data);
+				planDeGrid.clear();	
+				gridClick = 'Y';
+			},
+			error : function(reject){
+			 	console.log(reject);
+			}
+		});
+	}
+
+
+    function saveServer() {	
+
+		//<insert>
+    	
+    	//생산계획 -> insert
+		let rowKey = planGrid.getFocusedCell().rowKey;
+		let columnName = planGrid.getFocusedCell().columnName;
+		//편집종료
+		planGrid.finishEditing(rowKey, columnName);
+
+		let list = planGrid.getData();
+		let obj = list[0];
+
+		$.ajax({
+			url : 'prcsPlanInsert',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(data){					
+				//상세생산계획 insert
+				let rowKey = planDeGrid.getFocusedCell().rowKey;
+				let columnName = planDeGrid.getFocusedCell().columnName;
+				//편집종료
+				planDeGrid.finishEditing(rowKey, columnName);
+				
+				let deList = planDeGrid.getData();
+				$.each(deList, function(i, objDe){
+					deList[i]['prcsPlanCode'] = data;
+				})
+				
+				$.ajax({
+					url : 'prcsPlanDeInsert',
+					method : 'POST',
+					data : JSON.stringify(deList),
+					contentType : 'application/json',
+					success : function(data){
+						console.log(data);
+						//등록 후 그리드 내용 지우고, 행추가
+						planGrid.clear();
+						planGrid.appendRow();
+						planDeGrid.clear();
+						planDeGrid.appendRow();
+						
+						//주문서 테이블에 계획코드, 계획상태 update
+
+					},
+					error : function(reject){
+			 			console.log(reject);
+			 		}
+				})				
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}		
+		})
+		
+		
+		//<update>
+// 		$.ajax({
+// 			url : 'prcsPlanInsert',
+// 			method : 'POST',
+// 			data : JSON.stringify(obj),
+// 			contentType : 'application/json',
+// 			success : function(data){					
+// 				//상세생산계획 insert
+// 				let rowKey = planDeGrid.getFocusedCell().rowKey;
+// 				let columnName = planDeGrid.getFocusedCell().columnName;
+// 				//편집종료
+// 				planDeGrid.finishEditing(rowKey, columnName);
+				
+// 				let deList = planDeGrid.getData();
+// 				$.each(deList, function(i, objDe){
+// 					deList[i]['prcsPlanCode'] = data;
+// 				})
+				
+// 				$.ajax({
+// 					url : 'prcsPlanDeInsert',
+// 					method : 'POST',
+// 					data : JSON.stringify(deList),
+// 					contentType : 'application/json',
+// 					success : function(data){
+// 						//등록 후 그리드 내용 지우고, 행추가
+// 						planGrid.clear();
+// 						planGrid.appendRow();
+// 						planDeGrid.clear();
+// 						planDeGrid.appendRow();
+						
+// 						alert('등록 성공');
+// 					},
+// 					error : function(reject){
+// 			 			console.log(reject);
+// 			 		}
+// 				})				
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}		
+// 		})
+		
+	};
+	
+
 
 	//페이지 호출시 생산계획 등록하는 행 자동 생성
 	window.onload = function addRow(){
@@ -70,48 +211,42 @@
 	}
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
-	function saveServer() {	
+// 	function saveServer() {	
+// 		//생산계획 + 상세생산계획 -> insert
+// 		let rowKey = planGrid.getFocusedCell().rowKey;
+// 		let columnName = planGrid.getFocusedCell().columnName;
+// 		//편집종료
+// 		planGrid.finishEditing(rowKey, columnName);
 		
-		//생산계획 + 상세생산계획 -> insert
-		let rowKey = planGrid.getFocusedCell().rowKey;
-		let columnName = planGrid.getFocusedCell().columnName;
-		//편집종료
-		planGrid.finishEditing(rowKey, columnName);
+// 		rowKey = planDeGrid.getFocusedCell().rowKey;
+// 		columnName = planDeGrid.getFocusedCell().columnName;
+// 		//편집종료
+// 		planDeGrid.finishEditing(rowKey, columnName);
 		
-		rowKey = planDeGrid.getFocusedCell().rowKey;
-		columnName = planDeGrid.getFocusedCell().columnName;
-		//편집종료
-		planDeGrid.finishEditing(rowKey, columnName);
-		
-		let list = planGrid.getData();
-		console.log(list);
-		let deList = planDeGrid.getData();
-		console.log(deList);
-		
-		const totalList = Object.assign({}, list, deList);
-		console.log(totalList);
-		
-		$.ajax({
-			url : 'prcsPlanInsert',
-			method : 'POST',
-			data : JSON.stringify(totalList),
-			contentType : 'application/json',
-			success : function(data){
-				//등록 후 생산계획+상세생산계획 그리드 지우고, 행추가
-				dirGrid.clear();
-				dirGrid.appendRow();
-				dirDeGrid.clear();
-				dirDeGrid.appendRow();
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-	};
+// 		let list = planGrid.getData();
+// 		let deList = planDeGrid.getData();		
 	
+// 		$.ajax({
+// 			url : 'prcsPlanInsert',
+// 			method : 'POST',
+// 			data : {"prcsPlanList" : JSON.stringify(list), "prcsPlanDeList" :JSON.stringify(deList)},
+// 			contentType : 'application/json',
+// 			success : function(data){
+// 				console.log('data :', data)
+// 				//등록 후 생산계획+상세생산계획 그리드 지우고, 행추가
+// 				dirGrid.clear();
+// 				dirGrid.appendRow();
+// 				dirDeGrid.clear();
+// 				dirDeGrid.appendRow();
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})
+// 	};
 	
-	
-	//생산계획 form
+
+	//생산계획 grid
     var planGrid = new tui.Grid({
         el: document.getElementById('planGrid'),
         scrollX: false,
@@ -156,54 +291,81 @@
         ]
 	});
 	
-	//상세생산계획 form
+	//상세생산계획 grid
 	var planDeGrid = new tui.Grid({
-        el: document.getElementById('planDeGrid'),
-        scrollX: false,
-        scrollY: false,
-        minBodyHeight: 30,
+		el: document.getElementById('planDeGrid'),
+		scrollX: false,
+		scrollY: false,
+		minBodyHeight: 30,
 		rowHeaders: ['rowNum'],
-        columns: [
-          {
-            header: '상세계획코드',
-            name: 'prcsPlanDeCode'
-          },
-          {
-            header: '제품코드',
-            name: 'prodCode'
-          },
-          {
-            header: '주문수량',
-            name: 'ordTotalAmt',
-            editor: 'text'
-          },
-          {
-            header: '생산계획량',
-            name: 'prcsPlanAmt',
-            editor: 'text'
-          },
-          {
-            header: '우선순위',
-            name: 'prcsPrio',
-            editor: 'text'
-          },
-        //지울부분
-          {
-            header: '지시수량',
-            name: 'prcsDirAmt'
-          },
-        //지울부분
-          {
-            header: '지시상태',
-            name: 'prcsDirSts'
-          },
-          //지울부분
-          {
-            header: '생산량',
-            name: 'prcsAmt'
-          }
-        ]
-      });
+		columns: [
+			{
+			  header: '상세계획코드',
+			  name: 'prcsPlanDeCode'
+			},
+			{
+			  header: '제품코드',
+			  name: 'prodCode',
+			  editor: 'text'
+			},
+			{
+			  header: '주문수량',
+			  name: 'prcsRqAmt',
+			  editor: 'text'
+			},
+			{
+			  header: '생산계획량',
+			  name: 'prcsPlanAmt',
+			  editor: 'text'
+			},
+			{
+			  header: '우선순위',
+			  name: 'prcsPrio',
+			  editor: 'text'
+			},
+			//지울부분
+			{
+			  header: '지시수량',
+			  name: 'prcsDirAmt',
+			},
+			//지울부분
+     		{
+			  header: '지시상태',
+			  name: 'prcsDirSts',
+			},
+			//지울부분
+			{
+       		  header: '생산량',
+       		  name: 'prcsAmt'
+     		}
+		]
+	});
+	
+
+	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
+	planGrid.on('click', () => {
+		
+		//조건별 검색을 통한 조회일때 사용 (주문서 조회 적용시에는 사용X)
+		if(gridClick == 'Y'){
+	    	//클릭한 계획의 계획코드 가져오기
+	    	let rowKey = planGrid.getFocusedCell().rowKey;
+	    	let planCode = planGrid.getValue(rowKey, 'prcsPlanCode');
+	
+	    	$.ajax({
+				url : 'prcsPlanDeList',
+				method : 'GET',
+				data : { prcsPlanCode : planCode },
+				success : function(data){
+					planDeGrid.resetData(data);
+	 		    },
+				error : function(reject){
+		 			console.log(reject);
+		 		}	
+			})
+		}
+  	});
+	
+
 	
 
 	

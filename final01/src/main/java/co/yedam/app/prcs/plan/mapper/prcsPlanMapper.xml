@@ -8,11 +8,23 @@
 		SELECT prcs_plan_code,
 			   prcs_plan_name,
 			   prcs_plan_date,
-			   emp_code,
+			   emp_code
 			   prcs_dir_yn,
 			   prcs_start_date,
 			   prcs_end_date
 		  FROM prcs_plan
+
+		<where>
+			<if test="searchPlanName != null">
+				AND prcs_plan_name LIKE '%' || #{searchPlanName} || '%'
+			</if>
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(prcs_plan_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(prcs_plan_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
 		 ORDER BY prcs_plan_code
 	</select>
 
@@ -21,7 +33,7 @@
 		SELECT prcs_plan_de_code,
 			   prcs_plan_code,
 			   prod_code,
-			   ord_total_amt,
+			   prcs_rq_amt,
 			   prcs_plan_amt,
 			   prcs_prio,
 			   prcs_dir_amt,
@@ -32,91 +44,134 @@
 		 ORDER BY prcs_plan_de_code
 	</select>
 	
+	
 	<!-- 생산계획 등록 -->
+	<insert id="insertPrcsPlan" parameterType="prcsPlanVO">
+		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
+			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
+			FROM prcs_plan
+			WHERE SUBSTR(prcs_plan_code, 6, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		INSERT INTO prcs_plan (
+									prcs_plan_code
+									, prcs_plan_name
+									, emp_code
+									, prcs_start_date
+									, prcs_end_date
+							   )
+				 VALUES (
+							#{prcsPlanCode}
+							, #{prcsPlanName}
+							, #{empCode}
+							, #{prcsStartDate}
+							, #{prcsEndDate}
+						)
+	</insert>
+	
+	<!-- 상세생산계획 등록 -->
+	<insert id="insertPrcsPlanDe" parameterType="prcsPlanVO">
+		<selectKey keyProperty="prcsPlanDeCode" resultType="String" order="BEFORE">
+			SELECT 'PLANDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_de_code, -3)),0) + 1, 3, '0')
+			FROM prcs_plan_de
+			WHERE SUBSTR(prcs_plan_de_code, 8, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		INSERT INTO prcs_plan_de (
+										prcs_plan_de_code
+										, prcs_plan_code
+										, prod_code
+										, prcs_rq_amt
+										, prcs_plan_amt
+										<if test="prcsPrio > 0">
+										, prcs_prio
+										</if>
+								 )
+	             VALUES ( 
+							#{prcsPlanDeCode}
+							, #{prcsPlanCode}
+							, #{prodCode}
+							, #{prcsRqAmt}
+							, #{prcsPlanAmt}
+							<if test="prcsPrio > 0">
+							, #{prcsPrio} 
+							</if>
+						)
+	</insert >
+	
+	<!-- 생산계획 수정 -->
+	<update id="updatePrcsPlan" parameterType="prcsPlanVO">
+		UPDATE prcs_plan
+		<set>
+			<if test="title != null and !title.equals('')">
+				title = #{title},
+			</if>
+			<if test="contents != null">
+				contents = #{contents},
+			</if>
+			<if test="image != null">
+				image = #{image},
+			</if>
+			<choose>
+				<when test="updatedate != null">
+					updatedate = #{updatedate}
+				</when>
+				<otherwise>
+					<!-- update 할때는 DB에 default가 작동하지 않으므로 지칭해줘야함 -->
+					updatedate = sysdate
+				</otherwise>
+			</choose>
+		</set>
+		WHERE prcs_plan_code = #{prcsPlanCode}
+	</update>
+
+	
+	<!-- 생산계획 + 상세생산계획 등록 -->
 <!-- 	<insert id="insertPrcsPlan" parameterType="prcsPlanVO"> -->
 <!-- 		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE"> -->
 <!-- 			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0') -->
 <!-- 			FROM prcs_plan -->
 <!-- 			WHERE SUBSTR(prcs_plan_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd') -->
 <!-- 		</selectKey> -->
-<!-- 		INSERT INTO prcs_plan ( -->
-<!-- 								prcs_plan_code -->
-<!-- 								, prcs_plan_code -->
-<!-- 								, prcs_dir_name -->
-<!-- 								, prcs_start_date -->
-<!-- 								<if test="prcsEndDate != null"> -->
-<!-- 								, prcs_end_date -->
-<!-- 								</if> -->
-<!-- 								, emp_code -->
-<!-- 							  ) -->
-<!-- 			 VALUES ( -->
-<!-- 						#{prcsDirCode} -->
-<!-- 						, #{prcsPlanCode} -->
-<!-- 						, #{prcsDirName} -->
-<!-- 						, #{prcsStartDate} -->
-<!-- 						<if test="prcsEndDate != null"> -->
-<!-- 						, #{prcsEndDate} -->
-<!-- 						</if> -->
-<!-- 						, #{empCode} -->
-<!-- 					 ) -->
+<!-- 		BEGIN -->
+<!-- 			INSERT INTO prcs_plan ( -->
+<!-- 									prcs_plan_code -->
+<!-- 									, prcs_plan_name -->
+<!-- 									, emp_code -->
+<!-- 									, prcs_dir_yn -->
+<!-- 									, prcs_start_date -->
+<!-- 									, prcs_end_date -->
+<!-- 								  ) -->
+<!-- 				 VALUES ( -->
+<!-- 							#{prcsPlanCode} -->
+<!-- 							, #{prcsPlanName} -->
+<!-- 							, #{empCode} -->
+<!-- 							, #{prcsDirYn} -->
+<!-- 							, #{prcsStartDate} -->
+<!-- 							, #{prcsEndDate} -->
+<!-- 						) -->
+<!-- 			<foreach collection="prcsPlanList" item="order" index="index" open="" separator=" " close=""> -->
+<!-- 			INSERT INTO prcs_plan_de ( -->
+<!-- 										prcs_plan_de_code -->
+<!-- 										, prcs_plan_code -->
+<!-- 										, prod_code -->
+<!-- 										, prcs_rq_amt -->
+<!-- 										, prcs_plan_amt -->
+<!-- 										<if test="prcsPrio > 0"> -->
+<!-- 										, prcs_prio -->
+<!-- 										</if> -->
+<!-- 									 ) -->
+<!-- 	             VALUES (  -->
+<!-- 							get_primaryCode('prcsPlanDeCode') -->
+<!-- 							, #{prcsPlanCode} -->
+<!-- 							, #{prodCode} -->
+<!-- 							, #{prcsRqAmt} -->
+<!-- 							, #{prcsPlanAmt} -->
+<!-- 							<if test="prcsPrio > 0"> -->
+<!-- 							, #{prcsPrio}  -->
+<!-- 							</if> -->
+<!-- 						) -->
+<!--            	</foreach>	 -->
+<!-- 		END; -->
 <!-- 	</insert> -->
-	
-
-	
-	<!-- 생산계획 + 상세생산계획 등록 -->
-	<insert id="insertPrcsPlan" parameterType="prcsPlanVO">
-		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
-			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
-			FROM prcs_plan
-			WHERE SUBSTR(prcs_plan_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
-		</selectKey>
-		BEGIN
-			INSERT INTO prcs_plan (
-									prcs_plan_code
-									, prcs_plan_code
-									, prcs_dir_name
-									, prcs_start_date
-									<if test="prcsEndDate != null">
-									, prcs_end_date
-									</if>
-									, emp_code
-								  )
-				 VALUES (
-							#{prcsDirCode}
-							, #{prcsPlanCode}
-							, #{prcsDirName}
-							, #{prcsStartDate}
-							<if test="prcsEndDate != null">
-							, #{prcsEndDate}
-							</if>
-							, #{empCode}
-						)
-			<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
-			INSERT INTO prcs_plan_de (
-										prcs_plan_de_code
-										, prcs_plan_code
-										, prod_code
-										, ord_total_amt
-										, prcs_plan_amt
-										<if test="prcsPrio > 0">
-										, prcs_prio
-										</if>
-									 )
-            VALUES
-           		
-					( 
-						get_primaryCode('prcsPlanDeCode')
-						, #{prcsPlanCode}
-						, #{prodCode}
-						, #{ordTotalAmt}
-						, #{prcsPlanAmt}
-						<if test="prcsPrio > 0">
-						, #{prcsPrio} 
-						</if>
-					)
-           	</foreach>	
-		END;
-	</insert>
 	
 	<!-- 미계획 주문서 조회 -->
 	<select id="selectNotPlanOrderList" resultType="orderVO">
@@ -128,6 +183,7 @@
 			   d.dev_date
 		  FROM sales_ord s JOIN sales_ord_de d 
 							 ON s.ord_code = d.ord_code
+	
 	</select>
 	
 	

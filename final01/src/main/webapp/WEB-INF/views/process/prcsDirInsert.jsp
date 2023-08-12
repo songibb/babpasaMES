@@ -141,14 +141,14 @@
 					deList[i]['prcsDirCode'] = data;
 				})
 				console.log(deList);
-				
+
 				$.ajax({
 					url : 'prcsDirDeInsert',
 					method : 'POST',
 					data : JSON.stringify(deList),
 					contentType : 'application/json',
 					success : function(data){
-						//등록 후 생산지시+상세생산지시 그리드 지우고, 행추가
+						//등록 후 그리드 내용 지우고, 행추가
 						dirGrid.clear();
 						dirGrid.appendRow();
 						dirDeGrid.clear();
@@ -157,7 +157,7 @@
 					error : function(reject){
 			 			console.log(reject);
 			 		}
-				})
+				})				
 			},
 			error : function(reject){
 	 			console.log(reject);
@@ -167,7 +167,7 @@
 	
 	
 	
-	//생산지시 form
+	//생산지시 grid
     var dirGrid = new tui.Grid({
         el: document.getElementById('dirGrid'),
         scrollX: false,
@@ -217,7 +217,7 @@
         ]
 	});
 	
-	//상세생산지시 form
+	//상세생산지시 grid
 	var dirDeGrid = new tui.Grid({
         el: document.getElementById('dirDeGrid'),
         scrollX: false,

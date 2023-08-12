@@ -1,8 +1,6 @@
 package co.yedam.app.prcs.dir.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +38,6 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		} else {
 			return "실패";
 		}
-
 	}
 	
 	//상세생산지시 등록
@@ -52,7 +49,6 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		} else {
 			return -1;
 		}
-		
 	}
 
 }

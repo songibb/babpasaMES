@@ -44,16 +44,16 @@
 					<form>
 						<div id="customtemplateSearchAndButton">		
 							<p>계획일자</p>
-                  			<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 							<br>
 							
 							<p>계획명</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
+							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
 
-							<button type="button" class="btn btn-info btn-icon-text" >
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 		            	</div>
 	            	</form>
 				</div>
@@ -68,6 +68,29 @@
     
     
 	<script>
+	
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
+
+	function searchPlanList(){
+		   let planName = $('#searchPlanName').val();
+		   let sd = $('#startDate').val();
+		   let ed = $('#endDate').val();	   
+
+		   $.ajax({
+			   url : 'searchPlanList',
+			   method : 'GET',
+			   data : { searchPlanName : planName, startDate : sd , endDate : ed },
+			   success : function(data){	
+				   planGrid.resetData(data);
+				   planDeGrid.clear();	
+			   },
+			   error : function(reject){
+				   console.log(reject);
+			   }
+		   });
+	}
+	
 	
 	//생산계획 조회
     var planGrid = new tui.Grid({

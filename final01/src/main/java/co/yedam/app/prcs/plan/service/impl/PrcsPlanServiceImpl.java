@@ -18,8 +18,8 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//생산계획 조회
 	@Override
-	public List<PrcsPlanVO> getPrcsPlanList() {
-		return prcsPlanMapper.selectPrcsPlanList();
+	public List<PrcsPlanVO> getPrcsPlanList(String searchPlanName, String startDate, String endDate) {
+		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
 	}
 	
 	//상세생산계획 조회
@@ -28,17 +28,49 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 		return prcsPlanMapper.selectPrcsPlanDeList(prcsPlanCode);
 	}
 
-	//생산계획 + 상세생산계획 등록
+	//생산계획 등록
 	@Override
-	public int prcsPlanInsert(PrcsPlanVO prcsPlanVO) {
-		return prcsPlanMapper.insertPrcsPlan(prcsPlanVO);
+	public String insertPrcsPlan(PrcsPlanVO prcsPlanVO) {
+		//selectKey 값 가져오기
+		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanVO);
+		String prcsPlanCode = String.valueOf(prcsPlanVO.getPrcsPlanCode());
+		if(result > 0) {
+			return prcsPlanCode;
+		} else {
+			return "실패";
+		}
 	}
+	
+	//상세생산계획 등록
+	@Override
+	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO) {
+		int result = prcsPlanMapper.insertPrcsPlanDe(prcsPlanVO);
+		if(result > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	
+	
+	
+	//생산계획 + 상세생산계획 등록
+//	@Override
+//	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList) {
+//		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanList);		
+//		return result;
+//	}
 	
 	//미계획 주문서 조회
 	@Override
 	public List<OrderVO> getNotPlanOrderList() {
 		return prcsPlanMapper.selectNotPlanOrderList();
 	}
+
+
+
+
 	
 
 }

@@ -24,10 +24,14 @@ public class PrcsPlanVO {
 	//상세 생산계획
 	private String prcsPlanDeCode;					//상세계획코드
 	private String prodCode;						//제품코드
-	private int ordTotalAmt;						//주문수량
+	private int prcsRqAmt;							//주문수량
 	private int prcsPlanAmt;						//생산계획량
 	private int prcsPrio;							//우선순위
 	private int prcsDirAmt;							//지시수량
 	private String prcsDirSts;						//지시상태
 	private String prcsAmt;							//생산량
+	
+	//검색용
+	private String searchPlanName;
+	
 }
