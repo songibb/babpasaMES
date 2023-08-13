@@ -375,7 +375,7 @@
 			   return actGrid;
 		   }
 		   
-		 //자재 모달 그리드
+		 //자재 모달  그리드
 		   function createMatGrid(){
 			   var matGrid = new tui.Grid({
 			       el: document.getElementById('modal_label'),

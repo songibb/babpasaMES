@@ -3,6 +3,6 @@ package co.yedam.app.equip.service;
 import java.util.List;
 
 public interface EquipChkService {
-	//ì „ì²´ ì¡°íšŒ
+	//ÀüÃ¼ Á¶È¸
 	public List<EquipChkVO> getEquipChkList();
 }

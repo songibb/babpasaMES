@@ -23,4 +23,8 @@ public interface EquipService {
 	public Map<String, String> updateEquip(EquipVO equipVO);
 
 
+	//설비 검색
+	public List<EquipVO> searchEquip (String eqName);
+
+
 }

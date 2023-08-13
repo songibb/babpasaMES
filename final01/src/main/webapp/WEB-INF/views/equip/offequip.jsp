@@ -230,7 +230,7 @@
 			      </tr>
 		   </table>
 	  
-			   <button type="submit">비가동 등록/해제</button>
+			   <button type="submit">비가동 등록/해제 </button>
 			   </div>
 			</div>
 		</div>

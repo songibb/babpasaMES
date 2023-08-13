@@ -373,7 +373,7 @@ function serializeObject(){
 	return objectData;
 }
 
-	// 3) ajax를 통해 통신을요청해야됨
+	// 3) ajax를 통해 통신을요청해야 됨
 	function ajaxEquipUpdate(e){
 		
 		let obj=serializeObject();

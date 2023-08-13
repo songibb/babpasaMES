@@ -81,4 +81,15 @@ public class EquipController {
 		EquipVO findVO = equipService.getEquipInfo(vo);
 		return findVO;
 	}
+
+
+	//설비검색조회
+		@GetMapping("/searchEquip")
+		@ResponseBody
+		public List<EquipVO> SearchEquip(@RequestParam String eqName) {
+			List<EquipVO> vo = equipService.searchEquip(eqName);
+			return vo;
+					
+		}
+
 }

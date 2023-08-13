@@ -13,7 +13,7 @@ import co.yedam.app.equip.service.EquipChkVO;
 public class EquipChkServiceImpl implements EquipChkService {
 
 	
-	//mapper í˜¸ì¶œ
+	//mapper È£Ãâ
 	@Autowired
 	EquipChkMapper equipChkMapper;
 	

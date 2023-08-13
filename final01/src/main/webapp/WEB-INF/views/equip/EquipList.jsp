@@ -89,7 +89,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>설비 조회</h1>
+	<h1>설비 조회 </h1>
 	<div class="col-lg-12 stretch-card">
     	<div class="card">
         	<div class="card-body">

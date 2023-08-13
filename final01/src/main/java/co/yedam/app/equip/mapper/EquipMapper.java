@@ -22,4 +22,8 @@ public interface EquipMapper {
 	
 	//설비 관리 페이지에서 단건 조회(모달에서 받아옴)
 	public EquipVO selectEquipInfo(EquipVO equipVO);
+
+	//설비 검색
+	public List<EquipVO> searchEquip(String eqName);
+
 }
