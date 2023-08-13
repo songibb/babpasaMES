@@ -4,26 +4,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface EquipService {
-	//�쟾泥� �꽕鍮� 議고쉶
+	//전체 설비 조회
 	public List<EquipVO> getEquipList();
 	
-	//�꽕鍮� �벑濡�
+	//설비 등록
 	public String insertEquipInfo(EquipVO equipVO);
 	
-	//紐⑤떖 �븞�뿉�꽌�쓽 �쟾泥� �꽕鍮� 議고쉶
+	//모달 안에서의 전체 설비 조회
 	public List<EquipVO> getModalEquipList();
 	
-	//�꽕鍮� �궘�젣
+	//설비 삭제
 	public String deleteEquipInfo(String eqCode);
 	
-	//�꽕鍮� �떒嫄댁“�쉶
+	//설비 단건조회
 	public EquipVO getEquipInfo(EquipVO equipVO);
 	
-	//�꽕鍮� �닔�젙
+	//설비 수정
 	public Map<String, String> updateEquip(EquipVO equipVO);
-	
-	//설비 검색
-	public List<EquipVO> searchEquip (String eqName);
 
 
 }

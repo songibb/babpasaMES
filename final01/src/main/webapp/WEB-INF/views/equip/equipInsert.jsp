@@ -201,11 +201,11 @@
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
          <th>제작일자</th>
-         <td><input type="text" name="makeDate" id="makeDate"></td>
+         <td><input type="date" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>구매일자</th>
-         <td><input type="text" name="buyDate" id="buyDate"></td>
+         <td><input type="date" name="buyDate" id="buyDate"></td>
          <th>점검주기</th>
          <td><input type="text" name="chkCycle" id="chkCycle"></td>
       </tr>
