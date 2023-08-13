@@ -8,8 +8,8 @@
 		SELECT prcs_plan_code,
 			   prcs_plan_name,
 			   prcs_plan_date,
-			   emp_code
-			   prcs_dir_yn,
+			   emp_code,
+			   find_cdnm('0V', prcs_dir_yn) AS prcs_dir_yn,
 			   prcs_start_date,
 			   prcs_end_date
 		  FROM prcs_plan
@@ -37,7 +37,7 @@
 			   prcs_plan_amt,
 			   prcs_prio,
 			   prcs_dir_amt,
-			   prcs_dir_sts,
+			   find_cdnm('0Q', prcs_dir_sts) AS prcs_dir_sts,
 			   prcs_amt
 		  FROM prcs_plan_de
 		 WHERE prcs_plan_code = #{prcsPlanCode}
@@ -96,33 +96,6 @@
 							</if>
 						)
 	</insert >
-	
-	<!-- 생산계획 수정 -->
-	<update id="updatePrcsPlan" parameterType="prcsPlanVO">
-		UPDATE prcs_plan
-		<set>
-			<if test="title != null and !title.equals('')">
-				title = #{title},
-			</if>
-			<if test="contents != null">
-				contents = #{contents},
-			</if>
-			<if test="image != null">
-				image = #{image},
-			</if>
-			<choose>
-				<when test="updatedate != null">
-					updatedate = #{updatedate}
-				</when>
-				<otherwise>
-					<!-- update 할때는 DB에 default가 작동하지 않으므로 지칭해줘야함 -->
-					updatedate = sysdate
-				</otherwise>
-			</choose>
-		</set>
-		WHERE prcs_plan_code = #{prcsPlanCode}
-	</update>
-
 	
 	<!-- 생산계획 + 상세생산계획 등록 -->
 <!-- 	<insert id="insertPrcsPlan" parameterType="prcsPlanVO"> -->
@@ -186,13 +159,57 @@
 	
 	</select>
 	
+		
+	<!-- 생산계획 수정 -->
+	<update id="updatePrcsPlan" parameterType="prcsPlanVO">
+		UPDATE prcs_plan
+		<set>					
+			<if test="prcsPlanName != null and !prcsPlanName.equals('')">
+				prcs_plan_name = #{prcsPlanName},
+			</if>	
+			<if test="empCode != null and empCode.equals('')">
+				emp_code = #{empCode},
+			</if>
+			<if test="prcsStartDate != null">
+				prcs_start_date = #{prcsStartDate},
+			</if>
+			<if test="prcsEndDate != null">
+				prcs_end_date = #{prcsEndDate}
+			</if>
+		</set>
+		WHERE prcs_plan_code = #{prcsPlanCode}
+	</update>
+	
+	<!-- 상세생산계획 수정 -->	
+	<update id="updatePrcsPlanDe" parameterType="prcsPlanVO">
+		UPDATE prcs_plan_de
+		<set>				
+			<if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
+				prcs_plan_code = #{prcsPlanCode},
+			</if>	
+			<if test="prodCode != null and !prodCode.equals('')">
+				prod_code = #{prodCode},
+			</if>	
+			<if test="prcsRqAmt >= 0">
+				prcs_rq_amt = #{prcsRqAmt},
+			</if>
+			<if test="prcsPlanAmt >= 0">
+				prcs_plan_amt = #{prcsPlanAmt},
+			</if>
+			<if test="prcsPrio >= 0">
+				prcs_prio = #{prcsPrio}
+			</if>
+		</set>
+		WHERE prcs_plan_de_code = #{prcsPlanDeCode}
+	</update>
 	
 	
-<!-- 생산계획 수정 -->
-<!-- 생산계획 삭제 -->
 	
+	<!-- 생산계획 삭제 -->
+	<delete id="deletePrcsPlan" parameterType="String">
+		DELETE FROM prcs_plan
+		 WHERE prcs_plan_code = #{prcsPlanCode}
+	</delete>
 
-<!-- 상세생산계획 수정 -->
-<!-- 상세생산계획 삭제 -->
 
 </mapper>

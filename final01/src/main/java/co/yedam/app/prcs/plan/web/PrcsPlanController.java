@@ -62,7 +62,7 @@ public class PrcsPlanController {
 	//생산계획 등록
 	@PostMapping("prcsPlanInsert")
 	@ResponseBody
-	public String prcsDirInsert(@RequestBody PrcsPlanVO prcsPlanVO) { 
+	public String prcsPlanInsert(@RequestBody PrcsPlanVO prcsPlanVO) { 
 		//selectKey값 가져오기
 		String prcsPlanCode = prcsPlanService.insertPrcsPlan(prcsPlanVO);
 		return prcsPlanCode;
@@ -71,10 +71,10 @@ public class PrcsPlanController {
 	//상세생산계획 등록
 	@PostMapping("prcsPlanDeInsert")
 	@ResponseBody
-	public int prcsDirDeInsert(@RequestBody List<PrcsPlanVO> list) {	
+	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> list) {	
 		int result = 0;
 		for(PrcsPlanVO vo : list) {
-			result = prcsPlanService.insertPrcsPlanDe(vo);
+			prcsPlanService.insertPrcsPlanDe(vo);
 			result++;
 		}
 		return result;
@@ -88,10 +88,6 @@ public class PrcsPlanController {
 //		return result;
 //	}
 	
-	
-	
-	
-
 	//미계획 주문서 조회 	
 	@GetMapping("notPlanOrderList")
 	@ResponseBody
@@ -99,5 +95,43 @@ public class PrcsPlanController {
 		List<OrderVO> list = prcsPlanService.getNotPlanOrderList();
 		return list;
 	}
+	
+	
+	//생산계획 수정
+	@PostMapping("prcsPlanUpdate")
+	@ResponseBody
+	public int prcsPlanUpdate(@RequestBody List<PrcsPlanVO> list) { 
+		int result = 0;
+		for(PrcsPlanVO vo : list) {
+			prcsPlanService.updatePrcsPlan(vo);
+			result++;
+		}
+		return result;
+	}
+	
+	//상세생산계획 수정
+	@PostMapping("prcsPlanDeUpdate")
+	@ResponseBody
+	public int prcsPlanUpdateDe(@RequestBody List<PrcsPlanVO> list) { 
+		int result = 0;
+		for(PrcsPlanVO vo : list) {
+			prcsPlanService.updatePrcsPlanDe(vo);
+			result++;
+		}
+		return result;
+	}
+	
+	//생산계획 삭제
+	@PostMapping("prcsPlanDelete")
+	@ResponseBody
+	public int prcsPlanDelete(@RequestBody List<String> list) { 
+		int result = 0;
+		for(String code : list) {
+			prcsPlanService.deletePrcsPlan(code);
+			result++;
+		}
+		return result;
+	}
+	
 
 }

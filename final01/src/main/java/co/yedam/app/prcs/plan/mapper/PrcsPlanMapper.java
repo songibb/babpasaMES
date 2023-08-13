@@ -20,8 +20,7 @@ public interface PrcsPlanMapper {
 	
 	//상세생산계획 등록
 	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO);
-	
-	
+
 	//생산계획 + 상세생산계획 등록
 //	public int insertPrcsPlan(List<PrcsPlanVO> prcsPlanList);
 	
@@ -31,9 +30,10 @@ public interface PrcsPlanMapper {
 	//생산계획 수정
 	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO);
 	
-	//생산계획 삭제
-	
-
 	//상세생산계획 수정
-	//상세생산계획 삭제
+	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO);
+	
+	//생산계획 삭제
+	public int deletePrcsPlan(@Param("prcsPlanCode") String prcsPlanCode);
+
 }

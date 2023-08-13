@@ -19,8 +19,6 @@ public interface PrcsPlanService {
 	//상세생산계획 등록
 	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO);
 	
-	
-	
 	//생산계획 + 상세생산계획 등록
 //	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList);
 	
@@ -28,11 +26,12 @@ public interface PrcsPlanService {
 	public List<OrderVO> getNotPlanOrderList();
 	
 	//생산계획 수정
-		
-	//생산계획 삭제?
+	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO);
 	
-	
-	//상세생산계획 등록
 	//상세생산계획 수정
-	//상세생산계획 삭제
+	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO);
+		
+	//생산계획 삭제
+	public int deletePrcsPlan(String prcsPlanCode);
+	
 }

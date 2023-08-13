@@ -66,6 +66,9 @@
 		</div>
 	</div> 
     
+    <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
     
 	<script>
 	
@@ -77,20 +80,29 @@
 		   let sd = $('#startDate').val();
 		   let ed = $('#endDate').val();	   
 
-		   $.ajax({
-			   url : 'searchPlanList',
-			   method : 'GET',
-			   data : { searchPlanName : planName, startDate : sd , endDate : ed },
-			   success : function(data){	
-				   planGrid.resetData(data);
-				   planDeGrid.clear();	
-			   },
-			   error : function(reject){
-				   console.log(reject);
-			   }
-		   });
-	}
-	
+			$.ajax({
+				url : 'searchPlanList',
+				method : 'GET',
+				data : { searchPlanName : planName, startDate : sd , endDate : ed },
+				success : function(data){	
+					//날짜 츨력 포맷 변경
+					$.each(data, function(i, objDe){
+						let ppd = data[i]['prcsPlanDate'];
+						let psd = data[i]['prcsStartDate'];
+						let ped = data[i]['prcsEndDate'];
+						data[i]['prcsPlanDate'] = getDate(ppd);
+						data[i]['prcsStartDate'] = getDate(psd);
+						data[i]['prcsEndDate'] = getDate(ped);
+					})
+					planGrid.resetData(data);
+					planDeGrid.clear();	
+					},
+					error : function(reject){
+					 console.log(reject);
+					}
+			});
+	};
+
 	
 	//생산계획 조회
     var planGrid = new tui.Grid({

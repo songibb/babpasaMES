@@ -56,7 +56,7 @@
 	
 	
 	<div>
-		<jsp:include page="../modal/actModal.jsp"></jsp:include>
+		<jsp:include page="../comFn/actModal.jsp"></jsp:include>
 	</div> 
     
 	<script>

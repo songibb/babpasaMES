@@ -51,10 +51,7 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 			return -1;
 		}
 	}
-	
-	
-	
-	
+
 	//생산계획 + 상세생산계획 등록
 //	@Override
 //	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList) {
@@ -66,6 +63,39 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	@Override
 	public List<OrderVO> getNotPlanOrderList() {
 		return prcsPlanMapper.selectNotPlanOrderList();
+	}
+	
+	//생산계획 수정
+	@Override
+	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO) {
+		int result = prcsPlanMapper.updatePrcsPlan(prcsPlanVO);
+		if(result > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	//상세생산계획 수정
+	@Override
+	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO) {
+		int result = prcsPlanMapper.updatePrcsPlanDe(prcsPlanVO);
+		if(result > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
+	}
+	
+	//생산계획 삭제
+	@Override
+	public int deletePrcsPlan(String prcsPlanCode) {
+		int result = prcsPlanMapper.deletePrcsPlan(prcsPlanCode);
+		if(result > 0) {
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 
