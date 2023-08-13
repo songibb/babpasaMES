@@ -88,4 +88,12 @@
   	DELETE FROM EQ_EQUIP
   	WHERE EQ_CODE = #{eqCode}
   </delete>
+  
+  <!-- 설비검색 -->
+   <select id="searchEquip" resultType="EquipVO">
+  	  	SELECT  *
+		FROM EQ_EQUIP
+		WHERE EQ_NAME LIKE '%' || #{eqName} || '%'
+	ORDER BY EQ_NAME
+  </select>
   </mapper>

@@ -5,21 +5,24 @@ import java.util.List;
 import co.yedam.app.equip.service.EquipVO;
 
 public interface EquipMapper {
-	//설비 전체조회
+	//�꽕鍮� �쟾泥댁“�쉶
 	public List<EquipVO> selectEquipAllList();
 	
-	//설비등록
+	//�꽕鍮꾨벑濡�
 	public int insertEquipInfo(EquipVO equipVO);
 	
-	//모달에서의 설비 전체 조회
+	//紐⑤떖�뿉�꽌�쓽 �꽕鍮� �쟾泥� 議고쉶
 	public List<EquipVO> EquipModalList();
 	
-	//설비 수정
+	//�꽕鍮� �닔�젙
 	public int updateEquip(EquipVO equipVO);
 	
-	//삭제
+	//�궘�젣
 	public int deleteEquip(String eqCode);
 	
-	//설비 관리 페이지에서 단건 조회(모달에서 받아옴)
+	//�꽕鍮� 愿�由� �럹�씠吏��뿉�꽌 �떒嫄� 議고쉶(紐⑤떖�뿉�꽌 諛쏆븘�샂)
 	public EquipVO selectEquipInfo(EquipVO equipVO);
+	
+	//설비 검색
+	public List<EquipVO> searchEquip(String eqName);
 }

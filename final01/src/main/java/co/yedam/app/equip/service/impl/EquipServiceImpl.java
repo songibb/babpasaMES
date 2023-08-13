@@ -17,7 +17,7 @@ public class EquipServiceImpl implements EquipService {
 	@Autowired
 	EquipMapper equipMapper;
 	
-	//설비 전체 조회
+	//�꽕鍮� �쟾泥� 議고쉶
 	@Override
 	public List<EquipVO> getEquipList() {
 		// TODO Auto-generated method stub
@@ -25,18 +25,18 @@ public class EquipServiceImpl implements EquipService {
 	}
 	
 	@Override
-	//등록
+	//�벑濡�
 	public String insertEquipInfo(EquipVO equipVO) {
 		int result = equipMapper.insertEquipInfo(equipVO);
 		if(result == 1) {
 			return equipVO.getEqCode();
 		}else {
-			return "등록실패";
+			return "�벑濡앹떎�뙣";
 		}
 	}
 	
 	@Override
-	//모달 설비 조회
+	//紐⑤떖 �꽕鍮� 議고쉶
 	public List<EquipVO> getModalEquipList(){
 		return equipMapper.EquipModalList();
 	}
@@ -45,14 +45,14 @@ public class EquipServiceImpl implements EquipService {
 	public Map<String, String> updateEquip(EquipVO equipVO){
 		Map<String, String> map = new HashMap<>();
 		
-		map.put("설비코드",String.valueOf(equipVO.getEqCode()));
+		map.put("�꽕鍮꾩퐫�뱶",String.valueOf(equipVO.getEqCode()));
 		
 		int result = equipMapper.updateEquip(equipVO);
 		
 		if(result == 1) {
-			map.put("결과", "success");
+			map.put("寃곌낵", "success");
 		}else {
-			map.put("결과", "fail");
+			map.put("寃곌낵", "fail");
 		}
 		return map;
 		
@@ -60,20 +60,25 @@ public class EquipServiceImpl implements EquipService {
 	
 	
 	@Override
-	//설비 삭제
+	//�꽕鍮� �궘�젣
 	public String deleteEquipInfo(String eqCode) {
 		int result = equipMapper.deleteEquip(eqCode);
 		if(result == 1) {
-			return "삭제 성공";
+			return "�궘�젣 �꽦怨�";
 		}else {
-			return "삭제 실패";
+			return "�궘�젣 �떎�뙣";
 		}
 	}
 	
-	//설비 단건 조회
+	//�꽕鍮� �떒嫄� 議고쉶
 	public EquipVO getEquipInfo(EquipVO equipVO) {
 		return equipMapper.selectEquipInfo(equipVO);
 	}
 	
+	//설비 검색
+	@Override
+	public List<EquipVO> searchEquip(String eqName){
+		return equipMapper.searchEquip(eqName);
+	}
 
 }

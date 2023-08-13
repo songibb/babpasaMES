@@ -325,46 +325,62 @@
 		      })  
 		    
 			
-var Grid;
-$("#actModal").click(function(){
-  $(".modal").fadeIn();
-  Grid = createActGrid();
-  Grid.on('click', () => {
-		let rowKey = Grid.getFocusedCell().rowKey;
-		let eqCode = Grid.getValue(rowKey, 'eqCode');
-		let eqName = Grid.getValue(rowKey, 'eqName');
-		let eqSts = Grid.getValue(rowKey, 'eqSts');
-	
-		
-
-		
-					$('#eqCode').val(eqCode);							
-					$('#eqName').val(eqName);							
-					$('#eqSts').val(eqSts);							
-					
-					
-					$(".modal").fadeOut();
-     		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
-			
-			    
-		})
-		});
+		    var Grid;
+		    $("#actModal").click(function(){
+		      $(".modal").fadeIn();
+		      Grid = createActGrid();
+		      Grid.on('click', () => {
+		        let rowKey = Grid.getFocusedCell().rowKey;
+		        let eqCode = Grid.getValue(rowKey, 'eqCode');
+		        let eqName = Grid.getValue(rowKey, 'eqName');
+		        
+		        // 설비 정보 가져오는 부분 추가
+		        $.ajax({
+		          url: "getOffEquipInfo",  // 모달 조회 가져오는 controller 연결
+		          method: "GET",
+		          data: { eqCode: eqCode },
+		          success: function(result) {
+		            // result는 가져온 설비 정보를 담고 있음
+		            let eqName = result.eqName;
+		            let offNo = result.offNo;
+		            let offType = result.offType;
+		            let offInfo = result.offInfo;
+		            let offStime = result.offStime;
+		            let offEtime = result.offEtime;
+		            
+		            $('#eqCode').val(eqCode);
+		            $('#eqName').val(eqName);
+		            $('#offNo').val(offNo);
+		            $('#offType').val(offType);
+		            $('#offInfo').val(offInfo);
+		            $('#offStime').val(offStime);
+		            $('#offEtime').val(offEtime);
+		          },
+		          error: function(reject){
+		            console.log(reject);
+		          }
+		        });
+		        
+		        $(".modal").fadeOut();
+		        Grid.destroy();
+		      });
+		    });
   
-  $.ajax({
-	    url : "selectOffEquipAllList",
-	    method :"GET",
-	    success : function(result){
-	        Grid.resetData(result);
-	    },
-	    error : function(reject){
-				console.log(reject);
-			}
-	});
- 
-$("#close_btn").click(function(){
-	  $(".modal").fadeOut(); 
-		Grid.destroy();
-	});
+	  $.ajax({
+		    url : "selectOffEquipAllList",
+		    method :"GET",
+		    success : function(result){
+		        Grid.resetData(result);
+		    },
+		    error : function(reject){
+					console.log(reject);
+				}
+		});
+	 
+	$("#close_btn").click(function(){
+		  $(".modal").fadeOut(); 
+			Grid.destroy();
+		});
 
 
 

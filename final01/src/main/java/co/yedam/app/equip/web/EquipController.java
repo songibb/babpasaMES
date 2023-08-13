@@ -21,28 +21,28 @@ public class EquipController {
 	@Autowired
 	EquipService equipService;
 	
-	//전체 설비
+	//�쟾泥� �꽕鍮�
 	@GetMapping("/EquipList")
 	public String selectEquipAllList(Model model) {
 		model.addAttribute("EquipList", equipService.getEquipList());
 		return "equip/EquipList";
 	}
 	
-	//Ajax 연결 - 전체 설비 리스트
-	@GetMapping("selectEquipAllList") //Equiplist.jsp의 ajax url과 연결되는 것 
+	//Ajax �뿰寃� - �쟾泥� �꽕鍮� 由ъ뒪�듃
+	@GetMapping("selectEquipAllList") //Equiplist.jsp�쓽 ajax url怨� �뿰寃곕릺�뒗 寃� 
 	@ResponseBody
 	public List<EquipVO> getEquipList(){
 		List<EquipVO> list = equipService.getEquipList();
 		return list;
 	}
 	
-	//설비 등록 페이지
+	//�꽕鍮� �벑濡� �럹�씠吏�
 		@GetMapping("/equipInsert")
 		public String equipInsertForm() {
 			return "equip/equipInsert";
 		}
 		
-		//등록 처리
+		//�벑濡� 泥섎━
 		@PostMapping("/equipInsert")
 		public String equipInsertProcess(EquipVO equipVO) {
 			equipService.insertEquipInfo(equipVO);
@@ -50,21 +50,21 @@ public class EquipController {
 		}
 		
 		/*
-		 * //모달 설비 조회
+		 * //紐⑤떖 �꽕鍮� 議고쉶
 		 * 
 		 * @GetMapping("/ModalEquip") public String EquipModalList(Model model) {
 		 * model.addAttribute("ModalEquip", equipService.getModalEquipList()); return
 		 * "equip/equipInsert"; }
 		 */
 	
-	//설비 수정
+	//�꽕鍮� �닔�젙
 	@PostMapping("/equipUpdate")
 	@ResponseBody
 	public Map<String, String> equipUpdateProcess(@RequestBody EquipVO equipVo ){
 		return equipService.updateEquip(equipVo);
 	}
 		
-	//설비 삭제
+	//�꽕鍮� �궘�젣
 	@GetMapping("/equipDelete")
 	@ResponseBody
 	public String equipDelete(@RequestParam(name="eqCode", value="eqCode")String eqCode) {
@@ -72,8 +72,8 @@ public class EquipController {
 		return "equip/EquipList";
 	}
 	
-	//설비 단건 조회
-	@GetMapping("getEquip") //Equiplist.jsp의 ajax url과 연결되는 것 
+	//�꽕鍮� �떒嫄� 議고쉶
+	@GetMapping("getEquip") //Equiplist.jsp�쓽 ajax url怨� �뿰寃곕릺�뒗 寃� 
 	@ResponseBody
 	public EquipVO getEquipOne(@RequestParam String eqCode){
 		EquipVO vo = new EquipVO();
@@ -81,4 +81,13 @@ public class EquipController {
 		EquipVO findVO = equipService.getEquipInfo(vo);
 		return findVO;
 	}
+	
+	//설비검색조회
+		@GetMapping("/searchEquip")
+		@ResponseBody
+		public List<EquipVO> SearchEquip(@RequestParam String eqName) {
+			List<EquipVO> vo = equipService.searchEquip(eqName);
+			return vo;
+					
+		}
 }
