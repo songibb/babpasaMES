@@ -82,6 +82,7 @@ public class EquipController {
 		return findVO;
 	}
 
+
 	//설비검색조회
 		@GetMapping("/searchEquip")
 		@ResponseBody
@@ -90,4 +91,5 @@ public class EquipController {
 			return vo;
 					
 		}
+
 }

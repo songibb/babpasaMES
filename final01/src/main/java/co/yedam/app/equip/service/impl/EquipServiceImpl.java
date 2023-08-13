@@ -75,10 +75,12 @@ public class EquipServiceImpl implements EquipService {
 		return equipMapper.selectEquipInfo(equipVO);
 	}
 
+
 	//설비 검색
 	@Override
 	public List<EquipVO> searchEquip(String eqName){
 		return equipMapper.searchEquip(eqName);
 	}
+
 
 }
