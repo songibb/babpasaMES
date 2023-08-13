@@ -17,15 +17,15 @@ public class EquipChkController {
 	@Autowired
 	EquipChkService equipChkService;
 	
-	//ì „ì²´ì¡°íšŒ
+	//ÀüÃ¼Á¶È¸
 	@GetMapping("/equipchkList")
 	public String getEquipChkList(Model model) {
 		model.addAttribute("equipchkList",equipChkService.getEquipChkList());
 		return "equip/equipchkList";
 	}
 	
-	//AJAX ì—°ê²°
-	@GetMapping("selectEquipChkList") //Equiplist.jspì˜ ajax urlê³¼ ì—°ê²°ë˜ëŠ” ê²ƒ 
+	//AJAX ¿¬°á
+	@GetMapping("selectEquipChkList") //Equiplist.jspÀÇ ajax url°ú ¿¬°áµÇ´Â °Í 
 	@ResponseBody
 	public List<EquipChkVO> getEquipChkAllList(){
 		List<EquipChkVO> list = equipChkService.getEquipChkList();

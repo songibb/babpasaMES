@@ -19,7 +19,7 @@
   		ORDER BY A.EQ_CODE ASC
   	</select>
   	
-  	<!-- 단건으로 가져오기 -->
+  	<!-- 단건으로 가져오기  -->
   	<select id="selectOffEquipInfo" resultType="OffEquipVO">
   		SELECT A.EQ_CODE, A.EQ_NAME, A.EQ_STS, B.*
   		FROM EQ_EQUIP A JOIN EQ_OFF B

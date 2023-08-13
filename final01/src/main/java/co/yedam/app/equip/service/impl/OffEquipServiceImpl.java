@@ -13,11 +13,11 @@ import co.yedam.app.equip.service.OffEquipVO;
 @Service
 public class OffEquipServiceImpl implements OffEquipService {
 
-	//mapper í˜¸ì¶œ
+	//mapper È£Ãâ
 	@Autowired
 	OffEquipMapper offEquipMapper;
 	
-	//ë¹„ê°€ë™ ì„¤ë¹„ ì „ì²´ ì¡°íšŒ
+	//ºñ°¡µ¿ ¼³ºñ ÀüÃ¼ Á¶È¸
 	@Override
 	public List<OffEquipVO> getOffEquipList() {
 		// TODO Auto-generated method stub
@@ -30,18 +30,18 @@ public class OffEquipServiceImpl implements OffEquipService {
 	}
 	
 	@Override
-	//ë“±ë¡
+	//µî·Ï
 	public String insertOffEquip(OffEquipVO offequipVO) {
 		int result = offEquipMapper.insertOffEquip(offequipVO);
 		if(result == 1) {
 			return offequipVO.getEqCode();
 					
 		}else {
-			return "ë“±ë¡ì‹¤íŒ¨";
+			return "µî·Ï½ÇÆĞ";
 		}
 	}
 	
-	//ëª¨ë‹¬ ë‹¨ê±´ ì¡°íšŒ 
+	//¸ğ´Ş ´Ü°Ç Á¶È¸ 
 	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO) {
 		return offEquipMapper.selectOffEquipInfo(offequipVO);
 		

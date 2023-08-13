@@ -83,7 +83,7 @@
   	WHERE EQ_CODE =#{eqCode}
   </update>
   
-  <!-- 삭제  -->
+  <!-- 삭제   -->
   <delete id="deleteEquip" parameterType="String">
   	DELETE FROM EQ_EQUIP
   	WHERE EQ_CODE = #{eqCode}

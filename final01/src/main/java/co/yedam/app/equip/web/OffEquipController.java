@@ -21,7 +21,7 @@ public class OffEquipController {
 	OffEquipService offEquipService;
 	
 	
-	//ìƒë‹¨ ë¹„ê°€ë™ ì „ì²´ì¡°íšŒ
+	//»ó´Ü ºñ°¡µ¿ ÀüÃ¼Á¶È¸
 	@GetMapping("/offequip")
 	public String getOffEquipList(Model model) {
 		model.addAttribute("offequip",offEquipService.getOffEquipList());
@@ -32,21 +32,21 @@ public class OffEquipController {
 	
 	
 		
-	//ë“±ë¡í˜ì´ì§€
+	//µî·ÏÆäÀÌÁö
 	@GetMapping("/insertOffEquip")
 	public String OffEquipInsertForm() {
 		return "equip/offequip";
 				
 	}
 	
-	//ë¹„ê°€ë™ ì„¤ë¹„ ë“±ë¡
+	//ºñ°¡µ¿ ¼³ºñ µî·Ï
 	@PostMapping("/insertOffEquip")
 	public String OffEquipInsert(OffEquipVO offequipVO) {
 		offEquipService.insertOffEquip(offequipVO);
 		return "redirect:offequip";
 	}
 	
-	//ëª¨ë‹¬ ê°€ì ¸ì˜¨ ì „ì²´ì„¤ë¹„ ë‹¨ê±´ìœ¼ë¡œ ë„£ê¸°(ì¡°íšŒ)
+	//¸ğ´Ş °¡Á®¿Â ÀüÃ¼¼³ºñ ´Ü°ÇÀ¸·Î ³Ö±â(Á¶È¸)
 	@GetMapping("getOffEquipInfo")
 	@ResponseBody
 	public OffEquipVO getOffEquipOne(@RequestParam String eqCode) {

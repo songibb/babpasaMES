@@ -7,15 +7,15 @@ import co.yedam.app.equip.service.OffEquipVO;
 
 public interface OffEquipMapper {
 	
-	//ì„¤ë¹„ ì „ì²´ ì¡°íšŒ
+	//¼³ºñ ÀüÃ¼ Á¶È¸
 	public List<OffEquipVO> selectAllequip();
 	
-	//ë¹„ê°€ë™ ì„¤ë¹„ ì „ì²´ì¡°íšŒ
+	//ºñ°¡µ¿ ¼³ºñ ÀüÃ¼Á¶È¸
 	public List<OffEquipVO> selectOffEquipAllList();
 	
-	//ë¹„ê°€ë™ ì„¤ë¹„ ë“±ë¡
+	//ºñ°¡µ¿ ¼³ºñ µî·Ï
 	public int insertOffEquip(OffEquipVO offequipVO);
 	
-	//ëª¨ë‹¬ ì¡°íšŒëœ ì „ì²´ì„¤ë¹„ ë‹¨ê±´ìœ¼ë¡œ ê°€ì ¸ì˜¤ê¸°(ì¡°íšŒ)
+	//¸ğ´Ş Á¶È¸µÈ ÀüÃ¼¼³ºñ ´Ü°ÇÀ¸·Î °¡Á®¿À±â(Á¶È¸)
 	public OffEquipVO selectOffEquipInfo(OffEquipVO offequipVO);
 }
