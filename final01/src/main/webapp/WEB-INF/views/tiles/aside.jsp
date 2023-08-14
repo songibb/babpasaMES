@@ -49,7 +49,7 @@
               		<li class="nav-item"><a class="nav-link" href="orderList">주문 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="orderMng">주문 관리</a></li>
                 	<li class="nav-item"><a class="nav-link" href="outList">완제품 출고 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 출고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="outMng">완제품 출고 관리</a></li>
                 	<li class="nav-item"><a class="nav-link" href="rtList">완제품 반품 조회</a></li>
                 	<li class="nav-item"><a class="nav-link" href="pages/forms/basic_elements.html">완제품 반품 관리</a></li>
                 	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>

@@ -441,6 +441,36 @@
 		         {
 		           header: '유통기한',
 		           name: 'salesInExd'
+		         },
+	         	{
+		           header: '출고여부',
+		           name: 'prodCode',
+		           hidden : true
+		         },
+	         	{
+		           header: '출고여부',
+		           name: 'salesOrdDeCode',
+		           hidden : true
+		         },
+		         {
+		           header: '출고여부',
+		           name: 'prodLot',
+		           hidden : true
+		         }
+	         	{
+		           header: '출고여부',
+		           name: 'actCode',
+		           hidden : true
+		         },
+	         	{
+		           header: '출고여부',
+		           name: 'empCode',
+		           hidden : true
+		         },
+	         	{
+		           header: '출고여부',
+		           name: 'empCode',
+		           hidden : true
 		         }
            ]
          

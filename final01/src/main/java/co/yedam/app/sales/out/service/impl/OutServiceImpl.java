@@ -37,4 +37,10 @@ public class OutServiceImpl implements OutService {
 		return outMapper.selectAllOut(actCode, prodCode, startDate, outDate);
 	}
 
+	//등록
+	@Override
+	public int insertOutList(List<OutVO> outList) {
+		return outMapper.insertOutList(outList);
+	}
+
 }

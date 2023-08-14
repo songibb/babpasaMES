@@ -2,6 +2,7 @@ package co.yedam.app.sales.order.service;
 
 import java.util.List;
 
+
 public interface OrderService {
 	//전체 조회
 	public List<OrderVO> getOrderList();
@@ -12,7 +13,7 @@ public interface OrderService {
 	//제품목록
 	public List<OrderVO> prodAllList();
 	//주문등록
-	public int insertOrder(OrderVO orderVO);
+	public int insertOrderList(List<OrderVO> orderList);
 	//주문서 관리 - 미계획 주문서 목록
 	public List<OrderVO> getNoPlan();
 }

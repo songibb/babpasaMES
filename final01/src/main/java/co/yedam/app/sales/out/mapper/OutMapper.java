@@ -19,4 +19,6 @@ public interface OutMapper {
 			, @Param("prodCode")String prodCode
 			, @Param("startDate")String startDate
 			, @Param("endDate")String endDate);
+	//출고 등록
+	public int insertOutList(@Param("outList") List<OutVO> outList);
 }
