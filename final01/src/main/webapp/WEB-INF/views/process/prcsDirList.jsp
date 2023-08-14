@@ -15,7 +15,6 @@
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-    
        
 </head>
 <body>
@@ -57,7 +56,7 @@
 	
 	
 	<div>
-		<jsp:include page="../modal/actModal.jsp"></jsp:include>
+		<jsp:include page="../comFn/actModal.jsp"></jsp:include>
 	</div> 
     
 	<script>

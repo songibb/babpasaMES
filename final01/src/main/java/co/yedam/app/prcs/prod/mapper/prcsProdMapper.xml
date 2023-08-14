@@ -13,9 +13,10 @@
 			   p.prcs_code, 
 			   m.prcs_name, 
 			   p.prcs_seq
-		  FROM prcs_prod p 
-		  		JOIN com_prod c ON p.prod_code = c.prod_code
-    	  		JOIN prcs_manage m ON p.prcs_code = m.prcs_code
+		  FROM prcs_prod p JOIN com_prod c 
+			    	 		 ON p.prod_code = c.prod_code
+    	  				   JOIN prcs_manage m 
+    	  				     ON p.prcs_code = m.prcs_code
     	 where p.prod_code = #{prodCode}
     	 ORDER BY prcs_prod_code
 	</select>

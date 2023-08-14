@@ -14,7 +14,7 @@
 			   input_amt,
 			   err_amt,
 			   prcs_amt,
-			   prcs_dir_ing_sts 
+			   find_cdnm('0T', prcs_dir_ing_sts) AS prcs_dir_ing_sts
 		  FROM prcs_ing
 		 WHERE prcs_dir_de_code = #{prcsDirDeCode} AND prod_code = #{prodCode}
 		 ORDER BY prcs_ing_code

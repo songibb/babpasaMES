@@ -12,7 +12,8 @@
 <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>       
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -37,8 +38,8 @@
 	            	</form>
 	            	
 	            	<button id="save">저장</button>
-	            	<button id="dirAdd">행추가</button>
-	            	<button id="planListModal">생산계획조회</button>
+	            	<button id="deAdd">행추가</button>
+	            	<button id="planModal">생산계획조회</button>
 	            	
 	           		<div id="dirGrid"></div>
 	           		<div id="dirDeGrid"></div>
@@ -66,7 +67,7 @@
 	<script>
 	
 	document.getElementById('save').addEventListener('click', saveServer);
-	document.getElementById('dirAdd').addEventListener('click', addDirRow);
+	document.getElementById('deAdd').addEventListener('click', addDeRow);
 	
 	//생산계획조회 모달
 	$("#planListModal").click(function(){
@@ -97,7 +98,7 @@
 	} 
 
 	//행추가 버튼 클릭시 상세생산지시 행 추가
-	function addDirRow(){
+	function addDeRow(){
 		dirDeGrid.appendRow();
 	}
 		
@@ -140,14 +141,14 @@
 					deList[i]['prcsDirCode'] = data;
 				})
 				console.log(deList);
-				
+
 				$.ajax({
 					url : 'prcsDirDeInsert',
 					method : 'POST',
 					data : JSON.stringify(deList),
 					contentType : 'application/json',
 					success : function(data){
-						//등록 후 생산지시, 상세생산지시 그리드 지우고, 행추가
+						//등록 후 그리드 내용 지우고, 행추가
 						dirGrid.clear();
 						dirGrid.appendRow();
 						dirDeGrid.clear();
@@ -156,7 +157,7 @@
 					error : function(reject){
 			 			console.log(reject);
 			 		}
-				})
+				})				
 			},
 			error : function(reject){
 	 			console.log(reject);
@@ -166,7 +167,7 @@
 	
 	
 	
-	//생산지시 form
+	//생산지시 grid
     var dirGrid = new tui.Grid({
         el: document.getElementById('dirGrid'),
         scrollX: false,
@@ -216,7 +217,7 @@
         ]
 	});
 	
-	//상세생산지시 form
+	//상세생산지시 grid
 	var dirDeGrid = new tui.Grid({
         el: document.getElementById('dirDeGrid'),
         scrollX: false,

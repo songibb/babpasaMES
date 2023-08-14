@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생산 계획 관리</title>
+<title>생산 계획 조회</title>
 
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -15,14 +15,25 @@
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-        
 
+<style type="text/css">
+#planContainer{
+	display: flex;
+	justify-content: space-between;
+}
+#planGrid{
+    width: 800px;
+}
+#planDeGrid{
+    width: 800px;
+}
 
-</style>    
+</style>
+
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 계획 관리</h2>
+	<h2>생산 계획 조회</h2>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -32,60 +43,70 @@
 					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
+							<p>계획일자</p>
+                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 							<br>
-							<p>자재명</p>
-			                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
-			                  <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-			                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
-			                <br>
-							<p>업체명</p>
-			                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-			                    <i class="bi bi-search" id="actModal"></i>
-			                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-			                <br>
 							
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
+							<p>계획명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
+
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 		            	</div>
 	            	</form>
-	           		<div id="grid"></div>
-	           		<div id="grid2"></div>
 				</div>
+				
+				<div id="planContainer">
+            		<div id="planGrid"></div>
+           			<div id="planDeGrid"></div>
+            	</div>
 	   		</div>
 		</div>
 	</div> 
-
-
-	<div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>거래처 목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
-</div>
+    
+    <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
     
 	<script>
 	
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
+
+	function searchPlanList(){
+		   let planName = $('#searchPlanName').val();
+		   let sd = $('#startDate').val();
+		   let ed = $('#endDate').val();	   
+
+			$.ajax({
+				url : 'searchPlanList',
+				method : 'GET',
+				data : { searchPlanName : planName, startDate : sd , endDate : ed },
+				success : function(data){	
+					//날짜 츨력 포맷 변경
+					$.each(data, function(i, objDe){
+						let ppd = data[i]['prcsPlanDate'];
+						let psd = data[i]['prcsStartDate'];
+						let ped = data[i]['prcsEndDate'];
+						data[i]['prcsPlanDate'] = getDate(ppd);
+						data[i]['prcsStartDate'] = getDate(psd);
+						data[i]['prcsEndDate'] = getDate(ped);
+					})
+					planGrid.resetData(data);
+					planDeGrid.clear();	
+					},
+					error : function(reject){
+					 console.log(reject);
+					}
+			});
+	};
+
 	
 	//생산계획 조회
-    var grid = new tui.Grid({
-        el: document.getElementById('grid'),
+    var planGrid = new tui.Grid({
+        el: document.getElementById('planGrid'),
         data: [
 	           <c:forEach items="${planList}" var="p" varStatus="status">
 	           	{
@@ -106,7 +127,7 @@
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 5,
 		},
 		 
         columns: [
@@ -143,8 +164,8 @@
 
 	
 	//상세생산계획 조회
-	var grid2 = new tui.Grid({
-        el: document.getElementById('grid2'),
+	var planDeGrid = new tui.Grid({
+        el: document.getElementById('planDeGrid'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -152,7 +173,7 @@
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 5,
 		},
         columns: [
           {
@@ -195,34 +216,27 @@
         ]
       })  
 	
+	
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
-    grid.on('click', () => {
+    planGrid.on('click', () => {
     	//클릭한 계획의 계획코드 가져오기
-    	let rowKey = grid.getFocusedCell().rowKey;
-    	let planCode = grid.getValue(rowKey, 'prcsPlanCode');
+    	let rowKey = planGrid.getFocusedCell().rowKey;
+    	let planCode = planGrid.getValue(rowKey, 'prcsPlanCode');
 
     	$.ajax({
 			url : 'prcsPlanDeList',
 			method : 'GET',
 			data : { prcsPlanCode : planCode },
 			success : function(data){
- 				grid2.resetData(data);
+				planDeGrid.resetData(data);
  		    },
 			error : function(reject){
 	 			console.log(reject);
 	 		}	
 		})
   	});
-	
-    	
+		
 	</script>
-	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/actModal.js">
-		var Grid;
-	</script>
-	
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/matModal.js">
-		var Grid;
-	</script>
+
 </body>
 </html>

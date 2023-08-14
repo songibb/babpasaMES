@@ -11,7 +11,7 @@
 			   prcs_dir_date,
 			   prcs_start_date,
 			   prcs_end_date,
-			   prcs_dir_sts,
+			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
 			   emp_code
 		  FROM prcs_dir
 		 ORDER BY prcs_dir_code
@@ -26,7 +26,7 @@
 			   prcs_dir_amt,
 			   prcs_start_de_date,
 			   prcs_end_de_date,
-			   prcs_ing_sts,
+			   find_cdnm('0R', prcs_ing_sts) AS prcs_ing_sts,
 			   emp_code
 		  FROM prcs_dir_de
 		 WHERE prcs_dir_code = #{prcsDirCode}
