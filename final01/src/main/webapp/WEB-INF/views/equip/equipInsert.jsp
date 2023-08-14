@@ -246,6 +246,10 @@
   </div>
 </div>
 
+ <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -264,6 +268,7 @@ $("#actModal").click(function(){
 			data : { eqCode : eqCode },
 			success : function(data){
 					//console.log(data);
+					
 					$('#eqCode').val(data.eqCode);
 					$('#actCode').val(data.actCode);
 					$('#eqName').val(data.eqName);
