@@ -8,7 +8,7 @@
 <html>
 <head>
 <title>주문 조회</title>
-<!-- 토스트 페이지 네이션 -->
+<!-- 토스트 페이지 네이션 dd-->
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet"
@@ -30,39 +30,56 @@
 	<div class="black_bg"></div>
 	<h3>거래처관리</h3>
 	<div>
-		<form>
+		<form id="id">
+		<div>
+		<p3>등록/수정</p3>
+		</div>
 			<table>
 				<tr>
 					<th>거래처코드</th>
-					<td><input type="text" name="actCode" id="actCode" readonly="readonly" style="background-color: gray;"></td>
+					<td><input type="text" name="actCode" id="actCode" readonly="readonly" style="background-color: skyblue;"></td>
 				</tr>
 				<tr>
 					<th>거래처명</th>
-					<td><input type="text" name="actName"></td>
+					<td><input type="text" name="actName" id="actName"></td>
 				</tr>
 				<tr>
 					<th>사업자번호</th>
-					<td><input type="text" name="actNum"></td>
+					<td><input type="text" name="actNum" id="actNum"></td>
 				</tr>
 				<tr>
 					<th>연락처</th>
-					<td><input type="text" name="actTel"></td>
+					<td><input type="text" name="actTel" id="actTel"></td>
+				</tr>
+				<tr>
+					<th>거래상태</th>
+					<td>
+						<select id="inputActList" name="actSts">
+							<c:forEach items="${actStsList}" var="s">
+								<option value="${s.commdeCode }">${s.commdeName }</option>
+							</c:forEach>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>거래처구분</th>
-					<td><input type="text" name="commdeName" id="commdeName" readonly="readonly" style="background-color: gray;"></td>
-					<td><input type="hidden" name="actKind" id="commdeCode"></td>
-					<td><button type="button" id="commdeModal">거래처구분조회</button></td>
+					<td>
+						<select id="actTypeList" name="actKind">
+							<c:forEach items="${actTypeList}" var="a">
+								<option value="${a.commdeCode }">${a.commdeName }</option>
+							</c:forEach>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>담당자</th>
-					<td><input type="text" name="empName" id="empName" readonly="readonly" style="background-color: gray;"></td>
-					<td><input type="hidden" name="empCode" id="empCode" readonly="readonly"></td>
-					<td><button type="button" id="empModal">사원조회</button></td>
+					<td><input type="text" name="empName" id="empName" readonly="readonly" style="background-color: skyblue;"></td>
+					<td><input type="text" name="empCode" id="empCode" readonly="readonly" style="display: none;"></td>
+					<td><button type="button" id="empModal" class="btn btn-info btn-icon-text">사원조회</button></td>
 				</tr>
 			</table>
-			<button type="submit">등록</button>
-			<button type="reset">취소</button>
+			<button type="submit" class="btn btn-info btn-icon-text">저장</button>
+			<button type="reset" class="btn btn-info btn-icon-text">취소</button>
 		</form>
 	</div>
 	<div class="col-lg-12 stretch-card">
@@ -75,7 +92,8 @@
 							id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
-						<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+						<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
 					</form>
 				</div>
 				<div id="grid"></div>
@@ -99,239 +117,6 @@
 
 
 	<script>
-	
-   //거래처 등록
-   
-   //거래처 구분 모달 시작
-   var Grid;
-   $("#commdeModal").click(function(){
-		  $(".modal").fadeIn();
-		  Grid = createCommdeGrid();
-		  
-		  Grid.on('click', () => {	
-				let rowKey = Grid.getFocusedCell().rowKey;
-				let commdeName = Grid.getValue(rowKey, 'commdeName');
-				let commdeCode = Grid.getValue(rowKey, 'commdeCode');
-				
-				$("#commdeName").val(commdeName);
-				$("#commdeCode").val(commdeCode);
-				
-		          if(rowKey != null){
-		             $(".modal").fadeOut();
-		              Grid.destroy();
-		          }
-		  
-				});
-				});
-
-		//구분조회 모달 그리드
-		 function createCommdeGrid(){
-		      var commdeGrid = new tui.Grid({
-		          el: document.getElementById('modal_label'),
-		          data: [
-		             <c:forEach items="${actTypeList}" var="a" varStatus="status">
-		                {
-		                	commdeName :"${a.commdeName}",
-		                	commdeCode :"${a.commdeCode}"
-		                } <c:if test="${not status.last}">,</c:if>
-		             </c:forEach>
-		             ],
-		         scrollX: false,
-		          scrollY: false,
-		          minBodyHeight: 30,
-		          rowHeaders: ['rowNum'],
-		          selectionUnit: 'row',
-		          pagination: true,
-		          pageOptions: {
-		          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		            useClient: true,
-		            perPage: 10
-		          },
-		          columns: [
-		                {
-		                  header: '구분명',
-		                  name: 'commdeName'
-		                },
-		                {
-		                 header: '구분코드',
-			             name: 'commdeCode'
-		                }
-		           ]
-		         
-		        });
-		      
-		      return commdeGrid;
-		   }
-   
-   
-	 //사원 모달창 시작
-	  $("#empModal").click(function(){
-		  $(".modal").fadeIn();
-		  Grid = createEmpGrid();
-		  
-		  Grid.on('click', () => {	
-				let rowKey = Grid.getFocusedCell().rowKey;
-				let empName = Grid.getValue(rowKey, 'empName');
-				let empCode = Grid.getValue(rowKey, 'empCode');
-				$("#empName").val(empName);
-				$("#empCode").val(empCode);
-				
-		          if(rowKey != null){
-		             $(".modal").fadeOut();
-		              Grid.destroy();
-		          }
-		  
-				});
-				});
-
-		
-		$("#close_btn").click(function(){
-		  $(".modal").fadeOut(); 
-			Grid.destroy();
-		});
-		
-		//사원조회 모달 그리드
-		 function createEmpGrid(){
-		      var empGrid = new tui.Grid({
-		          el: document.getElementById('modal_label'),
-		          data: [
-		             <c:forEach items="${empList}" var="e" varStatus="status">
-		                {
-		                	empCode : "${e.empCode}",
-		                	empName :"${e.empName}",
-		                	commdeName :"${e.commdeName}"
-		                } <c:if test="${not status.last}">,</c:if>
-		             </c:forEach>
-		             ],
-		         scrollX: false,
-		          scrollY: false,
-		          minBodyHeight: 30,
-		          rowHeaders: ['rowNum'],
-		          selectionUnit: 'row',
-		          pagination: true,
-		          pageOptions: {
-		          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		            useClient: true,
-		            perPage: 10
-		          },
-		          columns: [
-		             {
-		                  header: '사원코드',
-		                  name: 'empCode'
-		                },
-		                {
-		                  header: '사원명',
-		                  name: 'empName'
-		                },
-		                {
-		                  header: '부서명',
-		                  name: 'commdeName'
-		                }
-		           ]
-		         
-		        });
-		      
-		      return empGrid;
-		   }
-		   
-		   
-		   
-		   
-
-		
-	//거래처 등록 수정 같이하기
-	
-	
-	
-	
-	$("form").on('submit', function(e){
-		  e.preventDefault();
-		  
-		  let actInfo = getActInfo(); 
-		  
-		  if(actInfo.actCode != ''){
-			  ajaxActCodeInsert();
-		  }
-	})
-		
-		function getActInfo(){
-		let inputList = $('form').serializeArray();
-		
-		let actInfo = {};
-		$.each(inputList, function(idx, obj){
-			actInfo[obj.name] = obj.value;
-		})
-		
-		return actInfo;
-	}		
-		
-	
-	
-	
-	
-	
-	
-	
-   					
-    //거래처 등록
-/*      $('form').on('submit', ajaxActCodeInsert);*/
-    
-    function serializeObject() {
-		let formData =$('form').serializeArray();
-		
-		//객체를 배열로 만듬
-		let objectData = {};
-		$.each(formData, function(idx, obj){
-			objectData[obj.name] = obj.value;
-		});
-			return objectData;
-		
-	} 
-   					
-   		function ajaxActCodeInsert(e) {
-   			
-   			e.preventDefault();
-   			
-			let obj = serializeObject();
-			
-				$.ajax({
-					url : 'actCodeInsert',
-					type : 'post',
-					contentType : 'application/json',
-					data :  JSON.stringify(obj)
-				})
-				.done(data => { 
-					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-						alert( '거래처가 등록처리되었습니다.');
-					
-						//밑에 조회 ajax 새로 처리 필요
-						$.ajax({
-						       url : "ajaxActCodeList",
-						       method :"GET",
-						       success : function(result){
-						           grid.resetData(result);
-						       },
-						       error : function(reject){
-									console.log(reject);
-								}
-							});
-						
-						//form 비우기
-						 resetForm();
-					} else{
-						alert('등록처리가 실패되었습니다.');
-						//수정은 딱히 reload할 필요가 없음
-					}   	
-				})
-				.fail(reject => console.log(reject));
-	   			
-				
-		}
-   		
-   		//form 비우기 함수
-   		function resetForm(){
-   			$('form')[0].reset();
-   		} 
    					
 		 //거래처 리스트 조회
 			$.ajax({
@@ -362,26 +147,15 @@
 				   }
 			   })
 		  }
-		  
-		   
-		   function serializeObject(){
-			   let formData = $('form').serializeArray();
-			   let formObject = {};
-			   $.each(formData, function(idx,obj){
-					let field = obj.name;
-					let val = obj.value;
-					
-					formObject[field] = val;
-				});
-					return formObject;
-		   }
+
+		   //거래처 리스트 출력
 		
 		    var grid = new tui.Grid({
 		        el: document.getElementById('grid'),
 		        scrollX: false,
 		        scrollY: false,
 		        minBodyHeight: 30,
-				rowHeaders: ['rowNum'],
+				 rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 				pagination: true,
 				pageOptions: {
 					useClient: true,
@@ -407,22 +181,239 @@
 		            name: 'actTel'
 		          },
 		          {
+		        	//codeName
 		            header: '거래여부',
 		            name: 'sts'
 		          },
 		          {
+		        	  //code 값 가져오기위한 것
+			            header: '거래여부',
+			            name: 'actSts'
+			          },
+		          {
+			        	  //codeName
 		              header: '거래처구분',
 		              name: 'kind',
 		              filter: 'select'
 		            },
+		            {
+		            	 //code값 가져오기위한 것
+			              header: '거래처구분',
+			              name: 'actKind',
+			              filter: 'select'
+			            },
 		          {
 		              header: '담당자',
 		              name: 'empName'
+		            },
+		          {
+		              header: '담당자',
+		              name: 'empCode'
 		            }
 		        ]
 		      })  
+		   
+			  //거래처 등록
 		    
+			 //사원 조회 모달창 시작
+			  $("#empModal").click(function(){
+				  $(".modal").fadeIn();
+				  Grid = createEmpGrid();
+			
+				  
+				  Grid.on('click', () => {	
+						let rowKey = Grid.getFocusedCell().rowKey;
+						let empName = Grid.getValue(rowKey, 'empName');
+						let empCode = Grid.getValue(rowKey, 'empCode');
+						$("#empName").val(empName);
+						$("#empCode").val(empCode);
+						
+				          if(rowKey != null){
+				             $(".modal").fadeOut();
+				              Grid.destroy();
+				          }
+				  
+						});
+						});
+
+				
+				$("#close_btn").click(function(){
+				  $(".modal").fadeOut(); 
+					Grid.destroy();
+					
+				});
+				
+				//사원조회 모달 그리드
+				 function createEmpGrid(){
+				      var empGrid = new tui.Grid({
+				          el: document.getElementById('modal_label'),
+				          data: [
+				             <c:forEach items="${empList}" var="e" varStatus="status">
+				                {
+				                	empCode : "${e.empCode}",
+				                	empName :"${e.empName}",
+				                	commdeName :"${e.commdeName}"
+				                } <c:if test="${not status.last}">,</c:if>
+				             </c:forEach>
+				             ],
+				         scrollX: false,
+				          scrollY: false,
+				          minBodyHeight: 30,
+				          rowHeaders: ['rowNum'],
+				          selectionUnit: 'row',
+				          pagination: true,
+				          pageOptions: {
+				          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+				            useClient: true,
+				            perPage: 10
+				          },
+				          columns: [
+				             {
+				                  header: '사원코드',
+				                  name: 'empCode'
+				                },
+				                {
+				                  header: '사원명',
+				                  name: 'empName'
+				                },
+				                {
+				                  header: '부서명',
+				                  name: 'commdeName'
+				                }
+				           ]
+				         
+				        });
+				      
+				      return empGrid;
+				   };
+				   
+				   
+				   
+				   
+
+				
+			//거래처 등록/수정 한개버튼으로 같이하기
+			
+			
+			$("form").on('submit', function(e){
+				  
+				  let actInfo = getActInfo(); 
+				  
+				  
+				  if(actInfo.actCode != ''){
+					  e.preventDefault();
+					if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel=='' || actInfo.empCode =='' || actInfo.empName ==''){
+						
+						alert('모든 정보를 입력해 주세요.');
+						}else{ 
+
+					//수정 ajax
+					actUpdate(actInfo);
+						}
+				  }else{
+					  e.preventDefault();
+					  if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel=='' || actInfo.empCode =='' ){
+						 
+							alert('모든 정보를 입력해 주세요.');
+							}else{ 
+
+					  
+					  //등록 ajax 
+					  actInsert(actInfo);
+							}
+						
+					 
+				  }
+			});
+			
+			
+			//form에 입력된 값들가져오기
+			function getActInfo(){
+			let inputList = $('form').serializeArray();
+			
+			let actInfo = {};
+			$.each(inputList, function(idx, obj){
+				actInfo[obj.name] = obj.value;
+			})
+			
+			return actInfo;
+			};
+			
+			
+			//등록 ajax 함수
+			function actInsert(actInfo){
+			
+			  $.ajax({
+					url : 'actCodeInsert',
+					type : 'post',
+					contentType : 'application/json',
+					data :  JSON.stringify(actInfo)
+				})
+				.done(data => { 
+					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+						alert( '거래처 등록이 정상적으로 처리되었습니다.');
+					
+						//밑에 조회 ajax 새로 처리 필요
+						$.ajax({
+						       url : "ajaxActCodeList",
+						       method :"GET",
+						       success : function(result){
+						           grid.resetData(result);
+						       },
+						       error : function(reject){
+									console.log(reject);
+								}
+							});
+						
+						//form 비우기
+						 $('form')[0].reset();
+					} else{
+						alert('거래처 등록처리가 실패되었습니다.');
+					}   	
+				})
+				.fail(reject => console.log(reject));
+			}
+			
+			
+			//수정 ajax 함수
+			  function actUpdate(actInfo){
+				
+			
+			  $.ajax({
+					url : 'actCodeUpdate',
+					type : 'post',
+					contentType : 'application/json',
+					data :  JSON.stringify(actInfo)
+				})
+				.done(data => { 
+					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+						alert( '거래처 정보수정이 정상적으로 처리되었습니다.');
+					
+						//밑에 조회 ajax 새로 처리 필요
+						$.ajax({
+						       url : "ajaxActCodeList",
+						       method :"GET",
+						       success : function(result){
+						           grid.resetData(result);
+						       },
+						       error : function(reject){
+									console.log(reject);
+								}
+							});
+						
+						//form 비우기
+						 $('form')[0].reset();
+					} else{
+						alert('거래처 정보 수정이 실패되었습니다.');
+					}   	
+				})
+				.fail(reject => console.log(reject));
+			}
+		   
+			
+			
 		    
+		    //수정진행 클릭시 데이터 input에 가져오기
 		    grid.on('click', () => {
 		    	//클릭한 제품 BOM가져오기
 		    	let rowKey = grid.getFocusedCell().rowKey;
@@ -430,19 +421,158 @@
 		    	let actName = grid.getValue(rowKey, 'actName');
 		    	let actNum = grid.getValue(rowKey, 'actNum');
 		    	let actTel = grid.getValue(rowKey, 'actTel');
-		    	let kind = grid.getValue(rowKey, 'kind');
+		    	let actSts = grid.getValue(rowKey, 'actSts');
+		    	let actKind = grid.getValue(rowKey, 'actKind');
 		    	let empName = grid.getValue(rowKey, 'empName');
+		    	let empCode = grid.getValue(rowKey, 'empCode');
 		    	
 		    	$("#actCode").val(actCode);
 				$("#actName").val(actName);
 				$("#actNum").val(actNum);
 				$("#actTel").val(actTel);
-				$("#kind").val(kind);
-				$("#actName").val(actName);
-				
+				$("#inputActList option[value='" + actSts + "']").prop("selected", true);
+				$("#actTypeList option[value='" + actKind + "']").prop("selected", true);
+				$("#empName").val(empName);
+				$("#empCode").val(empCode);
 				});
-		
-			
+		    
+		    
+		    //거래처 삭제 
+
+		    $("#deleteAct").on('click', checked);
+		    
+		    function checked() {
+		        var checkedRows = grid.getCheckedRows();
+		        let checkedAct = [];
+		        if (checkedRows.length > 0) {
+		            var selectedRowIds = checkedRows.map(function(row) {
+		            	let actCode = grid.getValue(row.rowKey, 'actCode');
+		            	let obj = {actCode :actCode};
+		            	checkedAct.push(obj);   
+		            });
+		            
+		        }
+		        
+		        $.ajax({
+	                url : 'actCheckedDelete',
+	                type : 'POST',
+	                contentType : 'application/json',
+	                data : JSON.stringify(checkedAct),
+	                success : function(result){
+	                	alert(result + '개의 거래처가 삭제되었습니다.');
+						$.ajax({
+						       url : "ajaxActCodeList",
+						       method :"GET",
+						       success : function(result){
+						           grid.resetData(result);
+						       },
+						       error : function(reject){
+									console.log(reject);
+								}
+							});
+	                 
+	                },
+	                error : function(reject){
+	                    console.log(reject);
+	                }
+	            })
+		        
+		    }
+		    
+		    
+		    	/* 
+		    	var data = grid.getCheckedValues(actCode);
+		         actCode = grid.getValue(data,'actCode');
+		    	
+		    	var test = JSON.stringify(data);
+		    	alert(test);
+		    	
+		    	
+		    	$.ajax({
+		    		url : 'actCheckedDelete',
+					type : 'post',
+					contentType : 'application/json',
+					data : test,
+					 success : function(result){
+		                    //데이터가 돌아오는 방식을 확인하기
+		                    //console.log(result);
+
+		                    if(result != null){
+		                        let message = result.success + '건이 삭제되었습니다.'   //result.success : 성공 횟수
+		                        alert(message);
+		                        selectEmployees();
+		                    }
+		                },
+		                error : function(reject){
+		                    console.log(reject);
+		                }
+		            }) */
+		    
+		    
+/* 		    function checked(e){
+		    	let checks = [];
+		    	let rowKey = grid.getCheckedrowKeys;
+		    	let actCode = grid.getValue(rowKey, 'actCode');
+		    	var drow = grid.removeCheckedRows(true);
+		    	checks.push(actCode);
+		    	console.log(drow);
+		    	console.log(checks);
+		    } */
+		 
+		    //수정말고 거래처 등록만 ajax 진행시
+		    /*     $('form').on('submit', ajaxActCodeInsert);
+		        
+		         function serializeObject() {
+		    		let formData =$('form').serializeArray();
+		    		
+		    		//객체를 배열로 만듬
+		    		let objectData = {};
+		    		$.each(formData, function(idx, obj){
+		    			objectData[obj.name] = obj.value;
+		    		});
+		    			return objectData;
+		    		
+		    	} 
+		       					
+		       		function ajaxActCodeInsert(e) {
+		       			
+		       			e.preventDefault();
+		       			
+		    			let obj = serializeObject();
+		    			
+		    				$.ajax({
+		    					url : 'actCodeInsert',
+		    					type : 'post',
+		    					contentType : 'application/json',
+		    					data :  JSON.stringify(obj)
+		    				})
+		    				.done(data => { 
+		    					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+		    						alert( '거래처가 등록처리되었습니다.');
+		    					
+		    						//밑에 조회 ajax 새로 처리 필요
+		    						$.ajax({
+		    						       url : "ajaxActCodeList",
+		    						       method :"GET",
+		    						       success : function(result){
+		    						           grid.resetData(result);
+		    						       },
+		    						       error : function(reject){
+		    									console.log(reject);
+		    								}
+		    							});
+		    						
+		    						//form 비우기
+		    						 resetForm();
+		    					} else{
+		    						alert('등록처리가 실패되었습니다.');
+		    						//수정은 딱히 reload할 필요가 없음
+		    					}   	
+		    				})
+		    				.fail(reject => console.log(reject));
+		    	   			
+		    				
+		    		} */
 	</script>
 </body>
 </html>

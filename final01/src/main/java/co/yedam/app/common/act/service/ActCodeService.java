@@ -15,7 +15,7 @@ public interface ActCodeService {
 		public Map<String, String> insertActInfo(ActCodeVO actCodeVO);
 		
 		//거래처 수정
-		public int updateActInfo(ActCodeVO actCodeVO);
+		public Map<String, String> updateActInfo(ActCodeVO actCodeVO);
 		
 		//거래처 삭제
 		public int deleteActInfo(ActCodeVO actCodeVO);

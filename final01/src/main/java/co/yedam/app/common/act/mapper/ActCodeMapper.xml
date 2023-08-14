@@ -11,7 +11,9 @@
 				a.act_num,
 				a.act_tel,
 				a.act_sts,
+				a.act_kind,
 				c.commde_name kind,
+				a.emp_code,
 				e.emp_name,
 				o.commde_name sts
 		FROM com_act a LEFT JOIN com_commde c
@@ -53,9 +55,7 @@
 							,act_tel
 							,act_sts
 							,act_kind
-							<if test="empCode != null and !empCode.equals('')">
 							,emp_code
-							</if>
   							)
   		VALUES
   				(
@@ -63,11 +63,38 @@
   				,#{actName}
   				,#{actNum}
   				,#{actTel}
-  				,'D1'
+  				,#{actSts}
   				,#{actKind}
-  				<if test="empCode != null and !empCode.equals('')">
   				,#{empCode}
-  				</if>
   				)
   	</insert>
+  	
+  	<!-- 거래처 수정 -->
+  	<update id="updateActInfo" parameterType="ActCodeVO">
+  		update com_act set
+  				 act_name = #{actName}
+				,act_num = #{actNum}
+				,act_tel = #{actTel}
+				,act_sts = #{actSts}
+				,act_kind = #{actKind}
+				,emp_code = #{empCode}
+		where act_code = #{actCode}
+	</update>
+
+
+<!-- 	<delete id="deleteActInfo" parameterType="ActCodeVO">
+	
+	<foreach collection="checkedAct" item="d" index="index" open=""  close="" separator=";">
+	DELETE FROM com_act
+	WHERE act_code = #{d.actCode}
+	</foreach>
+	
+	</delete> -->
+	
+	<delete id="deleteActInfo" parameterType="ActCodeVO">
+	
+	DELETE FROM com_act
+	WHERE act_code = #{actCode}
+	
+	</delete>
   </mapper>

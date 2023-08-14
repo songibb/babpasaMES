@@ -16,6 +16,7 @@ import co.yedam.app.common.act.service.ActCodeService;
 import co.yedam.app.common.act.service.ActCodeVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
+import co.yedam.app.prcs.dir.service.PrcsDirVO;
 
 @Controller
 public class ActCodeController {
@@ -46,15 +47,16 @@ public class ActCodeController {
 	
 	
 	//거래처 관리페이지
-	@GetMapping("actCodeAdmin")
+	@GetMapping("/actCodeAdmin")
 	public String actCodeAdmin(Model model) {
 		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		model.addAttribute("actTypeList", commCodeService.selectActTypeList());
+		model.addAttribute("actStsList", commCodeService.selectActStsList());
 		return "admincom/actCodeAdmin";
 	}
 	
 	//ajax조회
-	@GetMapping("ajaxActCodeList")
+	@GetMapping("/ajaxActCodeList")
 	@ResponseBody
 	public List<ActCodeVO> ajaxActCodeList(){
 		List<ActCodeVO> actList = actCodeService.selectActCodeList();
@@ -63,10 +65,42 @@ public class ActCodeController {
 	
 	
 	//거래처 등록
-	@PostMapping("actCodeInsert")
+	@PostMapping("/actCodeInsert")
 	@ResponseBody
 	public Map<String, String> actCodeInsert(@RequestBody ActCodeVO actCodeVO){
 		return actCodeService.insertActInfo(actCodeVO);
+	}
+	
+	
+	//거래처 정보 수정
+	@PostMapping("/actCodeUpdate")
+	@ResponseBody 
+	public Map<String, String> actCodeUpdate(@RequestBody ActCodeVO actCodeVO){
+		return actCodeService.updateActInfo(actCodeVO);
+	}
+	
+	
+	
+	//거래처 삭제 check
+	/*
+	 * @PostMapping("/actCheckedDelete")
+	 * 
+	 * @ResponseBody public Map<String, String> delete(@RequestBody List<ActCodeVO>
+	 * checkedAct) {
+	 * 
+	 * 
+	 * return actCodeService.deleteActInfo(checkedAct); }
+	 */
+	@PostMapping("/actCheckedDelete")
+	@ResponseBody 
+	public int delete(@RequestBody List<ActCodeVO> checkedAct) {
+		int result = 0;
+		for(ActCodeVO vo : checkedAct) {
+			
+			result += actCodeService.deleteActInfo(vo);
+			
+		}
+		return result;
 	}
 	
 }

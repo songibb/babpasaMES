@@ -32,4 +32,10 @@ public class CommCodeServiceImpl implements CommCodeService {
 		return commCodeMapper.selectActTypeList();
 	}
 
+	@Override
+	public List<CommCodeVO> selectActStsList() {
+		
+		return commCodeMapper.selectActStsList();
+	}
+
 }
