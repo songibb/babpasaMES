@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
@@ -18,14 +18,14 @@
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
-            JOIN com_act c
+            LEFT JOIN com_act c
             ON (b.act_code = c.act_code)
-            JOIN com_emp d 
+            LEFT JOIN com_emp d 
             ON (b.emp_code = d.emp_code)
-            JOIN com_mat e
+            LEFT JOIN com_mat e
             ON (a.mat_code = e.mat_code)
             <where>
             	<if test="materialCode != null and materialCode != ''">
@@ -38,7 +38,7 @@
 					AND a.mat_od_rq <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
 				</if>
 				<if test="endDate != null and endDate != ''">
-					AND a.mat_od_rq <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+					AND a.mat_od_rq <![CDATA[<=]]> TO_DATE(#{endDate} , 'YYYY-MM-DD') + 1
 				</if>
 			</where>
 			ORDER BY a.mat_od_de_cd
@@ -85,6 +85,30 @@
             
 		END;
 	</insert>
+	
+	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
+		<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
+			UPDATE mat_order_de
+			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_od_acp = #{order.matOdAcp}, mat_price = #{order.matPrice}, mat_od_rq = #{order.matOdRq}
+			WHERE mat_od_de_cd = #{order.matOdDeCd}
+        </foreach>
+	</update>
+	
+	<delete id="deleteMatOrderList" parameterType="MatOrderDeVO">
+		BEGIN
+			<foreach collection="orderList" item="order" index="index" separator=" " close="">
+			DELETE FROM mat_order_de
+			WHERE mat_od_de_cd = #{order.matOdDeCd};
+			</foreach>
+			
+			DELETE FROM mat_order
+			WHERE mat_od_cd IN (
+								SELECT a.mat_od_cd
+								FROM mat_order a LEFT JOIN mat_order_de b
+								ON(a.mat_od_cd = b.mat_od_cd)
+								WHERE mat_od_de_cd IS NULL);
+		END;
+	</delete>
 	
 
 </mapper>

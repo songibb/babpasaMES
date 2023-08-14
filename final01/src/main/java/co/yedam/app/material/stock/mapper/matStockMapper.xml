@@ -9,7 +9,7 @@
 		FROM (SELECT SUM(mat_in_amt) amt1, mat_code FROM mat_in GROUP BY mat_code) a
 			LEFT JOIN (SELECT SUM(mat_out_amt) amt2, mat_code FROM mat_out GROUP BY mat_code) b
 		ON(a.mat_code = b.mat_code)
-			JOIN com_mat c
+			LEFT JOIN com_mat c
 		ON (a.mat_code = c.mat_code)
 		<where>
 			<if test="materialCode != null and materialCode != ''">

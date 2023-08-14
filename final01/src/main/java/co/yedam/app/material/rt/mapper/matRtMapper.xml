@@ -5,32 +5,32 @@
 <mapper namespace="co.yedam.app.material.rt.mapper.MatRtMapper">
 <!-- 전체조회 -->
 	<select id="selectMatRtList" resultType="MatRtVO">
-		SELECT b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, d.act_name, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.mat_rt_date, a.mat_rt_sts
-		FROM mat_rt a JOIN mat_test b
+		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, d.act_name, a.act_code, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
-				JOIN com_mat c
+				LEFT JOIN com_mat c
 					ON(a.mat_code = c.mat_code)
-						JOIN com_act d
+						LEFT JOIN com_act d
 							ON(a.act_code = d.act_code)
-								JOIN com_err e
+								LEFT JOIN com_err e
 									ON(b.err_code = e.err_code)
-										JOIN com_emp f
+										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
 		ORDER BY a.mat_rt_date DESC
 	</select>
 	
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatRtSearch" resultType="MatRtVO">
-		SELECT b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, d.act_name, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.mat_rt_date, a.mat_rt_sts
-		FROM mat_rt a JOIN mat_test b
+		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, d.act_name, a.act_code, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
-				JOIN com_mat c
+				LEFT JOIN com_mat c
 					ON(a.mat_code = c.mat_code)
-						JOIN com_act d
+						LEFT JOIN com_act d
 							ON(a.act_code = d.act_code)
-								JOIN com_err e
+								LEFT JOIN com_err e
 									ON(b.err_code = e.err_code)
-										JOIN com_emp f
+										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
 		<where>
 			<if test="materialCode != null and materialCode != ''">
@@ -40,13 +40,72 @@
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-				AND a.mat_rt_date <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND a.mat_rt_date <![CDATA[>=]]> TO_CHAR(#{startDate}, 'YYYY-MM-DD')
 			</if>
 			<if test="endDate != null and endDate != ''">
-				AND a.mat_rt_date <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+				AND a.mat_rt_date <![CDATA[<=]]> TO_CHAR(#{endDate}, 'YYYY-MM-DD')
 			</if>
 		</where>
 		ORDER BY a.mat_rt_date DESC
 	</select>
-
+	
+	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
+	<select id="selectMatTestFinishList" resultType="MatTestVO">
+		SELECT a.mat_test_code, d.mat_name, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, mat_input_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		FROM mat_test a LEFT JOIN com_err b
+		ON(a.err_code = b.err_code)
+		LEFT JOIN mat_order_de c
+		ON(a.mat_od_de_cd = c.mat_od_de_cd)
+        LEFT JOIN com_mat d
+        ON(c.mat_code = d.mat_code)
+        LEFT JOIN mat_order f
+        ON(c.mat_od_cd = f.mat_od_cd)
+        LEFT JOIN com_act e
+        ON(f.act_code = e.act_code)
+		WHERE err_rt_sts = 'N'
+		ORDER BY mat_test_date DESC
+	</select>
+	
+	<!-- 반품 등록 -->
+	<insert id="insertMatRtList" parameterType="MatRtVO">
+		BEGIN
+			<foreach collection="rtList" item="rt" index="index" separator=";">
+			INSERT INTO mat_rt (
+                MAT_RT_CODE, MAT_TEST_CODE, ACT_CODE,
+                MAT_CODE, MAT_RT_AMT, MAT_RT_DATE,
+                MAT_RT_STS, EMP_CODE
+            ) VALUES (
+                get_primaryCode('matRtCode'),
+                #{rt.matTestCode}, #{rt.actCode},
+                #{rt.matCode}, #{rt.matRtAmt}, #{rt.matRtDate},
+                #{rt.matRtSts}, #{rt.empCode}
+            );
+            UPDATE mat_test
+            SET err_rt_sts = 'Y'
+            WHERE mat_test_code = #{rt.matTestCode};
+		 	</foreach>
+		 END
+		 ;
+	</insert>
+	
+	<!-- 반품 수정 -->
+	<update id="updateMatRtList" parameterType="MatRtVO">
+		<foreach collection="rtList" item="rt" index="index" open="" separator=" " close="">
+			UPDATE mat_rt
+			SET mat_rt_amt = #{rt.matRtAmt}, mat_rt_date = #{rt.matRtDate}, mat_rt_sts = #{rt.matRtSts}
+			WHERE mat_rt_code = #{rt.matRtCode}
+		</foreach>
+	</update>
+	
+	<!-- 반품 삭제 -->
+	<delete id="deleteMatRtList" parameterType="MatRtVO">
+		<foreach collection="rtList" item="rt" index="index" separator=";">
+			DELETE FROM mat_rt
+			WHERE mat_rt_code = #{rt.matRtCode};
+			<!-- 2번째 쿼리문 -->
+			UPDATE mat_test
+			SET err_rt_sts = 'N'
+			WHERE mat_test_code = #{rt.matTestCode};
+		</foreach>
+	</delete>
 </mapper>

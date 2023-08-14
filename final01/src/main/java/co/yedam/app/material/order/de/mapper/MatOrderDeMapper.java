@@ -17,4 +17,10 @@ public interface MatOrderDeMapper {
 	//거래처목록, 구매품목 필요함
 	//구매품목 select
 	public List<MatInVO> selectBuyMatList(String actCode); 
+	
+	//수정
+	public int updateMatOrderList(@Param("orderList") List<MatOrderDeVO> orderList);
+	
+	//삭제
+	public int deleteMatOrderList(@Param("orderList") List<MatOrderDeVO> orderList);	
 }

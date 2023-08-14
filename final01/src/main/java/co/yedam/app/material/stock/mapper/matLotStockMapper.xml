@@ -7,7 +7,7 @@
 		SELECT a.mat_code mat_code, a.mat_lot mat_lot, a.mat_in_amt <![CDATA[-]]> NVL(b.amt2,0) lot_stock, a.mat_exd mat_exd, c.mat_name mat_name
 		FROM (SELECT mat_in_amt, mat_lot, mat_code, mat_exd FROM mat_in WHERE mat_code = #{materialCode}) a LEFT JOIN (SELECT SUM(mat_out_amt) amt2, mat_lot FROM mat_out WHERE mat_code = #{materialCode} GROUP BY mat_lot) b
 		ON(a.mat_lot = b.mat_lot)
-		JOIN com_mat c
+		LEFT JOIN com_mat c
 		ON (a.mat_code = c.mat_code)
 		ORDER BY a.mat_exd
 	</select>

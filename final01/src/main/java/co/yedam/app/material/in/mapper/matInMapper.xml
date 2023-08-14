@@ -8,9 +8,9 @@
 		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, c.act_name act_name, a.mat_in_amt mat_in_amt, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
 		FROM mat_in a JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
-				JOIN com_act c
+				LEFT JOIN com_act c
 					ON(a.act_code = c.act_code)
-						JOIN com_emp d
+						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
 		ORDER BY a.mat_ind DESC
 	</select>
@@ -19,9 +19,9 @@
 		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, c.act_name act_name, a.mat_in_amt mat_in_amt, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
 		FROM mat_in a JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
-				JOIN com_act c
+				LEFT JOIN com_act c
 					ON(a.act_code = c.act_code)
-						JOIN com_emp d
+						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
 		<where>
 			<if test="materialCode != null and materialCode != ''">

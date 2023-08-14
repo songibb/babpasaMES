@@ -18,4 +18,10 @@ public class MatRtVO {
 	private String empName;
 	private Date matRtDate;
 	private String matRtSts;
+	
+	//등록,수정,삭제
+	private String matRtCode;
+	private String matTestCode;
+	private String actCode;
+	private String empCode;
 }
