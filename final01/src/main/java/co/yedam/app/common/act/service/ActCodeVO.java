@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ActCodeVO {
 
-	private String  actCode;
+	private String actCode;
 	private String actName;
 	private String actNum;
 	private String actTel;
@@ -14,7 +14,6 @@ public class ActCodeVO {
 	private String empCode;
 	
 	//조인
-	private String commdeName;
 	private String empName;
 	
 	private String kind;

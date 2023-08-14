@@ -45,15 +45,35 @@ public class ActCodeServiceImpl implements ActCodeService{
 	}
 	
 	@Override
-	public int updateActInfo(ActCodeVO actCodeVO) {
+	public Map<String, String> updateActInfo(ActCodeVO actCodeVO) {
 		
-		return 0;
+		Map<String, String> map = new HashMap<>();
+		
+		int result = actCodeMapper.updateActInfo(actCodeVO);
+		
+		if(result == 1) {
+			map.put("결과", "Success");
+		} else {
+			map.put("결과", "Fail");
+		}
+		return map;
 	}
+
+	/*
+	 * @Override public Map<String, String> deleteActInfo(List<ActCodeVO>
+	 * checkedAct) { Map<String, String> map = new HashMap<>(); int result =
+	 * actCodeMapper.deleteActInfo(checkedAct); if(result >= 1) { map.put("결과",
+	 * "Success"); } else { map.put("결과", "Fail"); } return map; }
+	 */
 
 	@Override
 	public int deleteActInfo(ActCodeVO actCodeVO) {
 		
-		return 0;
+		int result = actCodeMapper.deleteActInfo(actCodeVO);
+		
+		return result;
+	
+		
 	}
 
 
