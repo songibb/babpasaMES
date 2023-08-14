@@ -34,4 +34,16 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		return modm.insertMatOrderList(orderList);
 	}
 
+	@Override
+	public int updateMatOrderList(List<MatOrderDeVO> orderList) {
+		
+		return modm.updateMatOrderList(orderList);
+	}
+
+	@Override
+	public int deleteMatOrderList(List<MatOrderDeVO> orderList) {
+		
+		return modm.deleteMatOrderList(orderList);
+	}
+
 }

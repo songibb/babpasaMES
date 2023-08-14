@@ -71,4 +71,22 @@ public class MatOrderDeController {
 			 return "fail";
 		 }
 	} 
+	
+	
+	//수정
+	@PostMapping("matOrderDirUpdate")
+	@ResponseBody
+	public void matOrderDirUpdate(@RequestBody List<MatOrderDeVO> orderList) {
+		mods.updateMatOrderList(orderList);
+		return;
+	}
+	
+	//삭제
+	@PostMapping("matOrderDirDelete")
+	@ResponseBody
+	public void matOrderDirDelete(@RequestBody List<MatOrderDeVO> orderList) {
+		mods.deleteMatOrderList(orderList);
+		return;
+	}
+	//삭제
 }

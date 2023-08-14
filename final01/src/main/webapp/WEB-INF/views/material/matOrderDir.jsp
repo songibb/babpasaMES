@@ -8,166 +8,23 @@
 <meta charset="UTF-8">
 <title>생산 지시</title>
 
-<!-- 토스트 페이지 네이션 -->
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+
+<!-- 반드시 순서 중요함 time-picker date-picker가 toastui-calendar.min.js -->
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
 <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-<!-- 페이지 네이션 끝 -->
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+
 
 <style>
-body {
-	font-family: 'Nanum Gothic', sans-serif;
-	font-family: 'Noto Sans KR', sans-serif;
-}
-.search-container {
-	display: flex;
-	align-items: center;
-	background-color: #fff;
-	border-radius: 8px;
-	padding: 5px 10px;
-	margin-bottom: 10px;
-}
-
-.search-icon {
-	margin-right: 10px;
-	color: #888;
-}
-
-.search-input {
-	border: none;
-	outline: none;
-	font-size: 16px;
-	width: 100%;
-	padding: 5px;
-}
-
-.col-lg-12 stretch-card{
-	margin-top : 30px;
-}
-   
-#customtemplateSearchAndButton{
-	margin-bottom : 80px;
-	float : left;   
-}
-   
-#customtemplateSearchAndButton input, #modalTitle input{
-	border : 1px solid black; 
-	display : inline-block;
-}
-   
-#customtemplateSearchAndButton p, #modalTitle p{
-	display : inline-block;
-	padding-bottom: 10px;
-	padding-right : 10px;
-}
-   
-#customtemplateSearchAndButton .blackcolorInputBox{
-	background-color : #868e96;
-}
-
-.btn-icon-text{
-	margin : 5px;
-	padding : 7px;
-	border-radius : 9px;
-	height : 33px;
-}
-
-.excelDownload{
-	margin-top : 120px;
-	float : right;
-}
-   
- 
-/*모달시작*/
-#actModal{ 
-	cursor:pointer;
-}
-  
-.modal{ 
-	position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
-}
-  
-.modal_content{
-	  /*모달창 크기 조절*/
-	  width:600px; height:600px;
-	  background:#fff; border-radius:10px;
-	  /*모달창 위치 조절*/
-	  position:relative; top:33%; left:45%;
-	  margin-top:-100px; margin-left:-200px;
-	  text-align:center;
-	  box-sizing:border-box;
-	  line-height:23px;
-}
-
-.m_head{
-	height: 10%;
-	margin : 0;
-	/*제목 높낮이 조절*/
-	padding: 17px;
-	display: flex;
-	justify-content: space-between;
-	background-color:rgb(232, 143, 33);
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
-     
-.close_btn{
-	font-size: 20px;
-	color: black;
-	font-weight: 900;
-	cursor: pointer;
-}
-
-.modal_btn{
-	width: 80px;
-	height: 30px;
-	border-radius: 5px;
-	text-align: center;
-	font-size: 14px;
-	font-weight: bolder;
-	padding-top: 5px;
-	margin-left: 5px;
-	font-family: sans-serif;
-}
-.m_head{
-	height: 10%;
-	padding: 20px;
-	display: flex;
-	justify-content: space-between;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	font-family: sans-serif;
-}
-
-.m_body{
-	height: 80%;
-	padding: 20px;
-}
-
-.m_footer{
-	height: 10%;
-	padding: 15px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	display: flex;
-	justify-content: end;
-}
-.cancle{
-	background-color: black;
-	color: white;
-}
-.save{
-	background-color: black;
-	color: white;
-}
-/*모달끝*/
-
-/*날짜 input 크기*/
-input[type="date"]{
-	width : 221px;
-}
+	
 </style>    
        
 </head>
@@ -184,16 +41,16 @@ input[type="date"]{
 					
 						<div id="customtemplateSearchAndButton">		
 							<p>자재명</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                  <input type="text"  id="matCodeInput">
                   <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                   <br>
-                  <p>업체명</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                  <p>거래처명</p>
+                  <input type="text" id="actCodeInput">
                     <i class="bi bi-search" id="actModal"></i>
                   <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                   <br>
-                  <p>입고일자</p>
+                  <p>발주일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
@@ -202,10 +59,17 @@ input[type="date"]{
                   <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
-		            	</div>
-	            
+                  <br><br><br><br>
+                  <p>등록 거래처명</p>
+                  <input type="text" id="selectActCodeInput">
+                    <i class="bi bi-search" id="selectActModal"></i>
+                  <input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
+                  
+		          </div>
 	            	<button id="save">저장</button>
+	            	<button id="delete">삭제</button>
 	            	<button id="dirAdd">행추가</button>
+	            	
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -229,20 +93,42 @@ input[type="date"]{
   </div>
 	</div>
 
-    
+
 	<script>
+	
+	//삭제버튼
+	$('#delete').on("click",function(){
+		//그리드에서 행 지움
+		orderGrid.removeCheckedRows(true);
+		//마우스 커서 없앰
+		orderGrid.blur();
+		});
+	
+	
+	//저장버튼
 	document.getElementById('save').addEventListener('click', saveServer);
+	//행추가
 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
 
 	
 
 	//행추가 버튼 클릭시 상세생산지시 행 추가
+	
 	function addDirRow(){
-		orderGrid.appendRow();
+		//등록 거래처명
+		actName = $('#selectActNameFix').val();
+		actCode = $('#selectActCodeInput').val();
+		
+		
+		//등록 거래처가 없으면 행추가를 못함
+		if($('#selectActNameFix').val().length === 0){
+			alert('거래처를 먼저 등록해주세요.');
+		} else {
+			//거래처가 등록되어 있을 경우 행추가 허용
+		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode}, { at: 0 });	
+			
+		}
 	}
-   
-   
- 
 
 	//발주 form
 	var orderGrid = new tui.Grid({
@@ -251,20 +137,25 @@ input[type="date"]{
 	        	<c:forEach items="${matOrderList}" var="mat" varStatus="status">
 	           	{
 	           	matOdCd : "${mat.matOdCd}",
+	           	matOdDeCd : "${mat.matOdDeCd}",
 	           	matName :"${mat.matName}",
+	           	matCode : "${mat.matCode}",
 	           	matPrice :"${mat.matPrice}",
 	           	matAmt :"${mat.matAmt}",
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
 	           	actName :"${mat.actName}",
+	           	actCode : "${mat.actCode}",
 	           	empName : "${mat.empName}",
-	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy년 MM월 dd일"/>`
+	           	empCode : "${mat.empCode}",
+	           	matOdRq : `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`,
+	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy-MM-dd"/>`
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
 	        scrollX: false,
 	        scrollY: false,
 	        minBodyHeight: 30,
-			rowHeaders: ['rowNum'],	
+	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
 		        perPage: 10
@@ -275,6 +166,12 @@ input[type="date"]{
 	 	 	        name: 'matOdCd'
 	 	 	      },
 	 	 	      {
+		 	 	        header: '발주상세코드',
+		 	 	        name: 'matOdDeCd',
+		 	 	        hidden : true
+		 	 	        
+		 	 	  },
+	 	 	      {
 			 			header: '자재명',
 			 		 	name: 'matName',
 			 	 	    editor : 'text'
@@ -282,7 +179,7 @@ input[type="date"]{
 			 	  {
 	                    header: '자재코드',            // [필수] 컬럼 이름
 	                    name: 'matCode',                 // [필수] 컬럼 매핑 이름 값
-	                    hidden: true,                   // [선택] 숨김 여부
+	                    hidden : true                // [선택] 숨김 여부
 	              },
 	              {
 		 	 	        header: '단가(원)',
@@ -301,13 +198,12 @@ input[type="date"]{
 		 	 	  },
 	        	  {
 	 	 	        header: '거래처명',
-	 	 	        name: 'actName',
-		 	 	    editor : 'text'
+	 	 	        name: 'actName'
 	 	 	      },
 	 	 	      {
 	                header: '거래처코드',            // [필수] 컬럼 이름
 	                name: 'actCode',                 // [필수] 컬럼 매핑 이름 값
-	                hidden: true,                   // [선택] 숨김 여부
+	                hidden : true                // [선택] 숨김 여부
 	              },
 	 	 	      {
                     header: '담당자명',            // [필수] 컬럼 이름
@@ -316,104 +212,263 @@ input[type="date"]{
                   {
                     header: '담당자코드',            // [필수] 컬럼 이름
                     name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
-                    hidden: true,                   // [선택] 숨김 여부
+                    hidden : true                 // [선택] 숨김 여부
                   },
 	 	 	      {
 	 	 	        header: '발주일자',
 	 	 	        name: 'matOdRq',
-	 	 	        editor : 'text'
+	 	 	        editor: 'datePicker'
+	 	 	        
 	 	 	      },
 	 	 	      {
 		 	 	    header: '납기요청일',
 		 	 	    name: 'matOdAcp',
-		 	 	    editor : 'text'
+		 	 	    editor: 'datePicker'
 		 	 	  }
 	        ]
 	      });
+	
+
 	
 	
 	
 	
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
-		
-		//생산지시 객체 -> insert
-		let rowKey = orderGrid.getFocusedCell().rowKey;
-		let columnName = orderGrid.getFocusedCell().columnName;
-		
-		orderGrid.finishEditing(rowKey, columnName);
-		let list2 = orderGrid.getData();
-		console.log(list2);
-		
-		let list = [];
-		$.each(list2, function(idx, obj){
-			if(obj.matOdCd == null){
-				list.push(obj);
-			}
-		})
-		console.log(list);
-		let customList = [];
-		$.each(list, function(idx, obj){
-			let customObj = {};
-			customObj['empCode'] = "이슬";	//고치기
-			customObj['actCode'] = obj['actCode'];
-			customObj['matAmt'] = obj['matAmt'];
-			customObj['matCode'] = obj['matCode'];
-			customObj['matOdAcp'] = obj['matOdAcp'];
-			customObj['matPrice'] = obj['matPrice'];
-			customObj['matOdRq'] = obj['matOdRq'];
-	 		customList.push(customObj);
-		});
-		
-		//ajax로 데이터 보내기
-		
-		$.ajax({
-			url : 'matOrderDirInsert',
-			method : 'POST',
-			data : JSON.stringify(customList),
-			contentType : 'application/json',
-			success : function(data){
-				console.log(data);
-				
-			},
-			error : function(reject){
-				console.log(reject);
-			}
-		})
+		orderGrid.blur();
+		let modifyGridInfo = orderGrid.getModifiedRows();
+		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+		let flag = true;
+		//create, modify, delete 포함하는 전체 배열을 도는 each문
+		$.each(modifyGridInfo, function(idx, obj){
 			
-		
-		
+			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
+			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
+			if(idx == 'createdRows' && obj.length != 0){
+				let list = [];
+				$.each(obj, function(idx2, obj2){
+					// console.log(obj2);  createdRows [{…}]
+					for(let j in obj2){
+						if(j != 'matTestYn' && j != 'matTotalPrice' && j != 'matOdCd' && j != 'matOdDeCd' && j != 'empName' && j !='empCode' && obj2[j] == null){
+							alert('추가할 값이 입력되지 않았습니다.');
+							flag = false;
+							return;
+						}
+						
+					}
+					if(flag){
+						let customObj = {};
+						customObj['empCode'] = "이슬";	//고치기
+						customObj['actCode'] = obj2['actCode'];
+						customObj['matAmt'] = obj2['matAmt'];
+						customObj['matCode'] = obj2['matCode'];
+						customObj['matOdAcp'] = obj2['matOdAcp'];
+						customObj['matPrice'] = obj2['matPrice'];
+						customObj['matOdRq'] = obj2['matOdRq'];
+				 		list.push(customObj);
+					}
+					
+					//값이 완전히 다 입력 되었을 때만 insert실행
+					if(flag){
+						$.ajax({
+							url : 'matOrderDirInsert',
+							method : 'POST',
+							data : JSON.stringify(list),
+							contentType : 'application/json',
+							success : function(data){
+								selectAjax();
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+						})
+					}
+					
+				})
+			}else if(idx == 'updatedRows' && obj.length != 0){
+				let list = [];
+				
+				$.each(obj, function(idx2, obj2){
+					for(let j in obj2){
+						//matTestYn, matTotalPrice는 사용자가 입력하는 값이라서 입력될 수 없으므로 제외함
+						if(j != 'matTestYn' && j != 'matTotalPrice' && j != 'empName' && j !='empCode' && obj2[j] == null){
+							alert('수정할 값이 입력되지 않았습니다.');
+							flag = false;
+							
+						}
+						
+					}
+					if(flag){
+						let customObj = {};
+						customObj['matOdDeCd'] = obj2['matOdDeCd'];
+						customObj['empCode'] = "이슬";	//고치기
+						customObj['actCode'] = obj2['actCode'];
+						customObj['matAmt'] = obj2['matAmt'];
+						customObj['matCode'] = obj2['matCode'];
+						customObj['matOdAcp'] = obj2['matOdAcp'];
+						customObj['matPrice'] = obj2['matPrice'];
+						customObj['matOdRq'] = obj2['matOdRq'];
+			 			list.push(customObj);
+			 			console.log(list);
+					}
+					
+				})
+				
+				
+				
+				//값이 완전히 다 입력 되었을 때만 insert실행
+				if(flag){
+					$.ajax({
+						url : 'matOrderDirUpdate',
+						method : 'POST',
+						data : JSON.stringify(list),
+						contentType : 'application/json',
+						success : function(data){
+							selectAjax();
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}
+				
+			}else if(idx == 'deletedRows' && obj.length != 0){
+				let list = [];
+				//if(flag) = 수정, 등록이 완전하지 않으면 삭제도 시키지 않겠다 
+				if(flag){
+					$.each(obj, function(idx2, obj2){
+						
+						let customObj = {};
+						customObj['matOdDeCd'] = obj2['matOdDeCd'];
+						customObj['matOdCd'] = obj2['matOdCd'];
+						list.push(customObj);
+				})
+
+				}
+				
+				if(flag){
+					$.ajax({
+						url : 'matOrderDirDelete',
+						method : 'POST',
+						data : JSON.stringify(list),
+						contentType : 'application/json',
+						success : function(data){
+							console.log(data);
+							selectAjax();
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					});
+				}
+
+			}
+			
+		})
+	}
+	
+	//검색
+	function selectAjax(){
+		let mat = $('#matCodeInput').val();
+		let act = $('#actCodeInput').val();
+		let sd = $('#startDate').val();
+		let ed = $('#endDate').val();
+		   
+		let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+		$.ajax({
+			url : 'getMatOrderFilter',
+			method : 'GET',
+			data : search,
+			success : function(data2){
+				
+				$.each(data2, function(idx, obj){
+					obj['matTotalPrice'] = obj['matPrice'] * obj['matAmt'];
+					let date = new Date(obj['matOdRq']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['matOdRq'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					date = new Date(obj['matOdAcp']);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+					obj['matOdAcp'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					
+				})
+				orderGrid.resetData(data2);
+			}
+		})
 	}
 		
-	
+	function findColumns(){
+		var rows = orderGrid.findRows({
+			matOdCd : null
+		});
+		return rows;
+	}
 	
 	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
 		var Grid;
-		orderGrid.on('click', () => {
+		$("#actModal, #selectActModal").on('click', event =>{
+			
+		       $(".modal").fadeIn();
+		       Grid = createActGrid();
+		       
+		       Grid.on('click', event2 => {
+		        	let rowKey = Grid.getFocusedCell().rowKey;
+		        	let actCode = Grid.getValue(rowKey, 'actCode');
+		        	let actName = Grid.getValue(rowKey, 'actName');
+		    		$(event.currentTarget).prev().val(actCode);
+		    		$(event.currentTarget).next().val(actName);
+		    		if(event.currentTarget.id == 'selectActModal'){
+		    			var rows = findColumns();
+		    			$.each(rows, function(idx, obj){
+		    				obj.actCode = actCode;
+		    				obj.actName = actName;
+		    			})
+		    		}
+		    		
+		    		
+		    		//모달창 닫기
+		    		if(rowKey != null){
+		    			$(".modal").fadeOut();
+		        		Grid.destroy();
+		    		}
+
+		    		});
+		      	});
+			
+		     
+		     
+		   $("#matModal").click(function(){
+		       $(".modal").fadeIn();
+		       Grid = createMatGrid();
+		       Grid.on('click', () => {
+		       	let rowKey = Grid.getFocusedCell().rowKey;
+		       	let matCode = Grid.getValue(rowKey, 'matCode');
+		    	let matName = Grid.getValue(rowKey, 'matName');
+				$("#matCodeInput").val(matCode);
+				$("#matNameFix").val(matName);
+		       
+		   		$("#matCodeInput").val(matCode);
+		   		//모달창 닫기
+		   		if(rowKey != null){
+					$(".modal").fadeOut();
+		    		Grid.destroy();
+
+		   		}
+		     })
+		     });
+	
+		
+		orderGrid.on('dblclick', () => {
     	let rowKey = orderGrid.getFocusedCell().rowKey;
     	let columnName = orderGrid.getFocusedCell().columnName;
-    	if(columnName == "actName"){
-    		$(".modal").fadeIn();
-    	       Grid = createActGrid();
-    	       
-    	       Grid.on('click', () => {
-    	       		let rowKey2 = Grid.getFocusedCell().rowKey;
-    	        	let actCode = Grid.getValue(rowKey2, 'actCode');
-    	        	let actName = Grid.getValue(rowKey2, 'actName');
-    	        	console.log(actCode);
-    	        	console.log(actName);
-    	    		//$("#actCodeInput").val(actCode);
-    	    		//$("#actNameFix").val(actName);
-    	    		orderGrid.setValue(rowKey, 'actCode', actCode);
-    	    		orderGrid.setValue(rowKey, 'actName', actName);
-    	    		//선택시 모달창 닫기
-    	    		if(rowKey != null){
-    	    			$(".modal").fadeOut();
-    	        		Grid.destroy();
-    	    		}
-
-    	       });
-    	} else if(columnName == 'matName'){
+    	let value = orderGrid.getFocusedCell().value;
+    	
+    	if(columnName == 'matName'){
     		$(".modal").fadeIn();
  	       Grid = createMatGrid();
  	       
@@ -421,22 +476,24 @@ input[type="date"]{
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
  	        	let matCode = Grid.getValue(rowKey2, 'matCode');
  	        	let matName = Grid.getValue(rowKey2, 'matName');
- 	        	console.log(matCode);
- 	        	console.log(matName);
- 	    		//$("#actCodeInput").val(actCode);
- 	    		//$("#actNameFix").val(actName);
- 	    		orderGrid.setValue(rowKey, 'matCode', matCode);
- 	    		orderGrid.setValue(rowKey, 'matName', matName);
+ 	        	orderGrid.finishEditing(rowKey, columnName);
+
+ 	    		if(matCode != null){
+ 	    			orderGrid.setValue(rowKey, 'matCode', matCode);
+ 	    		}
+ 	    		if(matName != null){
+ 	    			orderGrid.setValue(rowKey, 'matName', matName);
+ 	    		}
+ 	    		
+ 	    		
  	    		//선택시 모달창 닫기
- 	    		if(rowKey != null){
+ 	    		if(matCode != null){
  	    			$(".modal").fadeOut();
  	        		Grid.destroy();
  	    		}
 
  	       });
-    	} //else if(columnName == 'empName'){ session에서 받아오기
-    		
-    	//}
+    	} 
     	
 
   	});
@@ -540,8 +597,47 @@ input[type="date"]{
 	   
 	   return matGrid;
   }
+   
+   //이전 날짜 선택불가
+     $( '#startDate' ).on( 'change', function() {
+       $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+     } );
+    //이후날짜 선택불가
+     $( '#endDate' ).on( 'change', function() {
+          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+        } );
+    
+    
+   //검색
+     $('#searchBtn').on('click', searchMatIn);
+    function searchMatIn(e){
+ 	   let mat = $('#matCodeInput').val();
+ 	   let act = $('#actCodeInput').val();
+ 	   let sd = $('#startDate').val();
+ 	   let ed = $('#endDate').val();	   
+ 		  
+ 	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+ 	   selectAjax();
+    }
+    
+  //초기화
+    $('#searchResetBtn').on('click', resetInput);
+    function resetInput(e){
+ 	   $('input').each(function(idx, obj){
+ 		   obj.value = '';
+ 	   })
+    }
+    
+    //엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+    
+    document.addEventListener('DOMContentLoaded', ()=>{
+       excelDownload.addEventListener('click', function(e){
+          orderGrid.export('xlsx');
+       })
+    })
 	
-	//필요한 데이터만 list에 담음
+
     </script>
 </body>
 </html>
