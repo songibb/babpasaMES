@@ -11,4 +11,6 @@ public interface OutService {
 	public List<OutVO> prodAllList();
 	//검색
 	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate, String outDate);
+	//출고 등록
+	public int insertOutList(List<OutVO> outList);
 }

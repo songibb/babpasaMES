@@ -30,4 +30,14 @@ public class RtServiceImpl implements RtService {
 		return rtMapper.selectAllRt(prodCode);
 	}
 
+	@Override
+	public int insertRtList(List<RtVO> rtList) {
+		return rtMapper.insertRtList(rtList);
+	}
+
+	@Override
+	public List<RtVO> getAlreadyOutList() {
+		return rtMapper.selectAlreadyOutList();
+	}
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import co.yedam.app.material.order.de.service.MatOrderDeVO;
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
 
@@ -42,25 +43,39 @@ public class OrderController {
 		return vo;
 	}
 	
-	//거래처 등록 - 페이지 호출
-	@GetMapping("/orderMng")
-	public String orderInsertPage() {
-		return "sales/orderMng";
-	}
-	
 	//거래처 등록 - 실행
-	@PostMapping("/orderInsert")
+	@PostMapping("orderInsert")
 	@ResponseBody
-	public int orderInsert(@RequestBody OrderVO orderVO, RedirectAttributes rtt) {
-		int result = orderService.insertOrder(orderVO);
-		return result;
-	}
+	public String orderInsert(@RequestBody List<OrderVO>  orderList) {
+		 int result = orderService.insertOrderList(orderList);
+		 
+		 if(result > 0) {
+			 return "success";
+		 } else {
+			 return "fail";
+		 }
+	} 
 	
 	// 주문 관리 조회들
-		@GetMapping("/orderMngList")
+		@GetMapping("/orderMng")
 		public String orderMngList(Model model) {
-			model.addAttribute("noPlanList", orderService.getNoPlan());
+			//전체 주문서 목록
+			model.addAttribute("orderList", orderService.getOrderList());
+			//거래처 목록 -> 모달
+			model.addAttribute("actList", orderService.actAllList());
+			//제품 목록 - 완제품만 -> 모달
+			model.addAttribute("prodList", orderService.prodAllList());	
 			return "sales/orderMng";
 		}
+		
+//	//관리페이지
+//	@GetMapping("matOrderDir")
+//	public String getMatOrderDir(Model model) {
+//		List<MatOrderDeVO> mo = mods.selectMatOrderList();
+//		model.addAttribute("matOrderList", mo);
+//		model.addAttribute("actList", orderService.actAllList());
+//		model.addAttribute("matList", mms.getMetList());
+//		return "material/matOrderDir";
+//	}
 
 }

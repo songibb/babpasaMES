@@ -61,7 +61,7 @@
 	<select id="selectActAllList" resultType="OrderVO">
 	SELECT act_code, act_name, act_sts, act_kind
 	FROM com_act
-	ORDER BY act_code DESC
+	ORDER BY act_code
 	
 	</select>
 	<!-- 제품 목록 -->
@@ -69,66 +69,49 @@
 	SELECT prod_code, prod_name, prod_unit, prod_std
 	FROM com_prod
 	WHERE prod_kind = 'C'
-	ORDER BY prod_code DESC
+	ORDER BY prod_code
 	</select>
 	
-	<insert id="insertOrder" parameterType="OrderVO">
-<!-- 	<selectKey keyProperty="ordCode" resultType="String" order="BEFORE"> -->
-<!-- 	SELECT NVL(MAX(bno), ) + 1  -->
-<!-- 	FROM sales_ord -->
-<!-- 	</selectKey> -->
-	INSERT ALL
-	    INTO sales_ord
-	    (
-	    ord_code
-	    , ord_date
-	    , act_code
-	    , emp_code
-	    <if test="ordSts != null and !ordSts.equals('')">
-	    , ord_sts
-	    </if>
-	    <if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
-	    , prcs_plan_code
-	    </if>
-	    )
-        VALUES
-        (
-        #{ordCode}
-        , #{ordDate}
-        , #{actCode}
-        , #{empCode}
-        <if test="ordSts != null and !ordSts.equals('')">
-        , #{ordSts}
-        </if>
-        <if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
-        , #{prcsPlanCode}
-        </if>
-        )
-    	INTO sales_ord_de
-    	(
-    	sales_ord_de_code
-    	, ord_code
-    	, prod_code
-    	, prcs_rq_amt
-    	, dev_date
-    	<if test="devYn != null and !devYn.equals('')">
-    	, dev_yn
-    	</if>
-    	)
-        VALUES
-        (
-        #{salesOrdDeCode}
-        , #{ordCode}
-        , #{prodCode}
-        , #{prcsRqAmt}
-        , #{devDate}
-        <if test="devYn != null and !devYn.equals('')">
-        , #{devYn}
-        </if>
-        )
-        <selectKey order="AFTER">
-        	SELECT * FROM dual
-        </selectKey>
+	<!-- 주문서 등록 -->
+	<insert id="insertOrderList" parameterType="OrderVO">
+		<selectKey keyProperty="ordCode" resultType="String" order="BEFORE">
+			SELECT 'ORD-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(mat_od_cd, -3)),0) + 1, 3, '0')
+			FROM sales_ord
+			WHERE SUBSTR(ord_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		BEGIN
+			<!-- 첫번째 쿼리 -->
+			INSERT 	INTO
+				sales_ord
+			VALUES(
+				#{ordCode}
+				,#{orderList[0].ordDate}
+				,#{orderList[0].actCode}
+				,#{orderList[0].empCode}
+				,#{orderList[0].ordSts}
+				,#{orderList[0].prcsPlanCode}
+			);
+			<!-- 두번째 쿼리 -->
+			<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
+			INSERT INTO 
+				sales_ord_de(sales_ord_de_code,
+								ord_code,
+								prod_code,
+								prcs_rq_amt,
+								dev_date,
+								dev_yn
+								)
+            VALUES
+            
+                (get_primaryCode(''), 
+                 #{ordCode}, 
+                 #{order.prodCode}, 
+                 #{order.prcsRqAmt}, 
+                 #{order.devDate}, 
+                 'N');
+            </foreach>
+            
+		END;
 	</insert>
 	
 	<!-- 주문서 관리 - 미계획 주문서 목록 -->

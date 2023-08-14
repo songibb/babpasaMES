@@ -10,7 +10,11 @@ public interface RtMapper {
 	//전체조회
 	public List<RtVO> selectRtAllList();
 	//제품 목록
-		public List<RtVO> selectProdAllList();
-		//검색
-		public List<RtVO> selectAllRt(@Param("prodCode")String prodCode);
+	public List<RtVO> selectProdAllList();
+	//검색
+	public List<RtVO> selectAllRt(@Param("prodCode")String prodCode);
+	//반품 등록
+	public int insertRtList(@Param("rtList") List<RtVO> rtList);
+	//출고 완료된 목록
+	public List<RtVO> selectAlreadyOutList();
 }

@@ -9,4 +9,8 @@ public interface RtService {
 	public List<RtVO> prodAllList();
 	// 검색
 	public List<RtVO> searchRtList(String prodCode);
+	//반품 등록
+	public int insertRtList(List<RtVO> rtList);
+	//출고 완료된 목록
+	public List<RtVO> getAlreadyOutList();
 }
