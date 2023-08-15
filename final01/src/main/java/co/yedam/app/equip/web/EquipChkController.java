@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.equip.service.EquipChkService;
@@ -17,18 +19,30 @@ public class EquipChkController {
 	@Autowired
 	EquipChkService equipChkService;
 	
-	//¿¸√º¡∂»∏
-	@GetMapping("/equipchkList")
+	//Ï†ÑÏ≤¥ Ï†êÍ≤ÄÏÑ§ÎπÑ
+	@GetMapping("equipchkList")
 	public String getEquipChkList(Model model) {
 		model.addAttribute("equipchkList",equipChkService.getEquipChkList());
 		return "equip/equipchkList";
 	}
 	
-	//AJAX ø¨∞·
-	@GetMapping("selectEquipChkList") //Equiplist.jsp¿« ajax url∞˙ ø¨∞·µ«¥¬ ∞Õ 
+	//AJAX
+	@GetMapping("selectEquipChkList") 
 	@ResponseBody
 	public List<EquipChkVO> getEquipChkAllList(){
 		List<EquipChkVO> list = equipChkService.getEquipChkList();
 		return list;
+	}
+	
+	//Ï†êÍ≤Ä ÏÑ§ÎπÑ ÏàòÏ†ï
+	@PostMapping("updateChkEquip")
+	@ResponseBody
+	public int updateChkEquip(@RequestBody List<EquipChkVO> list) {
+		int result = 0;
+		for(EquipChkVO vo : list) {
+			equipChkService.updateChkEquip(vo);
+			result++;
+		}
+		return result;
 	}
 }

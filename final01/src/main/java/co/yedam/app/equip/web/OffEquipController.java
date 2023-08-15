@@ -21,7 +21,7 @@ public class OffEquipController {
 	OffEquipService offEquipService;
 	
 	
-	//»ó´Ü ºñ°¡µ¿ ÀüÃ¼Á¶È¸
+	//ìƒë‹¨ ë¹„ê°€ë™ ì „ì²´ì¡°íšŒ
 	@GetMapping("/offequip")
 	public String getOffEquipList(Model model) {
 		model.addAttribute("offequip",offEquipService.getOffEquipList());
@@ -31,22 +31,43 @@ public class OffEquipController {
 	}
 	
 	
+	//Ajax ì—°ê²° - ì „ì²´ ì„¤ë¹„ ë¦¬ìŠ¤íŠ¸
+		@GetMapping("selectoffequip") //Equiplist.jspì˜ ajax urlê³¼ ì—°ê²°ë˜ëŠ” ê²ƒ 
+		@ResponseBody
+		public List<OffEquipVO> getOffequip(){
+			List<OffEquipVO> list = offEquipService.getOffEquipList();
+			return list;
+		}
 		
-	//µî·ÏÆäÀÌÁö
+	
+	
+	
+		
+	//ë“±ë¡í˜ì´ì§€
 	@GetMapping("/insertOffEquip")
 	public String OffEquipInsertForm() {
 		return "equip/offequip";
 				
 	}
 	
-	//ºñ°¡µ¿ ¼³ºñ µî·Ï
+	//ë¹„ê°€ë™ ì„¤ë¹„ ë“±ë¡
 	@PostMapping("/insertOffEquip")
+	@ResponseBody
 	public String OffEquipInsert(OffEquipVO offequipVO) {
-		offEquipService.insertOffEquip(offequipVO);
-		return "redirect:offequip";
+		return offEquipService.insertOffEquip(offequipVO);
+		
 	}
 	
-	//¸ğ´Ş °¡Á®¿Â ÀüÃ¼¼³ºñ ´Ü°ÇÀ¸·Î ³Ö±â(Á¶È¸)
+	//ë¹„ê°€ë™ ì„¤ë¹„ ìˆ˜ì •
+	@PostMapping("/updateOffEquip")
+	@ResponseBody
+	public String OffEquipUpdate(OffEquipVO offequipVO) {
+		return offEquipService.updateOffEquip(offequipVO);
+		
+	}
+	
+	
+	//ëª¨ë‹¬ ê°€ì ¸ì˜¨ ì „ì²´ì„¤ë¹„ ë‹¨ê±´ìœ¼ë¡œ ë„£ê¸°(ì¡°íšŒ)
 	@GetMapping("getOffEquipInfo")
 	@ResponseBody
 	public OffEquipVO getOffEquipOne(@RequestParam String eqCode) {

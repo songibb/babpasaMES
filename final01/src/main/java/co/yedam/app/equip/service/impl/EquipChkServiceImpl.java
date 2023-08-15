@@ -13,7 +13,7 @@ import co.yedam.app.equip.service.EquipChkVO;
 public class EquipChkServiceImpl implements EquipChkService {
 
 	
-	//mapper ȣ��
+	//점검 설비 전체 조회
 	@Autowired
 	EquipChkMapper equipChkMapper;
 	
@@ -21,6 +21,18 @@ public class EquipChkServiceImpl implements EquipChkService {
 	public List<EquipChkVO> getEquipChkList() {
 		// TODO Auto-generated method stub
 		return equipChkMapper.selectEquipChkAllList();
+	}
+	
+	//점검 설비 수정
+	@Override
+	public int updateChkEquip(EquipChkVO equipChkVO) {
+		int result = equipChkMapper.updateChkequip(equipChkVO);
+		if(result > 0) {
+			return 1;
+		}else {
+			return -1;
+		}
+		
 	}
 
 }

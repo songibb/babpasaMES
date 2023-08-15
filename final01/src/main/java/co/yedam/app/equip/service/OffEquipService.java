@@ -3,15 +3,18 @@ package co.yedam.app.equip.service;
 import java.util.List;
 
 public interface OffEquipService {
-	//ÀüÃ¼ ºñ°¡µ¿ ¼³ºñ Á¶È¸
+	//ì „ì²´ ë¹„ê°€ë™ ì„¤ë¹„ ì¡°íšŒ
 	public List<OffEquipVO> getOffEquipList();
 	
-	//¸ğ´Ş ¾È¿¡¼­ÀÇ ÀüÃ¼ ¼³ºñ Á¶È¸
+	//ëª¨ë‹¬ ì•ˆì—ì„œì˜ ì „ì²´ ì„¤ë¹„ ì¡°íšŒ
 	public List<OffEquipVO> getAllEquip();
 	
-	//ºñ°¡µ¿ µî·Ï
+	//ë¹„ê°€ë™ ë“±ë¡
 	public String insertOffEquip(OffEquipVO offequipVO);
+
+	//ë¹„ê°€ë™ ìˆ˜ì •
+	public String updateOffEquip(OffEquipVO offequipVO);
 	
-	//¸ğ´Ş¿¡¼­ °®°í¿À´Â ¼³ºñ ´Ü°ÇÀ¸·Î °®°í¿À±â(Á¶È¸)
+	//ëª¨ë‹¬ì—ì„œ ê°–ê³ ì˜¤ëŠ” ì„¤ë¹„ ë‹¨ê±´ìœ¼ë¡œ ê°–ê³ ì˜¤ê¸°(ì¡°íšŒ)
 	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO);
 }

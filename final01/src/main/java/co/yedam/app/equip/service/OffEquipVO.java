@@ -12,10 +12,8 @@ public class OffEquipVO {
 	private String eqCode;
 	private String offType;
 	private String offInfo;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date offStime;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date offEtime;
+	private String offStime;
+	private String offEtime;
 	private String offNote;
 	private String empCode;
 	

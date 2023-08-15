@@ -198,7 +198,7 @@
                 <div><hr>
                 
        
-<form name="insertForm" action="insertOffEquip" method="post"> 
+<form id="insertForm"> 
      	<h3>비가동 등록</h3>
 		    <table>
 			      <tr>
@@ -230,7 +230,7 @@
 			      </tr>
 		   </table>
 	  
-			   <button type="submit">비가동 등록/해제 </button>
+			   <button type="submit" class="btn btn-info btn-icon-text">저장</button>
 			   </div>
 			</div>
 		</div>
@@ -275,8 +275,8 @@
 		        		eqName : "${off.eqName}",
 		        		offType : "${off.offType}",
 		        		offInfo : "${off.offInfo}",
-		        		offStime : "<fmt:formatDate value='${off.offStime}' pattern='yyyy-MM-dd'/>",
-		        		offEtime : "<fmt:formatDate value='${off.offEtime}' pattern='yyyy-MM-dd'/>",
+		        		offStime : "${off.offStime}",
+		        		offEtime : "${off.offEtime}",
 		        	}<c:if test="${not status.last}">,</c:if>
 		        	 </c:forEach>
 		        ],
@@ -325,30 +325,48 @@
 		      })  
 		    
 			
-var Grid;
-$("#actModal").click(function(){
-  $(".modal").fadeIn();
-  Grid = createActGrid();
-  Grid.on('click', () => {
-		let rowKey = Grid.getFocusedCell().rowKey;
-		let eqCode = Grid.getValue(rowKey, 'eqCode');
-		let eqName = Grid.getValue(rowKey, 'eqName');
-		let eqSts = Grid.getValue(rowKey, 'eqSts');
-	
-		
-
-		
-					$('#eqCode').val(eqCode);							
-					$('#eqName').val(eqName);							
-					$('#eqSts').val(eqSts);							
-					
-					
-					$(".modal").fadeOut();
-     		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
-			
-			    
-		})
-		});
+		    var Grid;
+		    $("#actModal").click(function(){
+		      $(".modal").fadeIn();
+		      Grid = createActGrid();
+		      Grid.on('click', () => {
+		        let rowKey = Grid.getFocusedCell().rowKey;
+		        let eqCode = Grid.getValue(rowKey, 'eqCode');
+		        let eqName = Grid.getValue(rowKey, 'eqName');
+		        let eqSts = Grid.getValue(rowKey, 'eqSts');
+		        
+		        // 설비 정보 가져오는 부분 추가
+		        $.ajax({
+		          url: "getOffEquipInfo",  // 설비 정보를 가져올 API 엔드포인트
+		          method: "GET",
+		          data: { eqCode: eqCode },
+		          
+		          success: function(result) {
+		            // result는 가져온 설비 정보를 담고 있음
+		            let eqName = result.eqName;
+		            let offNo = result.offNo;
+		            let offType = result.offType;
+		            let offInfo = result.offInfo;
+		            let offStime = result.offStime;
+		            let offEtime = result.offEtime;
+		            
+		            $('#eqCode').val(eqCode);
+		            $('#eqName').val(eqName);
+		            $('#offNo').val(offNo);
+		            $('#offType').val(offType);
+		            $('#offInfo').val(offInfo);
+		            $('#offStime').val(offStime);
+		            $('#offEtime').val(offEtime);
+		          },
+		          error: function(reject){
+		            console.log(reject);
+		          }
+		        });
+		        
+		        $(".modal").fadeOut();
+		        Grid.destroy();
+		      });
+		    });
   
   $.ajax({
 	    url : "selectOffEquipAllList",
@@ -412,7 +430,121 @@ function createActGrid(){
 		    })   
 	   return actGrid;
 }
+
+
+//거래처 등록/수정 한개버튼으로 같이하기
+
+
+$("#insertForm").on('submit', function(e){
+	  e.preventDefault();
+	  let offequipInfo = getoffequipInfo(); 
+	  
+	  
+	  if(offequipInfo.offStime != '' && offequipInfo.offStime != null){
+		  
+		if(offequipInfo.eqName =='' || offequipInfo.offType =='' || offequipInfo.offInfo==''){
 			
+			alert('모든 정보를 입력해 주세요.');
+			}else{ 
+
+		//수정 ajax
+		offequipUpdate(offequipInfo);
+			}
+		
+	  }else{
+		  
+		  if(offequipInfo.eqName =='' || offequipInfo.offType =='' || offequipInfo.offInfo=='' || offequipInfo.offStime ==''){
+				alert('모든 정보를 입력해 주세요.');
+				}else{ 
+
+		  
+		  //등록 ajax 
+		  offequipInsert(offequipInfo);
+				}
+			
+		 
+	  }
+
+});
+
+	//form에 입력된 값들가져오기
+	function getoffequipInfo(){
+	let inputList = $('form').serializeArray();
+	
+	let offequipInfo = {};
+	$.each(inputList, function(idx, obj){
+		offequipInfo[obj.name] = obj.value;
+	})
+	
+	return offequipInfo;
+	};
+
+
+//등록 ajax 함수
+function offequipInsert(offequipInfo){
+
+  $.ajax({
+		url : 'insertOffEquip',
+		type : 'post',
+		contentType : 'application/json',
+		data :  JSON.stringify(offequipInfo)
+	})
+	.done(data => { 
+		if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+			alert( '등록이 정상적으로 처리되었습니다.');
+			selectAjax();
+			
+			
+			//form 비우기
+			 $('form')[0].reset();
+		} else{
+			alert('등록처리가 실패되었습니다.');
+		}   	
+	})
+	.fail(reject => console.log(reject));
+}
+
+//리스트 리셋
+function selectAjax(){
+	$.ajax({
+	       url : "selectoffequip",
+	       method :"GET",
+	       success : function(result){
+	           grid.resetData(result);
+	       },
+	       error : function(reject){
+				console.log(reject);
+			}
+		});
+}
+//수정 ajax 함수
+function offequipUpdate(offequipInfo){
+	
+let etime = $('#offEtime').val();
+let ec = $('#eqCode').val();
+let etime2 = { offEtime : etime, eqCode : ec};
+$.ajax({
+		url : 'updateOffEquip',
+		method : 'post',
+		data :  etime2
+	})
+	.done(data => { 
+		console.log(data);
+		   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+			alert( '정보수정이 정상적으로 처리되었습니다.');
+		
+			//밑에 조회 ajax 새로 처리 필요
+			selectAjax();
+		
+			
+			//form 비우기
+			 $('form')[0].reset();
+		  	
+	})
+	.fail(reject => console.log(reject));
+}
+	
+	
 
 	</script>
 </body>

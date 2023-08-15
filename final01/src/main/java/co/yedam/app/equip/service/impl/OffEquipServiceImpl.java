@@ -6,18 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.equip.mapper.OffEquipMapper;
-import co.yedam.app.equip.service.EquipVO;
 import co.yedam.app.equip.service.OffEquipService;
 import co.yedam.app.equip.service.OffEquipVO;
 
 @Service
 public class OffEquipServiceImpl implements OffEquipService {
 
-	//mapper È£Ãâ
+	//mapper í˜¸ì¶œ
 	@Autowired
 	OffEquipMapper offEquipMapper;
 	
-	//ºñ°¡µ¿ ¼³ºñ ÀüÃ¼ Á¶È¸
+	//ë¹„ê°€ë™ ì„¤ë¹„ ì „ì²´ ì¡°íšŒ
 	@Override
 	public List<OffEquipVO> getOffEquipList() {
 		// TODO Auto-generated method stub
@@ -30,18 +29,30 @@ public class OffEquipServiceImpl implements OffEquipService {
 	}
 	
 	@Override
-	//µî·Ï
+	//ë“±ë¡
 	public String insertOffEquip(OffEquipVO offequipVO) {
 		int result = offEquipMapper.insertOffEquip(offequipVO);
 		if(result == 1) {
 			return offequipVO.getEqCode();
 					
 		}else {
-			return "µî·Ï½ÇÆĞ";
+			return "ë“±ë¡ì‹¤íŒ¨";
 		}
 	}
 	
-	//¸ğ´Ş ´Ü°Ç Á¶È¸ 
+	
+	//ë¹„ê°€ë™ ìˆ˜ì • 
+	public String updateOffEquip(OffEquipVO offequipVO) {
+		int result = offEquipMapper.updateOffEquip(offequipVO);
+		if(result == 1) {
+			return offequipVO.getEqCode();
+		}else {
+			return "ìˆ˜ì • ì‹¤íŒ¨";
+		}
+	}
+	
+	
+	//ëª¨ë‹¬ ë‹¨ê±´ ì¡°íšŒ 
 	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO) {
 		return offEquipMapper.selectOffEquipInfo(offequipVO);
 		
