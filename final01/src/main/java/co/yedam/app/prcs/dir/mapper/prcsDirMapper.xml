@@ -33,7 +33,7 @@
 		 ORDER BY prcs_dir_de_code
 	</select>
 	
-	<!-- 생산지시 등록 -->
+ 	<!-- 생산지시 등록 --> 
 	<insert id="insertPrcsDir" parameterType="prcsDirVO">
 		<selectKey keyProperty="prcsDirCode" resultType="String" order="BEFORE">
 			SELECT 'DIR-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_code, -3)),0) + 1, 3, '0')
@@ -62,7 +62,7 @@
 					 )
 	</insert>
 	
-	<!-- 상세생산지시 등록 -->
+	<!-- 상세생산지시 등록  -->
 	<insert id="insertPrcsDirDe" parameterType="prcsDirVO">
 		<selectKey keyProperty="prcsDirDeCode" resultType="String" order="BEFORE">
 			SELECT 'DIRDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_de_code, -3)),0) + 1, 3, '0')
@@ -95,11 +95,76 @@
 					 )
 	</insert>
 	
-	<!-- 상세생산지시할때 해당 생산지시 코드 가져오기 -->
-
+	<!-- 생산지시 + 상세생산지시 등록 -->
+<!-- 	<insert id="insertPrcsDir" parameterType="prcsDirVO"> -->
+<!-- 		<selectKey keyProperty="prcsDirCode" resultType="String" order="BEFORE"> -->
+<!-- 			SELECT 'DIR-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_code, -3)),0) + 1, 3, '0') -->
+<!-- 			FROM prcs_dir -->
+<!-- 			WHERE SUBSTR(prcs_dir_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd') -->
+<!-- 		</selectKey> -->
+<!-- 		BEGIN -->
+<!-- 			INSERT INTO prcs_dir ( -->
+<!-- 									prcs_dir_code -->
+<!-- 									, prcs_plan_code -->
+<!-- 									, prcs_dir_name -->
+<!-- 									, prcs_start_date -->
+<!-- 									, emp_code -->
+<!-- 								  ) -->
+<!-- 				 VALUES ( -->
+<!-- 							#{prcsDirCode} -->
+<!-- 							, #{prcsDirList[0].prcsDirCode} -->
+<!-- 							, #{prcsDirList[0].prcsPlanCode} -->
+<!-- 							, #{prcsDirList[0].prcsDirName} -->
+<!-- 							, #{prcsDirList[0].prcsStartDate} -->
+<!-- 							, #{prcsDirList[0].empCode} -->
+<!-- 						) -->
+<!-- 			<foreach collection="prcsDirList" item="p" index="index" open="" separator=" " close=""> -->
+<!-- 			INSERT INTO prcs_dir_de ( -->
+<!-- 										prcs_dir_de_code -->
+<!-- 										, prcs_dir_code -->
+<!-- 										, prod_code -->
+<!-- 										, prcs_plan_amt -->
+<!-- 										, prcs_dir_amt -->
+<!-- 										, prcs_start_de_date -->
+<!-- 										, emp_code -->
+<!-- 									 ) -->
+<!-- 	             VALUES (  -->
+<!-- 							get_primaryCode('prcsPlanDeCode') -->
+<!-- 							, #{p.prcsDirCode} -->
+<!-- 							, #{p.prodCode} -->
+<!-- 							, #{p.prcsPlanAmt} -->
+<!-- 							, #{p.prcsDirAmt} -->
+<!-- 							, #{p.prcsStartDeDate} -->
+<!-- 							, #{p.empCode}  -->
+<!-- 						) -->
+<!--            	</foreach>	 -->
+<!-- 		END; -->
+<!-- 	</insert> -->
 	
-	<!-- 생산지시 수정 -->
-	<update id="updatePrcsDir">
-	</update>
+	
+	
+	<!-- 미지시 생산계획 목록 조회 -->
+	<select id="selectNotDirPlanList" resultType="prcsPlanVO">
+		SELECT DISTINCT 
+			   p.prcs_plan_code, 
+			   p.prcs_plan_name,
+			   p.prcs_plan_date, 
+			   p.prcs_start_date
+		  FROM prcs_plan p JOIN prcs_plan_de d
+                             ON p.prcs_plan_code = d.prcs_plan_code
+         WHERE d.prcs_dir_sts IN ('T1','T2')
+	</select>
+	
+	<!-- 미지시 상세생산계획 목록 조회 -->
+	<select id="selectNotDirPlanDeList" resultType="prcsPlanVO">
+		SELECT p.prcs_plan_code, 
+ 			   find_prod_name(d.prod_code) AS prod_name,
+			   d.prcs_rq_amt
+		  FROM prcs_plan p JOIN prcs_plan_de d
+                		     ON p.prcs_plan_code = d.prcs_plan_code
+         WHERE p.prcs_plan_code = #{prcsPlanCode}
+	</select>
+	
+	
 	
 </mapper>

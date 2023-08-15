@@ -2,9 +2,6 @@ package co.yedam.app.prcs.dir.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Controller
 public class PrcsDirController {
@@ -74,5 +71,15 @@ public class PrcsDirController {
 		}
 		return result;
 	}
+	
+	
+	//미지시 생산계획 목록 조회
+	@GetMapping("notDirPlanList")
+	@ResponseBody
+	public List<PrcsPlanVO> getNotDirPlanList(){
+		List<PrcsPlanVO> list = prcsDirService.getNotDirPlanList();
+		return list;
+	}
+
 	
 }

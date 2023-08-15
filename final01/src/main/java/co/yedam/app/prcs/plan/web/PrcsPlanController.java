@@ -1,6 +1,7 @@
 package co.yedam.app.prcs.plan.web;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.sales.order.service.OrderVO;
@@ -71,14 +71,20 @@ public class PrcsPlanController {
 	//상세생산계획 등록
 	@PostMapping("prcsPlanDeInsert")
 	@ResponseBody
-	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> list) {	
+	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> prcsPlanList) {	
 		int result = 0;
-		for(PrcsPlanVO vo : list) {
+		for(PrcsPlanVO vo : prcsPlanList) {
 			prcsPlanService.insertPrcsPlanDe(vo);
+			
+			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+			prcsPlanService.updateNotPlanOrderList(vo);
 			result++;
 		}
+
+		
 		return result;
 	}
+	
 	
 	//생산계획 + 상세생산계획 등록
 //	@PostMapping("prcsPlanInsert")
@@ -87,16 +93,7 @@ public class PrcsPlanController {
 //		int result = prcsPlanService.prcsPlanInsert(prcsPlanList);
 //		return result;
 //	}
-	
-	//미계획 주문서 조회 	
-	@GetMapping("notPlanOrderList")
-	@ResponseBody
-	public List<OrderVO> getNotPlanOrderList(){
-		List<OrderVO> list = prcsPlanService.getNotPlanOrderList();
-		return list;
-	}
-	
-	
+
 	//생산계획 수정
 	@PostMapping("prcsPlanUpdate")
 	@ResponseBody
@@ -132,6 +129,34 @@ public class PrcsPlanController {
 		}
 		return result;
 	}
+	
+	
+	
+	//미계획 주문서 조회 	
+	@GetMapping("notPlanOrderList")
+	@ResponseBody
+	public List<OrderVO> getNotPlanOrderList(){
+		List<OrderVO> list = prcsPlanService.getNotPlanOrderList();
+		return list;
+	}
+	
+	//미계획 상세주문서 조회 
+	@PostMapping("notPlanOrderDeList")
+	@ResponseBody	
+	public List<OrderVO> getPlanOrderList(@RequestBody List<OrderVO> ordList){
+
+		List<OrderVO> deList = new ArrayList<>();
+		
+		for(OrderVO vo : ordList) {
+			String ordCode = vo.getOrdCode();
+
+			deList.addAll(prcsPlanService.getNotPlanOrderDeList(ordCode));
+		}
+		System.out.println(deList);
+		return deList;
+	}
+		
+
 	
 
 }

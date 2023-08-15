@@ -14,6 +14,20 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
     
+<style type="text/css">
+#matContainer{
+	display: flex;
+	justify-content: space-between;
+}
+#matGrid{
+    width: 600px;
+}
+#matLotGrid{
+    width: 600px;
+}
+
+</style>    
+    
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -22,52 +36,53 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
-					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
-	            	</form>
+	            </div>
 	            	
-	            	<button id="save">저장</button>
-	            	<button id="deAdd">행추가</button>
-	            	<button id="planModal">생산계획조회</button>
-	            	
-	           		<div id="dirGrid"></div>
-	           		<div id="dirDeGrid"></div>
-	           		<div id="matGrid"></div>
-				</div>
+	            <div>	            	
+	            	<div>
+	            		<p>생산 지시</p>
+	            		<button id="planModal" class="btn btn-info btn-icon-text">생산계획조회</button>
+	            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
+	            		<div id="dirGrid"></div>
+	            	</div>
+
+	           		<div>
+	           			<p>상세 생산 지시</p>
+	           			<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
+	            		<button id="deRemove" class="btn btn-info btn-icon-text">행삭제</button>
+	            		<div id="dirDeGrid"></div>
+	           		</div>
+	           		
+	           		<div id="matContainer">
+	           			<div>
+	           				<p>공정 자재</p>
+		           			<div id="matGrid"></div>
+	           			</div>
+	           			<div>
+	           				<p>자재별 LOT 재고</p>
+		           			<div id="matLotGrid"></div>
+	           			</div>
+           			</div>
+	            </div>
+				
+				
 	   		</div>
 		</div>
 	</div> 
 	
-	<div class="modal">
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
-			<div class="m_head">
-				<div class="modal_title"><h3>생산계획</h3></div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<div id="modal_label"></div>
-			</div>
-<!-- 			<div class="m_footer"> -->
-<!-- 				<div class="modal_btn save" id="save_btn">SAVE</div> -->
-<!-- 			</div> -->
-		</div>
+	<div>
+		<jsp:include page="../comFn/planModal.jsp"></jsp:include>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
 	</div>
     
 	<script>
 	
+	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
+	//행추가
 	document.getElementById('deAdd').addEventListener('click', addDeRow);
+	//행삭제
+	document.getElementById('deRemove').addEventListener('click', removeDeRow);
 	
 	//생산계획조회 모달
 	$("#planListModal").click(function(){
@@ -100,6 +115,14 @@
 	//행추가 버튼 클릭시 상세생산지시 행 추가
 	function addDeRow(){
 		dirDeGrid.appendRow();
+	}
+	
+	//행삭제 버튼 클릭시 상세생산지시 행 삭제
+	function removeDeRow(){
+		let message = confirm("정말 삭제하시겠습니까?");
+		if(message) {		
+			dirDeGrid.removeCheckedRows(false);
+		}
 	}
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
@@ -153,6 +176,8 @@
 						dirGrid.appendRow();
 						dirDeGrid.clear();
 						dirDeGrid.appendRow();
+						
+						alert('등록이 완료되었습니다.');
 					},
 					error : function(reject){
 			 			console.log(reject);
@@ -172,43 +197,43 @@
         el: document.getElementById('dirGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
-		rowHeaders: ['rowNum'],		
+        minBodyHeight: 30,	
         columns: [
-          {
-            header: '지시코드',
-            name: 'prcsDirCode'
-          },
+//           {
+//             header: '지시코드',
+//             name: 'prcsDirCode'
+//           },
           {
             header: '계획코드',
-            name: 'prcsPlanCode',
-            editor: 'text'
+            name: 'prcsPlanCode'
           },
           {
             header: '지시명',
             name: 'prcsDirName',
             editor: 'text'
           },
-          //지울부분
-          {
-            header: '지시등록일자',
-            name: 'prcsDirDate',
-          },
+//           {
+//             header: '지시등록일자',
+//             name: 'prcsDirDate',
+//           },
           {
 			header: '생산시작일자',
             name: 'prcsStartDate',
-            editor: 'text'
+            editor: {
+   		      type: 'datePicker',
+   		      options: {
+   		    	  language: 'ko'
+   		      }
+   		    }
           },
-          //지울부분
-          {
-            header: '생산종료일자',
-            name: 'prcsEndDate'
-          },
-        	//지울부분
-          {
-            header: '전체공정진행상태',
-            name: 'prcsDirSts'
-          },
+//           {
+//             header: '생산종료일자',
+//             name: 'prcsEndDate'
+//           },
+//           {
+//             header: '전체공정진행상태',
+//             name: 'prcsDirSts'
+//           },
           {
             header: '담당자',
             name: 'empCode',
@@ -223,18 +248,18 @@
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
+		rowHeaders: ['checkbox'],
         columns: [
+//           {
+//             header: '상세지시코드',
+//             name: 'prcsDirDeCode'
+//           },
+//           {
+//             header: '지시코드',
+//             name: 'prcsDirCode'
+//           },
           {
-            header: '상세지시코드',
-            name: 'prcsDirDeCode'
-          },
-          {
-            header: '지시코드',
-            name: 'prcsDirCode'
-          },
-          {
-            header: '제품코드',
+            header: '제품명',
             name: 'prodCode',
             editor: 'text'
           },
@@ -246,16 +271,21 @@
           {
             header: '생산시작일자',
             name: 'prcsStartDeDate',
-            editor: 'text'
+            editor: {
+   		      type: 'datePicker',
+   		      options: {
+   		    	  language: 'ko'
+   		      }
+   		    }
           },
-          {
-            header: '생산마감일자',
-            name: 'prcsEndDeDate'
-          },
-          {
-            header: '공정진행상태',
-            name: 'prcsIngSts'
-          },
+//           {
+//             header: '생산마감일자',
+//             name: 'prcsEndDeDate'
+//           },
+//           {
+//             header: '공정진행상태',
+//             name: 'prcsIngSts'
+//           },
           {
             header: '담당자',
             name: 'empCode',
@@ -264,7 +294,106 @@
         ]
       });
 	
+	//공정 자재 grid
+	var matGrid = new tui.Grid({
+        el: document.getElementById('matGrid'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 30,
+		rowHeaders: ['rowNum'],
+        columns: [
+          {
+            header: '자재명',
+            name: 'matName'
+          },
+          {
+            header: '자재소모량',
+            name: 'bomAmt'
+          },
+          {
+       	  	header: '투입공정',
+            name: 'bomAmt'
+          }
+//           {
+//             header: '단위',
+//             name: 'bomUnit'
+//           },
+        ]
+      });
+	
+	//자재별 LOT grid
+	var matLotGrid = new tui.Grid({
+        el: document.getElementById('matLotGrid'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 30,
+		rowHeaders: ['rowNum'],
+        columns: [
+//           {
+//             header: '자재명',
+//             name: 'matName'
+//           },
+          {
+            header: 'LOT번호',
+            name: 'bomAmt'
+          },
+          {
+       	  	header: '재고량',
+            name: 'bomAmt'
+          }
+//           {
+//             header: '단위',
+//             name: 'bomUnit'
+//           },
+        ]
+      });
 
+	
+	
+	
+
+	
+	//상세 생산지시 클릭시 해당 지시의 공정자재 조회 
+	dirDeGrid.on('click', () => {
+		
+    	//클릭한 상세생산지시의 공정자재 목록 가져오기
+    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+
+    	$.ajax({
+			url : 'prcsPlanDeList',
+			method : 'GET',
+			data : { prcsPlanCode : planCode },
+			success : function(data){
+				planDeGrid.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+
+  	});
+	
+	//공정 자재 클릭시 해당 자재의 LOT 조회 
+	matGrid.on('click', () => {
+		
+    	//클릭한 상세생산지시의 공정자재 목록 가져오기
+    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+
+    	$.ajax({
+			url : 'prcsPlanDeList',
+			method : 'GET',
+			data : { prcsPlanCode : planCode },
+			success : function(data){
+				planDeGrid.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+
+  	});
 	
     </script>
 </body>

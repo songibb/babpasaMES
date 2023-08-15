@@ -23,6 +23,10 @@
 		</div>
 	</div>
 	
+	<div>
+		<jsp:include page="dateFormat.jsp"></jsp:include>
+	</div>
+	
 	<script type="text/javascript">	
 	//미계획 주문서 모달
 	$("#orderModal").click(function(){
@@ -43,19 +47,42 @@
 		planDeGrid.clear();
 		planDeGrid.appendRow();
 		
-		//체크박스 체크한 데이터
-		var rowList = Grid.getCheckedRows();
+		
+		//체크박스 체크한 주문서 데이터
+		let checkList = Grid.getCheckedRows();
+		console.log(checkList);
+
+		let deList = [];
+		$.each(checkList, function(i, obj){
+			let deObj = {};
+			deObj['ordCode'] = checkList[i]['ordCode'];			
+			deList.push(deObj);
+		})
+		
 		
 		//모달창 닫기
-		if(rowList != null){
+		if(deList != null){
             $(".modal").fadeOut();
             Grid.destroy();   
+			
+            console.log(deList);
+    		$.ajax({
+    			url : 'notPlanOrderDeList',
+    			method : 'POST',
+    			data : JSON.stringify(deList),
+    			contentType : 'application/json',
+    			success : function(data){
+    				console.log(data);
+    	          	//체크박스 체크한 주문서의 상세 내역(제품코드, 주문수량) 그리드에 가져오기
+    	          	planDeGrid.resetData(data);
 
-          	//체크박스 체크한 데이터 그리드에 가져오기
-          	planDeGrid.resetData(rowList);
-          	
-          	gridClick = 'N';
-    		console.log(gridClick);
+    			},
+    			error : function(reject){
+    	 			console.log(reject);
+    	 		}	
+    		})
+    		
+    		gridClick = 'N';
         }
 		
 		
@@ -82,20 +109,12 @@
 	                name: 'ordCode',
 	            },
 	            {
-	                header: '주문날짜',
+	                header: '주문일자',
 	                name: 'ordDate'
 	            },
 	            {
-	                header: '제품코드',
-	                name: 'prodCode'
-	            },
-	            {
-	                header: '주문수량',
-	                name: 'prcsRqAmt'
-	            },
-	            {
-	                header: '납기일자',
-	                name: 'devDate'
+	                header: '거래처명',
+	                name: 'actName'
 	            }
 	        ]       
 	    });
@@ -104,6 +123,11 @@
 		    url : 'notPlanOrderList',
 		    method : 'GET',
 		    success : function(data){
+		    	//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let od = data[i]['ordDate'];
+					data[i]['ordDate'] = getDate(od);
+				})
 		    	orderGrid.resetData(data);
 		    },
 		    error : function(reject){

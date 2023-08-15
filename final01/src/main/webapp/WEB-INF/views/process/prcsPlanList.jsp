@@ -190,7 +190,7 @@
           },
           {
             header: '주문수량',
-            name: 'ordTotalAmt'
+            name: 'prcsRqAmt'
           },
           {
             header: '상세계획량',

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 public interface PrcsDirMapper {
 	//생산지시 조회
@@ -19,9 +20,19 @@ public interface PrcsDirMapper {
 	//상세생산지시 등록
 	public int insertPrcsDirDe(PrcsDirVO prcsDirVO);
 	
+	//생산지시 + 상세생산지시 등록
+//	public int insertPrcsDir(@Param("prcsDirList") List<PrcsDirVO> prcsDirList);
+	
 	//생산지시 수정
 	public int updatePrcsDir(PrcsDirVO prcsDirVO);
 	
 	//생산지시 삭제
+	
+	//미지시 계획 조회
+	public List<PrcsPlanVO> selectNotDirPlanList();
+	
+	//미지시 상세 계획 조회
+	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);
+	
 
 }

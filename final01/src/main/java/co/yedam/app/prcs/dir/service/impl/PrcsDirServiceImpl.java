@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.app.prcs.dir.mapper.PrcsDirMapper;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Service
 public class PrcsDirServiceImpl implements PrcsDirService {
@@ -49,6 +50,13 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		} else {
 			return -1;
 		}
+	}
+	
+
+	//미지시 생산계획 목록 조회 
+	@Override
+	public List<PrcsPlanVO> getNotDirPlanList() {
+		return prcsDirMapper.selectNotDirPlanList();
 	}
 
 }
