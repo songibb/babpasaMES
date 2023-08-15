@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page session="false" %>
 
 <!DOCTYPE html>
@@ -185,6 +184,7 @@
     	<div class="card">
         	<div class="card-body">
             	<div class="table-responsive pt-3">
+            	<form>
             		<div id="customtemplateSearchAndButton">
             			<p>설비구분</p>
             			<select name="job">
@@ -205,18 +205,20 @@
 						<p>점검일자</p>
 						 <p><input type="date"></p> ~ <p> <input type="date"></p>
 						<button type="button" class="btn btn-info btn-icon-text">검색</button>
-						<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="actModal">점검대상 조회</button>
+						</form>
+						
+						<button id="save">저장</button>
+	            		<button id="remove">삭제</button>
+	            		<button id="orderModal">점검대상 조회</button>
 
-						<!--       <i class="bi bi-search" id="matModal"></i> 돋보기 아이콘 -->
-					</div>
+		
 					<div id="grid"></div>
+					</div>
                 </div>
 			</div>
 		</div>
-	</div> 
 	
-<div class="modal">
+<div class="modal"/>
    
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
@@ -234,69 +236,31 @@
   </div>
 </div>
 
-<body>
-	<div id="grid"></div>
 	
 	<script>
+	
+	//저장
+	document.getElementById('save').addEventListener('click', saveServer);
+
 		
-		/* join해서 테이블 컬럼 보여주기 */
-		    var grid = new tui.Grid({
-		        el: document.getElementById('grid'),
-		        data :[
-		        	<c:forEach items="${equipchkList}" var="chk"  varStatus="status">
-		        	{
-		        		eqChkCode : "${chk.eqChkCode}",
-		        		chkDate : "${chk.chkDate}",
-		        		eqCode : "${chk.eqCode}",
-		        		empCode : "${chk.empCode}",
-		        		chkNote : "${chk.chkNote}",
-		        		chkRecord : "${chk.chkRecord}",
-		        		eqChkYn : "${chk.eqChkYn}",
-		        	}<c:if test="${not status.last}">,</c:if>
-		        	 </c:forEach>
-		        ],
-		        scrollX: false,
-		        scrollY: false,
-		        minBodyHeight: 30,
-				rowHeaders: ['rowNum'],
-				pagination: true,
-				pageOptions: {
-				useClient: true,
-				perPage: 10,
-				},
-		        columns:  [
-	 	      {
-		 	        header: '설비점검코드',
-		 	        name: 'eqChkCode',
-		 
-		 	      },
-		 	      {
-		 	        header: '설비코드',
-		 	        name: 'eqCode'
-		 	      },
-		 	      {
-		 	        header: '점검날짜',
-		 	        name: 'chkDate'
-		 	      },
-		 	     {
-			 	    header: '점검내역',
-			 	    name: 'chkRecord'
-			 	 },
-			 	 {
-				 	header: '점검판정',
-				 	name: 'eqChkYn'
-				  },
-		 	      {
-		 	        header: '담당자',
-		 	        name: 'empCode'
-		 	      },
-		 	      {
-		 	        header: '비고',
-		 	        name: 'chkNote'
-		 	      }
-		 	    ]
-		      })  
+	
+
+	//저장
+    function saveServer() {	
+    	let rowKey = grid.getFocusedCell();
+    	let codeValue = grid.getValue(rowKey, 'eqCode');
+    	
+		if(chkNote =! null){
+			//insert
+			ChkequipUpdate();
 			
+			//if -> 상세생산계획칸 비어있으면 작동X
+			
+		}
+
+	};
+	
+			/* //모달
 		    var Grid;
 		     $("#actModal").click(function(){
 		       $(".modal").fadeIn();
@@ -313,119 +277,110 @@
 		       $(".modal").fadeOut();
 		       
 				Grid.destroy();
-		     });
+		     }); */
 
 
-		function createActGrid(){
-			   var actGrid = new tui.Grid({
-			       el: document.getElementById('modal_label'),
-			       data: [
-			    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
+		     function ChkequipUpdate(){
+		 		//alert 표시를 위한 변수
+		 		var updateOk;
+		 		
+		 		//생산계획 -> update
+		 		let rowKey = grid.getFocusedCell().rowKey;
+		 		let columnName = grid.getFocusedCell().columnName;
+		 		//편집종료
+		 		grid.finishEditing(rowKey, columnName);
 
-			          ],
-				   scrollX: false,
-			       scrollY: false,
-			       minBodyHeight: 30,
-			       rowHeaders: ['rowNum'],
-			       selectionUnit: 'row',
-			       pagination: true,
-			       pageOptions: {
-			       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-			         useClient: true,
-			         perPage: 10
+		 		let list = grid.getData();
+
+		 		$.ajax({
+		 			url : 'updateChkEquip',
+		 			method : 'POST',
+		 			data : JSON.stringify(list),
+		 			contentType : 'application/json',
+		 			async : false,  //data 모두 수신 후 변수 updateOk에 담기 위해 동기방식으로 처리
+		 			success : function(data){	
+		 				updateOk = data;
+
+		 				//수정 후 그리드 내용 지우고, 행추가
+		 				grid.clear();
+		 				grid.appendRow();
+		 			},
+		 			error : function(reject){
+		 	 			console.log(reject);
+		 	 		}		
+		 		})
+		 		
+		 		if(updateOk > 0){
+					alert('수정 성공');
+				}
+		     }
+		     
+		   //점검 설비 grid
+		     var grid = new tui.Grid({
+		         el: document.getElementById('grid'),
+		         data: [
+			        	<c:forEach items="${equipchkList}" var="chk" varStatus="status">
+			           	{
+			           		eqCode : "${chk.eqCode}",
+			           		eqName : "${chk.eqName}",
+			           		eqType : "${chk.eqType}",
+			           		chkCycle : "${chk.chkCycle}",
+			           		chkDate : "${chk.chkDate}",
+			           		eqChkYn : "${chk.eqChkYn}",
+			           		empCode : "${chk.empCode}",
+			           		chkNote : "${chk.chkNote}"		   	        
+			           	}<c:if test="${not status.last}">,</c:if>
+			           </c:forEach>
+				          ], 
+		         scrollX: false,
+		         scrollY: false,
+		         minBodyHeight: 30,
+		         rowHeaders: ['rowNum', 'checkbox'],
+		         columns: [
+		           {
+		             header: '설비코드',
+		             name: 'eqCode'
+		           },
+		           {
+			         header: '설비명',
+			         name: 'eqName'
 			       },
-			       columns: [
-			    	   {
-			               header: 'Name',
-			               name: 'name',
-			               filter: 'select'
-			             },
-			             {
-			               header: 'Artist',
-			               name: 'artist'
-			             },
-			             {
-			               header: 'Type',
-			               name: 'type'
-			             },
-			             {
-			               header: 'Release',
-			               name: 'release'
-			             },
-			             {
-			               header: 'Genre',
-			               name: 'genre'
-			             }
-			 	    ]
-			      
-			     });
-			   
-			   return actGrid;
-		   }
+			       {
+				     header: '설비구분',
+				     name: 'eqType'
+				   },
+		           {
+			         header: '점검주기',
+			         name: 'chkCycle'
+			       },
+		           {
+		             header: '점검일자',
+		             name: 'chkDate'
+		           },
+		           {
+			         header: '차기점검일자',
+			         name: 'chkDate'
+			       },
+		         	//지울부분
+		           {
+		 			header: '점검판정',
+		             name: 'eqChkYn',
+		             editor : 'text'
+		           },
+		           {
+		        	  header: '담당자',
+			 	      name: 'empCode',
+			 	      editor : 'text'
+		           },
+		           {
+		        	  header: '비고',
+			 	      name: 'chkNote',
+			 	      editor : 'text'
+		           }
+		         ]
+		 	});
 		   
-		 //자재 모달  그리드
-		   function createMatGrid(){
-			   var matGrid = new tui.Grid({
-			       el: document.getElementById('modal_label'),
-			       data: [
-			    	      { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			              { name: "2023001", artist: "고객1", type: "제품A", release: 10, genre: "배송중" },
-			             
-			          ],
-				   scrollX: false,
-			       scrollY: false,
-			       minBodyHeight: 30,
-			       rowHeaders: ['rowNum'],
-			       selectionUnit: 'row',
-			       pagination: true,
-			       pageOptions: {
-			       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-			         useClient: true,
-			         perPage: 10
-			       },
-			       columns: [
-			    	   {
-			               header: 'Name',
-			               name: 'name',
-			               filter: 'select'
-			             },
-			             {
-			               header: 'Artist',
-			               name: 'artist'
-			             },
-			             {
-			               header: 'Type',
-			               name: 'type'
-			             },
-			             {
-			               header: 'Release',
-			               name: 'release'
-			             },
-			             {
-			               header: 'Genre',
-			               name: 'genre'
-			             }
-			 	    ]
-			      
-			     });
-			   
-			   return matGrid;
-		   }
+		     
 	</script>
 </body>
 </html>	

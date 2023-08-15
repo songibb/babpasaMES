@@ -6,6 +6,9 @@ import co.yedam.app.equip.service.EquipChkVO;
 
 public interface EquipChkMapper {
 
-	//ÀüÃ¼ ¼³ºñÁ¶È¸(Á¡°ËÆäÀÌÁö)
+	//ì ê²€ ì„¤ë¹„ ì „ì²´ ì¡°íšŒ(ê·¸ë¦¬ë“œ)
 	public List<EquipChkVO> selectEquipChkAllList();
+
+	//ì ê²€ ì„¤ë¹„ ìˆ˜ì •
+	public int updateChkequip(EquipChkVO equipChkVO);
 }

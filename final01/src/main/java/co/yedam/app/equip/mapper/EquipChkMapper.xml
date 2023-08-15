@@ -5,8 +5,22 @@
   <mapper namespace="co.yedam.app.equip.mapper.EquipChkMapper">
   <!-- 전체조회 -->
   <select id="selectEquipChkAllList" resultType="EquipChkVO">
-  	SELECT *
-  	FROM EQ_CHK
-  	ORDER BY EQ_CODE DESC
+  	SELECT A.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, B.*
+  	FROM EQ_EQUIP A JOIN EQ_CHK B
+  		ON(A.EQ_CODE = B.EQ_CODE)
+  	ORDER BY A.EQ_CODE DESC
   </select>
+  
+  <!--점검 설비 수정  -->
+  <update id="updateChkequip" parameterType="EquipChkVO">
+  	UPDATE EQ_CHK
+  	<set>
+  		off_type = #{offType},
+  		eq_chk_yn = #{eqChkYn},
+  		off_info = #{offInfo},
+  		off_note = #{offNote}
+  	</set>
+	WHERE eq_code = #{eqCode}  
+  </update>
+  
   </mapper>
