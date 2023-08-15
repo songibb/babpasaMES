@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page session="false" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -242,16 +243,13 @@
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
 
-		
-	
-
 	//저장
     function saveServer() {	
     	let rowKey = grid.getFocusedCell();
     	let codeValue = grid.getValue(rowKey, 'eqCode');
     	
-		if(chkNote =! null){
-			//insert
+		if(eqCode =! null){
+			//inse
 			ChkequipUpdate();
 			
 			//if -> 상세생산계획칸 비어있으면 작동X
@@ -325,7 +323,7 @@
 			           		eqName : "${chk.eqName}",
 			           		eqType : "${chk.eqType}",
 			           		chkCycle : "${chk.chkCycle}",
-			           		chkDate : "${chk.chkDate}",
+			           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
 			           		eqChkYn : "${chk.eqChkYn}",
 			           		empCode : "${chk.empCode}",
 			           		chkNote : "${chk.chkNote}"		   	        
@@ -336,6 +334,11 @@
 		         scrollY: false,
 		         minBodyHeight: 30,
 		         rowHeaders: ['rowNum', 'checkbox'],
+		         pagination: true,
+					pageOptions: {
+					useClient: true,
+					perPage: 10,
+					},
 		         columns: [
 		           {
 		             header: '설비코드',
@@ -350,16 +353,18 @@
 				     name: 'eqType'
 				   },
 		           {
-			         header: '점검주기',
+			         header: '점검주기(일)',
 			         name: 'chkCycle'
 			       },
 		           {
 		             header: '점검일자',
-		             name: 'chkDate'
+		             name: 'chkDate',
+		           	 editor : 'text'
 		           },
 		           {
 			         header: '차기점검일자',
-			         name: 'chkDate'
+			         name: 'chkDate',
+			         editor : 'text'
 			       },
 		         	//지울부분
 		           {
