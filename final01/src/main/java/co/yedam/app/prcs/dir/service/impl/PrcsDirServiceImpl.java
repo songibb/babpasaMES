@@ -59,11 +59,19 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	public List<PrcsPlanVO> getNotDirPlanList() {
 		return prcsDirMapper.selectNotDirPlanList();
 	}
-
+	
+	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+	@Override
+	public int updateNotDirPlanList(PrcsDirVO prcsDirVO) {
+		return prcsDirMapper.updateNotDirPlanList(prcsDirVO);
+	}	
+	
+	
 	//BOM 조회
 	@Override
 	public List<BomCodeVO> getBomList(String prodCode) {
 		return prcsDirMapper.selectBomList(prodCode);
 	}
+	
 
 }

@@ -32,7 +32,8 @@
 	<select id="selectPrcsPlanDeList" resultType="prcsPlanVO">
 		SELECT prcs_plan_de_code,
                prcs_plan_code,
-			   find_prod_name(prod_code) AS prod_code,
+               prod_code,
+			   find_prod_name(prod_code) AS prod_name,
 			   prcs_rq_amt,
 			   prcs_plan_amt,
 			   prcs_prio,
@@ -219,7 +220,7 @@
 	</select>
 	
 	<!-- 생산계획 등록시 주문서 수정 -->
-	<update id="updateNotPlanOrderList" parameterType="orderVO">
+	<update id="updateNotPlanOrderList" parameterType="prcsPlanVO">
 		UPDATE sales_ord
 		   SET ord_sts = 'P2',
 	    	   prcs_plan_code = #{prcsPlanCode}
@@ -228,7 +229,7 @@
 	
 	
 	<!-- 생산계획 삭제시 주문서 수정 -->
-	<update id="UpdatePlanOrderList" parameterType="orderVO">
+	<update id="UpdatePlanOrderList" parameterType="prcsPlanVO">
 		UPDATE sales_ord
 		   SET ord_sts = 'P1',
 	    	   prcs_plan_code = #{prcsPlanCode}

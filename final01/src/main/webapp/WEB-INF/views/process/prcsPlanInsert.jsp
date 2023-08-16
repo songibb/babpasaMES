@@ -62,8 +62,8 @@
 	</div> 
 	
 	<div>
-		<jsp:include page="../comFn/orderModal.jsp"></jsp:include>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+		<jsp:include page="../comFn/orderModal.jsp"></jsp:include>
 	</div>
 	
 	<script>

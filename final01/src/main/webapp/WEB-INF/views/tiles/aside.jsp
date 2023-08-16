@@ -90,7 +90,7 @@
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsPlanInsert">생산 계획 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsDirInsert">생산 지시</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsDirList">생산 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/">공정 실적 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsResultList">공정 실적 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsManageList">공정 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prcsProdList">제품 공정 흐름도</a></li>
               	</ul>

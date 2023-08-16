@@ -23,9 +23,6 @@
 		</div>
 	</div>
 	
-	<div>
-		<jsp:include page="dateFormat.jsp"></jsp:include>
-	</div>
 	
 	<script type="text/javascript">	
 	//미지시 생산계획 모달
@@ -68,12 +65,6 @@
 	});
 	
 
-   
-	
-	
-		
-
-	
 	
 	function createActGrid(){
 	    var planGrid = new tui.Grid({

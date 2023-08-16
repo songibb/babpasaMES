@@ -37,6 +37,9 @@ public class PrcsPlanVO {
 	//검색용
 	private String searchPlanName;
 	
+	//출력용
+	private String prodName;						//제품명
+	
 	
 	
 }

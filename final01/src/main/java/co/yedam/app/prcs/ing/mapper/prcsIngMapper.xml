@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="co.yedam.app.prcs.ing.mapper.PrcsIngMapper">
+
 	<!-- 진행 공정 조회 -->
 	<select id="selectPrcsIngList" resultType="prcsIngVO">
 		SELECT prcs_ing_code,
@@ -19,6 +20,15 @@
 		 WHERE prcs_dir_de_code = #{prcsDirDeCode} AND prod_code = #{prodCode}
 		 ORDER BY prcs_ing_code
 	</select>
+	
+	<select id="insertPrcsIng" statementType="CALLABLE">
+        {
+        	CALL PROD_BOM(
+        		#{prcsDirDeCode, mode=IN, jdbcType=VARCHAR, javaType=String}
+                #{result, mode=OUT, jdbcType=NUMBER}
+            )
+        }
+    </select>
 	
 	<!-- 공정 실적 조회 -->
 </mapper>

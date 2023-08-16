@@ -28,10 +28,12 @@ public interface PrcsDirService {
 	//미지시 생산계획 목록 조회 
 	public List<PrcsPlanVO> getNotDirPlanList();
 	
+	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+	public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
 	//BOM 조회
 	public List<BomCodeVO> getBomList(String prodCode);
 		
 	
-	
+
 }

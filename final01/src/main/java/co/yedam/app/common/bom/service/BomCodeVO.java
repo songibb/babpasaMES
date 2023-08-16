@@ -17,6 +17,9 @@ public class BomCodeVO {
 	
 	//조인을 위함
 	private String prodName;
+	private String prcsName;
+	private String matName;
+	
 
 	//bom상세 관리 기능
 	private String bomCode;
@@ -25,6 +28,5 @@ public class BomCodeVO {
 	private String mpCode;
 	private String bomUnit;
 	private int bomAmt;
-
 
 }

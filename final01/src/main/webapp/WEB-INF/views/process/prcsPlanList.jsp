@@ -186,7 +186,12 @@
           },
           {
             header: '제품코드',
-            name: 'prodCode'
+            name: 'prodCode',
+            hidden: true
+          },
+          {
+            header: '제품명',
+            name: 'prodName'
           },
           {
             header: '주문수량',

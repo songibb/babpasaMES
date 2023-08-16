@@ -33,5 +33,9 @@ public class PrcsDirVO {
 	private Date prcsEndDeDate;
 	private String prcsIngSts;
 	
+	//생산계획 수정용
+	private String prcsPlanDeCode;
+	
+	
 	
 }

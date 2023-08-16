@@ -56,8 +56,9 @@
 	
 	
 	<div>
-		<jsp:include page="../comFn/actModal.jsp"></jsp:include>
-	</div> 
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+		<jsp:include page="../comFn/prcsIngModal.jsp"></jsp:include>
+	</div>
     
 	<script>
 	

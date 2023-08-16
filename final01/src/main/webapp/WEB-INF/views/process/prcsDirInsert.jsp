@@ -19,7 +19,7 @@
 	display: flex;
 	justify-content: space-between;
 }
-#matGrid{
+#bomGrid{
     width: 600px;
 }
 #matLotGrid{
@@ -70,9 +70,9 @@
 		</div>
 	</div> 
 	
-	<div>
-		<jsp:include page="../comFn/planModal.jsp"></jsp:include>
+	<div>	
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+		<jsp:include page="../comFn/planModal.jsp"></jsp:include>
 	</div>
     
 	<script>
@@ -164,6 +164,14 @@
 					deList[i]['prcsDirCode'] = data;
 				})
 				console.log(deList);
+				
+				
+				//분할지시
+				//상세지시코드 for문돌려서 상세계획코드 구하기
+				// 상세계획코드 개수가 1이상일때  
+				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
+				// 아래 ajax 동작
+				//if()
 
 				$.ajax({
 					url : 'prcsDirDeInsert',
@@ -188,6 +196,9 @@
 	 			console.log(reject);
 	 		}		
 		})
+			
+
+		
 	};
 	
 	
@@ -258,14 +269,29 @@
 //             header: '지시코드',
 //             name: 'prcsDirCode'
 //           },
+		  {
+            header: '상세계획코드',
+            name: 'prcsPlanDeCode',
+            hidden: false
+          },
+       	  {
+            header: '제품코드',
+            name: 'prodCode',
+            hidden: false
+          },
           {
             header: '제품명',
-            name: 'prodCode',
+            name: 'prodName',
             editor: 'text'
           },
           {
             header: '생산계획량',
             name: 'prcsPlanAmt',
+            editor: 'text'
+          },
+          {
+            header: '지시수량',
+            name: 'prcsDirAmt',
             editor: 'text'
           },
           {
@@ -302,6 +328,11 @@
         minBodyHeight: 30,
 		rowHeaders: ['rowNum'],
         columns: [
+    	  {
+            header: '자재코드',
+            name: 'mpCode',
+            hidden: true
+          },
           {
             header: '자재명',
             name: 'matName'
@@ -312,7 +343,7 @@
           },
           {
        	  	header: '투입공정',
-            name: 'bomAmt'
+            name: 'prcsName'
           }
 //           {
 //             header: '단위',
@@ -361,7 +392,7 @@
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
 
     	$.ajax({
-			url : 'prcsPlanDeList',
+			url : 'bomList',
 			method : 'GET',
 			data : { prodCode : prodCode },
 			success : function(data){
@@ -381,17 +412,17 @@
     	let rowKey = bomGrid.getFocusedCell().rowKey;
     	let prodCode = bomGrid.getValue(rowKey, 'matCode');
 
-    	$.ajax({
-			url : '',  ////LOT조회 함수 내가 만들어야하는지, 아님 있는거 가져올지
-			method : 'GET',
-			data : {  : matCode },
-			success : function(data){
-				matLotGrid.resetData(data);
- 		    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}	
-		})
+//     	$.ajax({
+// 			url : '',  ////LOT조회 함수 내가 만들어야하는지, 아님 있는거 가져올지
+// 			method : 'GET',
+// 			data : {  : matCode },
+// 			success : function(data){
+// 				matLotGrid.resetData(data);
+//  		    },
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}	
+// 		})
 
   	});
 	
