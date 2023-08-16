@@ -55,8 +55,8 @@
 	           		
 	           		<div id="matContainer">
 	           			<div>
-	           				<p>공정 자재</p>
-		           			<div id="matGrid"></div>
+	           				<p>공정 자재 소모량</p>
+		           			<div id="bomGrid"></div>
 	           			</div>
 	           			<div>
 	           				<p>자재별 LOT 재고</p>
@@ -294,9 +294,9 @@
         ]
       });
 	
-	//공정 자재 grid
-	var matGrid = new tui.Grid({
-        el: document.getElementById('matGrid'),
+	//BOM grid
+	var bomGrid = new tui.Grid({
+        el: document.getElementById('bomGrid'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -353,19 +353,19 @@
 	
 
 	
-	//상세 생산지시 클릭시 해당 지시의 공정자재 조회 
+	//상세 생산지시 클릭시 해당 제품의 BOM 조회 
 	dirDeGrid.on('click', () => {
 		
-    	//클릭한 상세생산지시의 공정자재 목록 가져오기
+    	//클릭한 상세생산지시의 BOM 목록 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
 
     	$.ajax({
 			url : 'prcsPlanDeList',
 			method : 'GET',
-			data : { prcsPlanCode : planCode },
+			data : { prodCode : prodCode },
 			success : function(data){
-				planDeGrid.resetData(data);
+				bomGrid.resetData(data);
  		    },
 			error : function(reject){
 	 			console.log(reject);
@@ -374,19 +374,19 @@
 
   	});
 	
-	//공정 자재 클릭시 해당 자재의 LOT 조회 
-	matGrid.on('click', () => {
+	//BOM 클릭시 해당 자재의 LOT 조회 
+	bomGrid.on('click', () => {
 		
-    	//클릭한 상세생산지시의 공정자재 목록 가져오기
-    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
-    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+    	//클릭한 BOM의 자재 LOT 가져오기
+    	let rowKey = bomGrid.getFocusedCell().rowKey;
+    	let prodCode = bomGrid.getValue(rowKey, 'matCode');
 
     	$.ajax({
-			url : 'prcsPlanDeList',
+			url : '',  ////LOT조회 함수 내가 만들어야하는지, 아님 있는거 가져올지
 			method : 'GET',
-			data : { prcsPlanCode : planCode },
+			data : {  : matCode },
 			success : function(data){
-				planDeGrid.resetData(data);
+				matLotGrid.resetData(data);
  		    },
 			error : function(reject){
 	 			console.log(reject);

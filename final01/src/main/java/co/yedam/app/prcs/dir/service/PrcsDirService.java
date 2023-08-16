@@ -2,6 +2,8 @@ package co.yedam.app.prcs.dir.service;
 
 import java.util.List;
 
+
+import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 
@@ -25,6 +27,11 @@ public interface PrcsDirService {
 	
 	//미지시 생산계획 목록 조회 
 	public List<PrcsPlanVO> getNotDirPlanList();
+	
+	
+	//BOM 조회
+	public List<BomCodeVO> getBomList(String prodCode);
+		
 	
 	
 }

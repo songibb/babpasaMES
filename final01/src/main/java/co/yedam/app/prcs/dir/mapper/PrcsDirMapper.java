@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
@@ -24,9 +25,10 @@ public interface PrcsDirMapper {
 //	public int insertPrcsDir(@Param("prcsDirList") List<PrcsDirVO> prcsDirList);
 	
 	//생산지시 수정
-	public int updatePrcsDir(PrcsDirVO prcsDirVO);
+	//public int updatePrcsDir(PrcsDirVO prcsDirVO);
 	
 	//생산지시 삭제
+	
 	
 	//미지시 계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanList();
@@ -34,5 +36,9 @@ public interface PrcsDirMapper {
 	//미지시 상세 계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);
 	
-
+	
+	//BOM 조회
+	public List<BomCodeVO> selectBomList(@Param("prodCode") String prodCode);
+	
+	
 }

@@ -166,5 +166,33 @@
 	</select>
 	
 	
+	<!-- BOM 조회 -->
+	<select id="selectBomList" resultType="bomCodeVO">
+		SELECT find_prod_name(prod_code) AS prod_name,
+      		   find_prcs_name(prcs_code) AS prcs_name,
+      		   find_mat_name(mp_code) AS mat_name,
+      		   bom_unit,
+      		   bom_amt
+		  FROM v_bom
+		 WHERE prod_code = (SELECT mp_code
+                   			  FROM v_bom
+                   			 WHERE prod_code = #{prodCode}
+                        		   AND mp_kind='P')
+    		   AND bom_yn='Y'
+   			   AND mp_kind='M'
+		 UNION       
+		SELECT find_prod_name(prod_code) AS prod_name,
+        	   find_prcs_name(prcs_code) AS prcs_name,
+      		   find_mat_name(mp_code) AS mat_name,
+      		   bom_unit,
+      		   bom_amt
+		  FROM v_bom
+		 WHERE prod_code= #{prodCode}
+		   	   AND bom_yn='Y'
+		       AND mp_kind='M';
+	</select>
+	
+
+	
 	
 </mapper>
