@@ -59,23 +59,12 @@ public class OrderController {
 	// 주문 관리 조회들
 		@GetMapping("/orderMng")
 		public String orderMngList(Model model) {
-			//전체 주문서 목록
-			model.addAttribute("orderList", orderService.getOrderList());
-			//거래처 목록 -> 모달
-			model.addAttribute("actList", orderService.actAllList());
-			//제품 목록 - 완제품만 -> 모달
-			model.addAttribute("prodList", orderService.prodAllList());	
-			return "sales/orderMng";
+		//전체 주문서 목록
+		model.addAttribute("orderList", orderService.getNoPlan());
+		//거래처 목록 -> 모달
+		model.addAttribute("actList", orderService.actAllList());
+		//제품 목록 - 완제품만 -> 모달
+		model.addAttribute("prodList", orderService.prodAllList());	
+		return "sales/orderMng";
 		}
-		
-//	//관리페이지
-//	@GetMapping("matOrderDir")
-//	public String getMatOrderDir(Model model) {
-//		List<MatOrderDeVO> mo = mods.selectMatOrderList();
-//		model.addAttribute("matOrderList", mo);
-//		model.addAttribute("actList", orderService.actAllList());
-//		model.addAttribute("matList", mms.getMetList());
-//		return "material/matOrderDir";
-//	}
-
 }
