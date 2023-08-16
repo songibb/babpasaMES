@@ -9,4 +9,16 @@ public interface SemiInService {
 	
 	//반제품목록 모달
 	public List<SemiInVO> getSemiModal();
+	
+	//생산완료된 반제품 목록
+	public List<SemiInVO> selectTestFinishList();
+	
+	//등록
+	public int insertSemiIn(List<SemiInVO> inList);
+	
+	//수정
+	public int updateSemiIn(List<SemiInVO> inList);
+	
+	//삭제
+	public int deleteSemiIn(List<SemiInVO> inList);
 }

@@ -7,83 +7,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- 반드시 순서 중요함 time-picker date-picker가 toastui-calendar.min.js -->
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<meta charset="UTF-8">
+<title>자재 반품 목록</title>
+<!-- 토스트 페이지 네이션 -->
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<!-- 페이지 네이션 끝 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
-  
-</style>
+	#save, #delete{
+		margin-top : 120px;
+		float : right;
+	}
+	
+	h1{
+		font-weight : 700;
+	}
+	
+	h2{
+		clear : both;
+		font-weight : 700;
+	}
+	
+	.yellow-background {
+        background-color: rgb(255,253,235);
+	}
+</style>    
+       
 </head>
 <body>
-   <div class="black_bg"></div>
-   <h1>자재 반품 조회</h1>
+   <h1>자재 반품 목록</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
                <div class="table-responsive pt-3">
-                   <button type="button" class="btn btn-info btn-icon-text excelDownload">
-                       Excel
-                      <i class="bi bi-printer"></i>                                                                              
-                   </button>
-                  <div id="customtemplateSearchAndButton">
-                  <p>자재명</p>
-                  <input type="text" placeholder="검색어를 입력하세요">
-                    <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" readonly>
-                  <br>
-                  <p>자재명</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
-                  <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
-                  <br>
-                  <p>업체명</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-                    <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-                  <br>
-                  <p>반품요청일자</p>
-                  <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-                     <i class="fas fa-search"></i>
-                     검색
-                  </button>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
-                     초기화
-                  </button>
-               </div>
-               <div id="grid"></div>
-                </div>
-         </div>
-      </div>
-   </div> 
-   
-
-<div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>거래처 목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
-</div>
+               		<button type="button" class="btn btn-info btn-icon-text excelDownload">
+                      	 Excel
+                      	<i class="bi bi-printer"></i>                                                                              
+                   	</button>
+                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
+                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+                  	<div id="customtemplateSearchAndButton">
+        				<div style="display: flex; justify-content: space-between;">
+            				<div style="flex: 1;">
+                				<p>자재명</p>
+                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
+                				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
+                				<br>
+                				<p>업체명</p>
+                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<i class="bi bi-search" id="actModal"></i>
+                				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
+                				<br>
+                				<p>반품요청일자</p>
+                				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+                    				<i class="fas fa-search"></i>
+                    					검색
+                				</button>
+                				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+                    				초기화
+                				</button>
+            				</div>
+        				</div>
+	    			</div>
+		            <h2>자재 반품 목록</h2>
+		            <br>
+		            <div id="grid"></div>
+				</div>
+			</div>
+		</div>
+	</div> 
+	<div class="modal">
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
+	</div>
 
 <script>
    
@@ -131,7 +142,7 @@ var Grid;
        })
        });
   
-  $("#close_btn").click(function(){
+  $(".close_btn").click(function(){
       $(".modal").fadeOut();
       
 		Grid.destroy();
@@ -331,10 +342,7 @@ function resetInput(e){
 	 	        header: '업체명',
 	 	        name: 'actName'
 	 	      },
-	 	      {
-	 	        header: '검사일자',
-	 	        name: 'matTestDate'
-	 	      },
+	 	      
 	 	      {
 		 	    header: '불량내용',
 		 	    name: 'errInfo'
@@ -348,8 +356,14 @@ function resetInput(e){
 			 	name: 'empName'
 			  },
 			  {
+		 	    header: '검사일자',
+		 	    name: 'matTestDate',
+	 	  		className: 'yellow-background'
+		 	  },
+			  {
 				header: '반품요청일',
-				name: 'matRtDate'
+				name: 'matRtDate',
+ 	  		 	className: 'yellow-background'
 			  },
 			  {
 				header: '반품상태',

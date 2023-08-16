@@ -6,7 +6,7 @@
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
 		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
-		FROM mat_order_de a JOIN mat_order b
+		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
             ON (b.act_code = c.act_code)
@@ -19,7 +19,7 @@
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
 		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
-		FROM mat_order_de a JOIN mat_order b
+		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
             ON (b.act_code = c.act_code)
@@ -87,7 +87,7 @@
 	</insert>
 	
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
-		<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
+		<foreach collection="orderList" item="order" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE mat_order_de
 			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_od_acp = #{order.matOdAcp}, mat_price = #{order.matPrice}, mat_od_rq = #{order.matOdRq}
 			WHERE mat_od_de_cd = #{order.matOdDeCd}

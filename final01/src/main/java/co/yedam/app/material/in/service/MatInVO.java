@@ -16,7 +16,7 @@ public class MatInVO {
 	private Date matExd;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date matInd;
-	//private String empCode;
+	private String empCode;
 	private String empName;
 	private String actCode;
 	private String actName;

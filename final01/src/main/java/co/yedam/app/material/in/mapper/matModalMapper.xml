@@ -6,5 +6,6 @@
 	<select id="getMetList" resultType="MatModalVO">
 		SELECT mat_code, mat_name, mat_std
 		FROM com_mat
+		ORDER BY mat_code
 	</select>
 </mapper>
