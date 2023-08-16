@@ -44,12 +44,12 @@
   	
   	<insert id="insertActInfo" parameterType="ActCodeVO">
   		<selectKey keyProperty="actCode" resultType="String" order="BEFORE">
-  			SELECT 'ACT-' || LPAD((NVL(MAX(SUBSTR(ACT_CODE, -4)),0)+1),4,'0')
-			FROM COM_ACT
+  			SELECT 'ACT-' || LPAD((NVL(MAX(SUBSTR(act_code, -4)),0)+1),4,'0')
+			FROM com_act
   		</selectKey>
   		INSERT INTO com_act
   							(
-  							act_code
+  							 act_code
 							,act_name
 							,act_num
 							,act_tel
@@ -71,14 +71,14 @@
   	
   	<!-- 거래처 수정 -->
   	<update id="updateActInfo" parameterType="ActCodeVO">
-  		update com_act set
+  		UPDATE com_act SET
   				 act_name = #{actName}
 				,act_num = #{actNum}
 				,act_tel = #{actTel}
 				,act_sts = #{actSts}
 				,act_kind = #{actKind}
 				,emp_code = #{empCode}
-		where act_code = #{actCode}
+		WHERE act_code = #{actCode}
 	</update>
 
 

@@ -12,10 +12,6 @@ public interface BomCodeMapper {
 	//검색조회
 	public List<BomCodeVO> searchSelectBom(String prodName);
 	
-	
-	
-	
-	
 	//bom 상세 조회
 	public List<BomCodeVO> selectDeBomCodeList(String bomNo);
 

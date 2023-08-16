@@ -69,7 +69,7 @@
 	           	{
 	           		prodCode : "${p.prodCode}",
 	           		prodName :"${p.prodName}",
-	           		prodKind :"${p.prodKind}",
+	           		prodKind :"${p.kindName}",
 	           		prodUnit :"${p.prodUnit}",
 	           		prodStd : "${p.prodStd}"
 	           	} <c:if test="${not status.last}">,</c:if>

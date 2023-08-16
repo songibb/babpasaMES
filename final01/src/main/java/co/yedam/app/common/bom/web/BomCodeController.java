@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.bom.service.BomCodeService;
 import co.yedam.app.common.bom.service.BomCodeVO;
+import co.yedam.app.common.comm.service.CommCodeService;
 
 
 @Controller
@@ -18,6 +19,9 @@ public class BomCodeController {
 
 	@Autowired
 	BomCodeService bomCodeService;
+	
+	@Autowired
+	CommCodeService commCodeService;
 	
 	//전체조회
 	@GetMapping("/bomCodeList")
@@ -40,5 +44,15 @@ public class BomCodeController {
 	public List<BomCodeVO> bomDecodeList(@RequestParam String bomNo){
 		List<BomCodeVO> vo = bomCodeService.getBomDeCodeList(bomNo);
 		return vo;
+	}
+	
+	
+	//bom관리페이지
+	@GetMapping("/bomCodeAdmin")
+	public String bomCodeAdmin(Model model) {
+		model.addAttribute("bomList", bomCodeService.getBomCodeAll());
+		model.addAttribute("bomUseInfoList", commCodeService.selectBomUseInfo());
+		model.addAttribute("bomPrcsUseList", commCodeService.selectBomPrcsUseInfo());
+		return "admincom/bomCodeAdmin";
 	}
 }
