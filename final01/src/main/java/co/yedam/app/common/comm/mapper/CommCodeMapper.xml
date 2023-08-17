@@ -21,7 +21,18 @@
 				commde_info,
 				commde_use
 		FROM com_commde
+		WHERE comm_code = #{commCode}
 	ORDER BY commde_code
+  	</select>
+  	
+  	<!-- 공통코드 검색 -->
+  	<select id="searchCommCode" resultType="CommCodeVO">
+		  			SELECT  comm_code,
+							comm_name,
+							comm_info
+					FROM com_comm
+					WHERE comm_code LIKE '%' || #{commCode} || '%'
+				ORDER BY comm_code
   	</select>
   	
   	<!-- act type만 조회하는 경우 -->
@@ -32,7 +43,7 @@
 					commde_info,
 					commde_use
 		FROM com_commde
-        where comm_code = 'ACT-TYPE'
+        where comm_code = 'ACT-TYPE' and commde_use = 'Y'
 	ORDER BY commde_code 
   	</select>
   	
@@ -44,8 +55,58 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0J'
+		        where comm_code = '0J' and commde_use = 'Y'
 		ORDER BY commde_code
   	</select>
+  	
+  	<!-- BOM사용 중 여부 -->
+  	<select id="selectBomUseInfo" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+				FROM com_commde
+		        where comm_code = '0A' and commde_use = 'Y'
+		ORDER BY commde_code
+  	</select>
+  	
+  	<!-- BOM 공정 사용 중 여부 -->
+  	<select id="selectBomPrcsUseInfo" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+				FROM com_commde
+		        where comm_code = '0W' and commde_use = 'Y'
+		ORDER BY commde_code
+  	</select>
+  	
+  	<!-- 자재 단위 공통코드리스트 -->
+  	<select id="selectMatUnitInfo" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+				FROM com_commde
+		        where comm_code = '0X' and commde_use = 'Y'
+		ORDER BY commde_code
+  	</select>
+  	
+  	
+  	<!-- 제품 관리 부분 반/완제품 구분 공통코드 -->
+  	<select id="selectProdTypeInfo" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+				FROM com_commde
+		        where comm_code = '0E' and commde_use = 'Y'
+		ORDER BY commde_code
+  	</select>
+  	
   	
   </mapper>

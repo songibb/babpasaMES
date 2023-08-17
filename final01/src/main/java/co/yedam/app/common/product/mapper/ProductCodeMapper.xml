@@ -4,24 +4,70 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="co.yedam.app.common.product.mapper.ProductCodeMapper">
-  <select id="selectProdCodeList" resultType="ProductCodeVO">
-	  	SELECT  prod_code,
-				prod_kind,
-				prod_name,
-				prod_unit,
-				prod_std
-		FROM com_prod
-	ORDER BY prod_code
-  </select>
-  
-  <select id="searchSelectProdCode" resultType="ProductCodeVO">
-  	  	SELECT  prod_code,
-				prod_kind,
-				prod_name,
-				prod_unit,
-				prod_std
-		FROM com_prod
-		WHERE prod_name LIKE '%' || #{prodName} || '%'
-	ORDER BY prod_code
-  </select>
+	  <select id="selectProdCodeList" resultType="ProductCodeVO">
+		  	SELECT  prod_code,
+					prod_kind,
+					find_cdnm('0E', prod_kind) AS kindName,
+					prod_name,
+					prod_unit,
+					prod_std
+			FROM com_prod
+		ORDER BY prod_code
+	  </select>
+	  
+	  <select id="searchSelectProdCode" resultType="ProductCodeVO">
+	  	  	SELECT  prod_code,
+					prod_kind,
+					prod_name,
+					prod_unit,
+					prod_std
+			FROM com_prod
+			WHERE prod_name LIKE '%' || #{prodName} || '%'
+		ORDER BY prod_code
+	  </select>
+	  
+	  
+	  <!-- 제품 등록 -->
+	  <insert id="insertProdInfo" parameterType="ProductCodeVO">
+	  	<selectKey keyProperty="prodCode" resultType="String" order="BEFORE">
+	  		SELECT 'PROD-' || LPAD((NVL(MAX(SUBSTR(prod_code, -4)),0)+1),4,'0')
+	  		FROM com_prod
+	  	</selectKey>
+	  	INSERT INTO com_prod
+	  						(
+	  						 prod_code
+							,prod_kind
+							,prod_name
+							,prod_unit
+							<if test="prodStd != null and prodStd != ''">
+							,prod_std
+							</if>
+	  						)
+	  		VALUES
+	  				(
+	  				#{prodCode}
+	  				,#{prodKind}
+	  				,#{prodName}
+	  				,#{prodUnit}
+	  				<if test="prodStd != null and prodStd != ''">
+	  				,#{prodStd}
+	  				</if>
+	  				)
+	  </insert>
+	  
+	  <update id="updateProdInfo"  parameterType="ProductCodeVO">
+	  	UPDATE com_prod SET
+	  	 					 prod_kind = #{prodKind}
+							,prod_name = #{prodName}
+							,prod_unit = #{prodUnit}
+							<if test="prodStd != null and prodStd != ''">
+							,prod_std = #{prodStd}
+							</if>
+		WHERE prod_code = #{prodCode}
+	  </update>
+	  
+	  <delete id="deleteProdInfo"  parameterType="ProductCodeVO">
+	  		DELETE FROM com_prod
+	  		WHERE prod_code = #{prodCode}
+	  </delete>
   </mapper>

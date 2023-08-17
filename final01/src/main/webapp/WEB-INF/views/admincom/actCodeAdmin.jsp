@@ -1,13 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>주문 조회</title>
+<title>거래처관리</title>
 <!-- 토스트 페이지 네이션 dd-->
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -32,7 +31,7 @@
 	<div>
 		<form id="id">
 		<div>
-		<p3>등록/수정</p3>
+		<p>등록/수정</p>
 		</div>
 			<table>
 				<tr>
@@ -93,7 +92,7 @@
 							<i class="fas fa-search"></i>검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
+						<button type="reset" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
 					</form>
 				</div>
 				<div id="grid"></div>
@@ -188,7 +187,8 @@
 		          {
 		        	  //code 값 가져오기위한 것
 			            header: '거래여부',
-			            name: 'actSts'
+			            name: 'actSts',
+			            hidden:true
 			          },
 		          {
 			        	  //codeName
@@ -200,7 +200,7 @@
 		            	 //code값 가져오기위한 것
 			              header: '거래처구분',
 			              name: 'actKind',
-			              filter: 'select'
+			              hidden:true
 			            },
 		          {
 		              header: '담당자',
@@ -208,7 +208,8 @@
 		            },
 		          {
 		              header: '담당자',
-		              name: 'empCode'
+		              name: 'empCode',
+		              hidden:true
 		            }
 		        ]
 		      })  

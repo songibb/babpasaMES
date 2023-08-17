@@ -19,11 +19,17 @@ public class CommCodeServiceImpl implements CommCodeService {
 		
 		return commCodeMapper.selectCommCodeList();
 	}
+	
+	@Override
+	public List<CommCodeVO> searchCommCode(String commCode) {
+		
+		return commCodeMapper.searchCommCode(commCode);
+	}
 
 	@Override
-	public List<CommCodeVO> selectCommDeCodeList() {
+	public List<CommCodeVO> selectCommDeCodeList(String commCode) {
 		
-		return commCodeMapper.selectCommDeCodeList();
+		return commCodeMapper.selectCommDeCodeList(commCode);
 	}
 
 	@Override
@@ -37,5 +43,31 @@ public class CommCodeServiceImpl implements CommCodeService {
 		
 		return commCodeMapper.selectActStsList();
 	}
+
+	@Override
+	public List<CommCodeVO> selectBomUseInfo() {
+		
+		return commCodeMapper.selectBomUseInfo();
+	}
+
+	@Override
+	public List<CommCodeVO> selectBomPrcsUseInfo() {
+		
+		return commCodeMapper.selectBomPrcsUseInfo();
+	}
+
+	@Override
+	public List<CommCodeVO> selectMatUnitInfo() {
+		
+		return commCodeMapper.selectMatUnitInfo();
+	}
+
+	@Override
+	public List<CommCodeVO> selectProdTypeInfo() {
+		
+		return commCodeMapper.selectProdTypeInfo();
+	}
+
+
 
 }
