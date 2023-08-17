@@ -13,4 +13,16 @@ public interface SemiInMapper {
 	
 	//반제품 목록 모달창
 	public List<SemiInVO> getSemiModal(); 
+	
+	//생산완료된 반제품 목록
+	public List<SemiInVO> selectTestFinishList();
+	
+	//등록
+	public int insertSemiIn(@Param("inList") List<SemiInVO> inList);
+	
+	//수정
+	public int updateSemiIn(@Param("inList") List<SemiInVO> inList);
+	
+	//삭제
+	public int deleteSemiIn(@Param("inList") List<SemiInVO> inList);
 }

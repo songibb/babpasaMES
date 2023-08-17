@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.semi.in.mapper.SemiInMapper">
 <!-- 전체조회 -->
 	<select id="selectSemiInList" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -15,7 +15,7 @@
 	
 	<!-- 전체조회 검색 -->
 	<select id="selectSemiInSearch" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -39,7 +39,59 @@
 		SELECT prod_code, prod_name
 		FROM com_prod
 		WHERE prod_kind = 'S' 
+		ORDER BY prod_code
 	</select>
 	
-
+	<!-- 검수완료된 반제품 목록 -->
+	<select id="selectTestFinishList" resultType="SemiInVO">
+		SELECT a.prcs_list_code, a.prod_code, c.prod_name, a.test_amt, a.test_date
+		FROM prod_quality a
+		LEFT JOIN semi_in b
+		ON(a.prcs_list_code = b.prcs_list_code)
+		LEFT JOIN com_prod c
+		ON(a.prod_code = c.prod_code)
+		WHERE b.prcs_list_code IS NULL
+		AND a.total_test_yn = 'Y'
+		ORDER BY prcs_list_code
+	</select>
+	
+	<!-- 등록 -->
+	<update id="insertSemiIn" parameterType="SemiInVO">
+		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+			INSERT INTO semi_in (
+				SEMI_LOT,
+				PROD_CODE,
+				SEMI_IN_AMT,
+				SEMI_EXD,
+				SEMI_IND,
+				EMP_CODE,
+				PRCS_LIST_CODE
+			) VALUES (
+				get_primaryCode('semiLot')
+				, #{in.prodCode}
+				, #{in.semiInAmt}
+				, #{in.semiExd}
+				, #{in.semiInd}
+				, #{in.empCode}
+				, #{in.prcsListCode}
+			)
+		</foreach>
+	</update>
+	
+	<!-- 수정 -->
+	<update id="updateSemiIn" parameterType="SemiInVO">
+		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+			UPDATE semi_in
+			SET semi_ind = #{in.semiInd}, semi_exd = #{in.semiExd}
+			WHERE semi_lot = #{in.semiLot}
+		</foreach>
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteSemiIn" parameterType="SemiInVO">
+		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+			DELETE FROM semi_in
+			WHERE semi_lot = #{in.semiLot}
+		</foreach>
+	</delete>
 </mapper>

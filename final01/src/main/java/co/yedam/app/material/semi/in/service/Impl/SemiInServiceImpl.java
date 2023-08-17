@@ -34,5 +34,30 @@ public class SemiInServiceImpl implements SemiInService {
 		
 		return sim.getSemiModal();
 	}
+	
+	//생산완료된 반제품목록
+	@Override
+	public List<SemiInVO> selectTestFinishList() {
+		
+		return sim.selectTestFinishList();
+	}
+
+	@Override
+	public int insertSemiIn(List<SemiInVO> inList) {
+		
+		return sim.insertSemiIn(inList);
+	}
+
+	@Override
+	public int updateSemiIn(List<SemiInVO> inList) {
+		
+		return sim.updateSemiIn(inList);
+	}
+
+	@Override
+	public int deleteSemiIn(List<SemiInVO> inList) {
+		// TODO Auto-generated method stub
+		return sim.deleteSemiIn(inList);
+	}
 
 }

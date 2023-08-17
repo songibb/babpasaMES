@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
+import co.yedam.app.material.rt.service.MatRtService;
+import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.sales.order.service.OrderService;
 
 @Controller
@@ -28,13 +32,17 @@ public class MatInController {
 	@Autowired
 	MatModalService mms;
 	
+	//검수완료목록
+	@Autowired
+	MatRtService mrs;
+	
 	//조회
 	@GetMapping("MatInList")
 	public String getMatInList(Model model) {
 		model.addAttribute("inList", mis.selectMatInList());
 		model.addAttribute("actList", orderService.actAllList());
 		model.addAttribute("matList", mms.getMetList());
-		return "material/matInDir";
+		return "material/matInList";
 	}
 	
 	//검색 ajax
@@ -51,5 +59,48 @@ public class MatInController {
 	public List<MatInVO> getMatAll(Model model) {
 		List<MatInVO> vo = mis.selectMatInList();
 		return vo;
+	}
+	
+
+	//관리페이지
+	@GetMapping("matInDir")
+	public String getMatInDir(Model model) {
+		model.addAttribute("inList", mis.selectMatInList());
+		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("matList", mms.getMetList());
+		model.addAttribute("testList", mis.selectMatTestFinishList());
+		return "material/matInDir";
+	}
+	
+	//test목록 ajax
+	@GetMapping("getMatTestInFilter")
+	@ResponseBody
+	public List<MatTestVO> getMatTestInFilter(){
+		List<MatTestVO> vo = mis.selectMatTestFinishList();
+		return vo;
+	}
+	
+	//등록
+	@PostMapping("matInDirInsert")
+	@ResponseBody
+	public int matInInsert(@RequestBody List<MatInVO> inList){
+		int result = mis.insertMatIn(inList);
+		return result;
+	}
+	
+	//수정
+	@PostMapping("matInDirUpdate")
+	@ResponseBody
+	public int matInUpdate(@RequestBody List<MatInVO> inList){
+		int result = mis.updateMatIn(inList);
+		return result;
+	}
+	
+	//삭제
+	@PostMapping("matInDirDelete")
+	@ResponseBody
+	public int matInDelete(@RequestBody List<MatInVO> inList){
+		int result = mis.deleteMatIn(inList);
+		return result;
 	}
 }

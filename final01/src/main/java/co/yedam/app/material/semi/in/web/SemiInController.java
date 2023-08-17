@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,4 +36,45 @@ public class SemiInController {
 		return vo;
 	}
 	
+	//관리페이지
+	@GetMapping("semiInDir")
+	public String getSemiInDir(Model model) {
+		model.addAttribute("inList", sis.selectSemiInList());
+		model.addAttribute("prodList", sis.getSemiModal());
+		model.addAttribute("testList", sis.selectTestFinishList());
+		return "material/semiInDir";
+	}
+	
+	//test목록 ajax
+	@GetMapping("getSemiTestFinish")
+	@ResponseBody
+	public List<SemiInVO> getMatTestInFilter(){
+		List<SemiInVO> vo = sis.selectTestFinishList();
+		return vo;
+	}
+	
+	//등록
+	@PostMapping("semiInDirInsert")
+	@ResponseBody
+	public void semiInInsert(@RequestBody List<SemiInVO> inList) {
+		
+		sis.insertSemiIn(inList);
+		return;
+	}
+	
+	//수정
+	@PostMapping("semiInDirUpdate")
+	@ResponseBody
+	public void semiInUpdate(@RequestBody List<SemiInVO> inList) {
+		sis.updateSemiIn(inList);
+		return;
+	}
+	
+	//삭제
+	@PostMapping("semiInDirDelete")
+	@ResponseBody
+	public void semiInDelete(@RequestBody List<SemiInVO> inList) {
+		sis.deleteSemiIn(inList);
+		return;
+	}
 }

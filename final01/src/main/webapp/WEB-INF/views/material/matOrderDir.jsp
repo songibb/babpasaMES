@@ -6,91 +6,99 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생산 지시</title>
-
-
-<!-- 반드시 순서 중요함 time-picker date-picker가 toastui-calendar.min.js -->
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<title>자재 발주 관리</title>
+<!-- 토스트 페이지 네이션 -->
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
-
-
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<!-- 페이지 네이션 끝 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
+   #save, #delete, #dirAdd{
+		margin-top : 120px;
+		float : right;
+	}
+
+	h1{
+		font-weight : 700;
+	}
+
+	h2{
+		clear : both;
+		font-weight : 700;
+	}
+	
+	.yellow-background {
+        background-color: rgb(255,253,235);
+	}
 	
 </style>    
        
 </head>
 <body>
-<div class="black_bg"></div>
-	<h2>자재 발주 관리</h2>
-	<div class="col-lg-12 stretch-card">
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
-					
-						<div id="customtemplateSearchAndButton">		
-							<p>자재명</p>
-                  <input type="text"  id="matCodeInput">
-                  <i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
-                  <br>
-                  <p>거래처명</p>
-                  <input type="text" id="actCodeInput">
-                    <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-                  <br>
-                  <p>발주일자</p>
-                  <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-                     <i class="fas fa-search"></i>
-                     검색
-                  </button>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
-                     초기화
-                  </button>
-                  <br><br><br><br>
-                  <p>등록 거래처명</p>
-                  <input type="text" id="selectActCodeInput">
-                    <i class="bi bi-search" id="selectActModal"></i>
-                  <input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
-                  
-		          </div>
-	            	<button id="save">저장</button>
-	            	<button id="delete">삭제</button>
-	            	<button id="dirAdd">행추가</button>
-	            	
-	           		<div id="grid"></div>
+   <h1>자재 발주 관리</h1>
+   <div class="col-lg-12 stretch-card">
+       <div class="card">
+           <div class="card-body">
+               <div class="table-responsive pt-3">
+               		<button type="button" class="btn btn-info btn-icon-text excelDownload">
+                      	 Excel
+                      	<i class="bi bi-printer"></i>                                                                              
+                   	</button>
+                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
+                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+                	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
+                  	<div id="customtemplateSearchAndButton">
+        				<div style="display: flex; justify-content: space-between;">
+            				<div style="flex: 1;">
+                				<p>자재명</p>
+                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
+                				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
+                				<br>
+                				<p>업체명</p>
+                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<i class="bi bi-search" id="actModal"></i>
+                				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
+                				<br>
+                				<p>발주일자</p>
+                				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                				<br>
+                				<p>등록 거래처명</p>
+                  				<input type="text" id="selectActCodeInput">
+                    			<i class="bi bi-search" id="selectActModal"></i>
+                  				<input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
+                				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+                    				<i class="fas fa-search"></i>
+                    					검색
+                				</button>
+                				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+                    				초기화
+                				</button>
+            				</div>
+        				</div>
+	    			</div>
+		            <h2>발주 목록</h2>
+		            <br>
+		            <div id="grid"></div>
 				</div>
-	   		</div>
+			</div>
 		</div>
-	</div>
+	</div> 
 	<div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
 	</div>
 
 
@@ -99,7 +107,7 @@
 	//삭제버튼
 	$('#delete').on("click",function(){
 		//그리드에서 행 지움
-		orderGrid.removeCheckedRows(true);
+		orderGrid.removeCheckedRows(false);
 		//마우스 커서 없앰
 		orderGrid.blur();
 		});
@@ -217,13 +225,25 @@
 	 	 	      {
 	 	 	        header: '발주일자',
 	 	 	        name: 'matOdRq',
-	 	 	        editor: 'datePicker'
+	 	 	      	editor: {
+	 	  		      type: 'datePicker',
+	 	  		      options: {
+	 	  		    	  language: 'ko'
+	 	  		      }
+	 	  		    },
+	 	  		 	className: 'yellow-background'
 	 	 	        
 	 	 	      },
 	 	 	      {
 		 	 	    header: '납기요청일',
 		 	 	    name: 'matOdAcp',
-		 	 	    editor: 'datePicker'
+		 	 	  	editor: {
+		  		      type: 'datePicker',
+		  		      options: {
+		  		    	  language: 'ko'
+		  		      }
+		  		    },
+		  		  	className: 'yellow-background'
 		 	 	  }
 	        ]
 	      });
@@ -237,68 +257,52 @@
 	function saveServer() {	
 		orderGrid.blur();
 		let modifyGridInfo = orderGrid.getModifiedRows();
+		console.log(modifyGridInfo);
 		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
-		let flag = true;
+		var flag = true;
 		//create, modify, delete 포함하는 전체 배열을 도는 each문
+		var list = [];
+		var list2 = [];
+		var list3 = [];
 		$.each(modifyGridInfo, function(idx, obj){
 			
 			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
 			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
-			if(idx == 'createdRows' && obj.length != 0){
-				let list = [];
+			if(!flag){
+				alert('값이 입력되지 않았습니다.');
+				return;
+			}
+			else if(idx == 'createdRows' && obj.length != 0){
+				
 				$.each(obj, function(idx2, obj2){
 					// console.log(obj2);  createdRows [{…}]
-					for(let j in obj2){
-						if(j != 'matTestYn' && j != 'matTotalPrice' && j != 'matOdCd' && j != 'matOdDeCd' && j != 'empName' && j !='empCode' && obj2[j] == null){
-							alert('추가할 값이 입력되지 않았습니다.');
-							flag = false;
-							return;
-						}
-						
-					}
-					if(flag){
-						let customObj = {};
-						customObj['empCode'] = "이슬";	//고치기
-						customObj['actCode'] = obj2['actCode'];
-						customObj['matAmt'] = obj2['matAmt'];
-						customObj['matCode'] = obj2['matCode'];
-						customObj['matOdAcp'] = obj2['matOdAcp'];
-						customObj['matPrice'] = obj2['matPrice'];
-						customObj['matOdRq'] = obj2['matOdRq'];
-				 		list.push(customObj);
+					
+					if(obj2['actCode'] == '' ||obj2['matAmt'] =='' || obj2['matCode'] == '' || obj2['matOdAcp'] == '' || obj2['matPrice']=='' || obj2['matOdRq'] == ''){
+						flag = false;
+						return;
 					}
 					
-					//값이 완전히 다 입력 되었을 때만 insert실행
-					if(flag){
-						$.ajax({
-							url : 'matOrderDirInsert',
-							method : 'POST',
-							data : JSON.stringify(list),
-							contentType : 'application/json',
-							success : function(data){
-								selectAjax();
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						})
-					}
+					let customObj = {};
+					customObj['empCode'] = "이슬";	//고치기
+					customObj['actCode'] = obj2['actCode'];
+					customObj['matAmt'] = obj2['matAmt'];
+					customObj['matCode'] = obj2['matCode'];
+					customObj['matOdAcp'] = obj2['matOdAcp'];
+					customObj['matPrice'] = obj2['matPrice'];
+					customObj['matOdRq'] = obj2['matOdRq'];
+				 	list.push(customObj);
+					
 					
 				})
 			}else if(idx == 'updatedRows' && obj.length != 0){
-				let list = [];
+				
 				
 				$.each(obj, function(idx2, obj2){
-					for(let j in obj2){
-						//matTestYn, matTotalPrice는 사용자가 입력하는 값이라서 입력될 수 없으므로 제외함
-						if(j != 'matTestYn' && j != 'matTotalPrice' && j != 'empName' && j !='empCode' && obj2[j] == null){
-							alert('수정할 값이 입력되지 않았습니다.');
-							flag = false;
-							
-						}
-						
+					if(obj2['matOdDeCd'] == '' ||obj2['actCode'] =='' ||obj2['matAmt'] == '' || obj2['matCode'] == '' || obj2['matOdAcp']=='' || obj2['matPrice'] == '' || obj2['matOdRq'] == ''){
+						flag = false;
+						return;
 					}
-					if(flag){
+					
 						let customObj = {};
 						customObj['matOdDeCd'] = obj2['matOdDeCd'];
 						customObj['empCode'] = "이슬";	//고치기
@@ -308,63 +312,76 @@
 						customObj['matOdAcp'] = obj2['matOdAcp'];
 						customObj['matPrice'] = obj2['matPrice'];
 						customObj['matOdRq'] = obj2['matOdRq'];
-			 			list.push(customObj);
-			 			console.log(list);
-					}
-					
+			 			list2.push(customObj);
+
 				})
 				
-				
-				
-				//값이 완전히 다 입력 되었을 때만 insert실행
-				if(flag){
-					$.ajax({
-						url : 'matOrderDirUpdate',
-						method : 'POST',
-						data : JSON.stringify(list),
-						contentType : 'application/json',
-						success : function(data){
-							selectAjax();
-						},
-						error : function(reject){
-							console.log(reject);
-						}
-					})
-				}
-				
+
 			}else if(idx == 'deletedRows' && obj.length != 0){
-				let list = [];
-				//if(flag) = 수정, 등록이 완전하지 않으면 삭제도 시키지 않겠다 
-				if(flag){
-					$.each(obj, function(idx2, obj2){
+				
+				
+				
+				$.each(obj, function(idx2, obj2){
 						
 						let customObj = {};
 						customObj['matOdDeCd'] = obj2['matOdDeCd'];
 						customObj['matOdCd'] = obj2['matOdCd'];
-						list.push(customObj);
+						list3.push(customObj);
 				})
-
-				}
-				
-				if(flag){
-					$.ajax({
-						url : 'matOrderDirDelete',
-						method : 'POST',
-						data : JSON.stringify(list),
-						contentType : 'application/json',
-						success : function(data){
-							console.log(data);
-							selectAjax();
-						},
-						error : function(reject){
-							console.log(reject);
-						}
-					});
-				}
 
 			}
 			
 		})
+		
+		if(flag){
+			
+			if(list3.length != 0){
+				$.ajax({
+					url : 'matOrderDirDelete',
+					method : 'POST',
+					data : JSON.stringify(list3),
+					contentType : 'application/json',
+					success : function(data){
+						console.log(data);
+						selectAjax();
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				});
+			}
+			if(list2.length != 0){
+				$.ajax({
+					url : 'matOrderDirUpdate',
+					method : 'POST',
+					data : JSON.stringify(list2),
+					contentType : 'application/json',
+					success : function(data){
+						selectAjax();
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				});
+			}
+			if(list.length != 0){
+				$.ajax({
+					url : 'matOrderDirInsert',
+					method : 'POST',
+					data : JSON.stringify(list),
+					contentType : 'application/json',
+					success : function(data){
+						selectAjax();
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				});
+			}
+
+		} else {
+			return;
+		}
 	}
 	
 	//검색
@@ -499,7 +516,7 @@
   	});
 	
 	//모달창 닫기
-	$("#close_btn").click(function(){
+	$(".close_btn").click(function(){
         $(".modal").fadeOut();
          
   		Grid.destroy();

@@ -105,4 +105,10 @@ public class MatRtController {
 			return "fail";
 		}
 	}
+	
+	@GetMapping("loginForm")
+	public String getloginForm() {
+	
+		return "login/loginForm";
+	}
 }

@@ -14,4 +14,13 @@ public class SemiInVO {
 	private String empName;
 	private Date semiInd;
 	private Date semiExd;
+	
+	//관리페이지
+	private String empCode;
+	private String prcsListCode;
+	
+	//검수완료된 반제품 목록
+	private String testAmt;
+	private Date testDate;
+	
 }
