@@ -6,38 +6,29 @@
   
   	<!-- 전체 거래처조회 -->
   	<select id="selectActCodeList" resultType="ActCodeVO">
-    SELECT  a.act_code,
-				a.act_name,
-				a.act_num,
-				a.act_tel,
-				a.act_sts,
-				a.act_kind,
-				c.commde_name kind,
-				a.emp_code,
-				e.emp_name,
-				o.commde_name sts
-		FROM com_act a LEFT JOIN com_commde c
-								 ON(a.act_kind = c.commde_code)
-                       LEFT JOIN com_emp e
-                                 ON(a.emp_code=e.emp_code)
-                       LEFT JOIN com_commde o
-                       			 ON(a.act_sts = o.commde_code)
+   		 SELECT act_code,
+				act_name,
+				act_num,
+				act_tel,
+				act_sts,
+				act_kind,
+				find_cdnm('ACT-TYPE', act_kind) AS kind,
+				find_cdnm('0J', act_sts) AS sts
+		FROM com_act
        ORDER BY act_code
   	</select>
   	
   	<!-- 거래처명 검색 조회 -->
   	<select id="searchSelectActCode" resultType="ActCodeVO">
-  		SELECT  a.act_code,
-				a.act_name,
-				a.act_num,
-				a.act_tel,
-				a.act_sts,
-				c.commde_name,
-				e.emp_name
-		FROM com_act a LEFT JOIN com_commde c
-								 ON(a.act_kind = c.commde_code)
-                       LEFT JOIN com_emp e
-                                 ON(a.emp_code=e.emp_code)
+  		SELECT act_code,
+				act_name,
+				act_num,
+				act_tel,
+				act_sts,
+				act_kind,
+				find_cdnm('ACT-TYPE', act_kind) AS kind,
+				find_cdnm('0J', act_sts) AS sts
+		FROM com_act
         WHERE a.act_name LIKE '%' || #{actName} || '%'
         ORDER BY act_code
   	</select>
@@ -55,7 +46,6 @@
 							,act_tel
 							,act_sts
 							,act_kind
-							,emp_code
   							)
   		VALUES
   				(
@@ -65,7 +55,6 @@
   				,#{actTel}
   				,#{actSts}
   				,#{actKind}
-  				,#{empCode}
   				)
   	</insert>
   	
@@ -77,7 +66,6 @@
 				,act_tel = #{actTel}
 				,act_sts = #{actSts}
 				,act_kind = #{actKind}
-				,emp_code = #{empCode}
 		WHERE act_code = #{actCode}
 	</update>
 

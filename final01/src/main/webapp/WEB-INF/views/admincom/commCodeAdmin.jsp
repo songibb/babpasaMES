@@ -29,7 +29,9 @@
 						</button>
 						<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 		            </form>
+		            
 	            	<div style="display: flex; justify-content: flex-end;">
+	            		<input type="text" name="commCode" id="commCode" readonly="readonly">
 		            	<button id="save" class="btn btn-info btn-icon-text">저장</button>
 		            	<button id="delete" class="btn btn-info btn-icon-text">삭제</button>
 	            		<button id="commAdd" class="btn btn-info btn-icon-text">추가</button>
@@ -66,23 +68,12 @@
 	
 	$('#delete').on("click",function(){
 		//그리드 행 지움
-		grid.removeCheckedRows(true);
+		grid2.removeCheckedRows(true);
 		//마우스 커서 없앰
-		grid.blur();
+		grid2.blur();
 	});
 	
-	//저장버튼
-	document.getElementById('save').addEventListener('click', commSave);
-	//행추가
-	document.getElementById('commAdd').addEventListener('click', addCommRow);
 	
-	function commSave(){
-		
-	};
-	
-	function addCommRow(){
-		
-	};
 	
 		//공통코드 조회 ajax
 		$.ajax({
@@ -158,20 +149,47 @@
 			},
 			columns: [
 				{
+					header: '공통상세코드넘버',
+					name: 'commDeNo',
+					hidden :true
+				},
+				{
 					header: '공통상세코드',
-					name: 'commdeCode'
+					name: 'commdeCode',
+					editor : 'text'
+				},
+				{
+					header: '공통코드',
+					name: 'commCode',
+					hidden : true
 				},
 				{
 					header: '이름',
-					name: 'commdeName'
+					name: 'commdeName',
+					editor : 'text'
 				},
 				{
 					header: '내용',
-					name: 'commdeInfo'
+					name: 'commdeInfo',
+					editor : 'text'
 				},
 				{
 					header: '사용여부',
-					name: 'commdeUse'
+					name: 'commdeUse',
+					formatter: 'listItemText',
+					editor: {
+		                type: 'select',
+		                options: {
+		                  listItems: [
+		                	<c:forEach items="${useList}" var="u">
+		                	 {
+		                         text: '${u.commdeName }',
+		                         value: '${u.commdeCode }'
+		                       }, 
+							</c:forEach>
+		                  ]
+		                }
+		              }
 				}
 			]
 			
@@ -192,6 +210,8 @@
 		 			console.log(reject);
 		 		}
 	    	})
+	    	
+	    	$("#commCode").val(commCode);
 		});
 		
 		
@@ -199,11 +219,86 @@
 		
 		
 		
+		//저장버튼
+		document.getElementById('save').addEventListener('click', commSave);
+		//행추가
+		document.getElementById('commAdd').addEventListener('click', addCommRow);
+		
+		
+		
+		function addCommRow(){
+			commCode = $("#commCode").val();
+			
+			if($('#commCode').val().length === 0){
+				alert('상세를 추가할 공통코드를 먼저 선택해 주세요');
+			}else{
+				grid2.appendRow( {'commCode' : commCode}, { at: 0 });
+			}
+			
+		};
 		
 		
 		
 		
 		
+		function commSave(){
+			grid2.blur();
+			
+			let modifyGridInfo = grid2.getModifiedRows();
+			
+			//변경사항없으면 빠져나감
+			if(!grid2.isModified()){
+				alert("변경사항이 없습니다.");
+				return false;
+			}
+			
+			
+			//입력 빠뜨린곳 없으면 true
+			var flag = true;
+			
+			if(grid2.getModifiedRows().createdRows.length > 0 ){
+							
+							$.each(grid2.getModifiedRows().createdRows, function(idx2, obj2){
+								if(obj2['commdeCode'] == '' ||obj2['commdeName'] == '' || obj2['commdeInfo'] == '' || obj2['commdeUse'] == ''){
+									flag = false;
+									return false;
+								}
+							})
+					}
+			
+			
+			if(grid2.getModifiedRows().updatedRows.length > 0 ){
+
+				$.each(grid2.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['commdeCode'] == "" ||obj2['commdeName'] =="" || obj2['commdeInfo'] == "" || obj2['commdeUse'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+				
+		}
+			
+			
+			if(flag){
+				$.ajax({
+					url : 'updateCommCode',
+					method : 'POST',
+					data : JSON.stringify(grid2.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						console.log(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+		} else {
+			alert("값이 입력되지 않았습니다.");
+		}
+
+	}
+			
+			
 		
 		
 	</script>

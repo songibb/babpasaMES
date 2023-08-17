@@ -15,11 +15,13 @@
   	
   	<!-- 상세공통코드 조회 -->
   	<select id="selectCommDeCodeList" resultType="CommCodeVO">
-  		SELECT  commde_code,
+  		SELECT  commde_no,
+  				commde_code,
 				comm_code,
 				commde_name,
 				commde_info,
-				commde_use
+				commde_use,
+				find_cdnm('0A', commde_use) AS useName
 		FROM com_commde
 		WHERE comm_code = #{commCode}
 	ORDER BY commde_code
@@ -35,6 +37,103 @@
 				ORDER BY comm_code
   	</select>
   	
+  	<!-- 공통코드 사용여부 조회 -->
+  	<select id="selectCommUseInfo" resultType="CommCodeVO">
+  			SELECT  commde_no,
+  					commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+		FROM com_commde
+        where comm_code = '0A' and commde_use = 'O'
+	ORDER BY commde_code 
+  	</select>
+  	
+  	
+  	
+  	
+  	<update id="commDeCodeUpdate" parameterType="CommCodeVO">
+  	UPDATE com_commde SET
+	  							commde_code = #{commdeCode},
+								commde_name = #{commdeName},
+								commde_info = #{commdeInfo},
+								commde_use = #{commdeUse}
+			WHERE commde_no = #{commDeNo}
+  	</update>
+  	
+  	<insert id="commDeCodeInsert" parameterType="CommCodeVO">
+  	INSERT INTO com_commde
+	  								(
+	  								commde_no
+	  								,commde_code
+									,comm_code
+									,commde_name
+									,commde_info
+									,commde_use
+	  								)
+	  		VALUES
+			  		(
+			  		 get_primarycode('commDeNo')
+			  		,#{l.commdeCode}
+	  				,#{l.commCode}
+	  				,#{l.commdeName}
+	  				,#{l.commdeInfo}
+	  				,#{l.commdeUse}
+			  		)
+		</insert>
+  	
+  	<delete id="commDeCodeDelete" parameterType="CommCodeVO">
+  			DELETE FROM com_commde
+  			WHERE commde_no = #{commDeNo}
+  	</delete>
+  	
+  	
+<!--   	
+  	<insert id="commDeCodeInsert" parameterType="CommCodeVO">
+  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+	  		INSERT INTO com_commde
+	  								(
+	  								commde_no
+	  								,commde_code
+									,comm_code
+									,commde_name
+									,commde_info
+									,commde_use
+	  								)
+	  		VALUES
+			  		(
+			  		 get_primarycode('commDeNo')
+			  		,#{l.commdeCode}
+	  				,#{l.commCode}
+	  				,#{l.commdeName}
+	  				,#{l.commdeInfo}
+	  				,#{l.commdeUse}
+			  		)
+		</foreach>
+  	</insert>
+  	
+  	  	공통코드 수정
+  	<update id="commDeCodeUpdate" parameterType="CommCodeVO">
+  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+	  		UPDATE com_commde SET
+	  							commde_code = #{l.commdeCode},
+								commde_name = #{l.commdeName},
+								commde_info = #{l.commdeInfo},
+								commde_use = #{l.commdeUse}
+			WHERE commde_no = #{l.commDeNo}
+		</foreach>
+  	</update>
+  	
+  	공통코드 삭제
+  	<delete id="commDeCodeDelete" parameterType="CommCodeVO">
+  		
+  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+  			DELETE FROM com_commde
+  			WHERE commde_no = #{l.commDeNo}
+  		</foreach>
+  	</delete> -->
+  	
   	<!-- act type만 조회하는 경우 -->
   	<select id="selectActTypeList" resultType="CommCodeVO">
   			SELECT  commde_code,
@@ -43,7 +142,7 @@
 					commde_info,
 					commde_use
 		FROM com_commde
-        where comm_code = 'ACT-TYPE' and commde_use = 'Y'
+        where comm_code = 'ACT-TYPE' and commde_use = 'O'
 	ORDER BY commde_code 
   	</select>
   	
@@ -55,7 +154,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0J' and commde_use = 'Y'
+		        where comm_code = '0J' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	
@@ -67,7 +166,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0A' and commde_use = 'Y'
+		        where comm_code = '0A' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	
@@ -79,7 +178,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0W' and commde_use = 'Y'
+		        where comm_code = '0W' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	
@@ -91,7 +190,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0X' and commde_use = 'Y'
+		        where comm_code = '0X' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	
@@ -104,7 +203,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0E' and commde_use = 'Y'
+		        where comm_code = '0E' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	

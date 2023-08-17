@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.comm.service.CommCodeVO;
+import co.yedam.app.common.grid.service.GridVO;
 
 @Controller
 public class CommCodeController {
@@ -29,7 +31,7 @@ public class CommCodeController {
 	//공통코드 관리페이지
 	@GetMapping("/commCodeAdmin")
 	public String commCodeAdmin(Model model){
-		
+		model.addAttribute("useList", commCodeService.selectCommUseInfo());
 		return "admincom/commCodeAdmin";
 	}
 	
@@ -51,7 +53,7 @@ public class CommCodeController {
 	}
 	
 	//공통코드 클릭시 상세코드 조회
-	@GetMapping("ajaxCommDeCodeList")
+	@GetMapping("/ajaxCommDeCodeList")
 	@ResponseBody
 	public List<CommCodeVO> ajaxCommDeCodeList(@RequestParam String commCode){
 		List<CommCodeVO> vo = commCodeService.selectCommDeCodeList(commCode);
@@ -60,9 +62,10 @@ public class CommCodeController {
 	
 	
 	//상세코드 추가
+	@PostMapping("/updateCommCode")
+	@ResponseBody
+	public int updateCommCode(@RequestBody GridVO<CommCodeVO> data) {
+		return commCodeService.updateCommDeCode(data);
+	}
 	
-	//상세코드 수정
-	
-	//상세코드 삭제
-
 }

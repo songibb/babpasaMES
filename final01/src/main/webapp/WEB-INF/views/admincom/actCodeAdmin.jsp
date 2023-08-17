@@ -70,12 +70,6 @@
 						</select>
 					</td>
 				</tr>
-				<tr>
-					<th>담당자</th>
-					<td><input type="text" name="empName" id="empName" readonly="readonly" style="background-color: skyblue;"></td>
-					<td><input type="text" name="empCode" id="empCode" readonly="readonly" style="display: none;"></td>
-					<td><button type="button" id="empModal" class="btn btn-info btn-icon-text">사원조회</button></td>
-				</tr>
 			</table>
 			<button type="submit" class="btn btn-info btn-icon-text">저장</button>
 			<button type="reset" class="btn btn-info btn-icon-text">취소</button>
@@ -201,98 +195,10 @@
 			              header: '거래처구분',
 			              name: 'actKind',
 			              hidden:true
-			            },
-		          {
-		              header: '담당자',
-		              name: 'empName'
-		            },
-		          {
-		              header: '담당자',
-		              name: 'empCode',
-		              hidden:true
-		            }
+			            }
 		        ]
 		      })  
 		   
-			  //거래처 등록
-		    
-			 //사원 조회 모달창 시작
-			  $("#empModal").click(function(){
-				  $(".modal").fadeIn();
-				  Grid = createEmpGrid();
-			
-				  
-				  Grid.on('click', () => {	
-						let rowKey = Grid.getFocusedCell().rowKey;
-						let empName = Grid.getValue(rowKey, 'empName');
-						let empCode = Grid.getValue(rowKey, 'empCode');
-						$("#empName").val(empName);
-						$("#empCode").val(empCode);
-						
-				          if(rowKey != null){
-				             $(".modal").fadeOut();
-				              Grid.destroy();
-				          }
-				  
-						});
-						});
-
-				
-				$("#close_btn").click(function(){
-				  $(".modal").fadeOut(); 
-					Grid.destroy();
-					
-				});
-				
-				//사원조회 모달 그리드
-				 function createEmpGrid(){
-				      var empGrid = new tui.Grid({
-				          el: document.getElementById('modal_label'),
-				          data: [
-				             <c:forEach items="${empList}" var="e" varStatus="status">
-				                {
-				                	empCode : "${e.empCode}",
-				                	empName :"${e.empName}",
-				                	commdeName :"${e.commdeName}"
-				                } <c:if test="${not status.last}">,</c:if>
-				             </c:forEach>
-				             ],
-				         scrollX: false,
-				          scrollY: false,
-				          minBodyHeight: 30,
-				          rowHeaders: ['rowNum'],
-				          selectionUnit: 'row',
-				          pagination: true,
-				          pageOptions: {
-				          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-				            useClient: true,
-				            perPage: 10
-				          },
-				          columns: [
-				             {
-				                  header: '사원코드',
-				                  name: 'empCode'
-				                },
-				                {
-				                  header: '사원명',
-				                  name: 'empName'
-				                },
-				                {
-				                  header: '부서명',
-				                  name: 'commdeName'
-				                }
-				           ]
-				         
-				        });
-				      
-				      return empGrid;
-				   };
-				   
-				   
-				   
-				   
-
-				
 			//거래처 등록/수정 한개버튼으로 같이하기
 			
 			
@@ -303,7 +209,7 @@
 				  
 				  if(actInfo.actCode != ''){
 					  e.preventDefault();
-					if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel=='' || actInfo.empCode =='' || actInfo.empName ==''){
+					if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel==''){
 						
 						alert('모든 정보를 입력해 주세요.');
 						}else{ 
@@ -313,7 +219,7 @@
 						}
 				  }else{
 					  e.preventDefault();
-					  if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel=='' || actInfo.empCode =='' ){
+					  if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel==''){
 						 
 							alert('모든 정보를 입력해 주세요.');
 							}else{ 
@@ -424,8 +330,6 @@
 		    	let actTel = grid.getValue(rowKey, 'actTel');
 		    	let actSts = grid.getValue(rowKey, 'actSts');
 		    	let actKind = grid.getValue(rowKey, 'actKind');
-		    	let empName = grid.getValue(rowKey, 'empName');
-		    	let empCode = grid.getValue(rowKey, 'empCode');
 		    	
 		    	$("#actCode").val(actCode);
 				$("#actName").val(actName);
@@ -433,8 +337,6 @@
 				$("#actTel").val(actTel);
 				$("#inputActList option[value='" + actSts + "']").prop("selected", true);
 				$("#actTypeList option[value='" + actKind + "']").prop("selected", true);
-				$("#empName").val(empName);
-				$("#empCode").val(empCode);
 				});
 		    
 		    

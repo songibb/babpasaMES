@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import co.yedam.app.common.comm.mapper.CommCodeMapper;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.comm.service.CommCodeVO;
+import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.prcs.dir.service.PrcsDirVO;
 
 @Service
 public class CommCodeServiceImpl implements CommCodeService {
@@ -31,6 +33,39 @@ public class CommCodeServiceImpl implements CommCodeService {
 		
 		return commCodeMapper.selectCommDeCodeList(commCode);
 	}
+	
+	@Override
+	public List<CommCodeVO> selectCommUseInfo() {
+		
+		return commCodeMapper.selectCommUseInfo();
+	}
+	
+
+	@Override
+	public int updateCommDeCode(GridVO<CommCodeVO> data) {
+		int result = 0;
+		if(data.getDeletedRows()!= null && data.getDeletedRows().size()>0) {
+			for(CommCodeVO vo : data.getDeletedRows()){
+				
+				result += commCodeMapper.commDeCodeDelete(vo);
+			}
+			
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() >0) {
+			for(CommCodeVO vo : data.getDeletedRows()) {
+				
+				result += commCodeMapper.commDeCodeUpdate(vo);
+			}
+		}
+		if(data.getCreatedRows() != null &&data.getCreatedRows().size()>0) {
+			for(CommCodeVO vo : data.getDeletedRows()) {
+			result +=data.getCreatedRows().size();
+		}
+		
+	}
+		return result;
+	}
+	
 
 	@Override
 	public List<CommCodeVO> selectActTypeList() {
@@ -67,6 +102,10 @@ public class CommCodeServiceImpl implements CommCodeService {
 		
 		return commCodeMapper.selectProdTypeInfo();
 	}
+
+
+
+
 
 
 

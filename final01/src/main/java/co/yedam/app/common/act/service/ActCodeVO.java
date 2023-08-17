@@ -11,10 +11,7 @@ public class ActCodeVO {
 	private String actTel;
 	private String actSts;
 	private String actKind;
-	private String empCode;
-	
-	//조인
-	private String empName;
+
 	
 	private String kind;
 	private String sts;

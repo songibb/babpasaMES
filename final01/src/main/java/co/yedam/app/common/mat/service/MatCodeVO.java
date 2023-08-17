@@ -10,8 +10,5 @@ public class MatCodeVO {
 	private String matUnit;
 	private String matStd;
 	private int matSafe;
-	private String empCode;
-	
-	private String empName;
 
 }
