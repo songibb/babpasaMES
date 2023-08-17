@@ -5,16 +5,13 @@
   <mapper namespace="co.yedam.app.common.mat.mapper.MatCodeMapper">
   	
   	<select id="selectMatCodeList" resultType="MatCodeVO">
-	  	SELECT  m.mat_code,
-				m.mat_name,
-				m.mat_unit,
-				m.mat_std,
-				m.mat_safe,
-				m.emp_code,
-				e.emp_name
-		FROM com_mat m left join com_emp e
-						ON(m.emp_code = e.emp_Code)
-		ORDER BY m.mat_code
+	  	SELECT  mat_code,
+				mat_name,
+				mat_unit,
+				mat_std,
+				mat_safe
+		FROM com_mat
+		ORDER BY mat_code
 	</select>		
 	<!-- <foreach collection="inList" item="l" index="index" separator=";" open="" close=" "> -->
 	<insert id="matCodeInsert" parameterType="MatCodeVO">
@@ -24,8 +21,7 @@
 									mat_name,
 									mat_unit,
 									mat_std,
-									mat_safe,
-									emp_code 
+									mat_safe
 									)
 				values(
 						get_primarycode('matCode')
@@ -33,7 +29,6 @@
 						,#{l.matUnit}
 						,#{l.matStd}
 						,#{l.matSafe}
-						,#{l.empCode}	
 						)
 		 </foreach>
 	</insert>
@@ -44,16 +39,15 @@
 				SET mat_name = #{l.matName},
 					mat_unit = #{l.matUnit},
 					mat_std = #{l.matStd},
-					mat_safe = #{l.matSafe},
-					emp_code = #{l.empCode}
+					mat_safe = #{l.matSafe}
 				WHERE mat_code = #{l.matCode}
 		</foreach>
 	</update>
 	
 	<delete id="matCodeDelete" parameterType="MatCodeVO">
 			<foreach collection="list3" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
-				delete from com_mat
-				where mat_code = #{l.matCode}
+				DELETE FROM com_mat
+				WHERE mat_code = #{l.matCode}
 			</foreach>		
 	</delete>		
   </mapper>

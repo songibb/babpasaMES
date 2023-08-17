@@ -41,7 +41,7 @@
 	                  </button>
 		          	</div>
 		          </div>
-		          <div>
+		          <div style="display: flex; justify-content: right;">
 	            	<button id="matSave" class="btn btn-info btn-icon-text" >저장</button>
 	            	<button id="delete" class="btn btn-info btn-icon-text" >삭제</button>
 	            	<button id="matAdd" class="btn btn-info btn-icon-text">행추가</button>
@@ -102,7 +102,7 @@
 					return;
 				}else if(idx == 'createdRows' && obj.length != 0){
 					$.each(obj, function(idx2,obj2){
-						 if(obj2['matName'] == '' ||obj2['matUnit'] =='' || obj2['matStd'] == '' || obj2['matSafe'] == '' || obj2['matPrice']=='' || obj2['empCode'] == ''){
+						 if(obj2['matName'] == '' ||obj2['matUnit'] =='' || obj2['matStd'] == '' || obj2['matSafe'] == '' || obj2['matPrice']==''){
 			                  flag = false;
 			                  return;
 			               }
@@ -112,7 +112,6 @@
 							customObj['matUnit'] = obj2['matUnit'];
 							customObj['matStd'] = obj2['matStd'];
 							customObj['matSafe'] = obj2['matSafe'];
-							customObj['empCode'] = obj2['empCode'];
 							list.push(customObj);
 							console.log(list);
 							
@@ -120,7 +119,7 @@
 							})
 				}else if(idx == 'updatedRows' && obj.length != 0){
 					$.each(obj, function(idx2, obj2){
-			               if(obj2['matName'] == '' ||obj2['matUnit'] =='' ||obj2['matStd'] == '' || obj2['matSafe'] == '' || obj2['empCode']==''){
+			               if(obj2['matName'] == '' ||obj2['matUnit'] =='' ||obj2['matStd'] == '' || obj2['matSafe'] == ''){
 			                  flag = false;
 			                  return;
 			               }
@@ -131,7 +130,6 @@
 							customObj['matUnit'] = obj2['matUnit'];
 							customObj['matStd'] = obj2['matStd'];
 							customObj['matSafe'] = obj2['matSafe'];
-							customObj['empCode'] = obj2['empCode'];
 							list2.push(customObj);
 							console.log(list2);
 
@@ -244,155 +242,6 @@
 				
 		}
 			
-		/* 
-		function matSave(){
-			grid.blur();
-			let modifyGridInfo = grid.getModifiedRows();
-			let flag = true;
-			
-			$.each(modifyGridInfo, function(idx, obj){
-				if(idx == 'createdRows' && obj.length != 0){
-					let inList = [];
-					
-					$.each(obj, function(idx2,obj2){
-						for(let j in obj2){
-							if(j  != 'matCode' && obj2[j] == null){
-								alert('추가할 값이 입력되지 않았습니다.');
-								flag = false;
-								break;
-							}
-						}
-						
-					if(flag){
-						let customObj = {};
-						customObj['matName'] = obj2['matName'];
-						customObj['matUnit'] = obj2['matUnit'];
-						customObj['matStd'] = obj2['matStd'];
-						customObj['matSafe'] = obj2['matSafe'];
-						customObj['empCode'] = obj2['empCode'];
-						inList.push(customObj);
-					}
-					
-					if(flag){
-						$.ajax({
-							url : 'matCodeInsert',
-							method : 'POST',
-							data : JSON.stringify(inList),
-							contentType : 'application/json',
-							success : function(data){
-								
-								$.ajax({
-									url : "ajaxMatCodeList",
-									 method :"GET",
-								       success : function(result){
-								           grid.resetData(result);
-								       },
-								       error : function(reject){
-											console.log(reject);
-										}
-								});
-								
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						})
-					}
-					})
-				}else if(idx == 'updatedRows' && obj.length != 0){
-					let upList = [];
-					
-					$.each(obj, function(idx2, obj2){
-						for(let j in obj2){
-							//matTestYn, matTotalPrice는 사용자가 입력하는 값이라서 입력될 수 없으므로 제외함
-							if(j != 'matCode' && obj2[j] == null){
-								alert('수정할 값이 입력되지 않았습니다.');
-								flag = false;
-								break;
-								
-								
-							}
-							
-						}
-						if(flag){
-							let customObj = {};
-							customObj['matCode'] = obj2['matCode'];
-							customObj['matName'] = obj2['matName'];
-							customObj['matUnit'] = obj2['matUnit'];
-							customObj['matStd'] = obj2['matStd'];
-							customObj['matSafe'] = obj2['matSafe'];
-							customObj['empCode'] = obj2['empCode'];
-							upList.push(customObj);
-				 			
-						}
-						console.log(upList);
-						
-					})
-					if(flag){
-						$.ajax({
-							url : 'matCodeUpdate',
-							method : 'POST',
-							data : JSON.stringify(upList),
-							contentType : 'application/json',
-							success : function(data){
-								$.ajax({
-									url : "ajaxMatCodeList",
-									 method :"GET",
-								       success : function(result){
-								           grid.resetData(result);
-								       },
-								       error : function(reject){
-											console.log(reject);
-										}
-								})
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						})
-					}
-					
-				}else if(idx == 'deletedRows' && obj.length != 0){
-					let deList = [];
-					if(flag){
-						$.each(obj, function(idx2, obj2){
-							
-							let customObj = {};
-							customObj['matCode'] = obj2['matCode'];
-							deList.push(customObj);
-					})
-
-					}
-					
-					if(flag){
-						$.ajax({
-							url : 'matCodeDelete',
-							method : 'POST',
-							data : JSON.stringify(deList),
-							contentType : 'application/json',
-							success : function(data){
-								$.ajax({
-									url : "ajaxMatCodeList",
-									 method :"GET",
-								       success : function(result){
-								           grid.resetData(result);
-								       },
-								       error : function(reject){
-											console.log(reject);
-										}
-								});
-								
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						});
-					}
-				}
-			})
-			
-			
-		} */
 		
 		//자재 리스트 조회
 		$.ajax({
@@ -456,137 +305,10 @@
 			 	 	        header: '안전재고량',
 			 	 	        name: 'matSafe',
 			 	 	        editor : 'text'
-			 	 	  },
-			 	 	  {
-			 	 	        header: '담당자',
-			 	 	        name: 'empName',
-				 	 	    editor : 'text'
-			 	 	  },
-			 	 	{
-			 	 	        header: '담당자',
-			 	 	        name: 'empCode',
-				 	 	    hidden: true
 			 	 	  }
 		        ]
 		      });
-		
-		//사원 모달창 출력
-		 var Grid;
-		$("empModal").on('click', event =>{
-
-			  $(".modal").fadeIn();
-			  Grid = createEmpGrid();	
-			  
-			  Grid.on('click', event => {	
-					let rowKey = Grid.getFocusedCell().rowKey;
-					let empName = Grid.getValue(rowKey, 'empName');
-					let empCode = Grid.getValue(rowKey, 'empCode');
-					$(event.currentTarget).prev().val(empCode);
-					$(event.currentTarget).next().val(empName);
-					if(event.currentTarget.id == 'empModal'){
-			        	  obj.empCode = empCode;
-		    			  obj.empName = empName;
-			          }
-			  
-					$("#close_btn").click(function(){
-						  $(".modal").fadeOut(); 
-							Grid.destroy();
-							
-					})
-					});
-		})
-			  
-			  grid.on('dblclick' , () => {
-				  let rowKey = grid.getFocusedCell().rowKey;
-			      let columnName = grid.getFocusedCell().columnName;
-			      let value = grid.getFocusedCell().value;
-			      
-			    	if(columnName == 'empName'){
-			    		$(".modal").fadeIn();
-			 	       Grid = createEmpGrid();
-			 	       
-			 	       Grid.on('click', () => {
-			 	       		let rowKey2 = Grid.getFocusedCell().rowKey;
-			 	        	let empCode = Grid.getValue(rowKey2, 'empCode');
-			 	        	let empName = Grid.getValue(rowKey2, 'empName');
-			 	        	grid.finishEditing(rowKey, columnName);
-
-			 	    		if(empCode != null){
-			 	    			grid.setValue(rowKey, 'empCode', empCode);
-			 	    		}
-			 	    		if(empName != null){
-			 	    			grid.setValue(rowKey, 'empName', empName);
-			 	    		}
-			 	    		
-			 	    		
-			 	    		//선택시 모달창 닫기
-			 	    		if(empCode != null){
-			 	    			$(".modal").fadeOut();
-			 	        		Grid.destroy();
-			 	    		}
-
-			 	       });
-			    	} 
-			  	});
-		
-		   $("#close_btn").click(function(){
-		        $(".modal").fadeOut();
-		         
-		  		Grid.destroy();
-		     });
-		   
-		 //모달창 닫기
-			$("#close_btn").click(function(){
-		        $(".modal").fadeOut();
-		         
-		  		Grid.destroy();
-		     });
-			
-				//사원조회 모달 그리드
-				 function createEmpGrid(){
-				      var empGrid = new tui.Grid({
-				          el: document.getElementById('modal_label'),
-				          data: [
-				             <c:forEach items="${empList}" var="e" varStatus="status">
-				                {
-				                	empCode : "${e.empCode}",
-				                	empName :"${e.empName}",
-				                	commdeName :"${e.commdeName}"
-				                } <c:if test="${not status.last}">,</c:if>
-				             </c:forEach>
-				             ],
-				         scrollX: false,
-				          scrollY: false,
-				          minBodyHeight: 30,
-				          rowHeaders: ['rowNum'],
-				          selectionUnit: 'row',
-				          pagination: true,
-				          pageOptions: {
-				          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-				            useClient: true,
-				            perPage: 10
-				          },
-				          columns: [
-				             {
-				                  header: '사원코드',
-				                  name: 'empCode'
-				                },
-				                {
-				                  header: '사원명',
-				                  name: 'empName'
-				                },
-				                {
-				                  header: '부서명',
-				                  name: 'commdeName'
-				                }
-				           ]
-				         
-				        });
-				      
-				      return empGrid;
-				   };
-		
-
+	
 				    
 		
 </script>

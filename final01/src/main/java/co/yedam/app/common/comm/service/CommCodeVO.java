@@ -15,4 +15,7 @@ public class CommCodeVO {
 	private String commdeName;
 	private String commdeInfo;
 	private String commdeUse;
+	private int commDeNo;
+	
+	private String useName;
 }

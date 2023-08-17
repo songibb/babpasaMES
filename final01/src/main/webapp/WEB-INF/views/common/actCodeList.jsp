@@ -73,7 +73,6 @@
 	           		actTel :"${a.actTel}",
 	           		sts : "${a.sts}",
 	           		kind : "${a.kind}",
-	           		empName : "${a.empName}"
 	           	} <c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
@@ -114,10 +113,6 @@
               name: 'kind',
               filter: 'select'
             },
-          {
-              header: '담당자',
-              name: 'empName'
-            }
         ]
       })  
 
