@@ -19,7 +19,7 @@ public interface PrcsDirService {
 	public String insertPrcsDir(PrcsDirVO prcsDirVo);
 	
 	//상세생산지시 등록
-	public int insertPrcsDirDe(PrcsDirVO prcsDirVO);
+	public int insertPrcsDirDe(List<PrcsDirVO> list);
 	
 	//생산지시 + 상세생산지시 등록
 //	public int insertPrcsDir(List<PrcsDirVO> prcsDirList);
@@ -29,7 +29,7 @@ public interface PrcsDirService {
 	public List<PrcsPlanVO> getNotDirPlanList();
 	
 	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
-	public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
+	//public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
 	//BOM 조회
 	public List<BomCodeVO> getBomList(String prodCode);
