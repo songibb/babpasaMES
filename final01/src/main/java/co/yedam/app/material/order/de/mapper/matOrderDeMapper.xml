@@ -38,7 +38,7 @@
 					AND a.mat_od_rq <![CDATA[>=]]> TO_CHAR(#{startDate}, 'yyyy-MM-dd')
 				</if>
 				<if test="endDate != null and endDate != ''">
-					AND a.mat_od_rq <![CDATA[<=]]> TO_CHAR(#{endDate} , 'yyyy-MM-dd') + 1
+					AND a.mat_od_rq <![CDATA[<=]]> TO_CHAR(#{endDate} , 'yyyy-MM-dd')
 				</if>
 			</where>
 			ORDER BY a.mat_od_de_cd
@@ -54,11 +54,15 @@
 		BEGIN
 			<!-- 첫번째 쿼리 -->
 			INSERT 	INTO
-				mat_order
+				mat_order(MAT_OD_CD
+						  ,EMP_CODE
+						  ,ACT_CODE
+						  ,MAT_OD_RQ)	
 			VALUES(
 				#{matOdCd}
 				,#{orderList[0].empCode}
 				,#{orderList[0].actCode}
+				,sysdate
 			);
 			<!-- 두번째 쿼리 -->
 			<foreach collection="data" item="order" index="index" open="" separator=" " close="">
@@ -67,20 +71,18 @@
 								MAT_OD_CD,
 								MAT_AMT,
 								MAT_CODE,
-								MAT_OD_ACP,
 								MAT_TEST_YN,
 								MAT_PRICE,
-								MAT_OD_RQ)
+								MAT_OD_ACP)
             VALUES
             
                 (get_primaryCode('matOdDeCd'), 
                  #{matOdCd}, 
                  #{order.matAmt}, 
                  #{order.matCode}, 
-                 #{order.matOdAcp}, 
                  'N', 
                  #{order.matPrice}, 
-                 #{order.matOdRq});
+                 #{order.matOdAcp});
             </foreach>
             
 		END;
@@ -89,7 +91,7 @@
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
 		<foreach collection="data" item="order" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE mat_order_de
-			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_od_acp = #{order.matOdAcp}, mat_price = #{order.matPrice}, mat_od_rq = #{order.matOdRq}
+			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_price = #{order.matPrice}, mat_od_acp= #{order.matOdAcp}
 			WHERE mat_od_de_cd = #{order.matOdDeCd}
         </foreach>
 	</update>
