@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.mapper.PrcsDirMapper;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Service
 public class PrcsDirServiceImpl implements PrcsDirService {
@@ -50,5 +52,26 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 			return -1;
 		}
 	}
+	
+
+	//미지시 생산계획 목록 조회 
+	@Override
+	public List<PrcsPlanVO> getNotDirPlanList() {
+		return prcsDirMapper.selectNotDirPlanList();
+	}
+	
+	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+	@Override
+	public int updateNotDirPlanList(PrcsDirVO prcsDirVO) {
+		return prcsDirMapper.updateNotDirPlanList(prcsDirVO);
+	}	
+	
+	
+	//BOM 조회
+	@Override
+	public List<BomCodeVO> getBomList(String prodCode) {
+		return prcsDirMapper.selectBomList(prodCode);
+	}
+	
 
 }

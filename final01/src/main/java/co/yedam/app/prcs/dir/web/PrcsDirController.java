@@ -2,9 +2,6 @@ package co.yedam.app.prcs.dir.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.common.emp.service.EmpInfoVO;
+import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Controller
 public class PrcsDirController {
@@ -69,10 +67,34 @@ public class PrcsDirController {
 	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {	
 		int result = 0;
 		for(PrcsDirVO vo : list) {
-			result = prcsDirService.insertPrcsDirDe(vo);
+			prcsDirService.insertPrcsDirDe(vo);
+			
+			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+			prcsDirService.updateNotDirPlanList(vo);
+			
 			result++;
 		}
 		return result;
 	}
+	
+	
+	//미지시 생산계획 목록 조회
+	@GetMapping("notDirPlanList")
+	@ResponseBody
+	public List<PrcsPlanVO> getNotDirPlanList(){
+		List<PrcsPlanVO> list = prcsDirService.getNotDirPlanList();
+		return list;
+	}
+	
+
+	//BOM 조회
+	@GetMapping("bomList")
+	@ResponseBody
+	public List<BomCodeVO> getBomList(@RequestParam String prodCode){
+		List<BomCodeVO> list = prcsDirService.getBomList(prodCode);
+		return list;
+	}
+	
+	
 	
 }

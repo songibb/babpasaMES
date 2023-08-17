@@ -8,7 +8,7 @@
 		SELECT prcs_plan_code,
 			   prcs_plan_name,
 			   prcs_plan_date,
-			   emp_code,
+			   find_emp_name(emp_code) AS emp_code,
 			   find_cdnm('0V', prcs_dir_yn) AS prcs_dir_yn,
 			   prcs_start_date,
 			   prcs_end_date
@@ -31,8 +31,9 @@
 	<!-- 상세생산계획 조회 -->
 	<select id="selectPrcsPlanDeList" resultType="prcsPlanVO">
 		SELECT prcs_plan_de_code,
-			   prcs_plan_code,
-			   prod_code,
+               prcs_plan_code,
+               prod_code,
+			   find_prod_name(prod_code) AS prod_name,
 			   prcs_rq_amt,
 			   prcs_plan_amt,
 			   prcs_prio,
@@ -41,11 +42,11 @@
 			   prcs_amt
 		  FROM prcs_plan_de
 		 WHERE prcs_plan_code = #{prcsPlanCode}
-		 ORDER BY prcs_plan_de_code
+		 ORDER BY prcs_plan_de_code DESC
 	</select>
 	
 	
-	<!-- 생산계획 등록 -->
+	<!-- 생산계획 등록 --> 
 	<insert id="insertPrcsPlan" parameterType="prcsPlanVO">
 		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
 			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
@@ -68,7 +69,7 @@
 						)
 	</insert>
 	
-	<!-- 상세생산계획 등록 -->
+	<!-- 상세생산계획 등록 --> 
 	<insert id="insertPrcsPlanDe" parameterType="prcsPlanVO">
 		<selectKey keyProperty="prcsPlanDeCode" resultType="String" order="BEFORE">
 			SELECT 'PLANDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_de_code, -3)),0) + 1, 3, '0')
@@ -115,13 +116,13 @@
 <!-- 								  ) -->
 <!-- 				 VALUES ( -->
 <!-- 							#{prcsPlanCode} -->
-<!-- 							, #{prcsPlanName} -->
-<!-- 							, #{empCode} -->
-<!-- 							, #{prcsDirYn} -->
-<!-- 							, #{prcsStartDate} -->
-<!-- 							, #{prcsEndDate} -->
+<!-- 							, #{prcsPlanList[0].prcsPlanName} -->
+<!-- 							, #{prcsPlanList[0].empCode} -->
+<!-- 							, #{prcsPlanList[0].prcsDirYn} -->
+<!-- 							, #{prcsPlanList[0].prcsStartDate} -->
+<!-- 							, #{prcsPlanList[0].prcsEndDate} -->
 <!-- 						) -->
-<!-- 			<foreach collection="prcsPlanList" item="order" index="index" open="" separator=" " close=""> -->
+<!-- 			<foreach collection="prcsPlanList" item="p" index="index" open="" separator=" " close=""> -->
 <!-- 			INSERT INTO prcs_plan_de ( -->
 <!-- 										prcs_plan_de_code -->
 <!-- 										, prcs_plan_code -->
@@ -134,32 +135,18 @@
 <!-- 									 ) -->
 <!-- 	             VALUES (  -->
 <!-- 							get_primaryCode('prcsPlanDeCode') -->
-<!-- 							, #{prcsPlanCode} -->
-<!-- 							, #{prodCode} -->
-<!-- 							, #{prcsRqAmt} -->
-<!-- 							, #{prcsPlanAmt} -->
+<!-- 							, #{p.prcsPlanCode} -->
+<!-- 							, #{p.prodCode} -->
+<!-- 							, #{p.prcsRqAmt} -->
+<!-- 							, #{p.prcsPlanAmt} -->
 <!-- 							<if test="prcsPrio > 0"> -->
-<!-- 							, #{prcsPrio}  -->
+<!-- 							, #{p.prcsPrio}  -->
 <!-- 							</if> -->
 <!-- 						) -->
 <!--            	</foreach>	 -->
 <!-- 		END; -->
 <!-- 	</insert> -->
-	
-	<!-- 미계획 주문서 조회 -->
-	<select id="selectNotPlanOrderList" resultType="orderVO">
-		SELECT s.ord_sts, 
-			   s.ord_code,
-			   s.ord_date, 
-			   d.prod_code, 
-			   d.prcs_rq_amt, 
-			   d.dev_date
-		  FROM sales_ord s JOIN sales_ord_de d 
-							 ON s.ord_code = d.ord_code
-	
-	</select>
-	
-		
+
 	<!-- 생산계획 수정 -->
 	<update id="updatePrcsPlan" parameterType="prcsPlanVO">
 		UPDATE prcs_plan
@@ -170,10 +157,10 @@
 			<if test="empCode != null and empCode.equals('')">
 				emp_code = #{empCode},
 			</if>
-			<if test="prcsStartDate != null">
+			<if test="prcsStartDate != null and !prcsStartDate.equals('')">
 				prcs_start_date = #{prcsStartDate},
 			</if>
-			<if test="prcsEndDate != null">
+			<if test="prcsEndDate != null and !prcsEndDate.equals('')">
 				prcs_end_date = #{prcsEndDate}
 			</if>
 		</set>
@@ -202,14 +189,53 @@
 		</set>
 		WHERE prcs_plan_de_code = #{prcsPlanDeCode}
 	</update>
-	
-	
-	
+		
 	<!-- 생산계획 삭제 -->
 	<delete id="deletePrcsPlan" parameterType="String">
 		DELETE FROM prcs_plan
 		 WHERE prcs_plan_code = #{prcsPlanCode}
 	</delete>
+	
+	
+	
+	<!-- 미계획 주문서 조회 -->
+	<select id="selectNotPlanOrderList" resultType="orderVO">
+		SELECT s.ord_code,
+			   s.ord_date, 
+			   a.act_name
+		  FROM sales_ord s JOIN com_act a 
+							 ON s.act_code = a.act_code
+		 WHERE s.ord_sts = 'P1'
+	</select>
+	
+	<!-- 미계획 상세 주문서 조회 -->
+	<select id="selectNotPlanOrderDeList" resultType="orderVO">
+		SELECT s.ord_code, 
+			   d.prod_code,
+ 			   find_prod_name(d.prod_code) AS prod_name,
+			   d.prcs_rq_amt
+		  FROM sales_ord s JOIN sales_ord_de d
+		                     ON s.ord_code = d.ord_code
+		 WHERE d.ord_code = #{ordCode}
+	</select>
+	
+	<!-- 생산계획 등록시 주문서 수정 -->
+	<update id="updateNotPlanOrderList" parameterType="prcsPlanVO">
+		UPDATE sales_ord
+		   SET ord_sts = 'P2',
+	    	   prcs_plan_code = #{prcsPlanCode}
+		 WHERE ord_code = #{ordCode}
+	</update>
+	
+	
+	<!-- 생산계획 삭제시 주문서 수정 -->
+	<update id="UpdatePlanOrderList" parameterType="prcsPlanVO">
+		UPDATE sales_ord
+		   SET ord_sts = 'P1',
+	    	   prcs_plan_code = #{prcsPlanCode}
+		 WHERE ord_code = #{ordCode}
+	</update>
+	
 
 
 </mapper>

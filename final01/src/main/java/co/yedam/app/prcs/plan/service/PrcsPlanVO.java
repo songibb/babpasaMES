@@ -31,7 +31,15 @@ public class PrcsPlanVO {
 	private String prcsDirSts;						//지시상태
 	private String prcsAmt;							//생산량
 	
+	//주문서 수정용
+	private String ordCode;
+	
 	//검색용
 	private String searchPlanName;
+	
+	//출력용
+	private String prodName;						//제품명
+	
+	
 	
 }

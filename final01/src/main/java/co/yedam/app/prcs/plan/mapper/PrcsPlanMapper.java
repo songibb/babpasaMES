@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
@@ -22,10 +21,7 @@ public interface PrcsPlanMapper {
 	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO);
 
 	//생산계획 + 상세생산계획 등록
-//	public int insertPrcsPlan(List<PrcsPlanVO> prcsPlanList);
-	
-	//미계획 주문서 조회 
-	public List<OrderVO> selectNotPlanOrderList();
+//	public int insertPrcsPlan(@Param("prcsPlanList") List<PrcsPlanVO> prcsPlanList);
 	
 	//생산계획 수정
 	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO);
@@ -35,5 +31,16 @@ public interface PrcsPlanMapper {
 	
 	//생산계획 삭제
 	public int deletePrcsPlan(@Param("prcsPlanCode") String prcsPlanCode);
+	
+	
+	
+	//미계획 주문서 조회 
+	public List<OrderVO> selectNotPlanOrderList();
+	
+	//미계획 상세 주문서 조회 
+	public List<OrderVO> selectNotPlanOrderDeList(@Param("ordCode") String ordCode);
+	
+	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO);
 
 }

@@ -58,12 +58,7 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 //		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanList);		
 //		return result;
 //	}
-	
-	//미계획 주문서 조회
-	@Override
-	public List<OrderVO> getNotPlanOrderList() {
-		return prcsPlanMapper.selectNotPlanOrderList();
-	}
+
 	
 	//생산계획 수정
 	@Override
@@ -99,6 +94,25 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	}
 
 
+
+	
+	//미계획 주문서 조회
+	@Override
+	public List<OrderVO> getNotPlanOrderList() {
+		return prcsPlanMapper.selectNotPlanOrderList();
+	}
+	
+	//미계획 상세주문서 조회
+	@Override
+	public List<OrderVO> getNotPlanOrderDeList(String ordCode) {
+		return prcsPlanMapper.selectNotPlanOrderDeList(ordCode);
+	}
+	
+	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+	@Override
+	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO) {
+		return prcsPlanMapper.updateNotPlanOrderList(prcsPlanVO);
+	}
 
 
 	

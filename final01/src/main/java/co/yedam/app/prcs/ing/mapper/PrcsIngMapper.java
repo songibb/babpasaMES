@@ -1,6 +1,7 @@
 package co.yedam.app.prcs.ing.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +13,7 @@ public interface PrcsIngMapper {
 											 @Param("prodCode") String prodCode);
 
 	
-	
+	//진행공정 등록
+	public Map<String, Object> insertPrcsIng(Map<String, Object> param);
 
 }
