@@ -1,7 +1,7 @@
 package co.yedam.app.prcs.ing.service;
 
 import java.util.List;
-import java.util.Map;
+
 
 
 public interface PrcsIngService {
@@ -9,7 +9,8 @@ public interface PrcsIngService {
 	public List<PrcsIngVO> getPrcsIngList(String prcsDirDeCode, String prodCode);
 
 	//진행공정 등록
-	public Map<String, Object> insertPrcsIng(Map<String, Object> param);
+	public int insertPrcsIng(String prcsDirDeCode);
 	
 	//공정 실적 조회
+	
 }

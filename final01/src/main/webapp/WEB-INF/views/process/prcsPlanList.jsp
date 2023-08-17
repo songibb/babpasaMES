@@ -148,10 +148,6 @@
             name: 'empCode'
           },
           {
-            header: '생산지시여부',
-            name: 'prcsDirYn'
-          },
-          {
             header: '예상생산시작일',
             name: 'prcsStartDate'
           },

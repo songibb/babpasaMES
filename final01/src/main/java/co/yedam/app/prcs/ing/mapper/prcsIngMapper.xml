@@ -9,8 +9,8 @@
 	<select id="selectPrcsIngList" resultType="prcsIngVO">
 		SELECT prcs_ing_code,
 			   prcs_dir_de_code,
-			   prod_code,
-			   prcs_code,
+			   find_prod_name(prod_code) AS prod_name,
+        	   find_prcs_name(prcs_code) AS prcs_name,
 			   prcs_seq,
 			   input_amt,
 			   err_amt,
@@ -18,17 +18,17 @@
 			   find_cdnm('0T', prcs_dir_ing_sts) AS prcs_dir_ing_sts
 		  FROM prcs_ing
 		 WHERE prcs_dir_de_code = #{prcsDirDeCode} AND prod_code = #{prodCode}
-		 ORDER BY prcs_ing_code
+		 ORDER BY prcs_seq
 	</select>
 	
-<!-- 	<select id="insertPrcsIng" statementType="CALLABLE"> -->
-<!--         { -->
-<!--         	CALL PROD_BOM( -->
-<!--         		#{prcsDirDeCode, mode=IN, jdbcType=VARCHAR, javaType=String} -->
-<!--                 #{result, mode=OUT, jdbcType=NUMBER} -->
-<!--             ) -->
-<!--         } -->
-<!--     </select> -->
+	<!-- 진행 공정 등록 -->
+	<insert id="insertPrcsIng" parameterType="String">
+		{
+		CALL PROD_BOM(
+		#{prcsDirDeCode}
+		)
+		}
+    </insert>
 	
 	<!-- 공정 실적 조회 -->
 </mapper>

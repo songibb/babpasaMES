@@ -149,10 +149,10 @@
             header: '생산시작일자',
             name: 'prcsStartDeDate'
           },
-          {
-            header: '생산마감일자',
-            name: 'prcsEndDeDate'
-          },
+//           {
+//             header: '생산마감일자',
+//             name: 'prcsEndDeDate'
+//           },
           {
             header: '공정진행상태',
             name: 'prcsIngSts'
@@ -178,7 +178,6 @@
 			perPage: 10,
 		},
         columns: [
-        	//지울부분----------
           {
             header: '진행공정관리코드',
             name: 'prcsIngCode'
@@ -190,12 +189,21 @@
           },
           {
             header: '제품코드',
-            name: 'prodCode'
+            name: 'prodCode',
+            hidden: true
           },
-          //지울부분----------
+          {
+            header: '제품명',
+            name: 'prodName'
+          },
           {
             header: '공정코드',
-            name: 'prcsCode'
+            name: 'prcsCode',
+            hidden: true
+          },
+          {
+            header: '공정명',
+            name: 'prcsName'
           },
           {
             header: '공정순서',
@@ -216,8 +224,7 @@
           {
             header: '공정상태',
             name: 'prcsDirIngSts'
-          },
-
+          }
         ]
       })  
 	
@@ -233,6 +240,14 @@
 			method : 'GET',
 			data : { prcsDirCode : dirCode },
 			success : function(data){
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let psdd = data[i]['prcsStartDeDate'];
+					let pedd = data[i]['prcsEndDeDate'];
+					data[i]['prcsStartDeDate'] = getDate(psdd);
+					data[i]['prcsEndDeDate'] = getDate(pedd);
+				})
+				
 				dirDeGrid.resetData(data);
  		    },
 			error : function(reject){
@@ -260,10 +275,9 @@
 	 			console.log(reject);
 	 		}	
 		})
-
-
-
   	});
+  	
+
     
     
     
