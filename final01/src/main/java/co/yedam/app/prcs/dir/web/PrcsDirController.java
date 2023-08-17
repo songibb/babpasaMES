@@ -69,21 +69,21 @@ public class PrcsDirController {
 	@PostMapping("prcsDirDeInsert")
 	@ResponseBody
 	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {	
-		int result = 0;
-		for(PrcsDirVO vo : list) {
-			prcsDirService.insertPrcsDirDe(vo);
+//		int result = 0;
+//		for(PrcsDirVO vo : list) {
+//			prcsDirService.insertPrcsDirDe(vo);
+//			
+//			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+//			prcsDirService.updateNotDirPlanList(vo);
+//			
+//			//진행 공정 등록
+//			String prcsDirDeCode = vo.getPrcsDirDeCode();		
+//			prcsIngService.insertPrcsIng(prcsDirDeCode);
+//			
+//			result++;
+//		}
 			
-			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
-			prcsDirService.updateNotDirPlanList(vo);
-			
-			//진행 공정 등록
-			String prcsDirDeCode = vo.getPrcsDirDeCode();		
-			prcsIngService.insertPrcsIng(prcsDirDeCode);
-			
-			result++;
-		}
-			
-		return result;
+		return prcsDirService.insertPrcsDirDe(list);
 	}
 	
 	

@@ -1,5 +1,6 @@
 package co.yedam.app.prcs.plan.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,16 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//상세생산계획 등록
 	@Override
-	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO) {
-		int result = prcsPlanMapper.insertPrcsPlanDe(prcsPlanVO);
-		if(result > 0) {
-			return 1;
-		} else {
-			return -1;
+	public int insertPrcsPlanDe(List<PrcsPlanVO> list) {
+		int result = 0;
+		for(PrcsPlanVO vo : list) {
+			prcsPlanMapper.insertPrcsPlanDe(vo);
+			
+			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+			prcsPlanMapper.updateNotPlanOrderList(vo);
+			result++;
 		}
+		return result;
 	}
 
 	//생산계획 + 상세생산계획 등록
@@ -62,35 +66,36 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//생산계획 수정
 	@Override
-	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO) {
-		int result = prcsPlanMapper.updatePrcsPlan(prcsPlanVO);
-		if(result > 0) {
-			return 1;
-		} else {
-			return -1;
-		}
+	public int updatePrcsPlan(List<PrcsPlanVO> list) {		
+		int result = 0;
+		for(PrcsPlanVO vo : list) {
+			prcsPlanMapper.updatePrcsPlan(vo);
+			
+			result++;
+		}	
+		return result;
 	}
 	
 	//상세생산계획 수정
 	@Override
-	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO) {
-		int result = prcsPlanMapper.updatePrcsPlanDe(prcsPlanVO);
-		if(result > 0) {
-			return 1;
-		} else {
-			return -1;
+	public int updatePrcsPlanDe(List<PrcsPlanVO> list) {		
+		int result = 0;
+		for(PrcsPlanVO vo : list) {
+			prcsPlanMapper.updatePrcsPlanDe(vo);
+			result++;
 		}
+		return result;
 	}
 	
 	//생산계획 삭제
 	@Override
-	public int deletePrcsPlan(String prcsPlanCode) {
-		int result = prcsPlanMapper.deletePrcsPlan(prcsPlanCode);
-		if(result > 0) {
-			return 1;
-		} else {
-			return -1;
+	public int deletePrcsPlan(List<String> list) {
+		int result = 0;
+		for(String code : list) {
+			prcsPlanMapper.deletePrcsPlan(code);
+			result++;
 		}
+		return result;
 	}
 
 
@@ -103,16 +108,31 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	}
 	
 	//미계획 상세주문서 조회
+//	@Override
+//	public List<OrderVO> getNotPlanOrderDeList(String ordCode) {		
+//		return prcsPlanMapper.selectNotPlanOrderDeList(ordCode);
+//	}
+	
+	//미계획 상세주문서 조회
 	@Override
-	public List<OrderVO> getNotPlanOrderDeList(String ordCode) {
-		return prcsPlanMapper.selectNotPlanOrderDeList(ordCode);
+	public List<OrderVO> getNotPlanOrderDeList(List<OrderVO> ordList) {	
+		
+		List<OrderVO> deList = new ArrayList<>();
+
+		for(OrderVO vo : ordList) {
+			String ordCode = vo.getOrdCode();
+
+			deList.addAll(prcsPlanMapper.selectNotPlanOrderDeList(ordCode));
+		}
+
+		return deList;
 	}
 	
 	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
-	@Override
-	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO) {
-		return prcsPlanMapper.updateNotPlanOrderList(prcsPlanVO);
-	}
+//	@Override
+//	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO) {
+//		return prcsPlanMapper.updateNotPlanOrderList(prcsPlanVO);
+//	}
 
 
 	

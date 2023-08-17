@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.mapper.PrcsDirMapper;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.ing.mapper.PrcsIngMapper;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Service
@@ -17,6 +17,9 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 
 	@Autowired
 	PrcsDirMapper prcsDirMapper;
+	
+	@Autowired
+	PrcsIngMapper prcsIngMapper;
 	
 	//생산지시 조회
 	@Override
@@ -46,13 +49,21 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	//상세생산지시 등록
 
 	@Override
-	public int insertPrcsDirDe(PrcsDirVO prcsDirVO) {
-		int result = prcsDirMapper.insertPrcsDirDe(prcsDirVO);
-		if(result > 0) {
-			return 1;
-		} else {
-			return -1;
+	public int insertPrcsDirDe(List<PrcsDirVO> list) {
+		int result = 0;
+		for(PrcsDirVO vo : list) {
+			prcsDirMapper.insertPrcsDirDe(vo);
+			
+			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+			prcsDirMapper.updateNotDirPlanList(vo);
+			
+			//진행 공정 등록
+			String prcsDirDeCode = vo.getPrcsDirDeCode();	
+			prcsIngMapper.insertPrcsIng(prcsDirDeCode);
+			result++;
 		}
+				
+		return result;
 	}
 	
 
@@ -63,10 +74,10 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 	
 	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
-	@Override
-	public int updateNotDirPlanList(PrcsDirVO prcsDirVO) {
-		return prcsDirMapper.updateNotDirPlanList(prcsDirVO);
-	}	
+//	@Override
+//	public int updateNotDirPlanList(PrcsDirVO prcsDirVO) {
+//		return prcsDirMapper.updateNotDirPlanList(prcsDirVO);
+//	}	
 	
 	
 	//BOM 조회

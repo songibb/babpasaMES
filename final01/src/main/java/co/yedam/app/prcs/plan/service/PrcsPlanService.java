@@ -16,19 +16,19 @@ public interface PrcsPlanService {
 	public String insertPrcsPlan(PrcsPlanVO prcsPlanVO);
 	
 	//상세생산계획 등록
-	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO);
+	public int insertPrcsPlanDe(List<PrcsPlanVO> list);
 	
 	//생산계획 + 상세생산계획 등록
 //	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList);
 
 	//생산계획 수정
-	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO);
+	public int updatePrcsPlan(List<PrcsPlanVO> list);
 	
 	//상세생산계획 수정
-	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO);
+	public int updatePrcsPlanDe(List<PrcsPlanVO> list);
 		
 	//생산계획 삭제
-	public int deletePrcsPlan(String prcsPlanCode);
+	public int deletePrcsPlan(List<String> list);
 	
 	
 	
@@ -36,10 +36,11 @@ public interface PrcsPlanService {
 	public List<OrderVO> getNotPlanOrderList();
 	
 	//미계획 상세 주문서 조회 
-	public List<OrderVO> getNotPlanOrderDeList(String ordCode);
+//	public List<OrderVO> getNotPlanOrderDeList(String ordCode);
+	public List<OrderVO> getNotPlanOrderDeList(List<OrderVO> ordList);
 		
 	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
-	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO);
+	//public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO);
 	
 	
 }

@@ -1,7 +1,6 @@
 package co.yedam.app.prcs.plan.web;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +38,7 @@ public class PrcsPlanController {
 	public List<PrcsPlanVO> getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 
 											   @RequestParam(required=false) String startDate, 
 											   @RequestParam(required=false) String endDate){
-		System.out.println(searchPlanName);
 		List<PrcsPlanVO> list = prcsPlanService.getPrcsPlanList(searchPlanName, startDate, endDate);	
-		System.out.println(list);
 		return list;
 	}
 	
@@ -71,18 +68,8 @@ public class PrcsPlanController {
 	//상세생산계획 등록
 	@PostMapping("prcsPlanDeInsert")
 	@ResponseBody
-	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> prcsPlanList) {	
-		int result = 0;
-		for(PrcsPlanVO vo : prcsPlanList) {
-			prcsPlanService.insertPrcsPlanDe(vo);
-			
-			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
-			prcsPlanService.updateNotPlanOrderList(vo);
-			result++;
-		}
-
-		
-		return result;
+	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> list) {			
+		return prcsPlanService.insertPrcsPlanDe(list);
 	}
 	
 	
@@ -97,37 +84,22 @@ public class PrcsPlanController {
 	//생산계획 수정
 	@PostMapping("prcsPlanUpdate")
 	@ResponseBody
-	public int prcsPlanUpdate(@RequestBody List<PrcsPlanVO> list) { 
-		int result = 0;
-		for(PrcsPlanVO vo : list) {
-			prcsPlanService.updatePrcsPlan(vo);
-			result++;
-		}
-		return result;
+	public int prcsPlanUpdate(@RequestBody List<PrcsPlanVO> list) { 		
+		return prcsPlanService.updatePrcsPlan(list);
 	}
 	
 	//상세생산계획 수정
 	@PostMapping("prcsPlanDeUpdate")
 	@ResponseBody
 	public int prcsPlanUpdateDe(@RequestBody List<PrcsPlanVO> list) { 
-		int result = 0;
-		for(PrcsPlanVO vo : list) {
-			prcsPlanService.updatePrcsPlanDe(vo);
-			result++;
-		}
-		return result;
+		return prcsPlanService.updatePrcsPlanDe(list);
 	}
 	
 	//생산계획 삭제
 	@PostMapping("prcsPlanDelete")
 	@ResponseBody
-	public int prcsPlanDelete(@RequestBody List<String> list) { 
-		int result = 0;
-		for(String code : list) {
-			prcsPlanService.deletePrcsPlan(code);
-			result++;
-		}
-		return result;
+	public int prcsPlanDelete(@RequestBody List<String> list) { 	
+		return prcsPlanService.deletePrcsPlan(list);
 	}
 	
 	
@@ -145,15 +117,17 @@ public class PrcsPlanController {
 	@ResponseBody	
 	public List<OrderVO> getPlanOrderList(@RequestBody List<OrderVO> ordList){
 
-		List<OrderVO> deList = new ArrayList<>();
+//		List<OrderVO> deList = new ArrayList<>();
+//		
+//		for(OrderVO vo : ordList) {
+//			String ordCode = vo.getOrdCode();
+//
+//			deList.addAll(prcsPlanService.getNotPlanOrderDeList(ordCode));
+//		}
+//
+//		return deList;
 		
-		for(OrderVO vo : ordList) {
-			String ordCode = vo.getOrdCode();
-
-			deList.addAll(prcsPlanService.getNotPlanOrderDeList(ordCode));
-		}
-		System.out.println(deList);
-		return deList;
+		return prcsPlanService.getNotPlanOrderDeList(ordList);
 	}
 		
 
