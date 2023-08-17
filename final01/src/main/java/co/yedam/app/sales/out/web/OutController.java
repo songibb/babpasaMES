@@ -43,8 +43,8 @@ public class OutController {
 	// 출고 관리 페이지
 	@GetMapping("outMng")
 	public String outMngList(Model model) {
-		// 출고 목록
-		model.addAttribute("outList", outService.getOutList());
+		// 출고완료된 품목만 보여주는 출고 리스트
+		model.addAttribute("outNList", outService.getOutNList());
 		// 거래처 목록 -> 모달
 		model.addAttribute("actList", outService.actAllList());
 		// 제품 목록 -> 모달

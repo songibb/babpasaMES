@@ -19,6 +19,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 <style>
    body {
       font-family: 'Nanum Gothic', sans-serif;
@@ -175,7 +181,7 @@
 </head>
 <body>
    <div class="black_bg"></div>
-   <h1>주문 조회</h1>
+   <h1>출고 조회</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
@@ -195,7 +201,7 @@
                     <i class="bi bi-search" id="actModal"></i>
                   <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                   <br>
-                  <p>출고일자</p>
+                  <p>주문일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
@@ -290,7 +296,7 @@
       })
    })
    
-   //거래처 리스드 모달 그리드
+   //거래처 리스트 모달 그리드
    function createActGrid(){
       var actGrid = new tui.Grid({
           el: document.getElementById('modal_label'),
@@ -388,23 +394,20 @@
       return prodGrid;
    }
    
-   
-
-   
-   //전체 출고 목록 조회 그리드
+   //전체 주문 목록 조회 그리드
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
-              <c:forEach items="${outList}" var="out">
-                 {
- 	           		salesOutCode : "${out.salesOutCode}",
- 		           	prodName : "${out.prodName}",
- 		           	actName : "${out.actName}",
- 		           	salesOutAmt : "${out.salesOutAmt}",
- 		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
- 		           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
-                 }<c:if test="${not status.last}">,</c:if>
-              </c:forEach>
+        	  <c:forEach items="${outList}" var="out">
+              {
+	           		salesOutCode : "${out.salesOutCode}",
+		           	prodName : "${out.prodName}",
+		           	actName : "${out.actName}",
+		           	salesOutAmt : "${out.salesOutAmt}",
+		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
+		           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
+              }<c:if test="${not status.last}">,</c:if>
+           </c:forEach>
              ],
          scrollX: false,
           scrollY: false,
@@ -456,15 +459,10 @@
 		           header: '출고여부',
 		           name: 'prodLot',
 		           hidden : true
-		         }
-	         	{
-		           header: '출고여부',
-		           name: 'actCode',
-		           hidden : true
 		         },
 	         	{
 		           header: '출고여부',
-		           name: 'empCode',
+		           name: 'actCode',
 		           hidden : true
 		         },
 	         	{
@@ -477,8 +475,8 @@
         });
    
  	//검색 버튼
-   $('#searchBtn').on('click', searchOutList);
-   function searchOutList(e){
+   $('#searchBtn').on('click', searchOrderList);
+   function searchOrderList(e){
 	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
@@ -486,24 +484,17 @@
         
       let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'outListFilter',
+         url : 'orderListFilter',
          method : 'GET',
          data : search ,
          success : function(data){
-            
-           for(let i of data){
-               let date = new Date(i.salesOutDate);
-               let year = date.getFullYear();    //0000년 가져오기
-               let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               let day = date.getDate();        //일자 가져오기
-                  i.salesOutDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-               
-               date = new Date(i.ordDate);
-               year = date.getFullYear();    //0000년 가져오기
-               month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               day = date.getDate();        //일자 가져오기
-                  i.salesOutDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-           }
+        	  for(let i of data){
+					let date = new Date(i.ordDate);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+			   		i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			  }
             grid.resetData(data);
          },
          error : function(reject){
@@ -528,8 +519,7 @@
     $( '#endDate' ).on( 'change', function() {
          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
-   
-
+ 
 </script>
 </body>
 </html>

@@ -19,8 +19,14 @@ public interface OrderMapper {
 	public List<OrderVO> selectActAllList();
 	//제품목록
 	public List<OrderVO> selectProdAllList();
-	//주문 등록
-	public int insertOrderList(@Param("orderList") List<OrderVO> orderList);
 	//주문 관리 - 미계획 주문 목록
 	public List<OrderVO> selectAllNoPlanList();
+	//등록
+	public int insertOrder(@Param("data") List<OrderVO> data);
+	
+	//수정
+	public int updateOrder(@Param("data") List<OrderVO> data);
+	
+	//삭제
+	public int deleteOrder(@Param("data") List<OrderVO> data);
 }

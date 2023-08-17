@@ -13,4 +13,6 @@ public interface OutService {
 	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate, String outDate);
 	//출고 등록
 	public int insertOutList(List<OutVO> outList);
+	//출고완료된 품목만 보여주는 출고 리스트
+	public List<OutVO> getOutNList();
 }

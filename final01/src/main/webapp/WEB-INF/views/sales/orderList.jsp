@@ -19,6 +19,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 <style>
    body {
       font-family: 'Nanum Gothic', sans-serif;
@@ -467,13 +473,13 @@
          method : 'GET',
          data : search ,
          success : function(data){
-        	//날짜 츨력 포맷 변경
-				$.each(data, function(i, objDe){
-					let od = data[i]['ordDate'];
-					let dd = data[i]['devDate'];
-					data[i]['ordDate'] = getDate(od);
-					data[i]['devDate'] = getDate(dd);
-				})
+        	  for(let i of data){
+					let date = new Date(i.ordDate);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+			   		i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			  }
             grid.resetData(data);
          },
          error : function(reject){
@@ -498,8 +504,7 @@
     $( '#endDate' ).on( 'change', function() {
          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
-   
-
+ 
 </script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.mapper.OrderMapper;
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
@@ -40,10 +41,25 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.selectAllNoPlanList();
 	}
 
-	//등록
+	//등록, 수정, 삭제
 	@Override
-	public int insertOrderList(List<OrderVO> orderList) {
-		return orderMapper.insertOrderList(orderList);
+	public int modifyOrder(GridVO<OrderVO> data) {
+		int result = 0;
+		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			orderMapper.deleteOrder(data.getDeletedRows());
+			result += data.getDeletedRows().size();
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			orderMapper.updateOrder(data.getUpdatedRows());
+			result += data.getUpdatedRows().size();
+		}
+		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			orderMapper.insertOrder(data.getCreatedRows());
+			result += data.getCreatedRows().size();
+		}
+		
+		return result;
+		
 	}
 
 }

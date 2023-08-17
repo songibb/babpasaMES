@@ -43,4 +43,9 @@ public class OutServiceImpl implements OutService {
 		return outMapper.insertOutList(outList);
 	}
 
+	@Override
+	public List<OutVO> getOutNList() {
+		return outMapper.selectOutNList();
+	}
+
 }
