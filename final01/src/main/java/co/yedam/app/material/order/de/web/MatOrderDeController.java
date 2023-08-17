@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
@@ -32,7 +33,7 @@ public class MatOrderDeController {
 	@Autowired
 	MatModalService mms;
 	//전체조회
-	@GetMapping("MatOrderList")
+	@GetMapping("matOrderList")
 	public String getMatOrderList(Model model) {
 		List<MatOrderDeVO> mo = mods.selectMatOrderList();
 		model.addAttribute("matOrderList", mo);
@@ -59,34 +60,12 @@ public class MatOrderDeController {
 		return "material/matOrderDir";
 	}
 		
-	//등록
-	@PostMapping("matOrderDirInsert")
+	//등록, 수정, 삭제
+	@PostMapping("matOrderDirSave")
 	@ResponseBody
-	public String matOrderDirInsert(@RequestBody List<MatOrderDeVO>  orderList) {
-		 int result = mods.insertMatOrderList(orderList);
-		 
-		 if(result > 0) {
-			 return "success";
-		 } else {
-			 return "fail";
-		 }
+	public int matOrderDirInsert(@RequestBody GridVO<MatOrderDeVO> data) {
+		 return mods.modifyMatOrder(data); 
 	} 
+
 	
-	
-	//수정
-	@PostMapping("matOrderDirUpdate")
-	@ResponseBody
-	public void matOrderDirUpdate(@RequestBody List<MatOrderDeVO> orderList) {
-		mods.updateMatOrderList(orderList);
-		return;
-	}
-	
-	//삭제
-	@PostMapping("matOrderDirDelete")
-	@ResponseBody
-	public void matOrderDirDelete(@RequestBody List<MatOrderDeVO> orderList) {
-		mods.deleteMatOrderList(orderList);
-		return;
-	}
-	//삭제
 }

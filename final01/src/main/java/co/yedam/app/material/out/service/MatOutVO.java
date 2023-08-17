@@ -20,4 +20,7 @@ public class MatOutVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date matOutd;
 	private Date matExd;
+	
+	private String matUnit;
+	private String matStd;
 }

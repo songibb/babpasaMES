@@ -62,6 +62,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
   
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+  <!-- sweet alert -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <style>
   
   </style>

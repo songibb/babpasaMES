@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
@@ -37,7 +38,7 @@ public class MatInController {
 	MatRtService mrs;
 	
 	//조회
-	@GetMapping("MatInList")
+	@GetMapping("matInList")
 	public String getMatInList(Model model) {
 		model.addAttribute("inList", mis.selectMatInList());
 		model.addAttribute("actList", orderService.actAllList());
@@ -80,27 +81,10 @@ public class MatInController {
 		return vo;
 	}
 	
-	//등록
-	@PostMapping("matInDirInsert")
+	//등록, 수정, 삭제
+	@PostMapping("matInDirSave")
 	@ResponseBody
-	public int matInInsert(@RequestBody List<MatInVO> inList){
-		int result = mis.insertMatIn(inList);
-		return result;
-	}
-	
-	//수정
-	@PostMapping("matInDirUpdate")
-	@ResponseBody
-	public int matInUpdate(@RequestBody List<MatInVO> inList){
-		int result = mis.updateMatIn(inList);
-		return result;
-	}
-	
-	//삭제
-	@PostMapping("matInDirDelete")
-	@ResponseBody
-	public int matInDelete(@RequestBody List<MatInVO> inList){
-		int result = mis.deleteMatIn(inList);
-		return result;
+	public int matInDirSave(@RequestBody GridVO<MatInVO> data) {
+		return mis.modifyMatIn(data);
 	}
 }

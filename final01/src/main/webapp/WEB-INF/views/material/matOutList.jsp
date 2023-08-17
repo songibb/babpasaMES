@@ -102,8 +102,8 @@ var Grid;
      $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
-       
-       Grid.on('click', () => {
+       $('.modal_title h3').text('거래처 목록');
+       Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
         	let actName = Grid.getValue(rowKey, 'actName');
@@ -124,7 +124,8 @@ var Grid;
      $("#matModal").click(function(){
          $(".modal").fadeIn();
          Grid = createMatGrid();
-         Grid.on('click', () => {
+         $('.modal_title h3').text('자재 목록');
+         Grid.on('dblclick', () => {
          	let rowKey = Grid.getFocusedCell().rowKey;
          	let matCode = Grid.getValue(rowKey, 'matCode');
       	let matName = Grid.getValue(rowKey, 'matName');
@@ -146,6 +147,55 @@ var Grid;
       
 		Grid.destroy();
     });
+  
+  //자재 모달 그리드
+  function createMatGrid(){
+	   var matGrid = new tui.Grid({
+	       el: document.getElementById('modal_label'),
+	       data: [
+	    	   <c:forEach items="${matList}" var="m" varStatus="status">
+	          	{
+	          		matCode : "${m.matCode}",
+	          		matName :"${m.matName}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
+	          	} <c:if test="${not status.last}">,</c:if>
+	          </c:forEach>
+	          ],
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       selectionUnit: 'row',
+	       pagination: true,
+	       pageOptions: {
+	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         useClient: true,
+	         perPage: 10
+	       },
+	       columns: [
+	    	     {
+	               header: '자재코드',
+	               name: 'matCode',
+	             },
+	             {
+	               header: '자재명',
+	               name: 'matName'
+	             },
+	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
+	             {
+	               header: '규격',
+	               name: 'matStd'
+	             }
+	 	    ]
+	      
+	     });
+	   
+	   return matGrid;
+  }
   
 //거래처 모달 그리드
   function createActGrid(){
@@ -262,6 +312,8 @@ function resetInput(e){
 	           	matLot : "${mat.matLot}",
 	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	actName :"${mat.actName}",
 	           	matOutAmt : "${mat.matOutAmt}",
 	           	prcsDirDeCode : "${mat.prcsDirDeCode}",
@@ -294,6 +346,14 @@ function resetInput(e){
 	 	        header: '자재명',
 	 	        name: 'matName'
 	 	      },
+	 	      {
+          	  	header: '단위',
+	 		 	name: 'matUnit' 
+          	  },
+              {
+        	  	header: '규격',
+	 		 	name: 'matStd'
+              },
 	 	      {
 	 	        header: '업체명',
 	 	        name: 'actName'

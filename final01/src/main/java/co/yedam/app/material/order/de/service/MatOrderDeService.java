@@ -2,6 +2,8 @@ package co.yedam.app.material.order.de.service;
 
 import java.util.List;
 
+import co.yedam.app.common.grid.service.GridVO;
+
 
 
 public interface MatOrderDeService {
@@ -10,12 +12,7 @@ public interface MatOrderDeService {
 	public List<MatOrderDeVO> selectMatOrderSearch(String materialCode, String accountCode, String startDate, String endDate);
 	
 	
-	//등록
-	public int insertMatOrderList(List<MatOrderDeVO> orderList);
-	
-	//수정
-	public int updateMatOrderList(List<MatOrderDeVO> orderList);
-	
-	//삭제
-	public int deleteMatOrderList(List<MatOrderDeVO> orderList);	
+	//등록, 수정, 삭제
+	public int modifyMatOrder(GridVO<MatOrderDeVO> data);
+		
 }

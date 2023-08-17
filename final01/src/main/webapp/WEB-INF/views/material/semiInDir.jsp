@@ -246,7 +246,61 @@
 	document.getElementById('save').addEventListener('click', saveServer);
 	
 	//저장 함수
-	
+	function saveServer() {	
+		inGrid.blur();
+		let modifyGridInfo = inGrid.getModifiedRows();
+		
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!inGrid.isModified()){
+			alert("변경사항이 없습니다.");
+			return false;
+		}
+		
+		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+		var flag = true;
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
+			
+		if(inGrid.getModifiedRows().createdRows.length > 0 ){
+				
+				$.each(inGrid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['prodCode'] == "" ||obj2['semiInAmt'] == "" || obj2['semiExd'] == "" || obj2['semiInd'] == "" || obj2['prcsListCode']== ""){
+						flag = false;
+						return false;
+					}
+				})
+		}
+		
+		if(inGrid.getModifiedRows().updatedRows.length > 0 ){
+
+				$.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['semiInd'] == "" || obj2['semiExd'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+				
+		}
+		
+		if(flag){
+				$.ajax({
+					url : 'semiInDirSave',
+					method : 'POST',
+					data : JSON.stringify(inGrid.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						swal("성공", data +"건이 처리되었습니다.", "success");
+					},
+					error : function(reject){
+						console.log(reject);
+						swal("실패", "", "error");
+					}
+				})
+		} else {
+			alert("값이 입력되지 않았습니다.");
+		}
+
+	}
 	
 	//검색 또는 DML 후 다시 LIST 불러오는 함수
 	function selectAjax(){
@@ -310,8 +364,8 @@
 	     $("#prodModal").click(function(){
 	       $(".modal").fadeIn();
 	       Grid = createProdGrid();
-	       
-	       Grid.on('click', () => {
+	       $('.modal_title h3').text('반제품 목록');
+	       Grid.on('dblclick', () => {
 	        	let rowKey = Grid.getFocusedCell().rowKey;
 	        	let prodCode = Grid.getValue(rowKey, 'prodCode');
 	        	let prodName = Grid.getValue(rowKey, 'prodName');
@@ -374,130 +428,7 @@
 	   //모달 끝
 	
 	
-	//저장
-	function saveServer() {	
-		inGrid.blur();
-		let modifyGridInfo = inGrid.getModifiedRows();
-		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
-		var flag = true;
-		//create, modify, delete 포함하는 전체 배열을 도는 each문
-		var list = [];
-		var list2 = [];
-		var list3 = [];
-		$.each(modifyGridInfo, function(idx, obj){
-			
-			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
-			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
-			if(!flag){
-				alert('값이 입력되지 않았습니다.');
-				return;
-			}
-			else if(idx == 'createdRows' && obj.length != 0){
-				
-				$.each(obj, function(idx2, obj2){
-					// console.log(obj2);  createdRows [{…}]
-					
-					if(obj2['prodCode'] == '' ||obj2['semiInAmt'] =='' || obj2['semiExd'] == '' || obj2['semiInd'] == '' || obj2['prcsListCode']==''){
-						flag = false;
-						return;
-					}
-					
-					let customObj = {};
-					customObj['empCode'] = "이슬";	//고치기
-					customObj['prodCode'] = obj2['prodCode'];
-					customObj['prodName'] = obj2['semiInAmt'];
-					customObj['semiExd'] = obj2['semiExd'];
-					customObj['semiInd'] = obj2['semiInd'];
-					customObj['prcsListCode'] = obj2['prcsListCode'];
-					customObj['semiInAmt'] = obj2['semiInAmt'];
-				 	list.push(customObj);
-					
-					
-				})
-			}else if(idx == 'updatedRows' && obj.length != 0){
-				
-				
-				$.each(obj, function(idx2, obj2){
-					if(obj2['semiInd'] == '' || obj2['semiExd'] ==''){
-						flag = false;
-						return;
-					}
-					
-					let customObj = {};
-					customObj['semiInd'] = obj2['semiInd'];
-					customObj['semiExd'] = obj2['semiExd'];
-					customObj['semiLot'] = obj2['semiLot'];
-			 		list2.push(customObj);
-
-				})
-				
-
-			}else if(idx == 'deletedRows' && obj.length != 0){
-				
-				
-				
-				$.each(obj, function(idx2, obj2){
-						
-						let customObj = {};
-						customObj['semiLot'] = obj2['semiLot'];
-						
-						list3.push(customObj);
-				})
-
-			}
-			
-		})
-		
-		if(flag){
-			
-			if(list3.length != 0){
-				$.ajax({
-					url : 'semiInDirDelete',
-					method : 'POST',
-					data : JSON.stringify(list3),
-					contentType : 'application/json',
-					success : function(data){
-						console.log(data);
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-			if(list2.length != 0){
-				$.ajax({
-					url : 'semiInDirUpdate',
-					method : 'POST',
-					data : JSON.stringify(list2),
-					contentType : 'application/json',
-					success : function(data){
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-			if(list.length != 0){
-				$.ajax({
-					url : 'semiInDirInsert',
-					method : 'POST',
-					data : JSON.stringify(list),
-					contentType : 'application/json',
-					success : function(data){
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-
-		} else {
-			return;
-		}
-	}
+	
 	//검색버튼
 	//검색
     $('#searchBtn').on('click', searchSemiIn);
@@ -552,7 +483,7 @@
        })
     })
 	
-	//(미완)상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
+	//상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
 	testGrid.on('dblclick', () => {
     	let rowKey = testGrid.getFocusedCell().rowKey;
     	//let columnName = orderGrid.getFocusedCell().columnName;

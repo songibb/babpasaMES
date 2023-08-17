@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.mapper.MatInMapper;
 import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
@@ -36,23 +37,31 @@ public class MatInServiceImpl implements MatInService {
 		// TODO Auto-generated method stub
 		return mim.selectMatTestFinishList();
 	}
-
+	
+	//등록, 수정, 삭제
 	@Override
-	public int insertMatIn(List<MatInVO> inList) {
+	public int modifyMatIn(GridVO<MatInVO> data) {
+		int result = 0;
 		// TODO Auto-generated method stub
-		return mim.insertMatIn(inList);
+		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			for(MatInVO vo : data.getDeletedRows()) {
+				result += mim.deleteMatIn(vo);				
+			}
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			for(MatInVO vo : data.getUpdatedRows()) {
+				result += mim.updateMatIn(vo);				
+			}
+		}
+		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			for(MatInVO vo : data.getCreatedRows()) {
+				result += mim.insertMatIn(vo);				
+			}
+		}
+		
+		return result;
+		
 	}
 
-	@Override
-	public int updateMatIn(List<MatInVO> inList) {
-		// TODO Auto-generated method stub
-		return mim.updateMatIn(inList);
-	}
-
-	@Override
-	public int deleteMatIn(List<MatInVO> inList) {
-		// TODO Auto-generated method stub
-		return mim.deleteMatIn(inList);
-	}
 
 }

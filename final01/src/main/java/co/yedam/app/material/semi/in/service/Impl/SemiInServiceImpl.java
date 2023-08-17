@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.semi.in.mapper.SemiInMapper;
 import co.yedam.app.material.semi.in.service.SemiInService;
 import co.yedam.app.material.semi.in.service.SemiInVO;
@@ -41,23 +42,29 @@ public class SemiInServiceImpl implements SemiInService {
 		
 		return sim.selectTestFinishList();
 	}
-
+	
+	
+	//등록, 수정, 삭제
 	@Override
-	public int insertSemiIn(List<SemiInVO> inList) {
+	public int modifySemiIn(GridVO<SemiInVO> data) {
+		int result = 0;
 		
-		return sim.insertSemiIn(inList);
-	}
-
-	@Override
-	public int updateSemiIn(List<SemiInVO> inList) {
+		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			sim.deleteSemiIn(data.getDeletedRows());
+			result += data.getDeletedRows().size();
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			sim.updateSemiIn(data.getUpdatedRows());
+			result += data.getUpdatedRows().size();
+		}
+		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			sim.insertSemiIn(data.getCreatedRows());
+			result += data.getCreatedRows().size();
+		}
 		
-		return sim.updateSemiIn(inList);
+		return result;
 	}
 
-	@Override
-	public int deleteSemiIn(List<SemiInVO> inList) {
-		// TODO Auto-generated method stub
-		return sim.deleteSemiIn(inList);
-	}
+	
 
 }

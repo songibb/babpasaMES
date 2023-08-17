@@ -1,7 +1,7 @@
 package co.yedam.app.material.rt.service;
 
 import java.util.Date;
-import java.util.List;
+
 
 import lombok.Data;
 
@@ -25,5 +25,8 @@ public class MatRtVO {
 	private String matTestCode;
 	private String actCode;
 	private String empCode;
+	
+	private String matUnit;
+	private String matStd;
 
 }

@@ -2,6 +2,8 @@ package co.yedam.app.material.rt.service;
 
 import java.util.List;
 
+import co.yedam.app.common.grid.service.GridVO;
+
 
 
 
@@ -14,12 +16,7 @@ public interface MatRtService {
 	//검수완료 목록
 	public List<MatTestVO> selectMatTestFinishList();
 		
-	//등록
-	public int insertMatRtList(List<MatRtVO> rtList);
-		
-	//수정
-	public int updateMatRtList(List<MatRtVO> rtList);
-		
-	//삭제
-	public int deleteMatRtList(List<MatRtVO> rtList);
+	//등록, 수정, 삭제
+	public int modifyMatRt(GridVO<MatRtVO> data);
+	
 }

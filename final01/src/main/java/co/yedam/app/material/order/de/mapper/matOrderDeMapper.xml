@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
@@ -18,7 +18,7 @@
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_unit, e.mat_std, e.mat_name mat_name, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, a.mat_od_rq mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
@@ -61,7 +61,7 @@
 				,#{orderList[0].actCode}
 			);
 			<!-- 두번째 쿼리 -->
-			<foreach collection="orderList" item="order" index="index" open="" separator=" " close="">
+			<foreach collection="data" item="order" index="index" open="" separator=" " close="">
 			INSERT INTO 
 				mat_order_de(MAT_OD_DE_CD,
 								MAT_OD_CD,
@@ -87,7 +87,7 @@
 	</insert>
 	
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
-		<foreach collection="orderList" item="order" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		<foreach collection="data" item="order" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE mat_order_de
 			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_od_acp = #{order.matOdAcp}, mat_price = #{order.matPrice}, mat_od_rq = #{order.matOdRq}
 			WHERE mat_od_de_cd = #{order.matOdDeCd}
@@ -96,7 +96,7 @@
 	
 	<delete id="deleteMatOrderList" parameterType="MatOrderDeVO">
 		BEGIN
-			<foreach collection="orderList" item="order" index="index" separator=" " close="">
+			<foreach collection="data" item="order" index="index" separator=" " close="">
 			DELETE FROM mat_order_de
 			WHERE mat_od_de_cd = #{order.matOdDeCd};
 			</foreach>

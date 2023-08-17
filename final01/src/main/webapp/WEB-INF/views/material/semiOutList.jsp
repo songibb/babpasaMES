@@ -97,8 +97,8 @@
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
        Grid = createProdGrid();
-       
-       Grid.on('click', () => {
+       $('.modal_title h3').text('반제품 목록');
+       Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let prodCode = Grid.getValue(rowKey, 'prodCode');
         	let prodName = Grid.getValue(rowKey, 'prodName');

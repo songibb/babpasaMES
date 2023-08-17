@@ -57,24 +57,25 @@
               	</ul>
             </div>
 		</li>
-        <li class="nav-item">
-        	<a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              	<i class="mdi mdi-food-apple icon-bar-graph menu-icon"></i>
-              	<span class="menu-title">자재</span>
-              	<i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
+       <li class="nav-item">
+    		<a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+        		<i class="mdi mdi-food-apple icon-bar-graph menu-icon"></i>
+        		<span class="menu-title">자재</span>
+        		<i class="menu-arrow"></i>
+    		</a>
+    		<div class="collapse" id="charts">
               	<ul class="nav flex-column sub-menu">
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 발주 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 입고 검수 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 입/출고 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 출고 등록</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 반품 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 LOT 정산 관리</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">자재 재고 조회</a></li>
-               	 	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">반제품 입/출고 등록</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">반제품 입/출고 조회</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/charts/chartjs.html">반제품 재고 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matOrderList">자재 발주 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matOrderDir">자재 발주 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matInList">자재 입고 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matInDir">자재 입고 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matOutList">자재 출고 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matRtList">자재 반품 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matRtDir">자재 반품 관리</a></li>
+               	 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/semiInList">반제품 입고 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/semiInDir">반제품 입고 관리</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/semiOutList">반제품 출고 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matStockList">자재 재고 조회</a></li>
               	</ul>
             </div>
 		</li>

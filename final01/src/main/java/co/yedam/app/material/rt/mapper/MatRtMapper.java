@@ -17,11 +17,11 @@ public interface MatRtMapper {
 	public List<MatTestVO> selectMatTestFinishList();
 	
 	//등록
-	public int insertMatRtList(@Param("rtList") List<MatRtVO> rtList);
+	public int insertMatRtList(@Param("data") List<MatRtVO> data);
 	
 	//수정
-	public int updateMatRtList(@Param("rtList") List<MatRtVO> rtList);
+	public int updateMatRtList(@Param("data") List<MatRtVO> data);
 	
 	//삭제
-	public int deleteMatRtList(@Param("rtList") List<MatRtVO> rtList);
+	public int deleteMatRtList(@Param("data") List<MatRtVO> data);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.rt.mapper.MatRtMapper;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatRtVO;
@@ -36,23 +37,25 @@ public class MatRtServiceImpl implements MatRtService {
 	
 	//등록
 	@Override
-	public int insertMatRtList(List<MatRtVO> rtList) {
+	public int modifyMatRt(GridVO<MatRtVO> data) {
+		int result = 0;
+		// TODO Auto-generated method stub
+		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			mrm.deleteMatRtList(data.getDeletedRows());
+			result += data.getDeletedRows().size();
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			mrm.updateMatRtList(data.getUpdatedRows());
+			result += data.getUpdatedRows().size();
+		}
+		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			mrm.insertMatRtList(data.getCreatedRows());
+			result += data.getCreatedRows().size();
+		}
 		
-		return mrm.insertMatRtList(rtList);
+		return result;
+		
 	}
 	
-	//수정
-	@Override
-	public int updateMatRtList(List<MatRtVO> rtList) {
-		
-		return mrm.updateMatRtList(rtList);
-	}
-	
-	//삭제
-	@Override
-	public int deleteMatRtList(List<MatRtVO> rtList) {
-		
-		return mrm.deleteMatRtList(rtList);
-	}
 
 }

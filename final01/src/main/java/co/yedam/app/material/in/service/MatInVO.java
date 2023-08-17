@@ -23,5 +23,8 @@ public class MatInVO {
 	
 	private String matTestCode;
 	
+	private String matUnit;
+	private String matStd;
+	
 	
 }

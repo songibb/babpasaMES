@@ -5,18 +5,18 @@
 <mapper namespace="co.yedam.app.material.in.mapper.MatInMapper">
 	<!-- 전체조회 -->
 	<select id="selectMatInList" resultType="MatInVO">
-		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
+		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c
 					ON(a.act_code = c.act_code)
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
-		ORDER BY a.mat_ind DESC
+		ORDER BY a.mat_lot DESC
 	</select>
 	<!-- 검색 -->
 	<select id="selectMatInSearch" resultType="MatInVO">
-		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd
+		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c
@@ -37,12 +37,12 @@
 				AND a.mat_ind <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
 			</if>
 		</where>
-		ORDER BY a.mat_ind DESC
+		ORDER BY a.mat_lot DESC
 	</select>
 	
 	<select id="selectMatTestFinishList" resultType="MatTestVO">
 	<!-- 검수는 됐지만 입고 안된 자재들 목록-->
-	SELECT a.mat_test_code, d.mat_name, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, mat_input_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+	SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, mat_input_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
 	FROM mat_test a LEFT JOIN mat_in b
 	ON(a.mat_test_code = b.mat_test_code)
 	LEFT JOIN com_err b
@@ -61,7 +61,6 @@
 	
 	<!-- 등록 -->
 	<update id="insertMatIn" parameterType="MatInVO">
-		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			INSERT INTO mat_in (
 				MAT_LOT
 				, MAT_CODE
@@ -73,31 +72,28 @@
 				, ACT_CODE
 			) VALUES (
 				get_primaryCode('matLot')
-				, #{in.matCode}
-				, #{in.matInAmt}
-				, #{in.matExd}
-				, #{in.matInd}
-				, #{in.empCode}
-				, #{in.matTestCode}
-				, #{in.actCode}
+				, #{matCode}
+				, #{matInAmt}
+				, #{matExd}
+				, #{matInd}
+				, #{empCode}
+				, #{matTestCode}
+				, #{actCode}
 			)
-		</foreach>
 	</update>
 	
 	<!-- 수정 -->
 	<update id="updateMatIn" parameterType="MatInVO">
-		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE mat_in
-			SET mat_ind = #{in.matInd}, mat_exd = #{in.matExd}
-			WHERE mat_lot = #{in.matLot}
-		</foreach>
+			SET mat_ind = #{matInd}, mat_exd = #{matExd}
+			WHERE mat_lot = #{matLot}
 	</update>
 	
 	<!-- 삭제 -->
 	<delete id="deleteMatIn" parameterType="MatInVO">
-		<foreach collection="inList" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+		
 			DELETE FROM mat_in
-			WHERE mat_lot = #{in.matLot}
-		</foreach>
+			WHERE mat_lot = #{matLot}
+		
 	</delete>
 </mapper>
