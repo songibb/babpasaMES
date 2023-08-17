@@ -389,17 +389,7 @@
 		      });
 		    });
   
-  $.ajax({
-	    url : "selectOffEquipAllList",
-	    method :"GET",
-	    success : function(result){
-	        Grid.resetData(result);
-	    },
-	    error : function(reject){
-				console.log(reject);
-			}
-	});
- 
+
 $("#close_btn").click(function(){
 	  $(".modal").fadeOut(); 
 		Grid.destroy();
@@ -460,32 +450,26 @@ $("#insertForm").on('submit', function(e){
 	  e.preventDefault();
 	  let offequipInfo = getoffequipInfo(); 
 	  
-	  
-	  if(offequipInfo.offStime != '' && offequipInfo.offStime != null){
+	  console.log(offequipInfo);
+	  if(offequipInfo.offEtime != "" && offequipInfo.offEtime != null){
 		  
-		if(offequipInfo.eqName =='' || offequipInfo.offType =='' || offequipInfo.offInfo==''){
-			
-			alert('모든 정보를 입력해 주세요.');
-			}else{ 
-
+		
 		//수정 ajax
 		offequipUpdate(offequipInfo);
-			}
+			
 		
 	  }else{
 		  
-		  if(offequipInfo.eqName =='' || offequipInfo.offType =='' || offequipInfo.offInfo=='' || offequipInfo.offStime ==''){
-				alert('모든 정보를 입력해 주세요.');
-				}else{ 
+		 
 
 		  
 		  //등록 ajax 
 		  offequipInsert(offequipInfo);
-				}
+
 			
 		 
 	  }
-
+ 
 });
 
 	//form에 입력된 값들가져오기
@@ -502,8 +486,8 @@ $("#insertForm").on('submit', function(e){
 
 
 //등록 ajax 함수
-function offequipInsert(offequipInfo){
-
+function offequipInsert(){
+	offequipInfo = getoffequipInfo();
   $.ajax({
 		url : 'insertOffEquip',
 		type : 'post',
@@ -539,8 +523,8 @@ function offequipInsert(offequipInfo){
 			});
 	}
 	//수정 ajax 함수
-	function offequipUpdate(offequipInfo){
-		
+	function offequipUpdate(){
+		offequipInfo = getoffequipInfo();
 	let etime = $('#offEtime').val();
 	let ec = $('#eqCode').val();
 	let etime2 = { offEtime : etime, eqCode : ec};
