@@ -158,15 +158,12 @@
 
 <!-- 수정 -->
 	<update id="updateOrder" parameterType="OrderVO">
-		<foreach collection="data" item="order" index="index"
-			separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE sales_ord_de
 			SET
-			prcs_rq_amt = #{order.prcsRqAmt}
-			, prod_code = #{order.prodCode}
-			, dev_date = #{order.devDate}
+			prcs_rq_amt = #{prcsRqAmt}
+			, prod_code = #{prodCode}
+			, dev_date = #{devDate}
 			WHERE sales_ord_de_code = #{order.salesOrdDeCode}
-		</foreach>
 	</update>
 
 <!-- 삭제 -->

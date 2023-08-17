@@ -19,8 +19,14 @@ public interface OutMapper {
 			, @Param("prodCode")String prodCode
 			, @Param("startDate")String startDate
 			, @Param("endDate")String endDate);
-	//출고 등록
-	public int insertOutList(@Param("outList") List<OutVO> outList);
 	//출고완료된 품목만 보여주는 출고 리스트
 	public List<OutVO> selectOutNList();
+	//등록
+	public int insertOut(@Param("data") OutVO vo);
+	
+	//수정
+	public int updateOut(@Param("data") OutVO vo);
+	
+	//삭제
+	public int deleteOut(@Param("data") OutVO vo);
 }

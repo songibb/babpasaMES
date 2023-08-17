@@ -88,7 +88,7 @@
 	
 	
 	<!-- 출고 등록 -->
-	<insert id="insertOutList" parameterType="OutVO">
+	<insert id="insertOut" parameterType="OutVO">
 		<selectKey keyProperty="salesOutCode" resultType="String" order="BEFORE">
 			SELECT 'OUT-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(sales_out_code, -3)),0) + 1, 3, '0')
 			FROM sales_out
@@ -119,4 +119,22 @@
 			<!-- 두번째 쿼리 -->
 	</insert>
 	
+	<!-- 수정 -->
+	<update id="updateOut" parameterType="OutVO">
+  	UPDATE  SET
+			prod_code = #{commdeCode},
+			act_code = #{commdeName},
+			<!-- 반품이나 출고를 하면 재고가 변동되어야하기 때문에
+			프로시져 만들어서 해야함. -->
+			commde_info = #{commdeInfo},
+			commde_use = #{commdeUse}
+	WHERE commde_no = #{commDeNo}
+  	</update>
+  	
+  	<!-- 삭제 -->
+  		<delete id="deleteOut" parameterType="OutVO">
+  			DELETE FROM com_commde
+  			WHERE commde_no = #{commDeNo}
+  	</delete>
+  	
   </mapper>
