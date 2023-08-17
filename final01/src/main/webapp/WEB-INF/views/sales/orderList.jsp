@@ -395,12 +395,12 @@
               <c:forEach items="${orderList}" var="order">
                  {
                 	 salesOrdDeCode : "${order.salesOrdDeCode}",
-                	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy년 MM월 dd일"/>`,
+                	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
     	           	 actName : "${order.actName}",
     	           	 ordSts : "${order.ordSts}",
     	           	 prodName : "${order.prodName}",
     	           	 prcsRqAmt : "${order.prcsRqAmt}",
-    	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy년 MM월 dd일"/>`,
+    	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
     	           	 devYn : "${order.devYn}"
                  },
               </c:forEach>
@@ -467,20 +467,13 @@
          method : 'GET',
          data : search ,
          success : function(data){
-            
-           for(let i of data){
-               let date = new Date(i.ordDate);
-               let year = date.getFullYear();    //0000년 가져오기
-               let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               let day = date.getDate();        //일자 가져오기
-                  i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-               
-               date = new Date(i.ordDate);
-               year = date.getFullYear();    //0000년 가져오기
-               month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               day = date.getDate();        //일자 가져오기
-                  i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-           }
+        	//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let od = data[i]['ordDate'];
+					let dd = data[i]['devDate'];
+					data[i]['ordDate'] = getDate(od);
+					data[i]['devDate'] = getDate(dd);
+				})
             grid.resetData(data);
          },
          error : function(reject){

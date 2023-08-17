@@ -16,6 +16,18 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+
 <style>
 body {
 	font-family: 'Nanum Gothic', sans-serif;
@@ -184,9 +196,9 @@ input[type="date"]{
 					
 						<div id="customtemplateSearchAndButton">		
 							<p>제품</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                  <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
+                  <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
                    <br>
                   <p>거래처</p>
                   <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
@@ -246,13 +258,14 @@ input[type="date"]{
 	        	<c:forEach items="${orderList}" var="order" varStatus="status">
 	           	{
 	           		salesOrdDeCode : "${order.salesOrdDeCode}",
-               	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy년 MM월 dd일"/>`,
+               	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
    	           	 actName : "${order.actName}",
    	           	 ordSts : "${order.ordSts}",
    	           	 prodName : "${order.prodName}",
    	           	 prcsRqAmt : "${order.prcsRqAmt}",
-   	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy년 MM월 dd일"/>`,
-   	           	 devYn : "${order.devYn}"
+   	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
+   	           	 devYn : "${order.devYn}",
+   	           	 empCode : "${order.empCode}"
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -275,12 +288,14 @@ input[type="date"]{
 		         {
 		           header: '주문날짜',
 		           name: 'ordDate',
-		           editor : 'text'
+		           editor: 'datePicker',
+		           value : '${order.ordDate}'
 		         },
 		         {
 		           header: '거래처명',
 		           name: 'actName',
-		           editor : 'text'
+		           editor : 'text',
+		           value : '${order.actName}'
 		         },
 		         {
 		           header: '생산계획상태',
@@ -299,34 +314,35 @@ input[type="date"]{
 		         {
 		           header: '납기일자',
 		           name: 'devDate',
-		           editor : 'text'
+		           editor: 'datePicker'
 		         },
 		         {
 		           header: '출고여부',
-		           name: 'devYn'
+		           name: 'devYn',
+		           value : '${order.devYn}'
 		         },
 		         {
-		           header: '출고여부',
+		           header: '주문코드',
 		           name: 'ordCode',
 		           hidden : true
 		         },
 		         {
-		           header: '출고여부',
+		           header: '거래처코드',
 		           name: 'actCode',
 		           hidden : true
 		         },
 		         {
-		           header: '출고여부',
+		           header: '직원코드',
 		           name: 'empCode',
-		           hidden : true
+		           editor : 'text'
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '생산계획코드',
 		           name: 'prcsPlanCode',
 		           hidden : true
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '제품코드',
 		           name: 'prodCode',
 		           hidden : true
 		         }
@@ -344,36 +360,41 @@ input[type="date"]{
 		let columnName = orderGrid.getFocusedCell().columnName;
 		
 		orderGrid.finishEditing(rowKey, columnName);
-		let list2 = orderGrid.getData();
-		console.log(list2);
+// 		let list2 = orderGrid.getData();
+// 		console.log(list2);
 		
 		let list = [];
-		$.each(list2, function(idx, obj){
-			if(obj.matOdCd == null){
-				list.push(obj);
-			}
-		})
-		console.log(list);
-		let customList = [];
-		$.each(list, function(idx, obj){
-			let customObj = {};
-			customObj['ordDate'] = obj['ordDate'];
-			customObj['actCode'] = obj['actCode'];
-			customObj['empCode'] = obj['empCode'];
-			customObj['ordSts'] = obj['ordSts'];
-			customObj['prcsPlanCode'] = obj['prcsPlanCode'];
-			customObj['prodCode'] = obj['prodCode'];
-			customObj['prcsRqAmt'] = obj['prcsRqAmt'];
-			customObj['devDate'] = obj['devDate'];
-	 		customList.push(customObj);
-		});
+// 		$.each(list2, function(idx, obj){
+// 			if(obj.ordCode == null){
+// 				list.push(obj);
+// 			}
+// 		})
+// 		console.log(list);
+// 		let customList = [];
+		
+// 		$.each(list, function(idx, obj){
+// 			let customObj = {};
+// 			customObj['ordDate'] = obj['ordDate'];
+// 			customObj['actCode'] = obj['actCode'];
+// 			customObj['empCode'] = obj['empCode'];
+// 			customObj['ordSts'] = obj['ordSts'];
+// 			customObj['prcsPlanCode'] = obj['prcsPlanCode'];
+// 			customObj['prodCode'] = obj['prodCode'];
+// 			customObj['prcsRqAmt'] = obj['prcsRqAmt'];
+// 			customObj['devDate'] = obj['devDate'];
+// 	 		customList.push(customObj);
+// 		});
+
+		let customRowkey = orderGrid.getFocusedCell().rowKey;
+		let customObj = orderGrid.getRow(customRowkey);
+		list.push(customObj);
 		
 		//ajax로 데이터 보내기
 		
 		$.ajax({
 			url : 'orderInsert',
 			method : 'POST',
-			data : JSON.stringify(customList),
+			data : JSON.stringify(list),
 			contentType : 'application/json',
 			success : function(data){
 				console.log(data);
@@ -590,7 +611,51 @@ input[type="date"]{
         return prodGrid;
      }
 	
-	//필요한 데이터만 list에 담음
+	//검색 버튼
+   $('#searchBtn').on('click', searchOrderList);
+   function searchOrderList(e){
+	  let actInsert = $('#actCodeInput').val();
+	  let prodInsert = $('#prodCodeInput').val();
+      let sd = $('#startDate').val();
+      let ed = $('#endDate').val();      
+        
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      $.ajax({
+         url : 'orderListFilter',
+         method : 'GET',
+         data : search ,
+         success : function(data){
+        	//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let od = data[i]['ordDate'];
+					let dd = data[i]['devDate'];
+					data[i]['ordDate'] = getDate(od);
+					data[i]['devDate'] = getDate(dd);
+				})
+           orderGrid.resetData(data);
+         },
+         error : function(reject){
+            console.log(reject);
+         }
+      });
+   }
+   
+   //초기화 버튼
+   $('#searchResetBtn').on('click', resetInput);
+   function resetInput(e){
+      $('input').each(function(idx, obj){
+         obj.value = '';
+      })
+   }
+ 
+   //이전 날짜 선택불가
+    $( '#startDate' ).on( 'change', function() {
+      $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+    } );
+   //이후날짜 선택불가
+    $( '#endDate' ).on( 'change', function() {
+         $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+       } );
     </script>
 </body>
 </html>
