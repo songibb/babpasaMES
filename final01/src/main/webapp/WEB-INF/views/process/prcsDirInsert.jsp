@@ -390,7 +390,7 @@
     	//클릭한 상세생산지시의 BOM 목록 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
-
+		console.log(prodCode);
     	$.ajax({
 			url : 'bomList',
 			method : 'GET',

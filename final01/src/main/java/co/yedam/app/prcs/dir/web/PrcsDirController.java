@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+import co.yedam.app.prcs.ing.service.PrcsIngService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 @Controller
@@ -21,6 +22,9 @@ public class PrcsDirController {
 	
 	@Autowired
 	PrcsDirService prcsDirService;
+	
+	@Autowired
+	PrcsIngService prcsIngService;
 	
 	//생산지시 조회
 	@GetMapping("prcsDirList")
@@ -72,8 +76,13 @@ public class PrcsDirController {
 			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
 			prcsDirService.updateNotDirPlanList(vo);
 			
+			//진행 공정 등록
+			String prcsDirDeCode = vo.getPrcsDirDeCode();		
+			prcsIngService.insertPrcsIng(prcsDirDeCode);
+			
 			result++;
 		}
+			
 		return result;
 	}
 	

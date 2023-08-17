@@ -37,5 +37,9 @@ public class PrcsDirVO {
 	private String prcsPlanDeCode;
 	
 	
+	//프로시저 결과 담는용
+	private int ingResult;
+	
+	
 	
 }

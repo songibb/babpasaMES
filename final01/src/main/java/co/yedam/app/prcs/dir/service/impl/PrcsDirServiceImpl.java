@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.mapper.PrcsDirMapper;
@@ -43,6 +44,7 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 	
 	//상세생산지시 등록
+
 	@Override
 	public int insertPrcsDirDe(PrcsDirVO prcsDirVO) {
 		int result = prcsDirMapper.insertPrcsDirDe(prcsDirVO);

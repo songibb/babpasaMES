@@ -12,7 +12,7 @@
 			   prcs_start_date,
 			   prcs_end_date,
 			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
-			   emp_code
+			   find_prcs_name(emp_code) AS emp_code
 		  FROM prcs_dir
 		 ORDER BY prcs_dir_code
 	</select>
@@ -27,7 +27,7 @@
 			   prcs_start_de_date,
 			   prcs_end_de_date,
 			   find_cdnm('0R', prcs_ing_sts) AS prcs_ing_sts,
-			   emp_code
+			   find_prcs_name(prcs_code) AS emp_code
 		  FROM prcs_dir_de
 		 WHERE prcs_dir_code = #{prcsDirCode}
 		 ORDER BY prcs_dir_de_code
@@ -171,21 +171,6 @@
 	<!-- 제품별 총 자재 BOM 조회 -->
 	<select id="selectBomList" resultType="bomCodeVO">
 		SELECT find_prod_name(prod_code) AS prod_name,
-      		   find_prcs_name(prcs_code) AS prcs_name,
-      		   mp_code,
-      		   find_mat_name(mp_code) AS mat_name,
-      		   bom_unit,
-      		   bom_amt,
-      		   prcs_seq
-		  FROM v_prod_bom
-		 WHERE prod_code = (SELECT mp_code
-                   			  FROM v_prod_bom
-                   			 WHERE prod_code = #{prodCode}
-                        		   AND mp_kind='P')
-    		   AND bom_yn='Y'
-   			   AND mp_kind='M'
-		 UNION       
-		SELECT find_prod_name(prod_code) AS prod_name,
         	   find_prcs_name(prcs_code) AS prcs_name,
         	   mp_code,
       		   find_mat_name(mp_code) AS mat_name,
@@ -196,6 +181,7 @@
 		 WHERE prod_code= #{prodCode}
 		   	   AND bom_yn='Y'
 		       AND mp_kind='M'
+		 ORDER BY prcs_seq
 	</select>
 
 
