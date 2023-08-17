@@ -34,5 +34,12 @@ public class EquipChkServiceImpl implements EquipChkService {
 		}
 		
 	}
+	
+	//모달 : 사원 조회
+	@Override
+	public List<EquipChkVO> selectEmpList(){
+		return equipChkMapper.selectEmpList();
+				
+	}
 
 }

@@ -57,7 +57,18 @@
   
   <!-- 단건조회 -->
   <select id="selectEquipInfo" resultType="EquipVO">
-  	SELECT *
+  	SELECT EQ_CODE
+  		  ,ACT_CODE
+  		  ,EQ_TYPE
+  		  ,EQ_NAME
+  		  ,MODEL_NAME
+  		  ,MAKE_DATE
+  		  ,BUY_DATE
+  		  ,CHK_CYCLE
+  		  ,EQ_STS
+  		  ,EQ_IMG
+  		  ,HIGH_TEMP
+  		  ,LOW_TEMP
   	FROM EQ_EQUIP
   	WHERE EQ_CODE =#{eqCode}
   </select>
@@ -88,4 +99,13 @@
   	DELETE FROM EQ_EQUIP
   	WHERE EQ_CODE = #{eqCode}
   </delete>
+  
+   <!-- 설비검색 -->
+   <select id="searchEquip" resultType="EquipVO">
+  	  	SELECT  *
+		FROM EQ_EQUIP
+		WHERE EQ_NAME LIKE '%' || #{eqName} || '%'
+	ORDER BY EQ_NAME
+  </select>
+  
   </mapper>

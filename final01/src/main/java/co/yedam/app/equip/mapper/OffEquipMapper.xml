@@ -9,6 +9,7 @@
   		FROM EQ_EQUIP A JOIN EQ_OFF B
   			ON(A.EQ_CODE = B.EQ_CODE)
   		ORDER BY B.OFF_NO DESC
+	
   	</select>
   	
   	<!--모달 안에서의 전체 설비 조회  -->
@@ -18,6 +19,8 @@
   			ON(A.EQ_CODE = B.EQ_CODE)
   		ORDER BY A.EQ_CODE ASC
   	</select>
+  	
+  	
   	
   	<!-- 단건으로 가져오기  -->
   	<select id="selectOffEquipInfo" resultType="OffEquipVO">
@@ -42,28 +45,7 @@
                 #{offStime}
             )
         }
-    
-    
-  		<!-- INSERT INTO EQ_OFF
-  					(
-  					EQ_CODE,
-  					OFF_NO,
-  					OFF_TYPE,
-  					OFF_INFO,
-  					OFF_STIME,
-  					OFF_ETIME
-  					
-  					)
-  					VALUES
-  					(
-  					#{eqCode}
-  					,#{offNo}
-  					,#{offType}
-  					,#{offInfo}
-					,#{offStime}
-					,#{offEtime}
-  					) -->
- 	
+
   	</insert>
   	
   	<!-- 비가동 설비 수정 -->
@@ -77,4 +59,14 @@
         }
         
   	</update>
+  	
+  	<!-- 설비명 검색  -->
+  	<select id="offsearchEquip" resultType="OffEquipVO">
+  	  	SELECT A.EQ_CODE, A.EQ_NAME, B.*
+		FROM EQ_EQUIP A JOIN EQ_OFF B
+  			ON(A.EQ_CODE = B.EQ_CODE)
+  		WHERE A.EQ_NAME LIKE '%' || #{eqName} || '%'
+  		ORDER BY B.OFF_NO DESC
+	
+  </select>
   </mapper>

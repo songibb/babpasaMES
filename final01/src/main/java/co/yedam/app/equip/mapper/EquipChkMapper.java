@@ -11,4 +11,7 @@ public interface EquipChkMapper {
 
 	//점검 설비 수정
 	public int updateChkequip(EquipChkVO equipChkVO);
+	
+	//점검 담당자 모달 전체 리스트
+	public List<EquipChkVO> selectEmpList();
 }

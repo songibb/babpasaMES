@@ -11,6 +11,8 @@ public class EquipChkVO {
 	private String eqCode;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date chkDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date chkNextDate;
 	private String eqChkYn;
 	private String chkType;
 	private String chkNote;
@@ -19,6 +21,10 @@ public class EquipChkVO {
 	private String eqName;
 	private int chkCycle;
 	private String eqType;
+	
+	private String empName;
+	
+
 	
 	
 }

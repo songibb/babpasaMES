@@ -25,6 +25,6 @@ public interface EquipService {
 
 	//설비 검색
 	public List<EquipVO> searchEquip (String eqName);
-
+	
 
 }

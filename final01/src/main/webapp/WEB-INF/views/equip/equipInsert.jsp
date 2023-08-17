@@ -201,11 +201,11 @@
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
          <th>제작일자</th>
-         <td><input type="date" name="makeDate" id="makeDate"></td>
+         <td><input type="text" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>구매일자</th>
-         <td><input type="date" name="buyDate" id="buyDate"></td>
+         <td><input type="text" name="buyDate" id="buyDate"></td>
          <th>점검주기</th>
          <td><input type="text" name="chkCycle" id="chkCycle"></td>
       </tr>
@@ -214,10 +214,10 @@
          <td><input type="text" name="eqSts" id="eqSts"></td>
       </tr>
       <tr>
-         <th>최고온도</th>
-         <td><input type="text" name="highTemp" id="highTemp">~ </td> 
          <th>최저온도</th>
-         <td><input type="text" name="lowTemp" id="lowTemp">℃ </td>
+         <td><input type="text" name="lowTemp" id="lowTemp">~</td> 
+         <th>최고온도</th>
+         <td><input type="text" name="highTemp" id="highTemp"> ℃  </td>
       </tr>
       <tr>
          <th>설비이미지</th>
@@ -267,6 +267,14 @@ $("#actModal").click(function(){
 			method : 'GET',
 			data : { eqCode : eqCode },
 			success : function(data){
+// 					//날짜 츨력 포맷 변경
+// 					$.each(data, function(i, objDe){
+// 						let ppd = data[i]['makeDate'];
+// 						let psd = data[i]['buyDate'];
+// 						data[i]['makeDate'] = getDate(ppd);
+// 						data[i]['buyDate'] = getDate(psd);
+// 					})
+				
 					//console.log(data);
 					
 					$('#eqCode').val(data.eqCode);
@@ -286,6 +294,7 @@ $("#actModal").click(function(){
      		       	Grid.destroy(); // 항목 선택하면 모달창 닫힘
      		       	
 					console.log(data);
+     		       	
 			    },
 			error : function(reject){
 	 			console.log(reject);

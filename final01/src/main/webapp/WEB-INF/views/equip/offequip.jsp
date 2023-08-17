@@ -8,7 +8,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	<!-- alert창 꾸미기 -->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>\
+	
 	 <!-- 토스트 페이지 네이션 -->
 	 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 	 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -20,6 +22,7 @@
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+	 
 	 
 
 <style>
@@ -178,21 +181,18 @@
     	<div class="card">
         	<div class="card-body">
             	<div class="table-responsive pt-3">
-            		<div id="customtemplateSearchAndButton">
-					
-						<p>비가동시작일</p>
-						<input type="date">
-						~
-						<input type="date">
-						<button type="button" class="btn btn-info btn-icon-text" >
-							<i class="fas fa-search"></i>
-							<!-- 돋보기 누르면 설비코드 설비명 가동여부 3개 컬럼 리스트로 출력됨(eq_equip table) -->
-							검색
-						</button>
-						<button type="button" class="btn btn-info btn-icon-text">
-							초기화
-						</button>					
-					</div>
+            		<div id="customtemplateSearchAndButton">		
+							<p>비가동일자</p>
+                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
+							<br>
+							
+							<p>설비명</p>
+  							<input type="text" placeholder="검색어를 입력하세요" id="offequipSearch">
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
+		            	</div>
 					<div id="grid"></div>
                 </div>
                 <div><hr>
@@ -264,6 +264,27 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
+	
+	
+	//설비명 검색
+    $('#searchBtn').on('click', searchProdIn);
+    function searchProdIn(e){
+ 	   let content = $('#offequipSearch').val();
+ 	   let search = { eqName : content };
+ 	   $.ajax({
+ 		   url : 'offsearchEquip',
+ 		   method : 'GET',
+ 		   data : search ,
+ 		   success : function(data){
+ 			   grid.resetData(data);
+ 		   },
+ 		   error : function(reject){
+ 			   console.log(reject);
+ 		   }
+ 	   })
+    }
+
+	
 			//전체 비가동 설비 조회 그리드창
 		    var grid = new tui.Grid({
 		        el: document.getElementById('grid'),
@@ -504,45 +525,45 @@ function offequipInsert(offequipInfo){
 	.fail(reject => console.log(reject));
 }
 
-//리스트 리셋
-function selectAjax(){
+	//리스트 리셋
+	function selectAjax(){
+		$.ajax({
+		       url : "selectoffequip",
+		       method :"GET",
+		       success : function(result){
+		           grid.resetData(result);
+		       },
+		       error : function(reject){
+					console.log(reject);
+				}
+			});
+	}
+	//수정 ajax 함수
+	function offequipUpdate(offequipInfo){
+		
+	let etime = $('#offEtime').val();
+	let ec = $('#eqCode').val();
+	let etime2 = { offEtime : etime, eqCode : ec};
 	$.ajax({
-	       url : "selectoffequip",
-	       method :"GET",
-	       success : function(result){
-	           grid.resetData(result);
-	       },
-	       error : function(reject){
-				console.log(reject);
-			}
-		});
-}
-//수정 ajax 함수
-function offequipUpdate(offequipInfo){
-	
-let etime = $('#offEtime').val();
-let ec = $('#eqCode').val();
-let etime2 = { offEtime : etime, eqCode : ec};
-$.ajax({
-		url : 'updateOffEquip',
-		method : 'post',
-		data :  etime2
-	})
-	.done(data => { 
-		console.log(data);
-		   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-			alert( '정보수정이 정상적으로 처리되었습니다.');
-		
-			//밑에 조회 ajax 새로 처리 필요
-			selectAjax();
-		
+			url : 'updateOffEquip',
+			method : 'post',
+			data :  etime2
+		})
+		.done(data => { 
+			console.log(data);
+			   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
+				swal('수정 성공!', '비가동 종료되었습니다.', 'success' )
 			
-			//form 비우기
-			 $('form')[0].reset();
-		  	
-	})
-	.fail(reject => console.log(reject));
-}
+				//밑에 조회 ajax 새로 처리 필요
+				selectAjax();
+			
+				
+				//form 비우기
+				 $('form')[0].reset();
+			  	
+		})
+		.fail(reject => console.log(reject));
+	}
 	
 	
 
