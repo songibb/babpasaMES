@@ -103,8 +103,8 @@ var Grid;
      $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
-       
-       Grid.on('click', () => {
+       $('.modal_title h3').text('거래처 목록');
+       Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
         	let actName = Grid.getValue(rowKey, 'actName');
@@ -125,7 +125,8 @@ var Grid;
      $("#matModal").click(function(){
          $(".modal").fadeIn();
          Grid = createMatGrid();
-         Grid.on('click', () => {
+         $('.modal_title h3').text('자재 목록');
+         Grid.on('dblclick', () => {
          	let rowKey = Grid.getFocusedCell().rowKey;
          	let matCode = Grid.getValue(rowKey, 'matCode');
       	let matName = Grid.getValue(rowKey, 'matName');
@@ -198,7 +199,7 @@ var Grid;
   }
 
 //자재 모달 그리드
-  function createMatGrid(){
+ function createMatGrid(){
 	   var matGrid = new tui.Grid({
 	       el: document.getElementById('modal_label'),
 	       data: [
@@ -206,7 +207,8 @@ var Grid;
 	          	{
 	          		matCode : "${m.matCode}",
 	          		matName :"${m.matName}",
-	          		matStd :"${m.matStd}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
 	          	} <c:if test="${not status.last}">,</c:if>
 	          </c:forEach>
 	          ],
@@ -231,6 +233,10 @@ var Grid;
 	               name: 'matName'
 	             },
 	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
+	             {
 	               header: '규격',
 	               name: 'matStd'
 	             }
@@ -239,7 +245,7 @@ var Grid;
 	     });
 	   
 	   return matGrid;
-   }
+  }
 //모달 끝
 
 //검색
@@ -305,6 +311,8 @@ function resetInput(e){
 	           	matOdDeCd : "${mat.matOdDeCd}",
 	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	actName :"${mat.actName}",
 	           	matTestDate : `<fmt:formatDate value="${mat.matTestDate}" pattern="yyyy년 MM월 dd일"/>`,
 	           	errInfo : "${mat.errInfo}",
@@ -338,6 +346,14 @@ function resetInput(e){
 	 	        header: '자재명',
 	 	        name: 'matName'
 	 	      },
+	 	      {
+          	  	header: '단위',
+		 		name: 'matUnit' 
+              },
+              {
+          	  	header: '규격',
+		 		name: 'matStd'
+              },
 	 	      {
 	 	        header: '업체명',
 	 	        name: 'actName'

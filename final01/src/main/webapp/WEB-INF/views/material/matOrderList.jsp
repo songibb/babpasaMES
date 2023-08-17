@@ -103,8 +103,8 @@
    $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
-       
-       Grid.on('click', () => {
+       $('.modal_title h3').text('거래처 목록');
+       Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
         	let actName = Grid.getValue(rowKey, 'actName');
@@ -124,7 +124,8 @@
    $("#matModal").click(function(){
        $(".modal").fadeIn();
        Grid = createMatGrid();
-       Grid.on('click', () => {
+       $('.modal_title h3').text('자재 목록');
+       Grid.on('dblclick', () => {
        	let rowKey = Grid.getFocusedCell().rowKey;
        	let matCode = Grid.getValue(rowKey, 'matCode');
     	let matName = Grid.getValue(rowKey, 'matName');
@@ -205,7 +206,8 @@
 	          	{
 	          		matCode : "${m.matCode}",
 	          		matName :"${m.matName}",
-	          		matStd :"${m.matStd}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
 	          	} <c:if test="${not status.last}">,</c:if>
 	          </c:forEach>
 	          ],
@@ -230,6 +232,10 @@
 	               name: 'matName'
 	             },
 	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
+	             {
 	               header: '규격',
 	               name: 'matStd'
 	             }
@@ -238,7 +244,7 @@
 	     });
 	   
 	   return matGrid;
-   }
+  }
    //모달 끝
    
    //검색
@@ -297,6 +303,8 @@
 	           	{
 	           	matOdCd : "${mat.matOdCd}",
 	           	matName :"${mat.matName}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	matPrice :"${mat.matPrice}",
 	           	matAmt :"${mat.matAmt}",
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
@@ -326,6 +334,14 @@
 	 	        header: '자재명',
 	 	        name: 'matName'
 	 	      },
+	 	      {
+          	  	header: '단위',
+		 		name: 'matUnit' 
+              },
+              {
+          	  	header: '규격',
+		 		name: 'matStd'
+              },
 	 	      {
 	 	        header: '단가(원)',
 	 	        name: 'matPrice'

@@ -21,4 +21,7 @@ public class MatTestVO {
 	private String matName;
 	private String actCode;
 	private String actName;
+	
+	private String matStd;
+	private String matUnit;
 }

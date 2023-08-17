@@ -16,11 +16,11 @@ public interface MatInMapper {
 	public List<MatTestVO> selectMatTestFinishList();
 	
 	//등록
-	public int insertMatIn(@Param("inList") List<MatInVO> inList);
+	public int insertMatIn(MatInVO vo);
 	
 	//수정
-	public int updateMatIn(@Param("inList") List<MatInVO> inList);
+	public int updateMatIn(MatInVO vo);
 	
 	//삭제
-	public int deleteMatIn(@Param("inList") List<MatInVO> inList);
+	public int deleteMatIn(MatInVO vo);
 }

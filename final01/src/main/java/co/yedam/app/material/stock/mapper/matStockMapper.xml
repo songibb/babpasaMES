@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.stock.mapper.MatStockMapper">
 	<!-- 전체조회 -->
 	<select id="selectMatStockList" resultType="MatStockVO">
-		SELECT a.mat_code mat_code, a.amt1 <![CDATA[-]]> NVL(b.amt2,0) total_stock, c.mat_name mat_name, c.mat_std mat_std, c.mat_safe mat_safe
+		SELECT a.mat_code mat_code, a.amt1 <![CDATA[-]]> NVL(b.amt2,0) total_stock, c.mat_name mat_name, c.mat_std mat_std, c.mat_unit, c.mat_safe mat_safe
 		FROM (SELECT SUM(mat_in_amt) amt1, mat_code FROM mat_in GROUP BY mat_code) a
 			LEFT JOIN (SELECT SUM(mat_out_amt) amt2, mat_code FROM mat_out GROUP BY mat_code) b
 		ON(a.mat_code = b.mat_code)

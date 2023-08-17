@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.semi.in.service.SemiInService;
 import co.yedam.app.material.semi.in.service.SemiInVO;
 
@@ -54,27 +55,10 @@ public class SemiInController {
 	}
 	
 	//등록
-	@PostMapping("semiInDirInsert")
+	@PostMapping("semiInDirSave")
 	@ResponseBody
-	public void semiInInsert(@RequestBody List<SemiInVO> inList) {
-		
-		sis.insertSemiIn(inList);
-		return;
+	public int matInDirSave(@RequestBody GridVO<SemiInVO> data) {
+		return sis.modifySemiIn(data);
 	}
-	
-	//수정
-	@PostMapping("semiInDirUpdate")
-	@ResponseBody
-	public void semiInUpdate(@RequestBody List<SemiInVO> inList) {
-		sis.updateSemiIn(inList);
-		return;
-	}
-	
-	//삭제
-	@PostMapping("semiInDirDelete")
-	@ResponseBody
-	public void semiInDelete(@RequestBody List<SemiInVO> inList) {
-		sis.deleteSemiIn(inList);
-		return;
-	}
+
 }

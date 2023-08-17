@@ -76,6 +76,9 @@
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                     				초기화
                 				</button>
+                				<button type="button" class="btn btn-info btn-icon-text" id="selectPrcsSchedule">
+                    				신규 생산계획 조회
+                				</button>
             				</div>
         				</div>
 	    			</div>
@@ -117,7 +120,7 @@
 	document.getElementById('save').addEventListener('click', saveServer);
 	//행추가
 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
-
+	
 	
 
 	//행추가 버튼 클릭시 상세생산지시 행 추가
@@ -148,6 +151,8 @@
 	           	matOdDeCd : "${mat.matOdDeCd}",
 	           	matName :"${mat.matName}",
 	           	matCode : "${mat.matCode}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	matPrice :"${mat.matPrice}",
 	           	matAmt :"${mat.matAmt}",
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
@@ -188,6 +193,14 @@
 	                    header: '자재코드',            // [필수] 컬럼 이름
 	                    name: 'matCode',                 // [필수] 컬럼 매핑 이름 값
 	                    hidden : true                // [선택] 숨김 여부
+	              },
+	              {
+	            	  	header: '단위',
+			 		 	name: 'matUnit' 
+	              },
+	              {
+	            	  	header: '규격',
+			 		 	name: 'matStd'
 	              },
 	              {
 		 	 	        header: '단가(원)',
@@ -248,140 +261,78 @@
 	        ]
 	      });
 	
+	
 
+	orderGrid.on('afterChange', (ev) => {
+		
+		let change = ev.changes[0];
+		let rowData = orderGrid.getRow(change.rowKey);
+		let totalPrice = rowData.matPrice * rowData.matAmt;
+		
+		if(change.columnName == 'matAmt' || change.columnName == 'matPrice'){
+			if(rowData.matAmt != null && rowData.matPrice != null){
+				orderGrid.setValue(change.rowKey, 'matTotalPrice', totalPrice);
+			}
+		}
+		});
 	
 	
 	
 	
-	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
 		orderGrid.blur();
 		let modifyGridInfo = orderGrid.getModifiedRows();
-		console.log(modifyGridInfo);
+		
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!orderGrid.isModified()){
+			alert("변경사항이 없습니다.");
+			return false;
+		}
+		
 		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
 		var flag = true;
-		//create, modify, delete 포함하는 전체 배열을 도는 each문
-		var list = [];
-		var list2 = [];
-		var list3 = [];
-		$.each(modifyGridInfo, function(idx, obj){
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
 			
-			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
-			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
-			if(!flag){
-				alert('값이 입력되지 않았습니다.');
-				return;
-			}
-			else if(idx == 'createdRows' && obj.length != 0){
+		if(orderGrid.getModifiedRows().createdRows.length > 0 ){
 				
-				$.each(obj, function(idx2, obj2){
-					// console.log(obj2);  createdRows [{…}]
-					
-					if(obj2['actCode'] == '' ||obj2['matAmt'] =='' || obj2['matCode'] == '' || obj2['matOdAcp'] == '' || obj2['matPrice']=='' || obj2['matOdRq'] == ''){
+				$.each(orderGrid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['actCode'] == "" ||obj2['matAmt']  =="" || obj2['matCode'] == "" || obj2['matOdAcp'] == "" || obj2['matPrice']=="" || obj2['matOdRq'] == ""){
 						flag = false;
-						return;
+						return false;
 					}
-					
-					let customObj = {};
-					customObj['empCode'] = "이슬";	//고치기
-					customObj['actCode'] = obj2['actCode'];
-					customObj['matAmt'] = obj2['matAmt'];
-					customObj['matCode'] = obj2['matCode'];
-					customObj['matOdAcp'] = obj2['matOdAcp'];
-					customObj['matPrice'] = obj2['matPrice'];
-					customObj['matOdRq'] = obj2['matOdRq'];
-				 	list.push(customObj);
-					
-					
 				})
-			}else if(idx == 'updatedRows' && obj.length != 0){
-				
-				
-				$.each(obj, function(idx2, obj2){
-					if(obj2['matOdDeCd'] == '' ||obj2['actCode'] =='' ||obj2['matAmt'] == '' || obj2['matCode'] == '' || obj2['matOdAcp']=='' || obj2['matPrice'] == '' || obj2['matOdRq'] == ''){
+		}
+		
+		if(inGrid.getModifiedRows().updatedRows.length > 0 ){
+
+				$.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['matOdDeCd'] == "" ||obj2['actCode'] == "" ||obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp']== "" || obj2['matPrice'] == "" || obj2['matOdRq'] == ""){
 						flag = false;
-						return;
+						return false;
 					}
-					
-						let customObj = {};
-						customObj['matOdDeCd'] = obj2['matOdDeCd'];
-						customObj['empCode'] = "이슬";	//고치기
-						customObj['actCode'] = obj2['actCode'];
-						customObj['matAmt'] = obj2['matAmt'];
-						customObj['matCode'] = obj2['matCode'];
-						customObj['matOdAcp'] = obj2['matOdAcp'];
-						customObj['matPrice'] = obj2['matPrice'];
-						customObj['matOdRq'] = obj2['matOdRq'];
-			 			list2.push(customObj);
-
 				})
 				
-
-			}else if(idx == 'deletedRows' && obj.length != 0){
-				
-				
-				
-				$.each(obj, function(idx2, obj2){
-						
-						let customObj = {};
-						customObj['matOdDeCd'] = obj2['matOdDeCd'];
-						customObj['matOdCd'] = obj2['matOdCd'];
-						list3.push(customObj);
-				})
-
-			}
-			
-		})
+		}
 		
 		if(flag){
-			
-			if(list3.length != 0){
 				$.ajax({
-					url : 'matOrderDirDelete',
+					url : 'matOrderDirSave',
 					method : 'POST',
-					data : JSON.stringify(list3),
+					data : JSON.stringify(orderGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						console.log(data);
-						selectAjax();
+						swal("성공", data +"건이 처리되었습니다.", "success");
 					},
 					error : function(reject){
 						console.log(reject);
+						swal("실패", "", "error");
 					}
-				});
-			}
-			if(list2.length != 0){
-				$.ajax({
-					url : 'matOrderDirUpdate',
-					method : 'POST',
-					data : JSON.stringify(list2),
-					contentType : 'application/json',
-					success : function(data){
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-			if(list.length != 0){
-				$.ajax({
-					url : 'matOrderDirInsert',
-					method : 'POST',
-					data : JSON.stringify(list),
-					contentType : 'application/json',
-					success : function(data){
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				});
-			}
-
+				})
 		} else {
-			return;
+			alert("값이 입력되지 않았습니다.");
 		}
+
 	}
 	
 	//검색
@@ -432,8 +383,8 @@
 			
 		       $(".modal").fadeIn();
 		       Grid = createActGrid();
-		       
-		       Grid.on('click', event2 => {
+		       $('.modal_title h3').text('거래처 목록');
+		       Grid.on('dblclick', event2 => {
 		        	let rowKey = Grid.getFocusedCell().rowKey;
 		        	let actCode = Grid.getValue(rowKey, 'actCode');
 		        	let actName = Grid.getValue(rowKey, 'actName');
@@ -462,7 +413,8 @@
 		   $("#matModal").click(function(){
 		       $(".modal").fadeIn();
 		       Grid = createMatGrid();
-		       Grid.on('click', () => {
+		       $('.modal_title h3').text('자재 목록');
+		       Grid.on('dblclick', () => {
 		       	let rowKey = Grid.getFocusedCell().rowKey;
 		       	let matCode = Grid.getValue(rowKey, 'matCode');
 		    	let matName = Grid.getValue(rowKey, 'matName');
@@ -488,11 +440,13 @@
     	if(columnName == 'matName'){
     		$(".modal").fadeIn();
  	       Grid = createMatGrid();
- 	       
- 	       Grid.on('click', () => {
+ 	      $('.modal_title h3').text('자재 목록');
+ 	       Grid.on('dblclick', () => {
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
  	        	let matCode = Grid.getValue(rowKey2, 'matCode');
  	        	let matName = Grid.getValue(rowKey2, 'matName');
+ 	        	let matUnit = Grid.getValue(rowKey2, 'matUnit');
+ 	        	let matStd = Grid.getValue(rowKey2, 'matStd');
  	        	orderGrid.finishEditing(rowKey, columnName);
 
  	    		if(matCode != null){
@@ -500,6 +454,12 @@
  	    		}
  	    		if(matName != null){
  	    			orderGrid.setValue(rowKey, 'matName', matName);
+ 	    		}
+ 	    		if(matUnit != null){
+ 	    			orderGrid.setValue(rowKey, 'matUnit', matUnit);
+ 	    		}
+ 	    		if(matStd != null){
+ 	    			orderGrid.setValue(rowKey, 'matStd', matStd);
  	    		}
  	    		
  	    		
@@ -580,7 +540,8 @@
 	          	{
 	          		matCode : "${m.matCode}",
 	          		matName :"${m.matName}",
-	          		matStd :"${m.matStd}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
 	          	} <c:if test="${not status.last}">,</c:if>
 	          </c:forEach>
 	          ],
@@ -604,6 +565,10 @@
 	               header: '자재명',
 	               name: 'matName'
 	             },
+	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
 	             {
 	               header: '규격',
 	               name: 'matStd'

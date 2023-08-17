@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.order.de.mapper.MatOrderDeMapper;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
@@ -28,22 +29,25 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		return modm.selectMatOrderSearch(materialCode, accountCode, startDate, endDate);
 	}
 	
-	//등록
+	//등록, 수정, 삭제
 	@Override
-	public int insertMatOrderList(List<MatOrderDeVO> orderList) {
-		return modm.insertMatOrderList(orderList);
-	}
-
-	@Override
-	public int updateMatOrderList(List<MatOrderDeVO> orderList) {
+	public int modifyMatOrder(GridVO<MatOrderDeVO> data) {
+		int result = 0;
+		// TODO Auto-generated method stub
+		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			modm.deleteMatOrderList(data.getDeletedRows());
+			result += data.getDeletedRows().size();
+		}
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			modm.updateMatOrderList(data.getUpdatedRows());
+			result += data.getUpdatedRows().size();
+		}
+		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			modm.insertMatOrderList(data.getCreatedRows());
+			result += data.getCreatedRows().size();
+		}
 		
-		return modm.updateMatOrderList(orderList);
-	}
-
-	@Override
-	public int deleteMatOrderList(List<MatOrderDeVO> orderList) {
-		
-		return modm.deleteMatOrderList(orderList);
+		return result;
 	}
 
 }

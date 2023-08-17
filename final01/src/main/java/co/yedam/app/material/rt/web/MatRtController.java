@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatRtVO;
@@ -68,43 +69,12 @@ public class MatRtController {
 	}
 	
 	//등록
-	@PostMapping("matRtDirInsert")
+	@PostMapping("matRtDirSave")
 	@ResponseBody
-	public String matRtDirInsert(@RequestBody List<MatRtVO> rtList) {
-		int result = mrs.insertMatRtList(rtList);
-		 
-		 if(result > 0) {
-			 return "success";
-		 } else {
-			 return "fail";
-		 }
+	public int matInDirSave(@RequestBody GridVO<MatRtVO> data) {
+		return mrs.modifyMatRt(data);
 	}
-	
-	//수정
-	@PostMapping("matRtDirUpdate")
-	@ResponseBody
-	public String matRtDirUpdate(@RequestBody List<MatRtVO> rtList) {
-		int result = mrs.updateMatRtList(rtList);
-		
-		if(result > 0) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
-	
-	//삭제
-	@PostMapping("matRtDirDelete")
-	@ResponseBody
-	public String matRtDirDelete(@RequestBody List<MatRtVO> rtList) {
-		int result = mrs.deleteMatRtList(rtList);
-		
-		if(result > 0) {
-			return "success";
-		} else {
-			return "fail";
-		}
-	}
+
 	
 	@GetMapping("loginForm")
 	public String getloginForm() {

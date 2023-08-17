@@ -2,8 +2,7 @@ package co.yedam.app.material.in.service;
 
 import java.util.List;
 
-
-
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.rt.service.MatTestVO;
 
 
@@ -18,11 +17,6 @@ public interface MatInService {
 	public List<MatTestVO> selectMatTestFinishList();
 	
 	//등록
-	public int insertMatIn(List<MatInVO> inList);
-		
-	//수정
-	public int updateMatIn(List<MatInVO> inList);
-		
-	//삭제
-	public int deleteMatIn(List<MatInVO> inList);
+	public int modifyMatIn(GridVO<MatInVO> data);
+
 }

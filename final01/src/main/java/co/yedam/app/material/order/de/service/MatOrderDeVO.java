@@ -25,6 +25,7 @@ public class MatOrderDeVO {
 	private String matTestYn;
 	private Date matOdRq;
 	
-	
+	private String matUnit;
+	private String matStd;
 	
 }

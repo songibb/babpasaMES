@@ -111,6 +111,8 @@ h2{
 	           	matLot : "${mat.matLot}",
 	           	matCode : "${mat.matCode}",
 	           	matName : "${mat.matName}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	actName :"${mat.actName}",
 	           	actCode :"${mat.actCode}",
 	           	matInAmt : "${mat.matInAmt}",
@@ -145,11 +147,19 @@ h2{
 	 	 	        name: 'matName'
 	 	 	      },
 	 	 	      {
-	 	 	        header: '거래처명',
+	 	          	header: '단위',
+	 			    name: 'matUnit' 
+	 	          },
+	 	          {
+	 	          	header: '규격',
+	 			    name: 'matStd'
+	 	          },
+	 	 	      {
+	 	 	        header: '업체명',
 	 	 	        name: 'actName'
 	 	 	      },
 	 	 	      {
-                      header: '거래처코드',            // [필수] 컬럼 이름
+                      header: '업체코드',            // [필수] 컬럼 이름
                       name: 'actCode',                 // [필수] 컬럼 매핑 이름 값
                       hidden: true,                   // [선택] 숨김 여부
                   },
@@ -207,6 +217,8 @@ h2{
 		           	matInputAmt : "${test.matInputAmt}",
 		           	matCode : "${test.matCode}",
 		           	matName : "${test.matName}",
+		           	matUnit : "${test.matUnit}",
+		           	matStd : "${test.matStd}",
 		           	matYamt : "${test.matYamt}",
 		           	matNamt : "${test.matNamt}",
 		           	actName : "${test.actName}",
@@ -250,6 +262,14 @@ h2{
 			 	        header: '자재명',
 			 	        name: 'matName'
 			 	  },
+			 	  {
+	            	  	header: '단위',
+			 		 	name: 'matUnit' 
+	              },
+	              {
+	            	  	header: '규격',
+			 		 	name: 'matStd'
+	              },
 			 	  {
 			 	        header: '업체코드',
 			 	        name: 'actCode',
@@ -301,125 +321,56 @@ h2{
 		inGrid.blur();
 		let modifyGridInfo = inGrid.getModifiedRows();
 		
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!inGrid.isModified()){
+			alert("변경사항이 없습니다.");
+			return false;
+		}
+		
 		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
 		var flag = true;
-		//create, modify, delete 포함하는 전체 배열을 도는 each문
-		var list = [];
-		var list2 = [];
-		var list3 = [];
-		$.each(modifyGridInfo, function(idx, obj){
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
 			
-			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
-			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
-			if(!flag){
-				alert('값이 입력되지 않았습니다.');
-				return;
-			}
-			else if(idx == 'createdRows' && obj.length != 0){
+		if(inGrid.getModifiedRows().createdRows.length > 0 ){
 				
-				$.each(obj, function(idx2, obj2){
-					// console.log(obj2);  createdRows [{…}]
-					
-					if(obj2['matCode'] == '' ||obj2['matInAmt'] =='' || obj2['matExd'] == '' || obj2['matInd'] == '' || obj2['matTestCode']=='' || obj2['actCode'] == ''){
+				$.each(inGrid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['matCode'] == "" ||obj2['matInAmt'] =="" || obj2['matExd'] == "" || obj2['matInd'] == "" || obj2['matTestCode']=="" || obj2['actCode'] == ""){
 						flag = false;
-						return;
+						return false;
 					}
-					
-					let customObj = {};
-					customObj['empCode'] = "이슬";	//고치기
-					customObj['matCode'] = obj2['matCode'];
-					customObj['matInAmt'] = obj2['matInAmt'];
-					customObj['matExd'] = obj2['matExd'];
-					customObj['matInd'] = obj2['matInd'];
-					customObj['matTestCode'] = obj2['matTestCode'];
-					customObj['actCode'] = obj2['actCode'];
+				})
+		}
 		
-			 		list.push(customObj);
-					
-					
-				})
-			}else if(idx == 'updatedRows' && obj.length != 0){
-				
-				
-				$.each(obj, function(idx2, obj2){
-					if(obj2['matLot'] == '' ||obj2['matInd'] =='' ||obj2['matExd'] == ''){
+		if(inGrid.getModifiedRows().updatedRows.length > 0 ){
+
+				$.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['matLot'] == "" ||obj2['matInd'] == "" ||obj2['matExd'] == ""){
 						flag = false;
-						return;
+						return false;
 					}
-					
-					let customObj = {};
-					customObj['matLot'] = obj2['matLot'];
-					customObj['matInd'] = obj2['matInd'];
-					customObj['matExd'] = obj2['matExd'];
-		 			list2.push(customObj);
-
 				})
 				
-
-			}else if(idx == 'deletedRows' && obj.length != 0){
-				
-				
-				
-				$.each(obj, function(idx2, obj2){
-						
-					let customObj = {};
-					customObj['matLot'] = obj2['matLot'];
-					list3.push(customObj);
-				})
-
-			}
-			
-		})
+		}
 		
 		if(flag){
-			
-			if(list3.length != 0){
 				$.ajax({
-					url : 'matInDirDelete',
+					url : 'matInDirSave',
 					method : 'POST',
-					data : JSON.stringify(list),
+					data : JSON.stringify(inGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						
-						selectAjax();
+						swal("성공", data +"건이 처리되었습니다.", "success");
 					},
 					error : function(reject){
 						console.log(reject);
-					}
-				});
-			}
-			if(list2.length != 0){
-				$.ajax({
-					url : 'matInDirUpdate',
-					method : 'POST',
-					data : JSON.stringify(list),
-					contentType : 'application/json',
-					success : function(data){
-						selectAjax();
-					},
-					error : function(reject){
-						console.log(reject);
+						swal("실패", "", "error");
 					}
 				})
-			}
-			if(list.length != 0){
-				$.ajax({
-					url : 'matInDirInsert',
-					method : 'POST',
-					data : JSON.stringify(list),
-					contentType : 'application/json',
-					success : function(data){
-						console.log(data);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				})
-			}
-
 		} else {
-			return;
+			alert("값이 입력되지 않았습니다.");
 		}
+
 	}
 	
 	//검색 또는 DML 후 다시 LIST 불러오는 함수
@@ -485,8 +436,10 @@ h2{
 			
 		$(".modal").fadeIn();
 		Grid = createActGrid();
-		       
-		Grid.on('click', event2 => {
+		
+		$('.modal_title h3').text('거래처 목록');
+		
+		Grid.on('dblclick', event2 => {
 			let rowKey = Grid.getFocusedCell().rowKey;
 		    let actCode = Grid.getValue(rowKey, 'actCode');
 		    let actName = Grid.getValue(rowKey, 'actName');
@@ -561,7 +514,8 @@ h2{
 	$("#matModal").click(function(){
 		$(".modal").fadeIn();
 		Grid = createMatGrid();
-		Grid.on('click', () => {
+		$('.modal_title h3').text('자재 목록');
+		Grid.on('dblclick', () => {
 			let rowKey = Grid.getFocusedCell().rowKey;
 		    let matCode = Grid.getValue(rowKey, 'matCode');
 		    let matName = Grid.getValue(rowKey, 'matName');
@@ -586,7 +540,8 @@ h2{
 	          	{
 	          		matCode : "${m.matCode}",
 	          		matName :"${m.matName}",
-	          		matStd :"${m.matStd}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
 	          	} <c:if test="${not status.last}">,</c:if>
 	          </c:forEach>
 	          ],
@@ -611,6 +566,10 @@ h2{
 	               name: 'matName'
 	             },
 	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
+	             {
 	               header: '규격',
 	               name: 'matStd'
 	             }
@@ -619,7 +578,7 @@ h2{
 	     });
 	   
 	   return matGrid;
-  	}
+  }
 	
 	//모달창 닫기버튼
 	$(".close_btn").click(function(){
@@ -659,7 +618,7 @@ h2{
        })
     })
 	
-	//(미완)상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
+	//상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
 	testGrid.on('dblclick', () => {
     	let rowKey = testGrid.getFocusedCell().rowKey;
     	//let columnName = orderGrid.getFocusedCell().columnName;
@@ -670,6 +629,8 @@ h2{
     	let matYamt = testGrid.getValue(rowKey, 'matYamt');
     	let actName = testGrid.getValue(rowKey, 'actName');
     	let actCode = testGrid.getValue(rowKey, 'actCode');
+    	let matUnit = testGrid.getValue(rowKey, 'matUnit');
+     	let matStd = testGrid.getValue(rowKey, 'matStd');
     	let matTestCode = testGrid.getValue(rowKey, 'matTestCode');
 		
     	
@@ -682,7 +643,9 @@ h2{
     					   'matName' : matName,
     					   'actName' : actName,
     					   'actCode' : actCode,
-    					   'matInAmt' : matYamt},
+    					   'matInAmt' : matYamt,
+    					   'matUnit' : matUnit,
+    					   'matStd' : matStd},
     					   { at: 0 }
     	);
 	

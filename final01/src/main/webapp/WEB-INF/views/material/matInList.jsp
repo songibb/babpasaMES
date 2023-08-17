@@ -104,8 +104,8 @@
      $("#actModal").click(function(){
        $(".modal").fadeIn();
        Grid = createActGrid();
-       
-       Grid.on('click', () => {
+       $('.modal_title h3').text('거래처 목록');
+       Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
         	let actCode = Grid.getValue(rowKey, 'actCode');
         	let actName = Grid.getValue(rowKey, 'actName');
@@ -126,7 +126,8 @@
      $("#matModal").click(function(){
        $(".modal").fadeIn();
        Grid = createMatGrid();
-       Grid.on('click', () => {
+       $('.modal_title h3').text('자재 목록');
+       Grid.on('dblclick', () => {
        	let rowKey = Grid.getFocusedCell().rowKey;
        	let matCode = Grid.getValue(rowKey, 'matCode');
     	let matName = Grid.getValue(rowKey, 'matName');
@@ -221,7 +222,8 @@
 	          	{
 	          		matCode : "${m.matCode}",
 	          		matName :"${m.matName}",
-	          		matStd :"${m.matStd}",
+	          		matUnit : "${m.matUnit}",
+	          		matStd :"${m.matStd}"
 	          	} <c:if test="${not status.last}">,</c:if>
 	          </c:forEach>
 	          ],
@@ -246,6 +248,10 @@
 	               name: 'matName'
 	             },
 	             {
+		           header: '단위',
+		           name: 'matUnit'
+		         },
+	             {
 	               header: '규격',
 	               name: 'matStd'
 	             }
@@ -254,7 +260,7 @@
 	     });
 	   
 	   return matGrid;
-   }
+  }
    
    
 
@@ -268,6 +274,8 @@
 	           	matLot : "${mat.matLot}",
 	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
+	           	matUnit : "${mat.matUnit}",
+	           	matStd : "${mat.matStd}",
 	           	actName :"${mat.actName}",
 	           	matInAmt : "${mat.matInAmt}",
 	           	empName : "${mat.empName}",
@@ -300,6 +308,14 @@
 	 	        header: '자재명',
 	 	        name: 'matName'
 	 	      },
+	 	      {
+          	  	header: '단위',
+		 		name: 'matUnit' 
+              },
+              {
+          	  	header: '규격',
+		 		name: 'matStd'
+              },
 	 	      {
 	 	        header: '업체명',
 	 	        name: 'actName'
