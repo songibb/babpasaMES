@@ -2,6 +2,7 @@ package co.yedam.app.sales.order.service;
 
 import java.util.List;
 
+import co.yedam.app.common.grid.service.GridVO;
 
 public interface OrderService {
 	//전체 조회
@@ -12,8 +13,9 @@ public interface OrderService {
 	public List<OrderVO> actAllList();
 	//제품목록
 	public List<OrderVO> prodAllList();
-	//주문등록
-	public int insertOrderList(List<OrderVO> orderList);
 	//주문서 관리 - 미계획 주문서 목록
 	public List<OrderVO> getNoPlan();
+	//등록, 수정, 삭제
+	public int modifyOrder(GridVO<OrderVO> data);
+
 }

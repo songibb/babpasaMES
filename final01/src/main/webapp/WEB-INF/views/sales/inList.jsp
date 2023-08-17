@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>입고 및 재고 조회</title>
+    <title>재고 조회</title>
     <!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -19,6 +19,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+	<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 <style>
    body {
       font-family: 'Nanum Gothic', sans-serif;
@@ -83,7 +89,7 @@
     
   
    /*모달시작*/
-   #prodModal{ 
+   #actModal, #prodModal{ 
      cursor:pointer;
    }
    
@@ -175,7 +181,7 @@
 </head>
 <body>
    <div class="black_bg"></div>
-   <h1>입고 및 재고 조회</h1>
+   <h1>재고 조회</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
@@ -190,8 +196,10 @@
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
                   <br>
-                  <p>주문일자</p>
-                  <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  <p>거래처</p>
+                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                    <i class="bi bi-search" id="actModal"></i>
+                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
@@ -225,6 +233,29 @@
 </div>
 
 <script>
+
+   //거래처 리스트 모달 시작
+    var Grid;
+     $("#actModal").click(function(){
+       $(".modal").fadeIn();
+       Grid = createActGrid();
+       
+       Grid.on('click', () => {
+           let rowKey = Grid.getFocusedCell().rowKey;
+           let actCode = Grid.getValue(rowKey, 'actCode');
+           let actName = Grid.getValue(rowKey, 'actName');
+          $("#actCodeInput").val(actCode);
+          $("#actNameFix").val(actName);
+          //모달창 닫기
+          console.log(rowKey);
+          if(rowKey != null){
+             $(".modal").fadeOut();
+              Grid.destroy();
+          }
+
+          });
+         });
+     
      //제품 리스트 모달 시작
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
@@ -261,6 +292,55 @@
          grid.export('xlsx');
       })
    })
+   
+   //거래처 리스트 모달 그리드
+   function createActGrid(){
+      var actGrid = new tui.Grid({
+          el: document.getElementById('modal_label'),
+          data: [
+             <c:forEach items="${actList}" var="a" varStatus="status">
+                {
+                   actCode : "${a.actCode}",
+                   actName :"${a.actName}",
+                   actSts :"${a.actSts}",
+                   actKind :"${a.actKind}"
+                } <c:if test="${not status.last}">,</c:if>
+             </c:forEach>
+             ],
+         scrollX: false,
+          scrollY: false,
+          minBodyHeight: 30,
+          rowHeaders: ['rowNum'],
+          selectionUnit: 'row',
+          pagination: true,
+          pageOptions: {
+          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+            useClient: true,
+            perPage: 10
+          },
+          columns: [
+             {
+                  header: '거래처코드',
+                  name: 'actCode',
+                },
+                {
+                  header: '거래처명',
+                  name: 'actName'
+                },
+                {
+                  header: '거래상태',
+                  name: 'actSts'
+                },
+                {
+                  header: '거래처구분',
+                  name: 'actKind'
+                }
+           ]
+         
+        });
+      
+      return actGrid;
+   }
    
  //제품 리스트 모달 그리드
    function createProdGrid(){
@@ -311,20 +391,20 @@
       return prodGrid;
    }
    
-   //입고 및 재고 목록 조회 그리드
+   //전체 주문 목록 조회 그리드
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
-              <c:forEach items="${inList}" var="in">
-                 {
-                	prodLot : "${in.prodLot}",
- 	           		prodName : "${in.prodName}",
- 	           		salesInDate : "${in.salesInDate}",
- 	           		salesInAmt : "${in.salesInAmt}",
- 	           		prodSaveAmt : "${in.prodSaveAmt}",
- 	           		salesInExd : "${in.salesInExd}"
-                 }<c:if test="${not status.last}">,</c:if>
-              </c:forEach>
+        	  <c:forEach items="${inList}" var="in">
+              {
+             	prodLot : "${in.prodLot}",
+	           		prodName : "${in.prodName}",
+	           		salesInDate : "${in.salesInDate}",
+	           		salesInAmt : "${in.salesInAmt}",
+	           		prodSaveAmt : "${in.prodSaveAmt}",
+	           		salesInExd : "${in.salesInExd}"
+              }<c:if test="${not status.last}">,</c:if>
+           </c:forEach>
              ],
          scrollX: false,
           scrollY: false,
@@ -367,32 +447,17 @@
         });
    
  	//검색 버튼
-   $('#searchBtn').on('click', searchInList);
-   function searchInList(e){
+   $('#searchBtn').on('click', searchOrderList);
+   function searchOrderList(e){
+	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
-      let sd = $('#startDate').val();
-      let ed = $('#endDate').val();      
         
-      let search = { prodCode : prodInsert, startDate : sd , endDate : ed };
+      let search = { actCode : actInsert, prodCode : prodInsert };
       $.ajax({
-         url : 'inListFilter',
+         url : 'orderListFilter',
          method : 'GET',
          data : search ,
          success : function(data){
-            
-           for(let i of data){
-               let date = new Date(i.ordDate);
-               let year = date.getFullYear();    //0000년 가져오기
-               let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               let day = date.getDate();        //일자 가져오기
-                  i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-               
-               date = new Date(i.ordDate);
-               year = date.getFullYear();    //0000년 가져오기
-               month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-               day = date.getDate();        //일자 가져오기
-                  i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-           }
             grid.resetData(data);
          },
          error : function(reject){
@@ -409,16 +474,6 @@
       })
    }
  
-   //이전 날짜 선택불가
-    $( '#startDate' ).on( 'change', function() {
-      $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
-    } );
-   //이후날짜 선택불가
-    $( '#endDate' ).on( 'change', function() {
-         $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
-       } );
-   
-
 </script>
 </body>
 </html>

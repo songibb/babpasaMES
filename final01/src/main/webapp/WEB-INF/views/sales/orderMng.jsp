@@ -93,7 +93,7 @@ body {
    
  
 /*모달시작*/
-#actModal, #prodModal{ 
+#actModal, #prodModal, #delete{ 
    cursor:pointer;
  }
   
@@ -216,8 +216,9 @@ input[type="date"]{
                   </button>
 		            	</div>
 	            
-	            	<button id="save">저장</button>
-	            	<button id="dirAdd">행추가</button>
+	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
+	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -245,12 +246,20 @@ input[type="date"]{
 	<script>
 	document.getElementById('save').addEventListener('click', saveServer);
 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
+	//삭제버튼
+	$('#delete').on("click",function(){
+	//그리드에서 행 지움
+	orderGrid.removeCheckedRows(false);
+	//마우스 커서 없앰
+	orderGrid.blur();
+	});
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
 		orderGrid.appendRow({}, { at: 0 });
 	}
 
+	
 	//주문 form
 	var orderGrid = new tui.Grid({
 	        el: document.getElementById('grid'),
@@ -272,7 +281,7 @@ input[type="date"]{
 	        scrollX: false,
 	        scrollY: false,
 	        minBodyHeight: 30,
-			rowHeaders: ['rowNum'],	
+			rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
 		        perPage: 10
@@ -348,66 +357,6 @@ input[type="date"]{
 		         }
 	        ]
 	      });
-	
-	
-	
-	
-	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
-	function saveServer() {	
-		
-		//생산지시 객체 -> insert
-		let rowKey = orderGrid.getFocusedCell().rowKey;
-		let columnName = orderGrid.getFocusedCell().columnName;
-		
-		orderGrid.finishEditing(rowKey, columnName);
-// 		let list2 = orderGrid.getData();
-// 		console.log(list2);
-		
-		let list = [];
-// 		$.each(list2, function(idx, obj){
-// 			if(obj.ordCode == null){
-// 				list.push(obj);
-// 			}
-// 		})
-// 		console.log(list);
-// 		let customList = [];
-		
-// 		$.each(list, function(idx, obj){
-// 			let customObj = {};
-// 			customObj['ordDate'] = obj['ordDate'];
-// 			customObj['actCode'] = obj['actCode'];
-// 			customObj['empCode'] = obj['empCode'];
-// 			customObj['ordSts'] = obj['ordSts'];
-// 			customObj['prcsPlanCode'] = obj['prcsPlanCode'];
-// 			customObj['prodCode'] = obj['prodCode'];
-// 			customObj['prcsRqAmt'] = obj['prcsRqAmt'];
-// 			customObj['devDate'] = obj['devDate'];
-// 	 		customList.push(customObj);
-// 		});
-
-		let customRowkey = orderGrid.getFocusedCell().rowKey;
-		let customObj = orderGrid.getRow(customRowkey);
-		list.push(customObj);
-		
-		//ajax로 데이터 보내기
-		
-		$.ajax({
-			url : 'orderInsert',
-			method : 'POST',
-			data : JSON.stringify(list),
-			contentType : 'application/json',
-			success : function(data){
-				console.log(data);
-				
-			},
-			error : function(reject){
-				console.log(reject);
-			}
-		})
-			
-		
-		
-	}
 		
 	 //거래처 리스트 모달 시작
     var Grid;
@@ -624,15 +573,17 @@ input[type="date"]{
          url : 'orderListFilter',
          method : 'GET',
          data : search ,
-         success : function(data){
-        	//날짜 츨력 포맷 변경
-				$.each(data, function(i, objDe){
-					let od = data[i]['ordDate'];
-					let dd = data[i]['devDate'];
-					data[i]['ordDate'] = getDate(od);
-					data[i]['devDate'] = getDate(dd);
+         success : function(data2){
+        	 
+				$.each(data2, function(idx, obj){
+					let date = new Date(obj['ordDate']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['ordDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
 				})
-           orderGrid.resetData(data);
+           orderGrid.resetData(data2);
          },
          error : function(reject){
             console.log(reject);
@@ -656,6 +607,65 @@ input[type="date"]{
     $( '#endDate' ).on( 'change', function() {
          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
+   
+    
+  //저장 함수
+	function saveServer() {	
+		orderGrid.blur();
+		let modifyGridInfo = orderGrid.getModifiedRows();
+		
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!orderGrid.isModified()){
+			alert("변경사항이 없습니다.");
+			return false;
+		}
+		
+		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+		var flag = true;
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
+			
+		if(orderGrid.getModifiedRows().createdRows.length > 0 ){
+				
+				$.each(orderGrid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['ordDate'] == "" || obj2['actCode'] == "" || obj2['prodCode'] == "" || obj2['prcsRqAmt']== "" || obj2['devDate'] == "" || obj2['empCode'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+		}
+		
+		if(orderGrid.getModifiedRows().updatedRows.length > 0 ){
+
+				$.each(orderGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+				
+		}
+		
+		if(flag){
+				$.ajax({
+					url : 'orderSave',
+					method : 'POST',
+					data : JSON.stringify(orderGrid.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						console.log(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+		} else {
+			alert("값이 입력되지 않았습니다.");
+		}
+
+	}
+  	
+
     </script>
 </body>
 </html>

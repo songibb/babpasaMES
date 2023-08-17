@@ -16,6 +16,18 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+
 <style>
 body {
 	font-family: 'Nanum Gothic', sans-serif;
@@ -81,7 +93,7 @@ body {
    
  
 /*모달시작*/
-#actModal, #prodModal{ 
+#actModal, #prodModal, #delete{ 
    cursor:pointer;
  }
   
@@ -204,8 +216,9 @@ input[type="date"]{
                   </button>
 		            	</div>
 	            
-	            	<button id="save">저장</button>
-	            	<button id="dirAdd">행추가</button>
+	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
+	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -233,31 +246,39 @@ input[type="date"]{
 	<script>
 	document.getElementById('save').addEventListener('click', saveServer);
 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
+	//삭제버튼
+	$('#delete').on("click",function(){
+	//그리드에서 행 지움
+	outGrid.removeCheckedRows(false);
+	//마우스 커서 없앰
+	outGrid.blur();
+	});
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
-		orderGrid.appendRow({}, { at: 0 });
+		outGrid.appendRow({}, { at: 0 });
 	}
 
-	//출고 form
-	var orderGrid = new tui.Grid({
+	
+	//주문 form
+	var outGrid = new tui.Grid({
 	        el: document.getElementById('grid'),
 	        data: [
-	        	<c:forEach items="${outList}" var="out" varStatus="status">
-	           	{
-	           		salesOutCode : "${out.salesOutCode}",
- 		           	prodName : "${out.prodName}",
- 		           	actName : "${out.actName}",
- 		           	salesOutAmt : "${out.salesOutAmt}",
- 		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
- 		           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
-	           	}<c:if test="${not status.last}">,</c:if>
+	        	<c:forEach items="${outList}" var="out">
+	              {
+		           		salesOutCode : "${out.salesOutCode}",
+			           	prodName : "${out.prodName}",
+			           	actName : "${out.actName}",
+			           	salesOutAmt : "${out.salesOutAmt}",
+			           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
+			           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
+	              }<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
 	        scrollX: false,
 	        scrollY: false,
 	        minBodyHeight: 30,
-			rowHeaders: ['rowNum'],	
+	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
 		        perPage: 10
@@ -272,51 +293,46 @@ input[type="date"]{
 		         },
 		         {
 		           header: '제품명',
-		           name: 'prodName',
-		           editor : 'text'
+		           name: 'prodName'
 		         },
 		         {
 		           header: '거래처명',
-		           name: 'actName',
-		           editor : 'text'
+		           name: 'actName'
 		         },
 		         {
 		           header: '출고량',
-		           name: 'salesOutAmt',
-		           editor : 'text'
+		           name: 'salesOutAmt'
 		         },
 		         {
 		           header: '출고날짜',
 		           name: 'salesOutDate',
-		           editor : 'text'
+		           editor: 'datePicker',
+		           value : '${out.salesOutDate}'
 		         },
 		         {
 		           header: '유통기한',
-		           name: 'salesInExd'
+		           name: 'salesInExd',
+		           editor: 'datePicker',
+		           value : '${out.salesInExd}'
 		         },
 	         	{
-		           header: '제품코드',
+		           header: '출고여부',
 		           name: 'prodCode',
 		           hidden : true
 		         },
 	         	{
-		           header: '상세주문코드',
+		           header: '출고여부',
 		           name: 'salesOrdDeCode',
 		           hidden : true
 		         },
 		         {
-		           header: '제품LOT',
+		           header: '출고여부',
 		           name: 'prodLot',
 		           hidden : true
 		         },
 	         	{
-		           header: '거래처코드',
+		           header: '출고여부',
 		           name: 'actCode',
-		           hidden : true
-		         },
-	         	{
-		           header: '직원코드',
-		           name: 'empCode',
 		           hidden : true
 		         },
 	         	{
@@ -326,59 +342,6 @@ input[type="date"]{
 		         }
 	        ]
 	      });
-	
-	
-	
-	
-	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
-	function saveServer() {	
-		
-		//생산지시 객체 -> insert
-		let rowKey = orderGrid.getFocusedCell().rowKey;
-		let columnName = orderGrid.getFocusedCell().columnName;
-		
-		orderGrid.finishEditing(rowKey, columnName);
-		let list2 = orderGrid.getData();
-		console.log(list2);
-		
-		let list = [];
-		$.each(list2, function(idx, obj){
-			if(obj.matOdCd == null){
-				list.push(obj);
-			}
-		})
-		console.log(list);
-		let customList = [];
-		$.each(list, function(idx, obj){
-			let customObj = {};
-			customObj['prodCode'] = obj['prodCode'];
-			customObj['salesOutDate'] = obj['salesOutDate'];
-			customObj['salesOutAmt'] = obj['salesOutAmt'];
-			customObj['empCode'] = obj['empCode'];
-			customObj['salesOrdDeCode'] = obj['salesOrdDeCode'];
-			customObj['prodLot'] = obj['prodLot'];
-	 		customList.push(customObj);
-		});
-		
-		//ajax로 데이터 보내기
-		
-		$.ajax({
-			url : 'outInsert',
-			method : 'POST',
-			data : JSON.stringify(customList),
-			contentType : 'application/json',
-			success : function(data){
-				console.log(data);
-				
-			},
-			error : function(reject){
-				console.log(reject);
-			}
-		})
-			
-		
-		
-	}
 		
 	 //거래처 리스트 모달 시작
     var Grid;
@@ -425,9 +388,9 @@ input[type="date"]{
 	
 	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
 		var Grid;
-		orderGrid.on('click', () => {
-    	let rowKey = orderGrid.getFocusedCell().rowKey;
-    	let columnName = orderGrid.getFocusedCell().columnName;
+		outGrid.on('click', () => {
+    	let rowKey = outGrid.getFocusedCell().rowKey;
+    	let columnName = outGrid.getFocusedCell().columnName;
     	if(columnName == "actName"){
     		$(".modal").fadeIn();
     	       Grid = createActGrid();
@@ -440,8 +403,8 @@ input[type="date"]{
     	        	console.log(actName);
     	    		//$("#actCodeInput").val(actCode);
     	    		//$("#actNameFix").val(actName);
-    	    		orderGrid.setValue(rowKey, 'actCode', actCode);
-    	    		orderGrid.setValue(rowKey, 'actName', actName);
+    	    		outGrid.setValue(rowKey, 'actCode', actCode);
+    	    		outGrid.setValue(rowKey, 'actName', actName);
     	    		//선택시 모달창 닫기
     	    		if(rowKey != null){
     	    			$(".modal").fadeOut();
@@ -461,8 +424,8 @@ input[type="date"]{
  	        	console.log(prodName);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
- 	    		orderGrid.setValue(rowKey, 'prodCode', prodCode);
- 	    		orderGrid.setValue(rowKey, 'prodName', prodName);
+ 	    		outGrid.setValue(rowKey, 'prodCode', prodCode);
+ 	    		outGrid.setValue(rowKey, 'prodName', prodName);
  	    		//선택시 모달창 닫기
  	    		if(rowKey != null){
  	    			$(".modal").fadeOut();
@@ -582,60 +545,186 @@ input[type="date"]{
         return prodGrid;
      }
 	
-   //검색 버튼
-     $('#searchBtn').on('click', searchOrderList);
-     function searchOrderList(e){
-  	  let actInsert = $('#actCodeInput').val();
-  	  let prodInsert = $('#prodCodeInput').val();
-        let sd = $('#startDate').val();
-        let ed = $('#endDate').val();      
-          
-        let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
-        $.ajax({
-           url : 'orderListFilter',
-           method : 'GET',
-           data : search ,
-           success : function(data){
-              
-             for(let i of data){
-                 let date = new Date(i.ordDate);
-                 let year = date.getFullYear();    //0000년 가져오기
-                 let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-                 let day = date.getDate();        //일자 가져오기
-                    i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-                 
-                 date = new Date(i.ordDate);
-                 year = date.getFullYear();    //0000년 가져오기
-                 month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-                 day = date.getDate();        //일자 가져오기
-                    i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-             }
-              grid.resetData(data);
-           },
-           error : function(reject){
-              console.log(reject);
-           }
-        });
-     }
-     
-     //초기화 버튼
-     $('#searchResetBtn').on('click', resetInput);
-     function resetInput(e){
-        $('input').each(function(idx, obj){
-           obj.value = '';
-        })
-     }
+	//검색 버튼
+   $('#searchBtn').on('click', searchOrderList);
+   function searchOrderList(e){
+	  let actInsert = $('#actCodeInput').val();
+	  let prodInsert = $('#prodCodeInput').val();
+      let sd = $('#startDate').val();
+      let ed = $('#endDate').val();      
+        
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      $.ajax({
+         url : 'orderListFilter',
+         method : 'GET',
+         data : search ,
+         success : function(data2){
+        	 
+				$.each(data2, function(idx, obj){
+					let date = new Date(obj['ordDate']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['ordDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+				})
+           outGrid.resetData(data2);
+         },
+         error : function(reject){
+            console.log(reject);
+         }
+      });
+   }
    
-     //이전 날짜 선택불가
-      $( '#startDate' ).on( 'change', function() {
-        $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
-      } );
-     //이후날짜 선택불가
-      $( '#endDate' ).on( 'change', function() {
-           $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
-         } );
-     
-	//필요한 데이터만 list에 담음
+   //초기화 버튼
+   $('#searchResetBtn').on('click', resetInput);
+   function resetInput(e){
+      $('input').each(function(idx, obj){
+         obj.value = '';
+      })
+   }
+ 
+   //이전 날짜 선택불가
+    $( '#startDate' ).on( 'change', function() {
+      $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+    } );
+   //이후날짜 선택불가
+    $( '#endDate' ).on( 'change', function() {
+         $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+       } );
+   
+    
+    //저장 버튼 클릭시 실행 될 함수 -> insert 실행
+  	function saveServer() {	
+  		outGrid.blur();
+  		let modifyGridInfo = outGrid.getModifiedRows();
+  		console.log(modifyGridInfo);
+  		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+  		var flag = true;
+  		//create, modify, delete 포함하는 전체 배열을 도는 each문
+  		var list = [];
+  		var list2 = [];
+  		var list3 = [];
+  		$.each(modifyGridInfo, function(idx, obj){
+  			
+  			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
+  			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
+  			if(!flag){
+  				alert('값이 입력되지 않았습니다.');
+  				return;
+  			}
+  			else if(idx == 'createdRows' && obj.length != 0){
+  				
+  				$.each(obj, function(idx2, obj2){
+  					// console.log(obj2);  createdRows [{…}]
+  					
+  					debugger
+  					if(obj2['ordDate'] =='' || obj2['actCode'] == '' || obj2['prodCode'] == '' || obj2['prcsRqAmt']=='' || obj2['devDate'] == '' || obj2['empCode'] == ''){
+  						flag = false;
+  						return ;
+  					}
+  					
+  					let customObj = {};
+  					customObj['ordDate'] = obj2['ordDate'];
+  					customObj['actCode'] = obj2['actCode'];
+  					customObj['prodCode'] = obj2['prodCode'];
+  					customObj['prcsRqAmt'] = obj2['prcsRqAmt'];
+  					customObj['devDate'] = obj2['devDate'];
+  					customObj['empCode'] = obj2['empCode'];
+  					list.push(customObj);
+  					
+  					
+  				})
+  			}else if(idx == 'updatedRows' && obj.length != 0){
+  				
+  				
+  				$.each(obj, function(idx2, obj2){
+  					if(obj2['prcsRqAmt'] == '' || obj2['prodCode'] == '' || obj2['actCode'] == '' || obj2['ordDate'] == '' || obj2['devDate'] == '' || obj2['empCode'] == '' ){
+  						flag = false;
+  						return;
+  					}
+  					
+  						let customObj = {};
+  						customObj['salesOrdDeCode'] = obj2['salesOrdDeCode'];
+  						customObj['prodCode'] = obj2['prodCode'];
+  						customObj['prcsRqAmt'] = obj2['prcsRqAmt'];
+  						customObj['actCode'] = obj2['actCode'];
+  						customObj['ordDate'] = obj2['ordDate'];
+  						customObj['devDate'] = obj2['devDate'];
+  						customObj['empCode'] = obj2['empCode'];
+  			 			list2.push(customObj);
+
+  				})
+  				
+
+  			}else if(idx == 'deletedRows' && obj.length != 0){
+  				
+  				
+  				
+  				$.each(obj, function(idx2, obj2){
+  						
+  						let customObj = {};
+  						customObj['salesOrdDeCode'] = obj2['salesOrdDeCode'];
+  						customObj['ordCode'] = obj2['ordCode'];
+  						list3.push(customObj);
+  				})
+
+  			}
+  			
+  		})
+  		
+  		if(flag){
+  			
+  			if(list3.length != 0){
+  				$.ajax({
+  					url : 'orderDelete',
+  					method : 'POST',
+  					data : JSON.stringify(list3),
+  					contentType : 'application/json',
+  					success : function(data){
+  						console.log(data);
+  						searchOrderList();
+  					},
+  					error : function(reject){
+  						console.log(reject);
+  					}
+  				});
+  			}
+  			if(list2.length != 0){
+  				$.ajax({
+  					url : 'orderUpdate',
+  					method : 'POST',
+  					data : JSON.stringify(list2),
+  					contentType : 'application/json',
+  					success : function(data){
+  						searchOrderList();
+  					},
+  					error : function(reject){
+  						console.log(reject);
+  					}
+  				});
+  			}
+  			if(list.length != 0){
+  				$.ajax({
+  					url : 'orderInsert',
+  					method : 'POST',
+  					data : JSON.stringify(list),
+  					contentType : 'application/json',
+  					success : function(data){
+  						searchOrderList();
+  					},
+  					error : function(reject){
+  						console.log(reject);
+  					}
+  				});
+  			}
+
+  		} else {
+  			return;
+  		}
+  	}
+  	
+
     </script>
 </body>
 </html>

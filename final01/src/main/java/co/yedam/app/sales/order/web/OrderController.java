@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import co.yedam.app.material.order.de.service.MatOrderDeVO;
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
 
@@ -43,22 +42,9 @@ public class OrderController {
 		return vo;
 	}
 	
-	//거래처 등록 - 실행
-	@PostMapping("orderInsert")
-	@ResponseBody
-	public String orderInsert(@RequestBody List<OrderVO>  orderList) {
-		 int result = orderService.insertOrderList(orderList);
-		 
-		 if(result > 0) {
-			 return "success";
-		 } else {
-			 return "fail";
-		 }
-	} 
-	
 	// 주문 관리 조회들
-		@GetMapping("/orderMng")
-		public String orderMngList(Model model) {
+	@GetMapping("/orderMng")
+	public String orderMngList(Model model) {
 		//전체 주문서 목록
 		model.addAttribute("orderList", orderService.getNoPlan());
 		//거래처 목록 -> 모달
@@ -66,5 +52,14 @@ public class OrderController {
 		//제품 목록 - 완제품만 -> 모달
 		model.addAttribute("prodList", orderService.prodAllList());	
 		return "sales/orderMng";
-		}
+	}
+	
+	
+	//등록, 수정, 삭제
+	@PostMapping("orderSave")
+	@ResponseBody
+	public int orderSave(@RequestBody GridVO<OrderVO> data) {
+		return orderService.modifyOrder(data);
+	}
+	
 }
