@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.equip.mapper.OffEquipMapper;
+import co.yedam.app.equip.service.EquipVO;
 import co.yedam.app.equip.service.OffEquipService;
 import co.yedam.app.equip.service.OffEquipVO;
 
@@ -56,5 +57,12 @@ public class OffEquipServiceImpl implements OffEquipService {
 	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO) {
 		return offEquipMapper.selectOffEquipInfo(offequipVO);
 		
+	}
+	
+
+	//설비 검색
+	@Override
+	public List<EquipVO> offsearchEquip(String eqName){
+		return offEquipMapper.offsearchEquip(eqName);
 	}
 }

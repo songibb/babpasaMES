@@ -88,6 +88,7 @@
 </style>
 </head>
 <body>
+<form>
 	<div class="black_bg"></div>
 	<h1>설비 조회 </h1>
 	<div class="col-lg-12 stretch-card">
@@ -96,11 +97,13 @@
             	<div class="table-responsive pt-3">
             		<div id="customtemplateSearchAndButton">
 						<p>설비명</p>
-						<input type="text" placeholder="설비명을 입력하세요">
-  						<i class="fas fa-search" id="actModal" data-toggle="modal" data-target="#searchModal"></i>
-				
-						<button type="button" class="btn btn-info btn-icon-text">초기화</button>					
+  							<input type="text" placeholder="검색어를 입력하세요" id="equipSearch">
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+								<i class="fas fa-search"></i>검색
+							</button>
+						<button type="reset" class="btn btn-info btn-icon-text">초기화</button>					
 					</div>
+					</form>
 					<div id="grid"></div>
                 </div>
 			</div>
@@ -189,6 +192,24 @@
 			 	    ]
 		      })  
 			
+		    //검색
+		    $('#searchBtn').on('click', searchProdIn);
+		    function searchProdIn(e){
+		 	   let content = $('#equipSearch').val();
+		 	   let search = { eqName : content };
+		 	   $.ajax({
+		 		   url : 'searchEquip',
+		 		   method : 'GET',
+		 		   data : search ,
+		 		   success : function(data){
+		 			   grid.resetData(data);
+		 		   },
+		 		   error : function(reject){
+		 			   console.log(reject);
+		 		   }
+		 	   })
+		    }
+
 		
 
 	</script>

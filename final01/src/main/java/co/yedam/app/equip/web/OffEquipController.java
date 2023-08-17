@@ -29,19 +29,15 @@ public class OffEquipController {
 		model.addAttribute("allequip", offEquipService.getAllEquip());
 		return "equip/offequip";
 	}
-	
-	
-	//Ajax 연결 - 전체 설비 리스트
-		@GetMapping("selectoffequip") //Equiplist.jsp의 ajax url과 연결되는 것 
-		@ResponseBody
-		public List<OffEquipVO> getOffequip(){
-			List<OffEquipVO> list = offEquipService.getOffEquipList();
-			return list;
-		}
 		
-	
-	
-	
+		
+	//Ajax 연결 - 전체 설비 리스트
+	@GetMapping("selectoffequip") //Equiplist.jsp의 ajax url과 연결되는 것 
+	@ResponseBody
+	public List<OffEquipVO> getOffequip(){
+		List<OffEquipVO> list = offEquipService.getOffEquipList();
+		return list;
+	}
 		
 	//등록페이지
 	@GetMapping("/insertOffEquip")
@@ -77,4 +73,12 @@ public class OffEquipController {
 		return findVO;
 	}
 	
+	//설비검색조회
+	@GetMapping("/offsearchEquip")
+	@ResponseBody
+	public List<EquipVO> offSearchEquip(@RequestParam String eqName) {
+		List<EquipVO> vo = offEquipService.offsearchEquip(eqName);
+		return vo;
+				
+	}
 }

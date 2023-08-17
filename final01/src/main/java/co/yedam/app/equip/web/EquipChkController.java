@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.emp.service.EmpInfoService;
+import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.equip.service.EquipChkService;
 import co.yedam.app.equip.service.EquipChkVO;
 
@@ -18,6 +20,10 @@ public class EquipChkController {
 
 	@Autowired
 	EquipChkService equipChkService;
+	
+	@Autowired
+	EmpInfoService empInfoService;
+	
 	
 	//전체 점검설비
 	@GetMapping("equipchkList")
@@ -45,4 +51,21 @@ public class EquipChkController {
 		}
 		return result;
 	}
+	
+	/*
+	 * //모달 : 사원 조회
+	 * 
+	 * @GetMapping("/equipCodeList") public String empList(Model model) {
+	 * model.addAttribute("empCodeList", equipChkService.selectEmpList());
+	 * 
+	 * return "equip/equipchkList"; }
+	 */
+	
+	//AJAX
+		@GetMapping("equipCodeList") 
+		@ResponseBody
+		public List<EmpInfoVO> equipCodeList(){
+			List<EmpInfoVO> list = empInfoService.selectEmpInfoList();
+			return list;
+		}
 }

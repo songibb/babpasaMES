@@ -82,5 +82,4 @@ public class EquipServiceImpl implements EquipService {
 		return equipMapper.searchEquip(eqName);
 	}
 
-
 }

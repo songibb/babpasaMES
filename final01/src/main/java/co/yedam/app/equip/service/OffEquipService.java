@@ -17,4 +17,7 @@ public interface OffEquipService {
 	
 	//모달에서 갖고오는 설비 단건으로 갖고오기(조회)
 	public OffEquipVO getOffEquipInfo(OffEquipVO offequipVO);
+	
+	//설비명 검색
+	public List<EquipVO> offsearchEquip (String eqName);
 }
