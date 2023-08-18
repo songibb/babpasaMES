@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.service.OrderVO;
 import co.yedam.app.sales.out.service.OutService;
 import co.yedam.app.sales.out.service.OutVO;
@@ -52,15 +53,10 @@ public class OutController {
 		return "sales/outMng";
 	}
 
-	// 출고 등록
+	//등록, 수정, 삭제
+	@PostMapping("outSave")
 	@ResponseBody
-	public String outInsert(@RequestBody List<OutVO> outList) {
-		int result = outService.insertOutList(outList);
-
-		if (result > 0) {
-			return "success";
-		} else {
-			return "fail";
-		}
+	public int outSave(@RequestBody GridVO<OutVO> data) {
+		return outService.modifyOut(data);
 	}
 }

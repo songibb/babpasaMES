@@ -46,20 +46,22 @@ public class OrderServiceImpl implements OrderService {
 	public int modifyOrder(GridVO<OrderVO> data) {
 		int result = 0;
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
-			orderMapper.deleteOrder(data.getDeletedRows());
-			result += data.getDeletedRows().size();
+			for(OrderVO vo : data.getDeletedRows()) {
+			result += orderMapper.deleteOrder(vo);
+			}
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
-			orderMapper.updateOrder(data.getUpdatedRows());
-			result += data.getUpdatedRows().size();
+			for(OrderVO vo : data.getUpdatedRows()) {
+				result += orderMapper.updateOrder(vo);
+			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
-			orderMapper.insertOrder(data.getCreatedRows());
-			result += data.getCreatedRows().size();
+			for(OrderVO vo : data.getCreatedRows()) {
+				result += orderMapper.insertOrder(vo);
+			}
 		}
-		
 		return result;
-		
 	}
-
 }
+
+
