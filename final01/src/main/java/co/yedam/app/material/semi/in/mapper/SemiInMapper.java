@@ -18,11 +18,11 @@ public interface SemiInMapper {
 	public List<SemiInVO> selectTestFinishList();
 	
 	//등록
-	public int insertSemiIn(@Param("data") List<SemiInVO> data);
+	public int insertSemiIn(SemiInVO vo);
 	
 	//수정
-	public int updateSemiIn(@Param("data") List<SemiInVO> data);
+	public int updateSemiIn(SemiInVO vo);
 	
 	//삭제
-	public int deleteSemiIn(@Param("data") List<SemiInVO> data);
+	public int deleteSemiIn(SemiInVO vo);
 }

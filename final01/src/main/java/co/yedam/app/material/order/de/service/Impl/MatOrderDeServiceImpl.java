@@ -35,16 +35,22 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		int result = 0;
 		// TODO Auto-generated method stub
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
-			modm.deleteMatOrderList(data.getDeletedRows());
-			result += data.getDeletedRows().size();
+			for(MatOrderDeVO vo : data.getDeletedRows()) {
+				result += modm.deleteMatOrderDeList(vo);				
+			}
+			modm.deleteMatOrderList();
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
-			modm.updateMatOrderList(data.getUpdatedRows());
-			result += data.getUpdatedRows().size();
+			for(MatOrderDeVO vo : data.getUpdatedRows()) {
+				result += modm.updateMatOrderList(vo);				
+			}
+			
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
-			modm.insertMatOrderList(data.getCreatedRows());
-			result += data.getCreatedRows().size();
+			modm.insertMatOrderDeList(data.getCreatedRows().get(0));
+			for(MatOrderDeVO vo : data.getCreatedRows()) {
+				result += modm.insertMatOrderList(vo);			
+			}
 		}
 		
 		return result;
