@@ -62,8 +62,7 @@
         ON(c.mat_od_cd = f.mat_od_cd)
         LEFT JOIN com_act e
         ON(f.act_code = e.act_code)
-		WHERE err_rt_sts = 'N'
-		<!-- 'R1'로 나중에 변경 -->
+		WHERE err_rt_sts = 'R1'
 		ORDER BY mat_test_date DESC
 	</select>
 	
@@ -82,7 +81,7 @@
                 #{rt.matRtSts}, #{rt.empCode}
             );
             UPDATE mat_test
-            SET err_rt_sts = 'Y'
+            SET err_rt_sts = 'R2'
             WHERE mat_test_code = #{rt.matTestCode};
 		 	</foreach>
 		 END
@@ -105,7 +104,7 @@
 			WHERE mat_rt_code = #{rt.matRtCode};
 			<!-- 2번째 쿼리문 -->
 			UPDATE mat_test
-			SET err_rt_sts = 'N'
+			SET err_rt_sts = 'R1'
 			WHERE mat_test_code = #{rt.matTestCode}
 		</foreach>
 	</delete>

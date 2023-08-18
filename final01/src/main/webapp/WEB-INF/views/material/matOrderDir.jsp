@@ -136,7 +136,12 @@
 			alert('거래처를 먼저 등록해주세요.');
 		} else {
 			//거래처가 등록되어 있을 경우 행추가 허용
-		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode}, { at: 0 });	
+			let now = new Date();	// 현재 날짜 및 시간
+			let year = now.getFullYear();
+			let month = ('0' + (now.getMonth() + 1)).substr(-2);
+			let day = ('0' + now.getDate()).substr(-2);
+			let matOdRq = year + "-" + month + "-" + day;
+		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq}, { at: 0 });	
 			
 		}
 	}
@@ -238,14 +243,7 @@
 	 	 	      {
 	 	 	        header: '발주일자',
 	 	 	        name: 'matOdRq',
-	 	 	      	editor: {
-	 	  		      type: 'datePicker',
-	 	  		      options: {
-	 	  		    	  language: 'ko'
-	 	  		      }
-	 	  		    },
-	 	  		 	className: 'yellow-background'
-	 	 	        
+	 	  		 	className: 'yellow-background'  
 	 	 	      },
 	 	 	      {
 		 	 	    header: '납기요청일',
