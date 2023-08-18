@@ -50,16 +50,19 @@ public class SemiInServiceImpl implements SemiInService {
 		int result = 0;
 		
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
-			sim.deleteSemiIn(data.getDeletedRows());
-			result += data.getDeletedRows().size();
+			for(SemiInVO vo : data.getDeletedRows()) {
+				result += sim.deleteSemiIn(vo);				
+			}
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
-			sim.updateSemiIn(data.getUpdatedRows());
-			result += data.getUpdatedRows().size();
+			for(SemiInVO vo : data.getUpdatedRows()) {
+				result += sim.updateSemiIn(vo);
+			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
-			sim.insertSemiIn(data.getCreatedRows());
-			result += data.getCreatedRows().size();
+			for(SemiInVO vo : data.getCreatedRows()) {
+				result += sim.insertSemiIn(vo);
+			}
 		}
 		
 		return result;

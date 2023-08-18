@@ -41,16 +41,22 @@ public class MatRtServiceImpl implements MatRtService {
 		int result = 0;
 		// TODO Auto-generated method stub
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
-			mrm.deleteMatRtList(data.getDeletedRows());
-			result += data.getDeletedRows().size();
+			for(MatRtVO vo : data.getDeletedRows()) {
+				result += mrm.deleteMatRtList(vo);		
+				mrm.updateMatTestStsN(vo);
+			}
+			
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
-			mrm.updateMatRtList(data.getUpdatedRows());
-			result += data.getUpdatedRows().size();
+			for(MatRtVO vo : data.getUpdatedRows()) {
+				result += mrm.updateMatRtList(vo);		
+			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
-			mrm.insertMatRtList(data.getCreatedRows());
-			result += data.getCreatedRows().size();
+			for(MatRtVO vo : data.getCreatedRows()) {
+				result += mrm.insertMatRtList(vo);
+				mrm.updateMatTestStsY(vo);
+			}
 		}
 		
 		return result;

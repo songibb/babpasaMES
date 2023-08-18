@@ -57,7 +57,6 @@
 	
 	<!-- 등록 -->
 	<update id="insertSemiIn" parameterType="SemiInVO">
-		<foreach collection="data" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			INSERT INTO semi_in (
 				SEMI_LOT,
 				PROD_CODE,
@@ -68,30 +67,27 @@
 				PRCS_LIST_CODE
 			) VALUES (
 				get_primaryCode('semiLot')
-				, #{in.prodCode}
-				, #{in.semiInAmt}
-				, #{in.semiExd}
-				, #{in.semiInd}
-				, #{in.empCode}
-				, #{in.prcsListCode}
+				, #{prodCode}
+				, #{semiInAmt}
+				, #{semiExd}
+				, #{semiInd}
+				, #{empCode}
+				, #{prcsListCode}
 			)
-		</foreach>
 	</update>
 	
 	<!-- 수정 -->
 	<update id="updateSemiIn" parameterType="SemiInVO">
-		<foreach collection="data" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE semi_in
-			SET semi_ind = #{in.semiInd}, semi_exd = #{in.semiExd}
-			WHERE semi_lot = #{in.semiLot}
-		</foreach>
+			SET semi_ind = #{semiInd}, semi_exd = #{semiExd}
+			WHERE semi_lot = #{semiLot}
 	</update>
 	
 	<!-- 삭제 -->
 	<delete id="deleteSemiIn" parameterType="SemiInVO">
-		<foreach collection="data" item="in" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+	
 			DELETE FROM semi_in
-			WHERE semi_lot = #{in.semiLot}
-		</foreach>
+			WHERE semi_lot = #{semiLot}
+
 	</delete>
 </mapper>

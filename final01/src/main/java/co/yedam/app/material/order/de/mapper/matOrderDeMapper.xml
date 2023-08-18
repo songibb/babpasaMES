@@ -51,21 +51,20 @@
 			FROM mat_order
 			WHERE SUBSTR(mat_od_cd, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
-		BEGIN
-			<!-- 첫번째 쿼리 -->
-			INSERT 	INTO
-				mat_order(MAT_OD_CD
-						  ,EMP_CODE
-						  ,ACT_CODE
-						  ,MAT_OD_RQ)	
+			INSERT INTO
+				mat_order
 			VALUES(
 				#{matOdCd}
-				,#{orderList[0].empCode}
-				,#{orderList[0].actCode}
-				,sysdate
-			);
-			<!-- 두번째 쿼리 -->
-			<foreach collection="data" item="order" index="index" open="" separator=" " close="">
+				,#{empCode}
+				,#{actCode}
+			)
+	</insert>
+	<insert id="insertMatOrderDeList" parameterType="MatOrderDeVO">	
+		<selectKey keyProperty="matOdCd" resultType="String" order="BEFORE">
+			SELECT 'MOC-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(mat_od_cd, -3)),0), 3, '0')
+			FROM mat_order
+			WHERE SUBSTR(mat_od_cd, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
 			INSERT INTO 
 				mat_order_de(MAT_OD_DE_CD,
 								MAT_OD_CD,
@@ -75,41 +74,37 @@
 								MAT_PRICE,
 								MAT_OD_ACP)
             VALUES
-            
                 (get_primaryCode('matOdDeCd'), 
                  #{matOdCd}, 
-                 #{order.matAmt}, 
-                 #{order.matCode}, 
+
+                 #{matAmt}, 
+                 #{matCode}, 
+                 #{matOdAcp}, 
                  'N', 
-                 #{order.matPrice}, 
-                 #{order.matOdAcp});
-            </foreach>
-            
-		END;
+                 #{matPrice}, 
+                 #{matOdRq})
+
 	</insert>
 	
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
-		<foreach collection="data" item="order" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			UPDATE mat_order_de
-			SET mat_code = #{order.matCode}, mat_amt = #{order.matAmt}, mat_price = #{order.matPrice}, mat_od_acp= #{order.matOdAcp}
-			WHERE mat_od_de_cd = #{order.matOdDeCd}
-        </foreach>
+
+			SET mat_code = #{matCode}, mat_amt = #{matAmt}, mat_od_acp = #{matOdAcp}, mat_price = #{matPrice}, mat_od_rq = #{matOdRq}
+			WHERE mat_od_de_cd = #{matOdDeCd}
 	</update>
 	
 	<delete id="deleteMatOrderList" parameterType="MatOrderDeVO">
-		BEGIN
-			<foreach collection="data" item="order" index="index" separator=" " close="">
-			DELETE FROM mat_order_de
-			WHERE mat_od_de_cd = #{order.matOdDeCd};
-			</foreach>
-			
 			DELETE FROM mat_order
 			WHERE mat_od_cd IN (
 								SELECT a.mat_od_cd
 								FROM mat_order a LEFT JOIN mat_order_de b
 								ON(a.mat_od_cd = b.mat_od_cd)
-								WHERE mat_od_de_cd IS NULL);
-		END;
+								WHERE mat_od_de_cd IS NULL)
+	</delete>
+	
+	<delete id="deleteMatOrderDeList" parameterType="MatOrderDeVO">
+			DELETE FROM mat_order_de
+			WHERE mat_od_de_cd = #{matOdDeCd}
 	</delete>
 	
 

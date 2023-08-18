@@ -68,44 +68,42 @@
 	
 	<!-- 반품 등록 -->
 	<insert id="insertMatRtList" parameterType="MatRtVO">
-		BEGIN
-			<foreach collection="data" item="rt" index="index" separator=";">
 			INSERT INTO mat_rt (
                 MAT_RT_CODE, MAT_TEST_CODE, ACT_CODE,
                 MAT_CODE, MAT_RT_AMT, MAT_RT_DATE,
                 MAT_RT_STS, EMP_CODE
             ) VALUES (
                 get_primaryCode('matRtCode'),
-                #{rt.matTestCode}, #{rt.actCode},
-                #{rt.matCode}, #{rt.matRtAmt}, #{rt.matRtDate},
-                #{rt.matRtSts}, #{rt.empCode}
-            );
-            UPDATE mat_test
-            SET err_rt_sts = 'R2'
-            WHERE mat_test_code = #{rt.matTestCode};
-		 	</foreach>
-		 END
-		 ;
+
+                #{matTestCode}, #{actCode},
+                #{matCode}, #{matRtAmt}, #{matRtDate},
+                #{matRtSts}, #{empCode}
+            )
+
 	</insert>
+	<update id="updateMatTestStsY" parameterType="MatRtVO">
+		 UPDATE mat_test
+            SET err_rt_sts = 'Y'
+            WHERE mat_test_code = #{matTestCode}
+	</update>
 	
 	<!-- 반품 수정 -->
-	<update id="updateMatRtList" parameterType="MatRtVO">
-		<foreach collection="data" item="rt" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+	<update id="updateMatRtList" parameterType="MatRtVO">		
 			UPDATE mat_rt
-			SET mat_rt_amt = #{rt.matRtAmt}, mat_rt_date = #{rt.matRtDate}, mat_rt_sts = #{rt.matRtSts}
-			WHERE mat_rt_code = #{rt.matRtCode}
-		</foreach>
+			SET mat_rt_amt = #{matRtAmt}, mat_rt_date = #{matRtDate}, mat_rt_sts = #{matRtSts}
+			WHERE mat_rt_code = #{matRtCode}
 	</update>
 	
 	<!-- 반품 삭제 -->
 	<delete id="deleteMatRtList" parameterType="MatRtVO">
-		<foreach collection="data" item="rt" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 			DELETE FROM mat_rt
-			WHERE mat_rt_code = #{rt.matRtCode};
-			<!-- 2번째 쿼리문 -->
-			UPDATE mat_test
-			SET err_rt_sts = 'R1'
-			WHERE mat_test_code = #{rt.matTestCode}
-		</foreach>
+
+			WHERE mat_rt_code = #{matRtCode}
+
 	</delete>
+	<update id="updateMatTestStsN" parameterType="MatRtVO">
+		UPDATE mat_test
+		SET err_rt_sts = 'N'
+		WHERE mat_test_code = #{matTestCode}
+	</update>
 </mapper>

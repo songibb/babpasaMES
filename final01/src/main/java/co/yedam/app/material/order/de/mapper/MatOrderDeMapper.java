@@ -12,16 +12,19 @@ public interface MatOrderDeMapper {
 	public List<MatOrderDeVO> selectMatOrderList();
 	public List<MatOrderDeVO> selectMatOrderSearch(@Param("materialCode")String materialCode, @Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
 	
-	//등록
-	public int insertMatOrderList(@Param("data") List<MatOrderDeVO> data);
 	//거래처목록, 구매품목 필요함
 	//구매품목 select
 	public List<MatInVO> selectBuyMatList(String actCode); 
 	
+	//등록
+	public int insertMatOrderList(MatOrderDeVO vo);
+	public int insertMatOrderDeList(MatOrderDeVO vo);
+	
 	//수정
-	public int updateMatOrderList(@Param("data") List<MatOrderDeVO> data);
+	public int updateMatOrderList(MatOrderDeVO vo);
 	
 	//삭제
-	public int deleteMatOrderList(@Param("data") List<MatOrderDeVO> data);
+	public int deleteMatOrderList();
+	public int deleteMatOrderDeList(MatOrderDeVO vo);
 	
 }
