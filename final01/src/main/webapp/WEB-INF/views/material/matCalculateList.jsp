@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>자재 입고 목록</title>
+<title>자재 정산 목록</title>
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -16,11 +16,6 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
-   #save, #delete{
-		margin-top : 120px;
-		float : right;
-	}
-
 	h1{
 		font-weight : 700;
 	}
@@ -37,7 +32,7 @@
        
 </head>
 <body>
-   <h1>자재 입고 조회</h1>
+   <h1>자재 정산 조회</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
@@ -54,12 +49,11 @@
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
-                				<p>업체명</p>
-                				<input type="text" id="actCodeInput">
-                				<i class="bi bi-search" id="actModal"></i>
-                				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
+                				<p>정산구분</p>
+                				<label for="InSeparator"><input type="checkbox" id="calInCheck" value="calIn">정산입고</label>
+                				<label for="InSeparator"><input type="checkbox" id="calOutCheck" value="calOut">정산출고</label>
                 				<br>
-                				<p>입고일자</p>
+                				<p>정산일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
@@ -71,7 +65,7 @@
             				</div>
         				</div>
 	    			</div>
-		            <h2>입고 목록</h2>
+		            <h2>정산 목록</h2>
 		            <br>
 		            <div id="grid"></div>
 				</div>
@@ -99,28 +93,6 @@
    //모달 시작
   
 	 var Grid;
-     $("#actModal").click(function(){
-       $(".modal").fadeIn();
-       Grid = createActGrid();
-       $('.modal_title h3').text('거래처 목록');
-       Grid.on('dblclick', () => {
-        	let rowKey = Grid.getFocusedCell().rowKey;
-        	let actCode = Grid.getValue(rowKey, 'actCode');
-        	let actName = Grid.getValue(rowKey, 'actName');
-    		$("#actCodeInput").val(actCode);
-    		$("#actNameFix").val(actName);
-    		//모달창 닫기
-    		console.log(rowKey);
-    		if(rowKey != null){
-    			$(".modal").fadeOut();
-        		Grid.destroy();
-    		}
-
-    		});
-      	});
-     
-     
-     
      $("#matModal").click(function(){
        $(".modal").fadeIn();
        Grid = createMatGrid();
@@ -148,8 +120,7 @@
 		Grid.destroy();
      });
      
-     
-     
+
   
    //모달 끝
    
@@ -162,54 +133,6 @@
       })
    })
    
-   //거래처 모달 그리드
-   function createActGrid(){
-	   var actGrid = new tui.Grid({
-	       el: document.getElementById('modal_label'),
-	       data: [
-	    	   <c:forEach items="${actList}" var="a" varStatus="status">
-	          	{
-	          		actCode : "${a.actCode}",
-	          		actName :"${a.actName}",
-	          		actSts :"${a.actSts}",
-	          		actKind :"${a.actKind}"
-	          	} <c:if test="${not status.last}">,</c:if>
-	          </c:forEach>
-	          ],
-		   scrollX: false,
-	       scrollY: false,
-	       minBodyHeight: 30,
-	       rowHeaders: ['rowNum'],
-	       selectionUnit: 'row',
-	       pagination: true,
-	       pageOptions: {
-	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	         useClient: true,
-	         perPage: 10
-	       },
-	       columns: [
-	    	   {
-	               header: '거래처코드',
-	               name: 'actCode',
-	             },
-	             {
-	               header: '거래처명',
-	               name: 'actName'
-	             },
-	             {
-	               header: '거래상태',
-	               name: 'actSts'
-	             },
-	             {
-	               header: '거래처구분',
-	               name: 'actKind'
-	             }
-	 	    ]
-	      
-	     });
-	   
-	   return actGrid;
-   }
    
  //자재 모달 그리드
    function createMatGrid(){
@@ -267,18 +190,23 @@
    var grid = new tui.Grid({
 	       el: document.getElementById('grid'),
 	       data: [
-	           <c:forEach items="${inList}" var="mat">
+	           <c:forEach items="${calList}" var="cal">
 	           	{
-	           	matLot : "${mat.matLot}",
-	           	matCode :"${mat.matCode}",
-	           	matName :"${mat.matName}",
-	           	matUnit : "${mat.matUnit}",
-	           	matStd : "${mat.matStd}",
-	           	actName :"${mat.actName}",
-	           	matInAmt : "${mat.matInAmt}",
-	           	empName : "${mat.empName}",
-	           	matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy-MM-dd"/>`,
-	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy-MM-dd"/>`
+	           	calCode : "${cal.calCode}",
+	           	calCategory :"${cal.calCategory}",
+	           	matCode :"${cal.matCode}",
+	           	matName : "${cal.matName}",
+	           	matUnit : "${cal.matUnit}",
+	           	matStd :"${cal.matStd}",
+	           	calBamt : "${cal.calBamt}",
+	           	calAmt : "${cal.calAmt}",
+	           	<c:if test="${cal.calCategory == 'I'}">
+	           		finalAmt : "${cal.calBamt + cal.calAmt}",
+	           	</c:if>
+				<c:if test="${cal.calCategory == 'O'}">
+	           		finalAmt : "${cal.calBamt - cal.calAmt}",
+	           	</c:if>
+	           	calDate : `<fmt:formatDate value="${cal.calDate}" pattern="yyyy-MM-dd"/>`
 	           	},
 	           </c:forEach>
 	          ],
@@ -295,45 +223,51 @@
 	       },
 	       columns: [
 	 	      {
-	 	        header: '자재 LOT',
-	 	        name: 'matLot',
+	 	        header: '정산 코드',
+	 	        name: 'calCode',
+	 	      },
+	 	      {
+	 	        header: '정산구분',
+	 	        name: 'calCategory',
+	 	       	formatter: function (e) {
+					if(e.value == 'I'){
+						return "정산입고";
+					} else if(e.value == 'O'){
+						return "정산출고";
+					}
+               	}   
 	 	      },
 	 	      {
 	 	        header: '자재코드',
 	 	        name: 'matCode'
 	 	      },
 	 	      {
-	 	        header: '자재명',
-	 	        name: 'matName'
-	 	      },
-	 	      {
-          	  	header: '단위',
-		 		name: 'matUnit' 
+          	  	header: '자재명',
+		 		name: 'matName' 
               },
               {
-          	  	header: '규격',
-		 		name: 'matStd'
+          	  	header: '단위',
+		 		name: 'matUnit'
               },
 	 	      {
-	 	        header: '업체명',
-	 	        name: 'actName'
+	 	        header: '규격',
+	 	        name: 'matStd'
 	 	      },
 	 	      {
-	 	        header: '입고량',
-	 	        name: 'matInAmt'
+	 	        header: '기존수량',
+	 	        name: 'calBamt'
 	 	      },
 	 	      {
-		 	    header: '담당자',
-		 	    name: 'empName'
+		 	    header: '정산수량',
+		 	    name: 'calAmt'
 		 	  },
 		 	  {
-		 	    header: '입고일자',
-		 	    name: 'matInd',
- 	  		 	className: 'yellow-background'
+		 	    header: '최종수량',
+		 	    name: 'finalAmt'
 		 	  },
 		 	  {
-			 	header: '유통기한',
-			 	name: 'matExd',
+			 	header: '정산일자',
+			 	name: 'calDate',
  	  		 	className: 'yellow-background'
 			  }
 	 	    ]
@@ -341,32 +275,40 @@
 	     });
    
  
-   $('#searchBtn').on('click', searchMatIn);
+   //검색
+    $('#searchBtn').on('click', searchMatIn);
+   
    function searchMatIn(e){
 	   let mat = $('#matCodeInput').val();
-	   let act = $('#actCodeInput').val();
+	   let calIn = 'I';
+	   let calOut = 'O';
+	   if($('#calInCheck').checked && !$('#calOutCheck').checked){
+		   calOut = null;
+	   } else if(!$('#calInCheck').checked && $('#calOutCheck').checked){
+		   calIn = null;
+	   }
 	   let sd = $('#startDate').val();
 	   let ed = $('#endDate').val();	   
 		  
-	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+	   let search = { materialCode : mat , calIn : calIn , calOut : calOut , startDate : sd , endDate : ed };
 	   $.ajax({
-		   url : 'getMatInFilter',
+		   url : 'matCalFilterList',
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
 			   
 			  for(let i of data){
-					let date = new Date(i.matInd);
+					let date = new Date(i.calDate);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.matInd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			   		i.calDate = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
-					date = new Date(i.matExd);
-					year = date.getFullYear();    //0000년 가져오기
-					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-					day = date.getDate();        //일자 가져오기
-			   		i.matExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			   		if(i.calCategory == 'I'){
+			   			i.finalAmt = i.calBamt + i.calAmt;
+			   		} else {
+			   			i.finalAmt = i.calAmt + i.calBamt;
+			   		}
 			  }
 			   grid.resetData(data);
 		   },
@@ -376,11 +318,14 @@
 	   });
    }
    
+   
+   
    //초기화 버튼
    $('#searchResetBtn').on('click', resetInput);
    function resetInput(e){
 	   $('input').each(function(idx, obj){
 		   obj.value = '';
+		   obj.checked = false;
 	   })
    }
  

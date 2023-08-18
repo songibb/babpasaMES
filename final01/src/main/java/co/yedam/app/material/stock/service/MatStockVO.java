@@ -9,6 +9,7 @@ public class MatStockVO {
 	//자재코드, 자재명, 규격, 재고량, 안전재고량
 	private String matCode;
 	private String matName;
+	private String matUnit;
 	private String matStd;
 	private Integer totalStock;
 	private Integer matSafe;

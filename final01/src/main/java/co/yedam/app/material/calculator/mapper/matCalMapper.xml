@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.material.calculator.mapper.MatCalMapper">
+	<select id="selectMatCalList" resultType="MatCalVO">
+		SELECT a.cal_category, a.cal_code, a.mat_lot, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.cal_bamt, a.cal_amt, a.cal_date
+		FROM mat_cal a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		ORDER BY a.cal_code
+	</select>
+	
+	<select id="selectMatCalSearch" resultType="MatCalVO">
+		SELECT a.cal_category, a.cal_code, a.mat_lot, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.cal_bamt, a.cal_amt, a.cal_date
+		FROM mat_cal a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		
+		<where>
+			<if test="materialCode != null and materialCode != ''">
+				AND a.mat_code LIKE '%' || #{materialCode} || '%'
+			</if>
+			<if test="calIn == null and calIn.equals('')">
+				AND cal_category != 'I'
+			</if>
+			<if test="calOut == null and calOut.equals('')">
+				AND cal_category != 'O'
+			</if>
+			<if test="startDate != null and startDate != ''">
+				AND TO_CHAR(cal_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND TO_CHAR(cal_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY a.cal_code
+	</select>
+
+</mapper>

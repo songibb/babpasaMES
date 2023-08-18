@@ -51,12 +51,12 @@
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -178,8 +178,7 @@
 		 	  },
 		 	  {
 		 	    header: '반품수량',
-		 	    name: 'matRtAmt',
-		 	    editor : 'text'
+		 	    name: 'matRtAmt'
 		 	  },
 		 	  {
 		 		  header : '담당자코드',
@@ -215,12 +214,12 @@
 	                options: {
 	                  listItems: [
 	                	   {
-	                         text: 'R4',
-	                         value: '반품중'
+	                         text: '반품중',
+	                         value: 'R4'
 	                       }, 
 	                       {
-		                     text: 'R5',
-		                     value: '반품완료'
+		                     text: '반품완료',
+		                     value: 'R5'
 		                   } 
 	                  ]
 	                }
@@ -348,7 +347,7 @@
 		// 수정된게 없으면 바로 빠져나감
 		
 		if(!rtGrid.isModified()){
-			alert("변경사항이 없습니다.");
+			swal("", "변경사항이 없습니다", "warning");
 			return false;
 		}
 		
@@ -368,7 +367,7 @@
 		
 		if(rtGrid.getModifiedRows().updatedRows.length > 0 ){
 
-				$.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+				$.each(rtGrid.getModifiedRows().updatedRows, function(idx2, obj2){
 					if(obj2['matRtCode'] == "" ||obj2['matRtAmt'] =="" ||obj2['matRtDate'] == "" || obj2['matRtSts'] == ""){
 						flag = false;
 						return false;
@@ -385,6 +384,7 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", data +"건이 처리되었습니다.", "success");
+						selectAjax();
 					},
 					error : function(reject){
 						console.log(reject);
@@ -392,7 +392,7 @@
 					}
 				})
 		} else {
-			alert("값이 입력되지 않았습니다.");
+			swal("", "값이 입력되지 않았습니다", "warning");
 		}
 
 	}
@@ -675,9 +675,10 @@
     					   'actName' : actName,
     					   'actCode' : actCode,
     					   'errInfo' : errInfo,
-    					   'matYamt' : matYamt,
-    					   'matNamt' : matNamt,
-    					   'matTestDate' : matTestDate}, { at: 0 });
+    					   'matRtAmt' : matNamt,
+    					   'matTestDate' : matTestDate,
+    					   'empCode' : ${user.id},
+    					   'empName' : `${user.empName}`}, { at: 0 });
     	
     	
     	

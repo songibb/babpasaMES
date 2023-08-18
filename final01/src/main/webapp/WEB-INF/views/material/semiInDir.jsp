@@ -51,7 +51,7 @@
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
-				                <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+				                <input type="text" id="prodCodeInput">
 				                <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
 				                <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 				                <br>
@@ -149,7 +149,8 @@
 	 	      },
 	 	      {
 		 	    header: '담당자코드',
-		 	    name: 'empCode'
+		 	    name: 'empCode',
+		 	    hidden : true
 		 	  },
 	 	      {
 		 	    header: '입고일자',
@@ -253,7 +254,7 @@
 		// 수정된게 없으면 바로 빠져나감
 		
 		if(!inGrid.isModified()){
-			alert("변경사항이 없습니다.");
+			swal("", "변경사항이 없습니다", "warning");
 			return false;
 		}
 		
@@ -290,6 +291,7 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", data +"건이 처리되었습니다.", "success");
+						selectAjax();
 					},
 					error : function(reject){
 						console.log(reject);
@@ -297,7 +299,7 @@
 					}
 				})
 		} else {
-			alert("값이 입력되지 않았습니다.");
+			swal("", "값이 입력되지 않았습니다", "warning");
 		}
 
 	}
@@ -503,7 +505,9 @@
     	inGrid.appendRow({'prcsListCode' : prcsListCode,
     					   'prodCode' : prodCode,
     					   'prodName' : prodName,
-    					   'semiInAmt' : testAmt},
+    					   'semiInAmt' : testAmt,
+    					   'empCode' : ${user.id},
+    					   'empName' : `${user.empName}`},
     					   { at: 0 }
     	);
 	

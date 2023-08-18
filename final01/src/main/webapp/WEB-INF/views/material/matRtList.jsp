@@ -47,18 +47,16 @@
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
                    	</button>
-                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -383,7 +381,14 @@ function resetInput(e){
 			  },
 			  {
 				header: '반품상태',
-				name: 'matRtSts'
+				name: 'matRtSts',
+				formatter: function (e) {
+					if(e.value == 'R4'){
+						return "반품중";
+					} else if(e.value == 'R5'){
+						return "반품완료";
+					}
+                }   
 		      }
 	 	    ]
 	      

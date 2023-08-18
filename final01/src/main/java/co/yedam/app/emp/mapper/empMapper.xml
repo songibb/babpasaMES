@@ -6,7 +6,8 @@
 	<select id="getEmp" resultType="EmpVO">
 		SELECT emp_code id,
 			   '{noop}'||emp_pw pwd,
-			   emp_role role
+			   emp_role role,
+			   emp_name
 		FROM com_emp
 		WHERE emp_code = #{username}
 	</select>
