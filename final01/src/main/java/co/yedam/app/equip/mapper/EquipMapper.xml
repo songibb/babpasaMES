@@ -5,7 +5,19 @@
   <mapper namespace="co.yedam.app.equip.mapper.EquipMapper">
   <!-- 설비 전체조회  -->
   <select id="selectEquipAllList" resultType="EquipVO"> 
-  	SELECT *
+  	SELECT EQ_CODE
+  			,ACT_CODE
+  			,EQ_NAME
+  			,MODEL_NAME
+  			,MAKE_DATE
+  			,BUY_DATE
+  			,CHK_CYCLE
+  			,EQ_STS AS EQ_STS
+  			,FIND_CDNM('0L', EQ_STS) AS EQ_STS2
+  			,EQ_TYPE AS EQ_TYPE
+  			,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
+  			,HIGH_TEMP
+  			,LOW_TEMP
   	FROM EQ_EQUIP
   	ORDER BY EQ_CODE
   </select>

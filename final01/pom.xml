@@ -247,7 +247,22 @@
 			<artifactId>jasypt-spring31</artifactId>
 			<version>1.9.3</version>
 		</dependency>
-
+		
+		<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.5</version>	
+		</dependency>
+		
+		<!-- Properties File Encryption -->
+		<!-- properties파일을 암호화하는 것 -->
+		<!-- https://mvnrepository.com/artifact/org.jasypt/jasypt-spring31 -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt-spring31</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 
 
 	</dependencies>

@@ -74,6 +74,18 @@ public class CommCodeServiceImpl implements CommCodeService {
 	}
 
 	@Override
+	public List<CommCodeVO> selectEquipTypeList(){
+		
+		return commCodeMapper.selectEquipTypeList();
+	}
+	
+	@Override
+	public List<CommCodeVO> selectEquipStsList(){
+		
+		return commCodeMapper.selectEquipStsList();
+	}
+	
+	@Override
 	public List<CommCodeVO> selectActStsList() {
 		
 		return commCodeMapper.selectActStsList();

@@ -14,7 +14,10 @@
   	
   	<!--모달 안에서의 전체 설비 조회  -->
   	<select id="selectAllequip" resultType="OffEquipVO">
-  		SELECT A.EQ_CODE, A.EQ_NAME, A.EQ_STS, B.*
+  		SELECT A.EQ_CODE
+  				,A.EQ_NAME
+  				,FIND_CDNM('0L', EQ_STS) AS EQ_STS
+  				,B.*
   		FROM EQ_EQUIP A LEFT JOIN EQ_OFF B
   			ON(A.EQ_CODE = B.EQ_CODE)
   		ORDER BY A.EQ_CODE ASC
@@ -25,9 +28,9 @@
   	<!-- 단건으로 가져오기  -->
   	<select id="selectOffEquipInfo" resultType="OffEquipVO">
   		SELECT A.EQ_CODE, A.EQ_NAME, A.EQ_STS, B.*
-  		FROM EQ_EQUIP A JOIN EQ_OFF B
+  		FROM EQ_EQUIP A LEFT JOIN EQ_OFF B
   			ON(A.EQ_CODE = B.EQ_CODE)
-  		WHERE B.EQ_CODE = #{eqCode}
+  		WHERE A.EQ_CODE = #{eqCode}
   	</select>
   	
   	<!--비가동 설비 등록  -->

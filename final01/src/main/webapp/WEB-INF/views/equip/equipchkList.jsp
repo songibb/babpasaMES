@@ -19,7 +19,6 @@
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
-	 
 
 </head>
 <body>
@@ -50,10 +49,12 @@
 							<p>점검일자</p>
 							 <p><input type="date"></p> ~ <p> <input type="date"></p>
 							<button type="button" class="btn btn-info btn-icon-text">검색</button>
-					
+							
+							<div class="buttons">
 							<button id="save">저장</button>
 		            		<button id="orderModal">점검대상 조회</button>
-							<i class="bi bi-search" id="empModal"></i>
+		            		</div>
+
 			
 						</div>	
 					</form>
