@@ -57,7 +57,7 @@
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" =id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>

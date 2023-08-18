@@ -11,5 +11,9 @@ public interface MatCalMapper {
 	public List<MatCalVO> selectMatCalList();
 	
 	//검색
-	public List<MatCalVO> selectMatCalSearch(@Param("materialCode")String materialCode, @Param("calIn")String calIn, @Param("calOut")String calOut, @Param("startDate")String startDate, @Param("endDate")String endDate);
+	public List<MatCalVO> selectMatCalSearch(@Param("materialCode")String materialCode, 
+											@Param("calIn" )String calIn, 
+											@Param("calOut")String calOut, 
+											@Param("startDate")String startDate, 
+											@Param("endDate")String endDate);
 }

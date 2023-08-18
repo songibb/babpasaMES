@@ -200,6 +200,7 @@
 	           	matStd :"${cal.matStd}",
 	           	calBamt : "${cal.calBamt}",
 	           	calAmt : "${cal.calAmt}",
+	           	empName : "${cal.empName}",
 	           	<c:if test="${cal.calCategory == 'I'}">
 	           		finalAmt : "${cal.calBamt + cal.calAmt}",
 	           	</c:if>
@@ -225,6 +226,7 @@
 	 	      {
 	 	        header: '정산 코드',
 	 	        name: 'calCode',
+	 	        hidden : true
 	 	      },
 	 	      {
 	 	        header: '정산구분',
@@ -266,6 +268,10 @@
 		 	    name: 'finalAmt'
 		 	  },
 		 	  {
+		 		header : '담당자명',
+		 		name : 'empName'
+		 	  },
+		 	  {
 			 	header: '정산일자',
 			 	name: 'calDate',
  	  		 	className: 'yellow-background'
@@ -280,18 +286,22 @@
    
    function searchMatIn(e){
 	   let mat = $('#matCodeInput').val();
-	   let calIn = 'I';
-	   let calOut = 'O';
-	   if($('#calInCheck').checked && !$('#calOutCheck').checked){
-		   calOut = null;
-	   } else if(!$('#calInCheck').checked && $('#calOutCheck').checked){
-		   calIn = null;
+	   let calIn = '1';
+	   let calOut = '1';
+	   let calInCheck = document.getElementById('calInCheck');
+	   let calOutCheck = document.getElementById('calOutCheck');
+	   if(calInCheck.checked && !calOutCheck.checked){
+		   calOut = '2';
+	   } else if(!calInCheck.checked && calOutCheck.checked){
+		   calIn = '2';
 	   }
 	   let sd = $('#startDate').val();
 	   let ed = $('#endDate').val();	   
-		  
+	
+	   console.log(calIn);
+	   console.log(calOut);
 	   let search = { materialCode : mat , calIn : calIn , calOut : calOut , startDate : sd , endDate : ed };
-	   $.ajax({
+	    $.ajax({
 		   url : 'matCalFilterList',
 		   method : 'GET',
 		   data : search ,
@@ -309,8 +319,10 @@
 			   		} else {
 			   			i.finalAmt = i.calAmt + i.calBamt;
 			   		}
+			   		
+			   	
 			  }
-			   grid.resetData(data);
+			    grid.resetData(data);
 		   },
 		   error : function(reject){
 			   console.log(reject);
