@@ -127,7 +127,12 @@
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
-
+		let modi1 = dirGrid.getModifiedRows();
+		let modi2 = dirDeGrid.getModifiedRows();
+		
+		console.log(modi1);
+		console.log(modi2);
+		
 		//생산지시 -> insert
 		let rowKey = dirGrid.getFocusedCell().rowKey;
 		let columnName = dirGrid.getFocusedCell().columnName;
@@ -147,23 +152,67 @@
 // 		obj['empCode'] = dirGrid.getValue(rowKey, 'empCode');
 
 
+// 		$.ajax({
+// 			url : 'prcsDirInsert',
+// 			method : 'POST',
+// 			data : JSON.stringify(obj),
+// 			contentType : 'application/json',
+// 			success : function(data){					
+// 				//상세생산지시 insert
+// 				let rowKey = dirDeGrid.getFocusedCell().rowKey;
+// 				let columnName = dirDeGrid.getFocusedCell().columnName;
+// 				//편집종료
+// 				dirDeGrid.finishEditing(rowKey, columnName);
+				
+// 				let deList = dirDeGrid.getData();
+// 				$.each(deList, function(i, objDe){
+// 					deList[i]['prcsDirCode'] = data;
+// 				})
+
+				
+// 				//분할지시
+// 				//상세지시코드 for문돌려서 상세계획코드 구하기
+// 				// 상세계획코드 개수가 1이상일때  
+// 				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
+// 				// 아래 ajax 동작
+// 				//if()
+
+// 				$.ajax({
+// 					url : 'prcsDirDeInsert',
+// 					method : 'POST',
+// 					data : JSON.stringify(deList),
+// 					contentType : 'application/json',
+// 					success : function(data){
+// 						//등록 후 그리드 내용 지우고, 행추가
+// 						dirGrid.clear();
+// 						dirGrid.appendRow();
+// 						dirDeGrid.clear();
+// 						dirDeGrid.appendRow();
+						
+// 						alert('등록이 완료되었습니다.');
+// 					},
+// 					error : function(reject){
+// 			 			console.log(reject);
+// 			 		}
+// 				})				
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}		
+// 		})
+			
+
+		
+// 	};
+
+
+
 		$.ajax({
 			url : 'prcsDirInsert',
 			method : 'POST',
 			data : JSON.stringify(obj),
 			contentType : 'application/json',
 			success : function(data){					
-				//상세생산지시 insert
-				let rowKey = dirDeGrid.getFocusedCell().rowKey;
-				let columnName = dirDeGrid.getFocusedCell().columnName;
-				//편집종료
-				dirDeGrid.finishEditing(rowKey, columnName);
-				
-				let deList = dirDeGrid.getData();
-				$.each(deList, function(i, objDe){
-					deList[i]['prcsDirCode'] = data;
-				})
-				console.log(deList);
 				
 				
 				//분할지시
@@ -172,25 +221,6 @@
 				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
 				// 아래 ajax 동작
 				//if()
-
-				$.ajax({
-					url : 'prcsDirDeInsert',
-					method : 'POST',
-					data : JSON.stringify(deList),
-					contentType : 'application/json',
-					success : function(data){
-						//등록 후 그리드 내용 지우고, 행추가
-						dirGrid.clear();
-						dirGrid.appendRow();
-						dirDeGrid.clear();
-						dirDeGrid.appendRow();
-						
-						alert('등록이 완료되었습니다.');
-					},
-					error : function(reject){
-			 			console.log(reject);
-			 		}
-				})				
 			},
 			error : function(reject){
 	 			console.log(reject);
@@ -199,7 +229,38 @@
 			
 
 		
+		//상세생산지시 insert
+		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+		let deColumnName = dirDeGrid.getFocusedCell().columnName;
+		//편집종료
+		dirDeGrid.finishEditing(deRowKey, deColumnName);
+		
+		let deList = dirDeGrid.getData();
+
+		$.ajax({
+			url : 'prcsDirDeInsert',
+			method : 'POST',
+			data : JSON.stringify(deList),
+			contentType : 'application/json',
+			success : function(data){
+				//등록 후 그리드 내용 지우고, 행추가
+				dirGrid.clear();
+				dirGrid.appendRow();
+				dirDeGrid.clear();
+				dirDeGrid.appendRow();
+				
+				alert('등록이 완료되었습니다.');
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})				
+		
+		
+		
 	};
+
+
 	
 	
 	
@@ -348,7 +409,7 @@
 //           {
 //             header: '단위',
 //             name: 'bomUnit'
-//           },
+//           }
         ]
       });
 	
@@ -390,11 +451,12 @@
     	//클릭한 상세생산지시의 BOM 목록 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
-		console.log(prodCode);
+    	let dirAmt = dirDeGrid.getValue(rowKey, 'prcsDirAmt');
+
     	$.ajax({
 			url : 'bomList',
 			method : 'GET',
-			data : { prodCode : prodCode },
+			data : { prodCode : prodCode, prcsDirAmt : dirAmt },
 			success : function(data){
 				bomGrid.resetData(data);
  		    },

@@ -21,9 +21,6 @@ public interface PrcsDirMapper {
 	//상세생산지시 등록
 	public int insertPrcsDirDe(PrcsDirVO prcsDirVO);
 	
-	//생산지시 + 상세생산지시 등록
-//	public int insertPrcsDir(@Param("prcsDirList") List<PrcsDirVO> prcsDirList);
-	
 	
 	//미지시 계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanList();
@@ -31,11 +28,16 @@ public interface PrcsDirMapper {
 	//미지시 상세 계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);
 	
+	
 	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
 	public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
+	//생산지시 등록시 자재 출고 (프로시저)
+	public int insertMatOut(String prcsDirDeCode);
+	
+	
 	//BOM 조회
-	public List<BomCodeVO> selectBomList(@Param("prodCode") String prodCode);
+	public List<BomCodeVO> selectBomList(@Param("prodCode") String prodCode, @Param("prcsDirAmt") Integer prcsDirAmt);
 	
 	
 }

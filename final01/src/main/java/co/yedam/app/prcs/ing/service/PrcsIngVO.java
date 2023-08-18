@@ -17,12 +17,21 @@ public class PrcsIngVO {
 	private int prcsAmt;						//생산량
 	private String prcsDirIngSts;				//공정상태
 	
+	//진행 공정 관리 모달창 - 투입 자재별 소모량에 필요
+	private String prcsDirAmt;
+	
 	//공정 실적 관리
 	private String eqCode;
 	private Date prcsStartTime;
 	private Date prcsEndTime;
 	private String empCode;
-		
+	
+	//이름 가져오기
+	private String prodName;
+	private String prcsName;
+	
+	
+	
 }
 
 

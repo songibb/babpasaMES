@@ -68,21 +68,7 @@ public class PrcsDirController {
 	//상세생산지시 등록
 	@PostMapping("prcsDirDeInsert")
 	@ResponseBody
-	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {	
-//		int result = 0;
-//		for(PrcsDirVO vo : list) {
-//			prcsDirService.insertPrcsDirDe(vo);
-//			
-//			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
-//			prcsDirService.updateNotDirPlanList(vo);
-//			
-//			//진행 공정 등록
-//			String prcsDirDeCode = vo.getPrcsDirDeCode();		
-//			prcsIngService.insertPrcsIng(prcsDirDeCode);
-//			
-//			result++;
-//		}
-			
+	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {				
 		return prcsDirService.insertPrcsDirDe(list);
 	}
 	
@@ -99,8 +85,8 @@ public class PrcsDirController {
 	//BOM 조회
 	@GetMapping("bomList")
 	@ResponseBody
-	public List<BomCodeVO> getBomList(@RequestParam String prodCode){
-		List<BomCodeVO> list = prcsDirService.getBomList(prodCode);
+	public List<BomCodeVO> getBomList(@RequestParam String prodCode, @RequestParam Integer prcsDirAmt){
+		List<BomCodeVO> list = prcsDirService.getBomList(prodCode, prcsDirAmt);
 		return list;
 	}
 	
