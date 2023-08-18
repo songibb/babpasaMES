@@ -21,9 +21,6 @@ public interface PrcsDirService {
 	//상세생산지시 등록
 	public int insertPrcsDirDe(List<PrcsDirVO> list);
 	
-	//생산지시 + 상세생산지시 등록
-//	public int insertPrcsDir(List<PrcsDirVO> prcsDirList);
-	
 	
 	//미지시 생산계획 목록 조회 
 	public List<PrcsPlanVO> getNotDirPlanList();
@@ -32,7 +29,7 @@ public interface PrcsDirService {
 	//public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
 	//BOM 조회
-	public List<BomCodeVO> getBomList(String prodCode);
+	public List<BomCodeVO> getBomList(String prodCode, Integer prcsDirAmt);
 		
 	
 

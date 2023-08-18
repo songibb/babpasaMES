@@ -9,7 +9,9 @@
 	<select id="selectPrcsIngList" resultType="prcsIngVO">
 		SELECT prcs_ing_code,
 			   prcs_dir_de_code,
+			   prod_code,
 			   find_prod_name(prod_code) AS prod_name,
+			   prcs_code,
         	   find_prcs_name(prcs_code) AS prcs_name,
 			   prcs_seq,
 			   input_amt,
@@ -21,14 +23,43 @@
 		 ORDER BY prcs_seq
 	</select>
 	
+	
 	<!-- 진행 공정 등록 -->
 	<insert id="insertPrcsIng" parameterType="String">
 		{
-		CALL PROD_BOM(
-		#{prcsDirDeCode}
-		)
+			CALL PROD_BOM(
+				#{prcsDirDeCode}
+			)
 		}
     </insert>
 	
-	<!-- 공정 실적 조회 -->
+	<!-- 사용 가능한 설비 조회 (진행공정 모달) -->
+	<select id="selectWaitEquipList" resultType="EquipVO">
+		SELECT eq_code, 
+			   eq_name, 
+			   p.prcs_type, 
+			   i.prcs_code
+		  FROM eq_equip e JOIN prcs_manage p 
+		  					ON e.prcs_type = p.prcs_type
+                		  JOIN prcs_ing i
+                		  	ON p.prcs_code = i.prcs_code
+		 WHERE e.eq_sts='W' and i.prcs_code = #{prcsCode}
+	</select>
+	
+	<!-- 투입 자재별 소모량 조회 (진행공정 모달) -->
+	<select id="selectMatBomList" resultType="BomCodeVO">
+		SELECT find_prod_name(prod_code) AS prod_name,
+        	   find_prcs_name(prcs_code) AS prcs_name,
+        	   mp_code,
+      		   find_mat_name(mp_code) AS mat_name,
+      		   bom_unit,
+      		   bom_amt * #{prcsDirAmt} AS bom_amt
+		  FROM v_prod_bom
+		 WHERE prod_code= #{prodCode}
+               AND prcs_code = #{prcsCode}
+		   	   AND bom_yn='Y'
+		       AND mp_kind='M'
+	</select>
+		   
+
 </mapper>

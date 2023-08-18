@@ -17,9 +17,6 @@ public interface PrcsPlanService {
 	
 	//상세생산계획 등록
 	public int insertPrcsPlanDe(List<PrcsPlanVO> list);
-	
-	//생산계획 + 상세생산계획 등록
-//	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList);
 
 	//생산계획 수정
 	public int updatePrcsPlan(List<PrcsPlanVO> list);
@@ -36,7 +33,6 @@ public interface PrcsPlanService {
 	public List<OrderVO> getNotPlanOrderList();
 	
 	//미계획 상세 주문서 조회 
-//	public List<OrderVO> getNotPlanOrderDeList(String ordCode);
 	public List<OrderVO> getNotPlanOrderDeList(List<OrderVO> ordList);
 		
 	//생산계획 등록시 주문서 (미계획 -> 계획) 수정

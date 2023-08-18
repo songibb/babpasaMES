@@ -28,5 +28,9 @@ public class BomCodeVO {
 	private String mpCode;
 	private String bomUnit;
 	private int bomAmt;
+	
+	
+	//생산관리에 사용
+	private String prcsSeq;
 
 }

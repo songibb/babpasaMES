@@ -19,9 +19,6 @@ public interface PrcsPlanMapper {
 	
 	//상세생산계획 등록
 	public int insertPrcsPlanDe(PrcsPlanVO prcsPlanVO);
-
-	//생산계획 + 상세생산계획 등록
-//	public int insertPrcsPlan(@Param("prcsPlanList") List<PrcsPlanVO> prcsPlanList);
 	
 	//생산계획 수정
 	public int updatePrcsPlan(PrcsPlanVO prcsPlanVO);

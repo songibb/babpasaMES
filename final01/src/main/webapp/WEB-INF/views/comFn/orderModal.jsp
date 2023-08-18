@@ -28,7 +28,7 @@
 	//미계획 주문서 모달
 	$("#orderModal").click(function(){
 	    $(".modal").fadeIn();
-	    Grid = createActGrid();
+	    Grid = createOrderGrid();
 	});
 	
 	//save버튼 클릭 후 그리드 내용 지우고 모달창에서 선택한 데이터 넣은 후
@@ -87,7 +87,7 @@
 		
 	
 	
-	function createActGrid(){
+	function createOrderGrid(){
 	    var orderGrid = new tui.Grid({
 	        el: document.getElementById('modal_label'),
 	        scrollX: false,

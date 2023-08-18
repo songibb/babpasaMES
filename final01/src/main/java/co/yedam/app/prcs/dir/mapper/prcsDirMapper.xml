@@ -12,7 +12,7 @@
 			   prcs_start_date,
 			   prcs_end_date,
 			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
-			   find_prcs_name(emp_code) AS emp_code
+			   find_emp_name(emp_code) AS emp_code
 		  FROM prcs_dir
 		 ORDER BY prcs_dir_code
 	</select>
@@ -26,8 +26,8 @@
 			   prcs_dir_amt,
 			   prcs_start_de_date,
 			   prcs_end_de_date,
-			   find_cdnm('0R', prcs_ing_sts) AS prcs_ing_sts,
-			   find_prcs_name(prcs_code) AS emp_code
+			   find_cdnm('0S', prcs_ing_sts) AS prcs_ing_sts,
+			   find_emp_name(emp_code) AS emp_code
 		  FROM prcs_dir_de
 		 WHERE prcs_dir_code = #{prcsDirCode}
 		 ORDER BY prcs_dir_de_code
@@ -85,7 +85,7 @@
 							  )
 			 VALUES (
 						#{prcsDirDeCode}
-						, #{prcsDirCode}
+						, MAX_CODE()
 						, #{prodCode}
 						<if test="prcsPlanAmt > 0">
 						, #{prcsPlanAmt}
@@ -98,53 +98,6 @@
 						, #{empCode}
 					 )
 	</insert>
-	
-	<!-- 생산지시 + 상세생산지시 등록 -->
-<!-- 	<insert id="insertPrcsDir" parameterType="prcsDirVO"> -->
-<!-- 		<selectKey keyProperty="prcsDirCode" resultType="String" order="BEFORE"> -->
-<!-- 			SELECT 'DIR-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_code, -3)),0) + 1, 3, '0') -->
-<!-- 			FROM prcs_dir -->
-<!-- 			WHERE SUBSTR(prcs_dir_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd') -->
-<!-- 		</selectKey> -->
-<!-- 		BEGIN -->
-<!-- 			INSERT INTO prcs_dir ( -->
-<!-- 									prcs_dir_code -->
-<!-- 									, prcs_plan_code -->
-<!-- 									, prcs_dir_name -->
-<!-- 									, prcs_start_date -->
-<!-- 									, emp_code -->
-<!-- 								  ) -->
-<!-- 				 VALUES ( -->
-<!-- 							#{prcsDirCode} -->
-<!-- 							, #{prcsDirList[0].prcsDirCode} -->
-<!-- 							, #{prcsDirList[0].prcsPlanCode} -->
-<!-- 							, #{prcsDirList[0].prcsDirName} -->
-<!-- 							, #{prcsDirList[0].prcsStartDate} -->
-<!-- 							, #{prcsDirList[0].empCode} -->
-<!-- 						) -->
-<!-- 			<foreach collection="prcsDirList" item="p" index="index" open="" separator=" " close=""> -->
-<!-- 			INSERT INTO prcs_dir_de ( -->
-<!-- 										prcs_dir_de_code -->
-<!-- 										, prcs_dir_code -->
-<!-- 										, prod_code -->
-<!-- 										, prcs_plan_amt -->
-<!-- 										, prcs_dir_amt -->
-<!-- 										, prcs_start_de_date -->
-<!-- 										, emp_code -->
-<!-- 									 ) -->
-<!-- 	             VALUES (  -->
-<!-- 							get_primaryCode('prcsPlanDeCode') -->
-<!-- 							, #{p.prcsDirCode} -->
-<!-- 							, #{p.prodCode} -->
-<!-- 							, #{p.prcsPlanAmt} -->
-<!-- 							, #{p.prcsDirAmt} -->
-<!-- 							, #{p.prcsStartDeDate} -->
-<!-- 							, #{p.empCode}  -->
-<!-- 						) -->
-<!--            	</foreach>	 -->
-<!-- 		END; -->
-<!-- 	</insert> -->
-	
 	
 	
 	<!-- 미지시 생산계획 목록 조회 -->
@@ -167,6 +120,15 @@
 		 WHERE prcs_plan_de_code = #{prcsPlanDeCode}
 	</update>
 	
+	<!-- 생산지시 등록시 자재 출고 -->
+	<insert id="insertMatOut" parameterType="String">
+		{
+			CALL PR_MAT_OUT(
+				#{prcsDirDeCode}
+			)
+		}
+	</insert>
+	
 	
 	<!-- 제품별 총 자재 BOM 조회 -->
 	<select id="selectBomList" resultType="bomCodeVO">
@@ -175,7 +137,7 @@
         	   mp_code,
       		   find_mat_name(mp_code) AS mat_name,
       		   bom_unit,
-      		   bom_amt,
+      		   bom_amt * #{prcsDirAmt} AS bom_amt,
       		   prcs_seq
 		  FROM v_prod_bom
 		 WHERE prod_code= #{prodCode}

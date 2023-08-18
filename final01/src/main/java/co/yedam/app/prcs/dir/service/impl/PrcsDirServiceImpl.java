@@ -47,7 +47,6 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 	
 	//상세생산지시 등록
-
 	@Override
 	public int insertPrcsDirDe(List<PrcsDirVO> list) {
 		int result = 0;
@@ -56,10 +55,15 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 			
 			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
 			prcsDirMapper.updateNotDirPlanList(vo);
+
+			String prcsDirDeCode = vo.getPrcsDirDeCode();	
 			
 			//진행 공정 등록
-			String prcsDirDeCode = vo.getPrcsDirDeCode();	
 			prcsIngMapper.insertPrcsIng(prcsDirDeCode);
+			
+			//생산지시 등록시 자재 출고
+			prcsDirMapper.insertMatOut(prcsDirDeCode);
+			
 			result++;
 		}
 				
@@ -73,17 +77,11 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		return prcsDirMapper.selectNotDirPlanList();
 	}
 	
-	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
-//	@Override
-//	public int updateNotDirPlanList(PrcsDirVO prcsDirVO) {
-//		return prcsDirMapper.updateNotDirPlanList(prcsDirVO);
-//	}	
-	
 	
 	//BOM 조회
 	@Override
-	public List<BomCodeVO> getBomList(String prodCode) {
-		return prcsDirMapper.selectBomList(prodCode);
+	public List<BomCodeVO> getBomList(String prodCode, Integer prcsDirAmt) {
+		return prcsDirMapper.selectBomList(prodCode, prcsDirAmt);
 	}
 	
 

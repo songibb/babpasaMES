@@ -57,7 +57,6 @@
 	
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
-		<jsp:include page="../comFn/prcsIngModal.jsp"></jsp:include>
 	</div>
     
 	<script>
@@ -182,7 +181,6 @@
             header: '진행공정관리코드',
             name: 'prcsIngCode'
           },
-          
           {
             header: '상세지시코드',
             name: 'prcsDirDeCode'
@@ -198,8 +196,7 @@
           },
           {
             header: '공정코드',
-            name: 'prcsCode',
-            hidden: true
+            name: 'prcsCode'
           },
           {
             header: '공정명',
@@ -277,10 +274,14 @@
 		})
   	});
   	
-
-    
-    
+  	
+   
+ 
     
 	</script>
+	
+	<div>
+		<jsp:include page="../comFn/prcsIngModal.jsp"></jsp:include>
+	</div>
 </body>
 </html>
