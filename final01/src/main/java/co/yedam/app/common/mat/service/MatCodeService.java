@@ -12,6 +12,10 @@ public interface MatCodeService {
 	public List<MatCodeVO> selectMatCodeList();
 	
 	
+	//자재명 검색 조회
+	public List<MatCodeVO> searchMatCode(String matName);
+	
+	
 	//자재코드 추가 수정 삭제
 	public int updateMatCode(GridVO<MatCodeVO> data);
 	

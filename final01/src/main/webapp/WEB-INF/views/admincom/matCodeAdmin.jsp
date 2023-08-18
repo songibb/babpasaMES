@@ -31,7 +31,7 @@
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<div id="">		
-	                  자재명 <input type="text"  id="matCodeInput">
+	                  자재명 <input type="text"  id="matSearch">
 	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 	                     <i class="fas fa-search"></i>
 	                     검색
@@ -97,10 +97,20 @@
 			
 			let flag = true;
 			
+		
+			
 			if(grid.getModifiedRows().createdRows.length > 0){
 				
+				
+				
 				$.each(grid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['matName'] == '' ||obj2['matUnit'] == '' || obj2['matStd'] == '' || obj2['matSafe'] == ''){
+					
+					
+					if(obj2['matName'] == null ||obj2['matUnit'] == null || obj2['matStd'] == null || obj2['matSafe'] == null){
+						flag = false;
+						return false;
+					}
+					if(isNaN(obj2['matSafe'])==true){
 						flag = false;
 						return false;
 					}
@@ -111,12 +121,21 @@
 			if(grid.getModifiedRows().updatedRows.length > 0){
 				
 				$.each(grid.getModifiedRows().updatedRows, function(idx2, obj2){
+					
 					if(obj2['matName'] == "" ||obj2['matUnit'] =="" || obj2['matStd'] == "" || obj2['matSafe'] == ""){
+						
 						flag = false;
 						return false;
 					}
+					if(isNaN(obj2['matSafe'])==true){
+						flag = false;
+						return false;
+					}
+					
 				})
 			}
+			
+				
 			
 			if(flag){
 				$.ajax({
@@ -126,13 +145,23 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", data+"건이 처리되었습니다","success");
+						$.ajax({
+							url : "ajaxMatCodeList",
+							 method :"GET",
+						       success : function(result){
+						           grid.resetData(result);
+						       },
+						       error : function(reject){
+									console.log(reject);
+								}
+						})
 					},
 					error : function(reject){
 						console.log(reject);
 					}
 				})
 			}else{
-				swal("값이 입력되지 않았습니다","fail");
+				swal('실패','필요한 모든 값이 입력되지 않았거나 \n 입력 형식이 올바른지 확인해 주세요','error');
 			}
 			
 		}
@@ -150,7 +179,26 @@
 		       error : function(reject){
 					console.log(reject);
 				}
-		});
+		})
+		
+		//자재명 검색 조회
+		$('#searchBtn').on('click', searchMat);
+		function searchMat(e){
+			
+			let content = $('#matSearch').val();
+			let search = {matName : content};
+			$.ajax({
+				url : "searchMatCodeList",
+				 method :"GET",
+				 data : search,
+			       success : function(result){
+			           grid.resetData(result);
+			       },
+			       error : function(reject){
+						console.log(reject);
+					}
+			})
+		}
 		
 		var grid = new tui.Grid({
 			  el: document.getElementById('grid'),
@@ -201,9 +249,14 @@
 		              {
 			 	 	        header: '안전재고량',
 			 	 	        name: 'matSafe',
-			 	 	        editor : 'text'
+			 	 	        editor : 'text',
+			 	 	      validation: {
+			 	 	        dataType: 'number',
+			 	 	        required: true
+			 	 	      }
 			 	 	  }
 		        ]
+		   
 		      });
 	
 				    

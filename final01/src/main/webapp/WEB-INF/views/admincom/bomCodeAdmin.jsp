@@ -34,14 +34,16 @@
 		            	</div>
 	            	</form>
 	            	</div>
-	            	<p3> 제품bom등록 </p3>
-	           		<div id="bomgrid"></div>
-	           		<br>
-	           		<div>
-		           		<p3> bom상세등록 </p3>
-		           		<button id = "deSave" class="btn btn-info btn-icon-text">상세저장</button>
+	            	<h3> 제품bom등록 </h3>
+	            	<button id = "deSave" class="btn btn-info btn-icon-text">상세저장</button>
 		           		<button id = "deDelete" class="btn btn-info btn-icon-text" >상세삭제</button>
 		           		<button id = "deAdd" class="btn btn-info btn-icon-text">추가</button>
+	           		<div id="bomgrid"></div>
+	           		
+	           		<br>
+	           		<div>
+		           		<h3> bom상세등록 </h3>
+		           		
 		           		<div id="deBomgrid"></div>
 					</div>
 	   		</div>
@@ -79,6 +81,61 @@
 		deBomgrid.appendRow();
 	}
 	
+	//상세 BOM행삭제
+	document.getElementById('deDelete').addEventListener('click', deleteDeBom);
+	function deleteDeBom(){
+		deBomgrid.removeCheckedRows(false);
+	}
+	
+	//저장 버튼 클릭 진행(insert만 진행)
+	function saveServer(){
+		
+		let rowKey = bomgrid.getFocusedCell().rowKey;
+		let columnName = bomgrid.getFocusedCell().columnName;
+		
+		//편집 종료시켜야 마지막 입력 클릭된게 없어짐
+		bomgrid.finishEditing(rowKey, columnName);
+		
+		let list = bomgrid.getData();
+		let obj = list[0];
+		
+		
+		$.ajax({
+			url : 'bomInsert',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(data){
+				let rowKey = deBomgrid.getFocusedCell().rowKey;
+				let columnName = deBomgrid.getFocusedCell().columnName;
+				deBomgrid.finishEditing(rowKey, columnName);
+				
+				let deList = deBomgrid.getData();
+				$.each(deList, function(i, objDe){
+					deList[i]['bomNo'] =data;
+				})
+				
+				$.ajax({
+					url : 'bomDeInsert',
+					method : 'POST',
+					data : JSON.stringify(obj),
+					contentType : 'application/json',
+					success : function(data){
+						bomgrid.clear();
+						bomgrid.appendRow();
+						deBomgrid.clear();
+						deBomgrid.appendRow();
+						
+						alert('등록이 정상적으로 처리되었습니다');
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
+		
+	}
 	var bomgrid = new tui.Grid({
         el: document.getElementById('bomgrid'),
         scrollX: false,
@@ -103,10 +160,12 @@
           {
             header: '등록날짜',
             name: 'bomWdate',
+            hidden: true
           },
           {
             header: '수정날짜',
-            name: 'bomUdate'   	
+            name: 'bomUdate',
+            hidden: true
           },
           {
             header: '사용여부',
@@ -193,7 +252,120 @@
       });
 	
 	
-	
+	 var Grid;
+		$("Modal").on('click', event =>{
+
+			  $(".modal").fadeIn();
+			  Grid = createEmpGrid();	
+			  
+			  Grid.on('click', event => {	
+					let rowKey = Grid.getFocusedCell().rowKey;
+					let empName = Grid.getValue(rowKey, 'empName');
+					let empCode = Grid.getValue(rowKey, 'empCode');
+					$(event.currentTarget).prev().val(empCode);
+					$(event.currentTarget).next().val(empName);
+					if(event.currentTarget.id == 'empModal'){
+			        	  obj.empCode = empCode;
+		    			  obj.empName = empName;
+			          }
+			  
+					$("#close_btn").click(function(){
+						  $(".modal").fadeOut(); 
+							Grid.destroy();
+							
+					})
+					});
+		})
+			  
+			  grid.on('dblclick' , () => {
+				  let rowKey = grid.getFocusedCell().rowKey;
+			      let columnName = grid.getFocusedCell().columnName;
+			      let value = grid.getFocusedCell().value;
+			      
+			    	if(columnName == 'empName'){
+			    		$(".modal").fadeIn();
+			 	       Grid = createEmpGrid();
+			 	       
+			 	       Grid.on('click', () => {
+			 	       		let rowKey2 = Grid.getFocusedCell().rowKey;
+			 	        	let empCode = Grid.getValue(rowKey2, 'empCode');
+			 	        	let empName = Grid.getValue(rowKey2, 'empName');
+			 	        	grid.finishEditing(rowKey, columnName);
+
+			 	    		if(empCode != null){
+			 	    			grid.setValue(rowKey, 'empCode', empCode);
+			 	    		}
+			 	    		if(empName != null){
+			 	    			grid.setValue(rowKey, 'empName', empName);
+			 	    		}
+			 	    		
+			 	    		
+			 	    		//선택시 모달창 닫기
+			 	    		if(empCode != null){
+			 	    			$(".modal").fadeOut();
+			 	        		Grid.destroy();
+			 	    		}
+
+			 	       });
+			    	} 
+			  	});
+		
+		   $("#close_btn").click(function(){
+		        $(".modal").fadeOut();
+		         
+		  		Grid.destroy();
+		     });
+		   
+		 //모달창 닫기
+			$("#close_btn").click(function(){
+		        $(".modal").fadeOut();
+		         
+		  		Grid.destroy();
+		     });
+			
+				//사원조회 모달 그리드
+				 function createEmpGrid(){
+				      var empGrid = new tui.Grid({
+				          el: document.getElementById('modal_label'),
+				          data: [
+				             <c:forEach items="${empList}" var="e" varStatus="status">
+				                {
+				                	empCode : "${e.empCode}",
+				                	empName :"${e.empName}",
+				                	commdeName :"${e.commdeName}"
+				                } <c:if test="${not status.last}">,</c:if>
+				             </c:forEach>
+				             ],
+				         scrollX: false,
+				          scrollY: false,
+				          minBodyHeight: 30,
+				          rowHeaders: ['rowNum'],
+				          selectionUnit: 'row',
+				          pagination: true,
+				          pageOptions: {
+				          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+				            useClient: true,
+				            perPage: 10
+				          },
+				          columns: [
+				             {
+				                  header: '사원코드',
+				                  name: 'empCode'
+				                },
+				                {
+				                  header: '사원명',
+				                  name: 'empName'
+				                },
+				                {
+				                  header: '부서명',
+				                  name: 'commdeName'
+				                }
+				           ]
+				         
+				        });
+				      
+				      return empGrid;
+				   };
 	
 	
 	/* //제품명으로 BOM조회
