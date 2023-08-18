@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false" %>
 <!DOCTYPE html>
@@ -207,7 +207,15 @@
 						$('#actCode').val(data.actCode);
 						$('#eqName').val(data.eqName);
 						$('#modelName').val(data.modelName);
-						$('#makeDate').val(data.makeDate);
+						 let date = new Date(data.makeDate);  //매개변수값으로 숫자를 넘겨주면 날짜로 변환
+						    
+						    let year = date.getFullYear();
+						    let month = ('0' + (date.getMonth() + 1)).substr(-2);   //month 0부터 시작하기때문에 1을 더함, '0'을 앞에 붙여서 두자리로 표현
+						    let day = ('0' + date.getDate()).substr(-2);    //'0'을 앞에 붙여서 두자리로 표현
+						    //substr(음수) : 오른쪽 부터 잘라냄 -> 원래 두자리 숫자는 0을 제외하고 잘라와서 그대로 표현 
+					   
+						$('#makeDate').val(year + '-' + month + '-' + day);
+						    
 						$('#buyDate').val(data.buyDate);
 						$('#chkCycle').val(data.chkCycle);
 						$("#EquipStsList option[value='" + eqSts + "']").prop("selected", true);

@@ -23,8 +23,67 @@
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
-	 
+<!-- <style>
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            text-align: left;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"], select {
+            width: 50;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-right: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>	  -->
 </head>
+
 <body>
 
 	<div class="black_bg"></div>
@@ -47,12 +106,12 @@
 		            	</div>
 					<div id="grid"></div>
                 </div>
-                
+                <hr>
                 <div>
 					<form id="insertForm"> 
 				     	<h3>비가동 등록</h3>
 					    <table>
-						      <tr>
+						      <tr><button class="btn btn-info btn-icon-text" id="actModal">설비조회</button> 
 						      		<th>비가동코드</th>
 						        	 <td><input type="text" name="offNo" id="offNo" readonly style="background-color: #d3d3d3;"></td>  
 						      </tr>
@@ -60,7 +119,7 @@
 						         
 						         <th>설비코드</th>
 						        	 <td><input type="text" name="eqCode" id="eqCode"></td>
-						        	 <i class="fas fa-search" id="actModal">설비조회</i> 
+						        	 
 						        	 <!--설비코드 모달 리스트로 검색해서 데이터 갖고오기  -->
 						         <th>설비명</th>
 						        	 <td><input type="text" name="eqName" id="eqName"></td>
