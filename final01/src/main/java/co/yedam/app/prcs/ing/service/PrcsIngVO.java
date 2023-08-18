@@ -18,7 +18,10 @@ public class PrcsIngVO {
 	private String prcsDirIngSts;				//공정상태
 	
 	//진행 공정 관리 모달창 - 투입 자재별 소모량에 필요
-	private String prcsDirAmt;
+	private int prcsDirAmt;
+	private String mpCode;
+	private String matName;
+	private int bomAmt;
 	
 	//공정 실적 관리
 	private String eqCode;

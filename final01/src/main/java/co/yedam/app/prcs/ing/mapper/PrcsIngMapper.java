@@ -3,6 +3,8 @@ package co.yedam.app.prcs.ing.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.equip.service.EquipVO;
@@ -21,4 +23,7 @@ public interface PrcsIngMapper {
 	
 	//투입 자재별 소모량 조회 (진행공정 모달)
 	public List<BomCodeVO> selectMatBomList(PrcsIngVO prcsIngVO);
+	
+	
+
 }

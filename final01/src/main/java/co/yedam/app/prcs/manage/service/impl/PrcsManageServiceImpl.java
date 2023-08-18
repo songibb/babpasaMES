@@ -17,15 +17,10 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 	
 	//공정관리 조회
 	@Override
-	public List<PrcsManageVO> getPrcsManageList() {
+	public List<PrcsManageVO> selectPrcsManageList() {
 		return prcsManageMapper.selectPrcsManageList();
 	}
 
-	//공정관리 조회 - 검색
-	@Override
-	public List<PrcsManageVO> getPrcsManageSearch(PrcsManageVO prcsManageVO) {
-		return prcsManageMapper.selectPrcsManageSearch(prcsManageVO);
-	}
 
 	//공정관리 등록
 	@Override

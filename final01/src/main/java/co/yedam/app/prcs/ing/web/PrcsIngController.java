@@ -46,4 +46,12 @@ public class PrcsIngController {
 		return list;
 	}
 	
+	
+	
+	//공정 실적 조회
+	@GetMapping("prcsResultList")
+	public String getPrcsDirAllList() {
+		return "process/prcsResultList";
+	}
+	
 }

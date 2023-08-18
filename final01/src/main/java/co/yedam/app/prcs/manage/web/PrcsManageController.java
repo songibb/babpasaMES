@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.prcs.dir.service.PrcsDirService;
+
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
 
@@ -31,21 +29,10 @@ public class PrcsManageController {
 	@GetMapping("selectPrcsManageList")
 	@ResponseBody
 	public List<PrcsManageVO> getPrcsManageList(){
-		List<PrcsManageVO> list = prcsManageService.getPrcsManageList();
+		List<PrcsManageVO> list = prcsManageService.selectPrcsManageList();
 		return list;
 	}
-	
-	//공정관리 조회 - 검색
-	@GetMapping("selectPrcsManageSearch")
-	@ResponseBody
-	public List<PrcsManageVO> getSearchPrcsManage(@RequestParam String prcsSearch){
-		PrcsManageVO pVO = new PrcsManageVO();
-		pVO.setPrcsSearch(prcsSearch);
-		List<PrcsManageVO> list = prcsManageService.getPrcsManageSearch(pVO);
-		return list;
-	}
-	
-	
+
 	//공정관리 등록 - 리스트가져오기
 
 	

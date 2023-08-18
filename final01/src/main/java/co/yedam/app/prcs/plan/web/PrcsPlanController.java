@@ -28,7 +28,7 @@ public class PrcsPlanController {
 									 @RequestParam(required=false) String startDate, 
 									 @RequestParam(required=false) String endDate, 
 									 Model model){
-		model.addAttribute("planList", prcsPlanService.getPrcsPlanList(searchPlanName, startDate, endDate));	
+		model.addAttribute("planList", prcsPlanService.selectPrcsPlanList(searchPlanName, startDate, endDate));	
 		return "process/prcsPlanList";
 	}
 	
@@ -38,7 +38,7 @@ public class PrcsPlanController {
 	public List<PrcsPlanVO> getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 
 											   @RequestParam(required=false) String startDate, 
 											   @RequestParam(required=false) String endDate){
-		List<PrcsPlanVO> list = prcsPlanService.getPrcsPlanList(searchPlanName, startDate, endDate);	
+		List<PrcsPlanVO> list = prcsPlanService.selectPrcsPlanList(searchPlanName, startDate, endDate);	
 		return list;
 	}
 	
@@ -46,7 +46,7 @@ public class PrcsPlanController {
 	@GetMapping("prcsPlanDeList")
 	@ResponseBody
 	public List<PrcsPlanVO> getPrcsPlanDeList(@RequestParam String prcsPlanCode){
-		List<PrcsPlanVO> list = prcsPlanService.getPrcsPlanDeList(prcsPlanCode);
+		List<PrcsPlanVO> list = prcsPlanService.selectPrcsPlanDeList(prcsPlanCode);
 		return list;
 	}
 	
@@ -72,14 +72,6 @@ public class PrcsPlanController {
 		return prcsPlanService.insertPrcsPlanDe(list);
 	}
 	
-	
-	//생산계획 + 상세생산계획 등록
-//	@PostMapping("prcsPlanInsert")
-//	@ResponseBody
-//	public int PrcsPlanInsert(@RequestBody List<PrcsPlanVO> prcsPlanList) {
-//		int result = prcsPlanService.prcsPlanInsert(prcsPlanList);
-//		return result;
-//	}
 
 	//생산계획 수정
 	@PostMapping("prcsPlanUpdate")
@@ -108,7 +100,7 @@ public class PrcsPlanController {
 	@GetMapping("notPlanOrderList")
 	@ResponseBody
 	public List<OrderVO> getNotPlanOrderList(){
-		List<OrderVO> list = prcsPlanService.getNotPlanOrderList();
+		List<OrderVO> list = prcsPlanService.selectNotPlanOrderList();
 		return list;
 	}
 	
@@ -116,18 +108,7 @@ public class PrcsPlanController {
 	@PostMapping("notPlanOrderDeList")
 	@ResponseBody	
 	public List<OrderVO> getPlanOrderList(@RequestBody List<OrderVO> ordList){
-
-//		List<OrderVO> deList = new ArrayList<>();
-//		
-//		for(OrderVO vo : ordList) {
-//			String ordCode = vo.getOrdCode();
-//
-//			deList.addAll(prcsPlanService.getNotPlanOrderDeList(ordCode));
-//		}
-//
-//		return deList;
-		
-		return prcsPlanService.getNotPlanOrderDeList(ordList);
+		return prcsPlanService.selectNotPlanOrderDeList(ordList);
 	}
 		
 

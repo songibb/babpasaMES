@@ -15,15 +15,6 @@
 		 ORDER BY prcs_code
 	</select>
 	
-	<!-- 공정관리 조회 - 검색 -->
-	<select id="selectPrcsManageSearch" resultType="prcsManageVO">
-		SELECT prcs_code,
-			   prcs_type,
-			   prcs_name,
-			   
-		  FROM prcs_manage
-		 WHERE prcs_name LIKE '%' || #{prcsSearch} || '%'
-	</select>
 	
 	<!-- 공정관리 등록 -->
 	<insert id="insertPrcsManage" parameterType="prcsManageVO">

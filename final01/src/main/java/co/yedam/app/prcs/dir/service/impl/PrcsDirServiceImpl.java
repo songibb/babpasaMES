@@ -23,13 +23,13 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	
 	//생산지시 조회
 	@Override
-	public List<PrcsDirVO> getPrcsDirList() {
+	public List<PrcsDirVO> selectPrcsDirList() {
 		return prcsDirMapper.selectPrcsDirList();
 	}
 	
 	//상세생산지시 조회
 	@Override
-	public List<PrcsDirVO> getPrcsDirDeList(String prcsDirCode) {
+	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode) {
 		return prcsDirMapper.selectPrcsDirDeList(prcsDirCode);
 	}
 	
@@ -73,14 +73,14 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 
 	//미지시 생산계획 목록 조회 
 	@Override
-	public List<PrcsPlanVO> getNotDirPlanList() {
+	public List<PrcsPlanVO> selectNotDirPlanList() {
 		return prcsDirMapper.selectNotDirPlanList();
 	}
 	
 	
 	//BOM 조회
 	@Override
-	public List<BomCodeVO> getBomList(String prodCode, Integer prcsDirAmt) {
+	public List<BomCodeVO> selectBomList(String prodCode, Integer prcsDirAmt) {
 		return prcsDirMapper.selectBomList(prodCode, prcsDirAmt);
 	}
 	

@@ -15,12 +15,10 @@
 	justify-content: space-between;
 	flex-direction: column;
 }
-table{
-	margin-bottom: 10px;	
-}
-#flexTable{
+#inputContainer{
 	display: flex; 
 	justify-content: space-between;
+	margin-bottom: 20px;
 }
 #gridContainer{
 	display: flex; 
@@ -35,13 +33,20 @@ table{
 	height: 50px;
 }
 #timeContainer{
+	height: 70px;
 	display: flex; 
-	justify-content: center;
+	justify-content: space-between;
 	flex-direction: column;
 }
 #timeContainer input {
 	width: 150px;
 }
+#leftPrcsStart, #rightPrcsEnd{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+ 
 .m_footer{
 	display: flex; 
 	justify-content: flex-end;
@@ -52,34 +57,26 @@ table{
 	<div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>미계획 주문서 목록</h3></div>
+				<div class="modal_title"><h3>공정 작업 관리</h3></div>
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">	
 				<div id="modal_label">	
-					<div id="flexTable">
-							
-						<table>
-							<tr>
-								<th>공정명</th>
-								<td><input type="text" name="prcsName" id="prcsName"></td>			
-							</tr>
-							<tr>
-								<th>투입량</th>
-								<td><input type="text" name="inputAmt" id="inputAmt"></td>
-							</tr>
-						</table>
+					<div id="inputContainer">
+						<div>
+							<label for="prcName">공정명</label>
+							<input type="text" name="prcsName" id="prcsName">	
 						
-						<table>
-							<tr>
-								<th class="rightT">담당자</th>
-								<td><input type="text" name="empCode" id="empCode"></td>
-							</tr>
-							<tr>
-								<th class="rightT">불량량</th>
-								<td><input type="text" name="errAmt" id="errAmt"></td>
-							</tr>
-						</table>
+							<label for="inputAmt">투입량</label>
+							<input type="text" name="inputAmt" id="inputAmt">	
+						</div>	
+						<div>
+							<label for="empCode">담당자</label>
+							<input type="text" name="empCode" id="empCode">	
+						
+							<label for="errAmt">불량량</label>
+							<input type="text" name="errAmt" id="errAmt">		
+						</div>	
 					</div>	
 					
 					<div id="gridContainer">
@@ -93,12 +90,12 @@ table{
 			<div id="timeContainer">
 				<div id="leftPrcsStart">
 					<input type="text" name="prcsStartTime" id="prcsStartTime">		
-					<button id="prcsStartBtn">작업시작</button>
+					<button id="prcsStartBtn" class="btn btn-info btn-icon-text">작업시작</button>
 				</div>
 				
 				<div id="rightPrcsEnd">
 					<input type="text" name="prcsEndTime" id="prcsEndTime">	
-					<button id="prcsEndBtn">작업종료</button>
+					<button id="prcsEndBtn" class="btn btn-info btn-icon-text">작업종료</button>
 				</div>
 			</div>
 					
@@ -115,14 +112,11 @@ table{
 	var Grid;
 	var Grid2;
     ingGrid.on('click', () => {
-    	let rowKey = dirGrid.getFocusedCell().rowKey;
-    	let ingList = ingGrid.getRow(rowKey);
-    	  	
+ 
 		$(".modal").fadeIn();   	   	
 		
 		Grid = createEqGrid();
     	Grid2 = createPrcsBomGrid();
-
     	
     	//작업 시작 버튼 or 작업 종료 버튼 클릭 시 -> 모달창 닫기
     	$('#prcsStartBtn').click(function(){
@@ -130,7 +124,19 @@ table{
 // 			Grid.destroy();
 // 			Grid2.destroy();
 			
-			//ajax 프로시저(대기중->가동중 update / prcsList에 + 작업시작시간 insert)
+			//ajax 프로시저(대기중->가동중 update / prcsList에 진행 공정 정보 + 작업시작시간 insert)
+// 			$.ajax({
+// 			    url : '',
+// 			    method : 'POST',
+// 			    data : JSON.stringify(i),
+// 			    contentType : 'application/json',
+// 			    success : function(data){
+// 			    	eqGrid.resetData(data);
+// 			    },
+// 			    error : function(reject){
+// 			        console.log(reject);
+// 			    }	
+// 			})
     	})
     	
     	$('#prcsEndBtn').click(function(){
@@ -171,9 +177,9 @@ table{
 	        ]       
 		});
     	
-    	let rowKey = dirGrid.getFocusedCell().rowKey;
+    	let rowKey = ingGrid.getFocusedCell().rowKey;
     	let ingList = ingGrid.getRow(rowKey);
-			
+
 		$.ajax({
 		    url : 'waitEquipList',
 		    method : 'POST',
@@ -227,8 +233,20 @@ table{
             ]
         });
 		
-    	let rowKey = dirGrid.getFocusedCell().rowKey;
+    	
+    	
+    	let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let prcsDirAmt = dirDeGrid.getValue(deRowKey, 'prcsDirAmt');
+    	
+    	let rowKey = ingGrid.getFocusedCell().rowKey;
     	let ingList = ingGrid.getRow(rowKey);
+    	
+    	console.log(ingList);
+    	console.log(prcsDirAmt);
+    	
+    	ingList['prcsDirAmt'] = prcsDirAmt;
+
+		console.log(ingList);
     	
 		$.ajax({
 		    url : 'matBomList',
@@ -242,6 +260,7 @@ table{
 		        console.log(reject);
 		    }	
 		})
+		
 	    return prcsBomGrid;
 	}
     

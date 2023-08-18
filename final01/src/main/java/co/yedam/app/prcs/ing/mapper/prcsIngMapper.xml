@@ -48,12 +48,11 @@
 	</select>
 	
 	<!-- 투입 자재별 소모량 조회 (진행공정 모달) -->
-	<select id="selectMatBomList" resultType="BomCodeVO">
+	<select id="selectMatBomList" resultType="prcsIngVO">
 		SELECT find_prod_name(prod_code) AS prod_name,
         	   find_prcs_name(prcs_code) AS prcs_name,
         	   mp_code,
       		   find_mat_name(mp_code) AS mat_name,
-      		   bom_unit,
       		   bom_amt * #{prcsDirAmt} AS bom_amt
 		  FROM v_prod_bom
 		 WHERE prod_code= #{prodCode}

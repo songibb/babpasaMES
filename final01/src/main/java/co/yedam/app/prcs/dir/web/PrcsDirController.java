@@ -29,7 +29,7 @@ public class PrcsDirController {
 	//생산지시 조회
 	@GetMapping("prcsDirList")
 	public String getPrcsDirAllList(Model model) {
-		model.addAttribute("dirList", prcsDirService.getPrcsDirList());
+		model.addAttribute("dirList", prcsDirService.selectPrcsDirList());
 		return "process/prcsDirList";
 	}
 	
@@ -37,7 +37,7 @@ public class PrcsDirController {
 	@GetMapping("selectPrcsDirList")
 	@ResponseBody
 	public List<PrcsDirVO> getPrcsDirAllList() {
-		List<PrcsDirVO> list = prcsDirService.getPrcsDirList();
+		List<PrcsDirVO> list = prcsDirService.selectPrcsDirList();
 		return list;
 	}
 	
@@ -45,7 +45,7 @@ public class PrcsDirController {
 	@GetMapping("prcsDirDeList")
 	@ResponseBody
 	public List<PrcsDirVO> getPrcsDirDeList(@RequestParam String prcsDirCode){
-		List<PrcsDirVO> list = prcsDirService.getPrcsDirDeList(prcsDirCode);
+		List<PrcsDirVO> list = prcsDirService.selectPrcsDirDeList(prcsDirCode);
 		return list;
 	}
 	
@@ -77,7 +77,7 @@ public class PrcsDirController {
 	@GetMapping("notDirPlanList")
 	@ResponseBody
 	public List<PrcsPlanVO> getNotDirPlanList(){
-		List<PrcsPlanVO> list = prcsDirService.getNotDirPlanList();
+		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList();
 		return list;
 	}
 	
@@ -86,7 +86,7 @@ public class PrcsDirController {
 	@GetMapping("bomList")
 	@ResponseBody
 	public List<BomCodeVO> getBomList(@RequestParam String prodCode, @RequestParam Integer prcsDirAmt){
-		List<BomCodeVO> list = prcsDirService.getBomList(prodCode, prcsDirAmt);
+		List<BomCodeVO> list = prcsDirService.selectBomList(prodCode, prcsDirAmt);
 		return list;
 	}
 	
