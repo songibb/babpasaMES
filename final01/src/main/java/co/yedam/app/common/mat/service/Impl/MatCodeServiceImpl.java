@@ -22,6 +22,14 @@ public class MatCodeServiceImpl implements MatCodeService {
 		return matCodeMapper.selectMatCodeList();
 	}
 	
+	
+	@Override
+	public List<MatCodeVO> searchMatCode(String matName) {
+
+		return matCodeMapper.searchMatCode(matName);
+	}
+	
+	
 	@Override
 	public int updateMatCode(GridVO<MatCodeVO> data) {
 		
@@ -48,6 +56,8 @@ public class MatCodeServiceImpl implements MatCodeService {
 		
 		return result;
 	}
+
+
 	
 
 }

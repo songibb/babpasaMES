@@ -13,6 +13,20 @@
 		FROM com_mat
 		ORDER BY mat_code
 	</select>		
+	
+	<select id="searchMatCode"  resultType="MatCodeVO">
+		SELECT  mat_code,
+				mat_name,
+				mat_unit,
+				mat_std,
+				mat_safe
+		FROM com_mat
+		WHERE mat_name LIKE '%' || #{matName} || '%'
+		ORDER BY mat_code
+	</select>
+	
+	
+	
 	<insert id="matCodeInsert" parameterType="MatCodeVO">
 				insert into com_mat(
 									mat_code,

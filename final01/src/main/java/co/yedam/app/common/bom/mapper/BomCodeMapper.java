@@ -14,5 +14,12 @@ public interface BomCodeMapper {
 	
 	//bom 상세 조회
 	public List<BomCodeVO> selectDeBomCodeList(String bomNo);
+	
+	//bom 등록
+	public int bomCodeInsert(BomCodeVO bomCodeVO);
+	
+	//bom 상세등록
+	public int bomDeCodeInsert(BomCodeVO bomCodeVO);
 
+	
 }

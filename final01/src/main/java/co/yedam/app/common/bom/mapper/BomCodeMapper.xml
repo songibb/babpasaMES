@@ -48,4 +48,48 @@
 			from bom_detail
 			WHERE bom_no = #{bomNo}
   	</select>
+  	
+  	<insert id="bomCodeInsert" parameterType="BomCodeVO">
+  		INSERT INTO bom_header
+  							(
+  								bom_no,
+								prod_code,
+								bom_wdate,
+								bom_yn,
+								bom_prcs_yn
+  								
+  							)
+  		VALUES
+		  		(
+		  			get_primarycode('bomNo'),
+		  			#{prodCode},
+		  			sysdate,
+		  			#{bomYn},
+		  			#{bomPrcsYn}
+		  		)
+  	</insert>
+  	
+  	<insert id="bomDeCodeInsert" parameterType="BomCodeVO">
+  		INSERT INTO  bom_detail
+  								(
+  									bom_code,
+									prcs_code,
+									mp_kind,
+									mp_code,
+									bom_unit,
+									bom_amt,
+									bom_no
+  								)
+  		VALUES					
+		  		(
+		  			#{bomCode},
+		  			#{prcsCode},
+		  			#{mpKind},
+		  			#{mpCode},
+		  			#{bomUnit},
+		  			#{bomAmt},
+		  			#{bomNo}
+		  			
+		  		)
+  	</insert>
   </mapper>

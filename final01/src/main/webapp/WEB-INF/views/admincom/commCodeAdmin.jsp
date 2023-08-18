@@ -230,7 +230,7 @@
 			commCode = $("#commCode").val();
 			
 			if($('#commCode').val().length === 0){
-				alert('상세를 추가할 공통코드를 먼저 선택해 주세요');
+				swal("공통코드 선택필요!","상세코드를 추가할 공통코드를 먼저 선택해주세요","warning");
 			}else{
 				grid2.appendRow( {'commCode' : commCode}, { at: 0 });
 			}
@@ -243,23 +243,22 @@
 		
 		function commSave(){
 			grid2.blur();
-			
 			let modifyGridInfo = grid2.getModifiedRows();
 			
 			//변경사항없으면 빠져나감
 			if(!grid2.isModified()){
-				alert("변경사항이 없습니다.");
+				swal("변경사항이 없습니다","","warning");
 				return false;
 			}
 			
 			
 			//입력 빠뜨린곳 없으면 true
-			var flag = true;
+			let flag = true;
 			
 			if(grid2.getModifiedRows().createdRows.length > 0 ){
 							
 							$.each(grid2.getModifiedRows().createdRows, function(idx2, obj2){
-								if(obj2['commdeCode'] == '' ||obj2['commdeName'] == '' || obj2['commdeInfo'] == '' || obj2['commdeUse'] == ''){
+								if(obj2['commdeCode'] == null ||obj2['commdeName'] == null || obj2['commdeInfo'] == null || obj2['commdeUse'] == null){
 									flag = false;
 									return false;
 								}

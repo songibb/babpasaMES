@@ -11,6 +11,10 @@ public interface MatCodeMapper {
 	//전체 자재코드 조회
 	public List<MatCodeVO> selectMatCodeList();
 	
+	
+	//자재명 검색 조회
+	public List<MatCodeVO> searchMatCode(String matName);
+	
 	//자재코드 추가
 	public int matCodeInsert(MatCodeVO vo);
 	
