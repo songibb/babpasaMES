@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -49,7 +50,7 @@ public class OffEquipController {
 	//비가동 설비 등록
 	@PostMapping("/insertOffEquip")
 	@ResponseBody
-	public String OffEquipInsert(OffEquipVO offequipVO) {
+	public String OffEquipInsert(@RequestBody OffEquipVO offequipVO) {
 		return offEquipService.insertOffEquip(offequipVO);
 		
 	}
@@ -57,7 +58,7 @@ public class OffEquipController {
 	//비가동 설비 수정
 	@PostMapping("/updateOffEquip")
 	@ResponseBody
-	public String OffEquipUpdate(OffEquipVO offequipVO) {
+	public String OffEquipUpdate(@RequestBody OffEquipVO offequipVO) {
 		return offEquipService.updateOffEquip(offequipVO);
 		
 	}
