@@ -115,7 +115,7 @@
 			, #{empCode}
 			, #{salesOrdDeCode}
 			, #{prodLot}
-			)
+			) 
 			<!-- 두번째 쿼리 -->
 	</insert>
 	
