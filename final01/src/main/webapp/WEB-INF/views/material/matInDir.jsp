@@ -55,12 +55,12 @@ h2{
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -178,7 +178,7 @@ h2{
 	 		 	  {
                       header: '담당자코드',            // [필수] 컬럼 이름
                       name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
-                      hidden: true,                   // [선택] 숨김 여부
+                      hidden : true                   // [선택] 숨김 여부
                   },
 	 		 	  {
 	 		 	    header: '입고일자',
@@ -324,7 +324,7 @@ h2{
 		// 수정된게 없으면 바로 빠져나감
 		
 		if(!inGrid.isModified()){
-			alert("변경사항이 없습니다.");
+			swal("", "변경사항이 없습니다", "warning");
 			return false;
 		}
 		
@@ -361,6 +361,7 @@ h2{
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", data +"건이 처리되었습니다.", "success");
+						selectAjax();
 					},
 					error : function(reject){
 						console.log(reject);
@@ -368,7 +369,7 @@ h2{
 					}
 				})
 		} else {
-			alert("값이 입력되지 않았습니다.");
+			swal("", "값이 입력되지 않았습니다", "warning");
 		}
 
 	}
@@ -645,7 +646,9 @@ h2{
     					   'actCode' : actCode,
     					   'matInAmt' : matYamt,
     					   'matUnit' : matUnit,
-    					   'matStd' : matStd},
+    					   'matStd' : matStd,
+    					   'empCode' : ${user.id},
+    					   'empName' : `${user.empName}`},
     					   { at: 0 }
     	);
 	

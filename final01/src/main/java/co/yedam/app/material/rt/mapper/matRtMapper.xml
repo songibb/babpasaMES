@@ -40,10 +40,10 @@
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-				AND a.mat_rt_date <![CDATA[>=]]> TO_CHAR(#{startDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.mat_rt_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and endDate != ''">
-				AND a.mat_rt_date <![CDATA[<=]]> TO_CHAR(#{endDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.mat_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		ORDER BY a.mat_rt_date DESC
@@ -83,7 +83,7 @@
 	</insert>
 	<update id="updateMatTestStsY" parameterType="MatRtVO">
 		 UPDATE mat_test
-            SET err_rt_sts = 'Y'
+            SET err_rt_sts = 'R2'
             WHERE mat_test_code = #{matTestCode}
 	</update>
 	
@@ -103,7 +103,7 @@
 	</delete>
 	<update id="updateMatTestStsN" parameterType="MatRtVO">
 		UPDATE mat_test
-		SET err_rt_sts = 'N'
+		SET err_rt_sts = 'R1'
 		WHERE mat_test_code = #{matTestCode}
 	</update>
 </mapper>

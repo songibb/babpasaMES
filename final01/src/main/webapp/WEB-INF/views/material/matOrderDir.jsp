@@ -53,22 +53,19 @@
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
                 				<p>발주일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                				<br>
-                				<p>등록 거래처명</p>
-                  				<input type="text" id="selectActCodeInput">
-                    			<i class="bi bi-search" id="selectActModal"></i>
-                  				<input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
+                				
+                				
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -76,9 +73,13 @@
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                     				초기화
                 				</button>
-                				<button type="button" class="btn btn-info btn-icon-text" id="selectPrcsSchedule">
-                    				신규 생산계획 조회
-                				</button>
+                				<br>
+                				<p>등록 업체명</p>
+                  				<input type="text" id="selectActCodeInput">
+                    			<i class="bi bi-search" id="selectActModal"></i>
+                    		
+                  				<input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
+                			
             				</div>
         				</div>
 	    			</div>
@@ -133,7 +134,7 @@
 		
 		//등록 거래처가 없으면 행추가를 못함
 		if($('#selectActNameFix').val().length === 0){
-			alert('거래처를 먼저 등록해주세요.');
+			swal("","업체를 먼저 등록해주세요.", "warning");
 		} else {
 			//거래처가 등록되어 있을 경우 행추가 허용
 			let now = new Date();	// 현재 날짜 및 시간
@@ -141,7 +142,7 @@
 			let month = ('0' + (now.getMonth() + 1)).substr(-2);
 			let day = ('0' + now.getDate()).substr(-2);
 			let matOdRq = year + "-" + month + "-" + day;
-		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq}, { at: 0 });	
+		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq, 'empCode' : ${user.id}, 'empName' : `${user.empName}`}, { at: 0 });	
 			
 		}
 	}
@@ -223,22 +224,22 @@
 			 	 	    value : '${mat.matPrice * mat.matAmt}'
 		 	 	  },
 	        	  {
-	 	 	        header: '거래처명',
+	 	 	        header: '업체명',
 	 	 	        name: 'actName'
 	 	 	      },
 	 	 	      {
-	                header: '거래처코드',            // [필수] 컬럼 이름
+	                header: '업체코드',            // [필수] 컬럼 이름
 	                name: 'actCode',                 // [필수] 컬럼 매핑 이름 값
 	                hidden : true                // [선택] 숨김 여부
 	              },
 	 	 	      {
                     header: '담당자명',            // [필수] 컬럼 이름
-                    name: 'empName'                 // [필수] 컬럼 매핑 이름 값                   // [선택] 숨김 여부
+                    name: 'empName'             // [필수] 컬럼 매핑 이름 값                   // [선택] 숨김 여부
                   },
                   {
                     header: '담당자코드',            // [필수] 컬럼 이름
-                    name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
-                    hidden : true                 // [선택] 숨김 여부
+                    name: 'empCode',                // [선택] 숨김 여부
+                    hidden : true
                   },
 	 	 	      {
 	 	 	        header: '발주일자',
@@ -284,7 +285,7 @@
 		// 수정된게 없으면 바로 빠져나감
 		
 		if(!orderGrid.isModified()){
-			alert("변경사항이 없습니다.");
+			swal("", "변경사항이 없습니다", "warning");
 			return false;
 		}
 		
@@ -302,16 +303,17 @@
 				})
 		}
 		
-		if(inGrid.getModifiedRows().updatedRows.length > 0 ){
-
-				$.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['matOdDeCd'] == "" ||obj2['actCode'] == "" ||obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp']== "" || obj2['matPrice'] == "" || obj2['matOdRq'] == ""){
+		if(orderGrid.getModifiedRows().updatedRows.length > 0 ){
+			$.each(orderGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['matOdDeCd'] == "" ||obj2['actCode'] == "" ||obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp']== "" || obj2['matPrice'] == ""){
 						flag = false;
 						return false;
 					}
-				})
 				
+			})
 		}
+				
+		
 		
 		if(flag){
 				$.ajax({
@@ -321,6 +323,7 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", data +"건이 처리되었습니다.", "success");
+						selectAjax();
 					},
 					error : function(reject){
 						console.log(reject);
@@ -328,7 +331,7 @@
 					}
 				})
 		} else {
-			alert("값이 입력되지 않았습니다.");
+			swal("", "값이 입력되지 않았습니다", "warning");
 		}
 
 	}
@@ -384,19 +387,20 @@
 		       $('.modal_title h3').text('거래처 목록');
 		       Grid.on('dblclick', event2 => {
 		        	let rowKey = Grid.getFocusedCell().rowKey;
-		        	let actCode = Grid.getValue(rowKey, 'actCode');
-		        	let actName = Grid.getValue(rowKey, 'actName');
-		    		$(event.currentTarget).prev().val(actCode);
-		    		$(event.currentTarget).next().val(actName);
-		    		if(event.currentTarget.id == 'selectActModal'){
-		    			var rows = findColumns();
-		    			$.each(rows, function(idx, obj){
-		    				obj.actCode = actCode;
-		    				obj.actName = actName;
-		    			})
-		    		}
-		    		
-		    		
+		        	if(rowKey != null){
+		        		let actCode = Grid.getValue(rowKey, 'actCode');
+			        	let actName = Grid.getValue(rowKey, 'actName');
+			    		$(event.currentTarget).prev().val(actCode);
+			    		$(event.currentTarget).next().val(actName);
+			    		if(event.currentTarget.id == 'selectActModal'){
+			    			var rows = findColumns();
+			    			$.each(rows, function(idx, obj){
+			    				obj.actCode = actCode;
+			    				obj.actName = actName;
+			    			})
+			    		}
+		        	}
+
 		    		//모달창 닫기
 		    		if(rowKey != null){
 		    			$(".modal").fadeOut();
@@ -414,12 +418,14 @@
 		       $('.modal_title h3').text('자재 목록');
 		       Grid.on('dblclick', () => {
 		       	let rowKey = Grid.getFocusedCell().rowKey;
-		       	let matCode = Grid.getValue(rowKey, 'matCode');
-		    	let matName = Grid.getValue(rowKey, 'matName');
-				$("#matCodeInput").val(matCode);
-				$("#matNameFix").val(matName);
-		       
-		   		$("#matCodeInput").val(matCode);
+		       	if(rowKey != null){
+		       		let matCode = Grid.getValue(rowKey, 'matCode');
+			    	let matName = Grid.getValue(rowKey, 'matName');
+					$("#matNameFix").val(matName);
+			       
+			   		$("#matCodeInput").val(matCode);
+		       	}
+		       	
 		   		//모달창 닫기
 		   		if(rowKey != null){
 					$(".modal").fadeOut();
@@ -441,28 +447,31 @@
  	      $('.modal_title h3').text('자재 목록');
  	       Grid.on('dblclick', () => {
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
- 	        	let matCode = Grid.getValue(rowKey2, 'matCode');
- 	        	let matName = Grid.getValue(rowKey2, 'matName');
- 	        	let matUnit = Grid.getValue(rowKey2, 'matUnit');
- 	        	let matStd = Grid.getValue(rowKey2, 'matStd');
- 	        	orderGrid.finishEditing(rowKey, columnName);
-
- 	    		if(matCode != null){
- 	    			orderGrid.setValue(rowKey, 'matCode', matCode);
- 	    		}
- 	    		if(matName != null){
- 	    			orderGrid.setValue(rowKey, 'matName', matName);
- 	    		}
- 	    		if(matUnit != null){
- 	    			orderGrid.setValue(rowKey, 'matUnit', matUnit);
- 	    		}
- 	    		if(matStd != null){
- 	    			orderGrid.setValue(rowKey, 'matStd', matStd);
- 	    		}
+ 	       		if(rowKey2 != null){
+	 	       		let matCode = Grid.getValue(rowKey2, 'matCode');
+	 	        	let matName = Grid.getValue(rowKey2, 'matName');
+	 	        	let matUnit = Grid.getValue(rowKey2, 'matUnit');
+	 	        	let matStd = Grid.getValue(rowKey2, 'matStd');
+	 	        	orderGrid.finishEditing(rowKey, columnName);
+	
+	 	    		if(matCode != null){
+	 	    			orderGrid.setValue(rowKey, 'matCode', matCode);
+	 	    		}
+	 	    		if(matName != null){
+	 	    			orderGrid.setValue(rowKey, 'matName', matName);
+	 	    		}
+	 	    		if(matUnit != null){
+	 	    			orderGrid.setValue(rowKey, 'matUnit', matUnit);
+	 	    		}
+	 	    		if(matStd != null){
+	 	    			orderGrid.setValue(rowKey, 'matStd', matStd);
+	 	    		}
+ 	       		}
+ 	        	
  	    		
  	    		
  	    		//선택시 모달창 닫기
- 	    		if(matCode != null){
+ 	    		if(rowKey2 != null){
  	    			$(".modal").fadeOut();
  	        		Grid.destroy();
  	    		}

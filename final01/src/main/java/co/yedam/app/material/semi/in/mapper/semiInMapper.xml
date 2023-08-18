@@ -25,10 +25,10 @@
 				AND a.prod_code LIKE '%' || #{productCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-				AND a.semi_ind <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and endDate != ''">
-				AND a.semi_ind <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		ORDER BY a.semi_ind DESC

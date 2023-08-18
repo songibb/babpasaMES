@@ -47,18 +47,17 @@
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
                    	</button>
-                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+                   	
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+                				<input type="text" =id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -106,10 +105,13 @@
        $('.modal_title h3').text('거래처 목록');
        Grid.on('dblclick', () => {
         	let rowKey = Grid.getFocusedCell().rowKey;
-        	let actCode = Grid.getValue(rowKey, 'actCode');
-        	let actName = Grid.getValue(rowKey, 'actName');
-    		$("#actCodeInput").val(actCode);
-    		$("#actNameFix").val(actName);
+        	if(rowKey != null){
+        		let actCode = Grid.getValue(rowKey, 'actCode');
+            	let actName = Grid.getValue(rowKey, 'actName');
+        		$("#actCodeInput").val(actCode);
+        		$("#actNameFix").val(actName);
+        	}
+        	
     		//모달창 닫기
     		console.log(rowKey);
     		if(rowKey != null){
@@ -127,12 +129,14 @@
        $('.modal_title h3').text('자재 목록');
        Grid.on('dblclick', () => {
        	let rowKey = Grid.getFocusedCell().rowKey;
-       	let matCode = Grid.getValue(rowKey, 'matCode');
-    	let matName = Grid.getValue(rowKey, 'matName');
-		$("#matCodeInput").val(matCode);
-		$("#matNameFix").val(matName);
+       	if(rowKey != null){
+       		let matCode = Grid.getValue(rowKey, 'matCode');
+        	let matName = Grid.getValue(rowKey, 'matName');
+    		$("#matCodeInput").val(matCode);
+    		$("#matNameFix").val(matName);
+       	}
+       	
        
-   		$("#matCodeInput").val(matCode);
    		//모달창 닫기
    		if(rowKey != null){
 			$(".modal").fadeOut();
@@ -267,7 +271,16 @@
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.matOdAcp = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.matOdAcp = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					
+			   		date = new Date(i.matOdRq);
+			   		year = date.getFullYear(); 
+			   		month = date.getMonth() + 1;
+			   		day = date.getDate();
+			   		i.matOdRq = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			   		
+			   		i.matTotalPrice = i.matPrice * i.matAmt;
 			  }
 			   grid.resetData(data);
 		   },
@@ -310,7 +323,8 @@
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
 	           	actName :"${mat.actName}",
 	           	empName : "${mat.empName}",
-	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy년 MM월 dd일"/>`
+	           	matOdRq : `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`,
+	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy-MM-dd"/>`
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
@@ -355,7 +369,7 @@
 	 	        name: 'matTotalPrice'
 	 	      },
 	 	      {
-		 	    header: '거래처명',
+		 	    header: '업체명',
 		 	    name: 'actName'
 		 	  },
 		 	  {
@@ -364,7 +378,7 @@
 		 	  },
 		 	  {
 	 	 	    header: '발주일자',
-	 	 	    name: 'matOdRq'
+	 	 	    name: 'matOdRq',
 	 	  		className: 'yellow-background'
 	 	 	  },
 		 	  {

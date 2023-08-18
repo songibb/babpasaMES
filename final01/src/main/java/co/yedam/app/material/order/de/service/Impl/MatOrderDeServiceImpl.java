@@ -47,9 +47,9 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 			
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
-			modm.insertMatOrderDeList(data.getCreatedRows().get(0));
+			modm.insertMatOrderList(data.getCreatedRows().get(0));
 			for(MatOrderDeVO vo : data.getCreatedRows()) {
-				result += modm.insertMatOrderList(vo);			
+				result += modm.insertMatOrderDeList(vo);			
 			}
 		}
 		

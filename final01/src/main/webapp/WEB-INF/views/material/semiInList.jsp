@@ -52,7 +52,7 @@
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
-				                <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+				                <input type="text" id="prodCodeInput">
 				                <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
 				                <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 				                <br>
@@ -181,8 +181,8 @@
 	           	prodName :"${semi.prodName}",
 	           	semiInAmt :"${semi.semiInAmt}",
 	           	empName : "${semi.empName}",
-	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy년 MM월 dd일"/>`,
-	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy년 MM월 dd일"/>`
+	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
+	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
 	           	},
 	           </c:forEach>
 	          ],
@@ -250,13 +250,13 @@
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.semiInd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.semiInd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
 					date = new Date(i.semiExd);
 					year = date.getFullYear();    //0000년 가져오기
 					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					day = date.getDate();        //일자 가져오기
-			   		i.semiExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.semiExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 			  }
 			   grid.resetData(data);
 		   },

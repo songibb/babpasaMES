@@ -20,10 +20,10 @@
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-				AND a.mat_outd <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.mat_outd, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and endDate != ''">
-				AND a.mat_outd <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+				AND TO_CHAR(a.mat_outd, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		ORDER BY a.mat_outd DESC

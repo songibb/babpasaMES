@@ -32,6 +32,11 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	
+	
+	
+	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>    
        
 </head>
@@ -45,13 +50,11 @@
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
                    	</button>
-                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" placeholder="검색어를 입력하세요" id="matCodeInput">
+                				<input type="text" id="matCodeInput">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				
@@ -120,8 +123,13 @@
 			Grid.destroy();
 	     });
 	
+	
+
+	
+	
 	//자재 재고 조회
     var grid = new tui.Grid({
+    	
         el: document.getElementById('grid'),
         data: [
         	<c:forEach items="${stockList}" var="stock">
@@ -157,7 +165,7 @@
  	 	      {
  	 	    	header : '단위',
  	 	    	name : 'matUnit'
- 	 	      }
+ 	 	      },
  	 	      {
  	 	        header: '규격',
  	 	        name: 'matStd'
@@ -166,13 +174,27 @@
  	 	        header: '현재고',
  	 	        name: 'totalStock'
  	 	      },
+ 	 	    
  	 	      {
  		 	    header: '안전재고',
  		 	    name: 'matSafe'
  		 	  }
         ]
-      })  
-
+      });
+	
+	//안전재고량 > 현재고
+	grid.on('onGridMounted', function(e){
+		let data = grid.getData();
+		
+		$.each(data, function(idx, obj){
+			
+			if(Number(obj['totalStock']) < Number(obj['matSafe'])){
+				let rowKey = obj['rowKey'];
+				grid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell')
+			}
+		})
+	});
+    
 	
 	//상세재고 조회
 	function createGrid2(){
@@ -216,8 +238,8 @@
 	}
 	
 	var grid2;
-	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
-    grid.on('click', () => {
+	
+    grid.on('dblclick', () => {
     	
     	
     	//클릭한 계획의 계획코드 가져오기
@@ -244,7 +266,7 @@
 
 
 
-						i.matExd = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+						i.matExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					}
 					
 					
