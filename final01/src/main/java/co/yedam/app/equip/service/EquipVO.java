@@ -24,4 +24,5 @@ public class EquipVO {
 	private int lowTemp;
 	private String prcsType;
 	
+	private String eqType2;
 }

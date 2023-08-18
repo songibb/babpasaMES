@@ -144,7 +144,7 @@
         where comm_code = 'ACT-TYPE' and commde_use = 'O'
 	ORDER BY commde_code 
   	</select>
-  	
+  		
   	<!-- act 거래여부 가져오기  -->
   	<select id= "selectActStsList" resultType="CommCodeVO">
 		  	SELECT  commde_code,
@@ -206,5 +206,28 @@
 		ORDER BY commde_code
   	</select>
   	
+  	<!-- eqType만 조회하는 경우 (셀렉트 박스)  -->
+  	<select id="selectEquipTypeList" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+		FROM com_commde
+        where comm_code = 'EQUIP-TYPE' and commde_use = 'O'
+	ORDER BY commde_code 
+  	</select>
+  	
+  		<!-- eqSts만 조회하는 경우 (셀렉트 박스)  -->
+  	<select id="selectEquipStsList" resultType="CommCodeVO">
+  			SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+		FROM com_commde
+        where comm_code = '0L' and commde_use = 'O'
+	ORDER BY commde_code 
+  	</select>
   	
   </mapper>

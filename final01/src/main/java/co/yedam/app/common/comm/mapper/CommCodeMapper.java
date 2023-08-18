@@ -42,6 +42,12 @@ public interface CommCodeMapper {
 	//act 거래여부 상세공통코드가져오기
 	public List<CommCodeVO> selectActStsList();
 	
+	//상세 eqType 조회 부분
+	public List<CommCodeVO> selectEquipTypeList();
+	
+	//상세 eqSts 조회 부분
+	public List<CommCodeVO> selectEquipStsList();
+	
 	
 	
 	
