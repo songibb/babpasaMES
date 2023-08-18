@@ -71,7 +71,7 @@
 		//삭제버튼
 		$('#delete').on("click",function(){
 			//그리드 행 지움
-			grid.removeCheckedRows(true);
+			grid.removeCheckedRows(false);
 			//마우스 커서 없앰
 			grid.blur();
 			});
@@ -89,158 +89,55 @@
 		function matSave(){
 			grid.blur();
 			let modifyGridInfo = grid.getModifiedRows();
+			
+			if(!grid.isModified()){
+				swal("값이 모두 입력되지 않았습니다","success");
+				return false;
+			}
+			
 			let flag = true;
 			
-			var list = [];
-			var list2 = [];
-			var list3 = [];
-			
-			$.each(modifyGridInfo, function(idx, obj){
+			if(grid.getModifiedRows().createdRows.length > 0){
 				
-				if(!flag){
-					alert("값이 입력되지 않았습니다");
-					return;
-				}else if(idx == 'createdRows' && obj.length != 0){
-					$.each(obj, function(idx2,obj2){
-						 if(obj2['matName'] == '' ||obj2['matUnit'] =='' || obj2['matStd'] == '' || obj2['matSafe'] == '' || obj2['matPrice']==''){
-			                  flag = false;
-			                  return;
-			               }
-						 
-						 let customObj = {};
-							customObj['matName'] = obj2['matName'];
-							customObj['matUnit'] = obj2['matUnit'];
-							customObj['matStd'] = obj2['matStd'];
-							customObj['matSafe'] = obj2['matSafe'];
-							list.push(customObj);
-							console.log(list);
-							
-							
-							})
-				}else if(idx == 'updatedRows' && obj.length != 0){
-					$.each(obj, function(idx2, obj2){
-			               if(obj2['matName'] == '' ||obj2['matUnit'] =='' ||obj2['matStd'] == '' || obj2['matSafe'] == ''){
-			                  flag = false;
-			                  return;
-			               }
-			               
-			               let customObj = {};
-							customObj['matCode'] = obj2['matCode'];
-							customObj['matName'] = obj2['matName'];
-							customObj['matUnit'] = obj2['matUnit'];
-							customObj['matStd'] = obj2['matStd'];
-							customObj['matSafe'] = obj2['matSafe'];
-							list2.push(customObj);
-							console.log(list2);
-
-						})
-						
-				
-				}else if(idx == 'deletedRows' && obj.length != 0){
+				$.each(grid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['matName'] == '' ||obj2['matUnit'] == '' || obj2['matStd'] == '' || obj2['matSafe'] == ''){
+						flag = false;
+						return false;
+					}
 					
-					 
-		            $.each(obj, function(idx2, obj2){
-		                  
-		                  let customObj = {};
-		                  customObj['matCode'] = obj2['matCode'];
-		                  list3.push(customObj);
-		                  console.log(list3);
-		            })
-
-				}
+				})
+			}
+			
+			if(grid.getModifiedRows().updatedRows.length > 0){
 				
-				
-			})
-				 if(flag){
-					 
-					 if(list3.length !=0){
-				            $.ajax({
-				               url : 'matCodeDelete',
-				               method : 'POST',
-				               data : JSON.stringify(list3),
-				               contentType : 'application/json',
-				               success : function(data){
-				            	   $.ajax({
-				           			url : "ajaxMatCodeList",
-				           			 method :"GET",
-				           		       success : function(result){
-				           		           grid.resetData(result);
-				           		       },
-				           		       error : function(reject){
-				           					console.log(reject);
-				           				}
-				           		});
-				                  
-				               },
-				               error : function(reject){
-				                  console.log(reject);
-				               }
-				            });
-				         }
-					 if(list2.length !=0){
-				            $.ajax({
-				               url : 'matCodeUpdate',
-				               method : 'POST',
-				               data : JSON.stringify(list2),
-				               contentType : 'application/json',
-				               success : function(data){
-				            	   $.ajax({
-				           			url : "ajaxMatCodeList",
-				           			 method :"GET",
-				           		       success : function(result){
-				           		    	 $.ajax({
-							           			url : "ajaxMatCodeList",
-							           			 method :"GET",
-							           		       success : function(result){
-							           		           grid.resetData(result);
-							           		       },
-							           		       error : function(reject){
-							           					console.log(reject);
-							           				}
-							           		});
-				           		       },
-				           		       error : function(reject){
-				           					console.log(reject);
-				           				}
-				           		});
-				               },
-				               error : function(reject){
-				                  console.log(reject);
-				               }
-				            });
-				         }
-					 if(list.length !=0){
-				            $.ajax({
-				               url : 'matCodeInsert',
-				               method : 'POST',
-				               data : JSON.stringify(list),
-				               contentType : 'application/json',
-				               success : function(data){
-				            	   $.ajax({
-				           			url : "ajaxMatCodeList",
-				           			 method :"GET",
-				           		       success : function(result){
-				           		           grid.resetData(result);
-				           		       },
-				           		       error : function(reject){
-				           					console.log(reject);
-				           				}
-				           		});
-				               },
-				               error : function(reject){
-				                  console.log(reject);
-				               }
-				            });
-				         }
-
-
-
-				 }else{
-					 return;
-
-				 }
-				
+				$.each(grid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['matName'] == "" ||obj2['matUnit'] =="" || obj2['matStd'] == "" || obj2['matSafe'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+			}
+			
+			if(flag){
+				$.ajax({
+					url : 'updateMatCode',
+					method : 'POST',
+					data : JSON.stringify(grid.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						swal("성공", data+"건이 처리되었습니다","success");
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}else{
+				swal("값이 입력되지 않았습니다","fail");
+			}
+			
 		}
+			
+			
 			
 		
 		//자재 리스트 조회

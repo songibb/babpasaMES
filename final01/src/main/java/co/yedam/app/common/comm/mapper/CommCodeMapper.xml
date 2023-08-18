@@ -20,8 +20,7 @@
 				comm_code,
 				commde_name,
 				commde_info,
-				commde_use,
-				find_cdnm('0A', commde_use) AS useName
+				commde_use
 		FROM com_commde
 		WHERE comm_code = #{commCode}
 	ORDER BY commde_code
@@ -75,11 +74,11 @@
 	  		VALUES
 			  		(
 			  		 get_primarycode('commDeNo')
-			  		,#{l.commdeCode}
-	  				,#{l.commCode}
-	  				,#{l.commdeName}
-	  				,#{l.commdeInfo}
-	  				,#{l.commdeUse}
+			  		,#{commdeCode}
+	  				,#{commCode}
+	  				,#{commdeName}
+	  				,#{commdeInfo}
+	  				,#{commdeUse}
 			  		)
 		</insert>
   	

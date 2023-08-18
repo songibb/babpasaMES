@@ -68,7 +68,7 @@
 	
 	$('#delete').on("click",function(){
 		//그리드 행 지움
-		grid2.removeCheckedRows(true);
+		grid2.removeCheckedRows(false);
 		//마우스 커서 없앰
 		grid2.blur();
 	});
@@ -263,7 +263,10 @@
 									flag = false;
 									return false;
 								}
+								
 							})
+							
+							
 					}
 			
 			
@@ -286,7 +289,7 @@
 					data : JSON.stringify(grid2.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						console.log(data);
+						swal("성공", data+"건이 처리되었습니다","success");
 					},
 					error : function(reject){
 						console.log(reject);
