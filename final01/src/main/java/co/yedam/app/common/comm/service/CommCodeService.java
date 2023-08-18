@@ -2,7 +2,6 @@ package co.yedam.app.common.comm.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.common.grid.service.GridVO;
 
@@ -20,7 +19,7 @@ public interface CommCodeService {
 	//공통코드 사용여부 조회
 	public List<CommCodeVO> selectCommUseInfo();
 	
-	//공통상세 추가
+	//공통상세 추가/수정/삭제
 	public int updateCommDeCode(GridVO<CommCodeVO> data);
 	
 	

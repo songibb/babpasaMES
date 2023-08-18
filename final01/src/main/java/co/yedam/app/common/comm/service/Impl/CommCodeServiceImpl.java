@@ -52,14 +52,14 @@ public class CommCodeServiceImpl implements CommCodeService {
 			
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() >0) {
-			for(CommCodeVO vo : data.getDeletedRows()) {
+			for(CommCodeVO vo : data.getUpdatedRows()) {
 				
 				result += commCodeMapper.commDeCodeUpdate(vo);
 			}
 		}
 		if(data.getCreatedRows() != null &&data.getCreatedRows().size()>0) {
-			for(CommCodeVO vo : data.getDeletedRows()) {
-			result +=data.getCreatedRows().size();
+			for(CommCodeVO vo : data.getCreatedRows()) {
+			result += commCodeMapper.commDeCodeInsert(vo);
 		}
 		
 	}

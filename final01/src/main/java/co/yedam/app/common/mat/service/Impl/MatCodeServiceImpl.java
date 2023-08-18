@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.common.mat.mapper.MatCodeMapper;
 import co.yedam.app.common.mat.service.MatCodeService;
 import co.yedam.app.common.mat.service.MatCodeVO;
@@ -20,21 +21,33 @@ public class MatCodeServiceImpl implements MatCodeService {
 		
 		return matCodeMapper.selectMatCodeList();
 	}
+	
 	@Override
-	public int matCodeInsert(List<MatCodeVO> list) {
+	public int updateMatCode(GridVO<MatCodeVO> data) {
 		
-		return matCodeMapper.matCodeInsert(list);
-
-	}
-	@Override
-	public int matCodeUpdate(List<MatCodeVO> list2) {
+		int result = 0;
+		if(data.getDeletedRows()!= null && data.getDeletedRows().size()>0) {
+			
+			for(MatCodeVO vo : data.getDeletedRows()) {
+				result += matCodeMapper.matCodeDelete(vo);
+			}
+			
+		}
 		
-		return matCodeMapper.matCodeUpdate(list2);
-	}
-	@Override
-	public int matCodeDelete(List<MatCodeVO> list3) {
+		if(data.getUpdatedRows()!=null && data.getUpdatedRows().size()>0) {
+			for(MatCodeVO vo : data.getUpdatedRows()) {
+				result += matCodeMapper.matCodeUpdate(vo);
+			}
+		}
 		
-		return matCodeMapper.matCodeDelete(list3);
+		if(data.getCreatedRows()!= null && data.getCreatedRows().size()>0) {
+			for(MatCodeVO vo : data.getCreatedRows()) {
+				result += matCodeMapper.matCodeInsert(vo);
+			}
+		}
+		
+		return result;
 	}
+	
 
 }
