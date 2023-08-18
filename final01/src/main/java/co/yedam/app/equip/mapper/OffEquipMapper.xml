@@ -32,10 +32,10 @@
   	
   	<!--비가동 설비 등록  -->
   	<insert id="insertOffEquip" parameterType="OffEquipVO">
-  	 <!-- <selectKey keyProperty="offNo" resultType="String" order="BEFORE">
+   <selectKey keyProperty="offNo" resultType="String" order="BEFORE">
         SELECT 'OFF-' || LPAD(COALESCE(TO_NUMBER(MAX(SUBSTR(OFF_NO, 5))), 0) + 1, 3, '0')
         FROM EQ_OFF
-    </selectKey> -->
+    </selectKey>
     {
             CALL INSERT_EQUIP(
                 #{offNo},

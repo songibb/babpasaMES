@@ -594,136 +594,61 @@ input[type="date"]{
        } );
    
     
-    //저장 버튼 클릭시 실행 될 함수 -> insert 실행
-  	function saveServer() {	
-  		outGrid.blur();
-  		let modifyGridInfo = outGrid.getModifiedRows();
-  		console.log(modifyGridInfo);
-  		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
-  		var flag = true;
-  		//create, modify, delete 포함하는 전체 배열을 도는 each문
-  		var list = [];
-  		var list2 = [];
-  		var list3 = [];
-  		$.each(modifyGridInfo, function(idx, obj){
-  			
-  			//$.each를 돌 때 idx가 createdRows, updatedRows, deletedRows 3가지로 나눠짐 
-  			//obj.length != 0 -> 데이터가 있을 때만 코드를 실행시키겠다
-  			if(!flag){
-  				alert('값이 입력되지 않았습니다.');
-  				return;
-  			}
-  			else if(idx == 'createdRows' && obj.length != 0){
-  				
-  				$.each(obj, function(idx2, obj2){
-  					// console.log(obj2);  createdRows [{…}]
-  					
-  					debugger
-  					if(obj2['ordDate'] =='' || obj2['actCode'] == '' || obj2['prodCode'] == '' || obj2['prcsRqAmt']=='' || obj2['devDate'] == '' || obj2['empCode'] == ''){
-  						flag = false;
-  						return ;
-  					}
-  					
-  					let customObj = {};
-  					customObj['ordDate'] = obj2['ordDate'];
-  					customObj['actCode'] = obj2['actCode'];
-  					customObj['prodCode'] = obj2['prodCode'];
-  					customObj['prcsRqAmt'] = obj2['prcsRqAmt'];
-  					customObj['devDate'] = obj2['devDate'];
-  					customObj['empCode'] = obj2['empCode'];
-  					list.push(customObj);
-  					
-  					
-  				})
-  			}else if(idx == 'updatedRows' && obj.length != 0){
-  				
-  				
-  				$.each(obj, function(idx2, obj2){
-  					if(obj2['prcsRqAmt'] == '' || obj2['prodCode'] == '' || obj2['actCode'] == '' || obj2['ordDate'] == '' || obj2['devDate'] == '' || obj2['empCode'] == '' ){
-  						flag = false;
-  						return;
-  					}
-  					
-  						let customObj = {};
-  						customObj['salesOrdDeCode'] = obj2['salesOrdDeCode'];
-  						customObj['prodCode'] = obj2['prodCode'];
-  						customObj['prcsRqAmt'] = obj2['prcsRqAmt'];
-  						customObj['actCode'] = obj2['actCode'];
-  						customObj['ordDate'] = obj2['ordDate'];
-  						customObj['devDate'] = obj2['devDate'];
-  						customObj['empCode'] = obj2['empCode'];
-  			 			list2.push(customObj);
+  //저장 함수
+	function saveServer() {	
+		outGrid.blur();
+		let modifyGridInfo = outGrid.getModifiedRows();
+		
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!outGrid.isModified()){
+			alert("변경사항이 없습니다.");
+			return false;
+		}
+		
+		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+		var flag = true;
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
+			
+		if(outGrid.getModifiedRows().createdRows.length > 0 ){
+				
+				$.each(outGrid.getModifiedRows().createdRows, function(idx2, obj2){
+					if(obj2['ordDate'] == "" || obj2['actCode'] == "" || obj2['prodCode'] == "" || obj2['prcsRqAmt']=="" || obj2['devDate'] == "" || obj2['empCode'] == ""){
+						flag = false;
+						return false;
+					}
+				})
+		}
+		
+		if(outGrid.getModifiedRows().updatedRows.length > 0 ){
 
-  				})
-  				
+				$.each(outGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == "" ){
+						flag = false;
+						return false;
+					}
+				})
+				
+		}
+		
+		if(flag){
+				$.ajax({
+					url : 'outSave',
+					method : 'POST',
+					data : JSON.stringify(outGrid.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						console.log(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+		} else {
+			alert("값이 입력되지 않았습니다.");
+		}
 
-  			}else if(idx == 'deletedRows' && obj.length != 0){
-  				
-  				
-  				
-  				$.each(obj, function(idx2, obj2){
-  						
-  						let customObj = {};
-  						customObj['salesOrdDeCode'] = obj2['salesOrdDeCode'];
-  						customObj['ordCode'] = obj2['ordCode'];
-  						list3.push(customObj);
-  				})
-
-  			}
-  			
-  		})
-  		
-  		if(flag){
-  			
-  			if(list3.length != 0){
-  				$.ajax({
-  					url : 'orderDelete',
-  					method : 'POST',
-  					data : JSON.stringify(list3),
-  					contentType : 'application/json',
-  					success : function(data){
-  						console.log(data);
-  						searchOrderList();
-  					},
-  					error : function(reject){
-  						console.log(reject);
-  					}
-  				});
-  			}
-  			if(list2.length != 0){
-  				$.ajax({
-  					url : 'orderUpdate',
-  					method : 'POST',
-  					data : JSON.stringify(list2),
-  					contentType : 'application/json',
-  					success : function(data){
-  						searchOrderList();
-  					},
-  					error : function(reject){
-  						console.log(reject);
-  					}
-  				});
-  			}
-  			if(list.length != 0){
-  				$.ajax({
-  					url : 'orderInsert',
-  					method : 'POST',
-  					data : JSON.stringify(list),
-  					contentType : 'application/json',
-  					success : function(data){
-  						searchOrderList();
-  					},
-  					error : function(reject){
-  						console.log(reject);
-  					}
-  				});
-  			}
-
-  		} else {
-  			return;
-  		}
-  	}
-  	
+	}
 
     </script>
 </body>

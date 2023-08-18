@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.yedam.app.common.grid.service.GridVO;
+
 public interface MatCodeService {
 
 	//전체 자재코드 조회
 	public List<MatCodeVO> selectMatCodeList();
 	
-	public int matCodeInsert(@Param("list") List<MatCodeVO> list);
 	
-	public int matCodeUpdate(@Param("list2") List<MatCodeVO> list2);
-	
-	public int matCodeDelete(@Param("list3") List<MatCodeVO> list3);
+	//자재코드 추가 수정 삭제
+	public int updateMatCode(GridVO<MatCodeVO> data);
 	
 }

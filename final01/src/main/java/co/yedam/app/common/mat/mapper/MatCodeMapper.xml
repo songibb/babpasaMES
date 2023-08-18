@@ -13,9 +13,7 @@
 		FROM com_mat
 		ORDER BY mat_code
 	</select>		
-	<!-- <foreach collection="inList" item="l" index="index" separator=";" open="" close=" "> -->
 	<insert id="matCodeInsert" parameterType="MatCodeVO">
-		<foreach collection="list" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 				insert into com_mat(
 									mat_code,
 									mat_name,
@@ -25,29 +23,24 @@
 									)
 				values(
 						get_primarycode('matCode')
-						,#{l.matName}
-						,#{l.matUnit}
-						,#{l.matStd}
-						,#{l.matSafe}
+						,#{matName}
+						,#{matUnit}
+						,#{matStd}
+						,#{matSafe}
 						)
-		 </foreach>
 	</insert>
 	
 	<update id="matCodeUpdate" parameterType="MatCodeVO">
-		<foreach collection="list2" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 				UPDATE com_mat
-				SET mat_name = #{l.matName},
-					mat_unit = #{l.matUnit},
-					mat_std = #{l.matStd},
-					mat_safe = #{l.matSafe}
-				WHERE mat_code = #{l.matCode}
-		</foreach>
+				SET mat_name = #{matName},
+					mat_unit = #{matUnit},
+					mat_std = #{matStd},
+					mat_safe = #{matSafe}
+				WHERE mat_code = #{matCode}
 	</update>
 	
 	<delete id="matCodeDelete" parameterType="MatCodeVO">
-			<foreach collection="list3" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
 				DELETE FROM com_mat
-				WHERE mat_code = #{l.matCode}
-			</foreach>		
+				WHERE mat_code = #{matCode}	
 	</delete>		
   </mapper>

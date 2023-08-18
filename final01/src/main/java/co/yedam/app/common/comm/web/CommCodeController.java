@@ -61,7 +61,7 @@ public class CommCodeController {
 	}
 	
 	
-	//상세코드 추가
+	//상세코드 추가 수정 삭제 한번에 가능
 	@PostMapping("/updateCommCode")
 	@ResponseBody
 	public int updateCommCode(@RequestBody GridVO<CommCodeVO> data) {

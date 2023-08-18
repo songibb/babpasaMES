@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.common.mat.service.MatCodeService;
 import co.yedam.app.common.mat.service.MatCodeVO;
 
@@ -49,27 +50,9 @@ public class MatCodeController {
 	
 	
 	
-	@PostMapping("/matCodeInsert")
+	@PostMapping("/updateMatCode")
 	@ResponseBody
-	public void matCodeInsert(@RequestBody List<MatCodeVO> list) {
-		int result = matCodeService.matCodeInsert(list);
-		
-		return;
-	}
-	
-	@PostMapping("/matCodeUpdate")
-	@ResponseBody
-	public void matCodeUpdate(@RequestBody List<MatCodeVO> list2) {
-		int result = matCodeService.matCodeUpdate(list2);
-		
-		return;
-	}
-
-	
-	@PostMapping("/matCodeDelete")
-	@ResponseBody
-	public void matCodeDelete(@RequestBody List<MatCodeVO> list3) {
-		int result = matCodeService.matCodeDelete(list3);
-		return;
+	public int updateMatCode(@RequestBody GridVO<MatCodeVO> data) {
+		return matCodeService.updateMatCode(data);
 	}
 }

@@ -38,7 +38,7 @@
 					AND a.mat_od_rq <![CDATA[>=]]> TO_CHAR(#{startDate}, 'yyyy-MM-dd')
 				</if>
 				<if test="endDate != null and endDate != ''">
-					AND a.mat_od_rq <![CDATA[<=]]> TO_CHAR(#{endDate} , 'yyyy-MM-dd') + 1
+					AND a.mat_od_rq <![CDATA[<=]]> TO_CHAR(#{endDate} , 'yyyy-MM-dd')
 				</if>
 			</where>
 			ORDER BY a.mat_od_de_cd
@@ -70,23 +70,25 @@
 								MAT_OD_CD,
 								MAT_AMT,
 								MAT_CODE,
-								MAT_OD_ACP,
 								MAT_TEST_YN,
 								MAT_PRICE,
-								MAT_OD_RQ)
+								MAT_OD_ACP)
             VALUES
                 (get_primaryCode('matOdDeCd'), 
                  #{matOdCd}, 
+
                  #{matAmt}, 
                  #{matCode}, 
                  #{matOdAcp}, 
                  'N', 
                  #{matPrice}, 
                  #{matOdRq})
+
 	</insert>
 	
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
 			UPDATE mat_order_de
+
 			SET mat_code = #{matCode}, mat_amt = #{matAmt}, mat_od_acp = #{matOdAcp}, mat_price = #{matPrice}, mat_od_rq = #{matOdRq}
 			WHERE mat_od_de_cd = #{matOdDeCd}
 	</update>

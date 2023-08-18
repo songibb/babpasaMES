@@ -209,19 +209,22 @@
 			  {
 				header: '반품상태',
 				name: 'matRtSts',
-				editor : {
-					type: 'select',
-					options : {
-						listItems : [{
-							text : '반품중',
-							value : 'R4'
-						},
-						{
-							text : '반품완료',
-							value : 'R5'
-						}]
-					}
-				}
+				formatter: 'listItemText',
+	            editor: {
+	                type: 'select',
+	                options: {
+	                  listItems: [
+	                	   {
+	                         text: 'R4',
+	                         value: '반품중'
+	                       }, 
+	                       {
+		                     text: 'R5',
+		                     value: '반품완료'
+		                   } 
+	                  ]
+	                }
+	              } 
 		      }
 	 	    ]
 	      

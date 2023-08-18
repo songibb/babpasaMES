@@ -149,7 +149,7 @@
 		           		eqType : "${chk.eqType}",
 		           		chkCycle : "${chk.chkCycle}",
 		           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
-		           		chkNextDate : "${chk.chkNextDate}",
+		           		chkNextDate : "${chk.chkNextDate + chk.chkCycle}",
 		           		eqChkYn : "${chk.eqChkYn}",
 		           		empCode : "${chk.empCode}",
 		           		chkNote : "${chk.chkNote}"		   	        
@@ -188,9 +188,22 @@
 	           	 editor : 'text'
 	           },
 	           {
-		         header: '차기점검일자',
-		         name: 'chkNextDate'
-		       },
+	               header: '차기점검일자',
+	               name: 'chkNextDate',
+	               formatter: function(props) {
+	                   const rowData = props.row;
+	                   const chkDate = new Date(rowData.chkDate);
+	                   const chkCycle = parseInt(rowData.chkCycle);
+	                   
+	                   if (!isNaN(chkCycle)) {
+	                       const chkNextDate = new Date(chkDate.getTime() + chkCycle * 24 * 60 * 60 * 1000);
+	                       const formattedChkNextDate = chkNextDate.toISOString().split('T')[0];
+	                       return formattedChkNextDate;
+	                   }
+	                   
+	                   return ''; // Return empty string if chkCycle is not a valid number
+	               }
+	           },
 	         	//지울부분
 	           {
 	 			header: '점검판정',
@@ -311,6 +324,35 @@
 	     }
 		     
 	     
+	     
+	     grid.on('afterChange', (ev) => {
+	         let change = ev.changes[0];
+	         let rowData = orderGrid.getRow(change.rowKey);
+
+	         // Convert chkDate string to a Date object
+	         let chkDate = new Date(rowData.chkDate);
+	         
+	         // Convert chkCycle to a number (assuming it's a string right now)
+	         let chkCycle = parseInt(rowData.chkCycle);
+	         
+	         // Check if chkCycle is a valid number
+	         if (isNaN(chkCycle)) {
+	             return; // Exit if chkCycle is not a valid number
+	         }
+	         
+	         // Calculate chkNextDate by adding chkCycle days to chkDate
+	         let chkNextDate = new Date(chkDate.getTime() + chkCycle * 24 * 60 * 60 * 1000);
+	         
+	         // Update chkNextDate column if chkDate and chkCycle are both not null
+	         if (change.columnName == 'chkDate' || change.columnName == 'chkCycle') {
+	             if (rowData.chkDate != null) {
+	                 // Convert chkNextDate to a string in the desired format (YYYY-MM-DD)
+	                 let formattedChkNextDate = chkNextDate.toISOString().split('T')[0];
+	                 orderGrid.setValue(change.rowKey, 'chkNextDate', formattedChkNextDate);
+	             }
+	         }
+	     });
+
 	</script>
 </body>
 </html>	

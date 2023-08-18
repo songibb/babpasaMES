@@ -11,11 +11,14 @@ public interface MatCodeMapper {
 	//전체 자재코드 조회
 	public List<MatCodeVO> selectMatCodeList();
 	
-	public int matCodeInsert(@Param("list") List<MatCodeVO> list);
+	//자재코드 추가
+	public int matCodeInsert(MatCodeVO vo);
 	
-	public int matCodeUpdate(@Param("list2") List<MatCodeVO> list2);
+	//자재코드 수정
+	public int matCodeUpdate(MatCodeVO vo);
 	
-	public int matCodeDelete(@Param("list3") List<MatCodeVO> list3);
+	//자재코드 삭제
+	public int matCodeDelete(MatCodeVO vo);
 	
 	
 

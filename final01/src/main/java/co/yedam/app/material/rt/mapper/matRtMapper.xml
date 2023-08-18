@@ -62,8 +62,7 @@
         ON(c.mat_od_cd = f.mat_od_cd)
         LEFT JOIN com_act e
         ON(f.act_code = e.act_code)
-		WHERE err_rt_sts = 'N'
-		<!-- 'R1'로 나중에 변경 -->
+		WHERE err_rt_sts = 'R1'
 		ORDER BY mat_test_date DESC
 	</select>
 	
@@ -75,10 +74,12 @@
                 MAT_RT_STS, EMP_CODE
             ) VALUES (
                 get_primaryCode('matRtCode'),
+
                 #{matTestCode}, #{actCode},
                 #{matCode}, #{matRtAmt}, #{matRtDate},
                 #{matRtSts}, #{empCode}
             )
+
 	</insert>
 	<update id="updateMatTestStsY" parameterType="MatRtVO">
 		 UPDATE mat_test
@@ -96,7 +97,9 @@
 	<!-- 반품 삭제 -->
 	<delete id="deleteMatRtList" parameterType="MatRtVO">
 			DELETE FROM mat_rt
+
 			WHERE mat_rt_code = #{matRtCode}
+
 	</delete>
 	<update id="updateMatTestStsN" parameterType="MatRtVO">
 		UPDATE mat_test
