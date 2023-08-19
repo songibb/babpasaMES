@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.prcs.dir.mapper.PrcsDirMapper">
 	<!-- 생산지시 조회 -->
-	<select id="selectPrcsDirList" resultType="prcsDirVO">
+	<select id="selectPrcsDirList" resultType="PrcsDirVO">
 		SELECT prcs_dir_code,
 			   prcs_plan_code,
 			   prcs_dir_name,
@@ -18,7 +18,7 @@
 	</select>
 	
 	<!-- 상세생산지시 조회 -->
-	<select id="selectPrcsDirDeList" resultType="prcsDirVO">
+	<select id="selectPrcsDirDeList" resultType="PrcsDirVO">
 		SELECT prcs_dir_de_code,
 			   prcs_dir_code,
 			   prod_code,
@@ -34,7 +34,7 @@
 	</select>
 	
  	<!-- 생산지시 등록 --> 
-	<insert id="insertPrcsDir" parameterType="prcsDirVO">
+	<insert id="insertPrcsDir" parameterType="PrcsDirVO">
 		<selectKey keyProperty="prcsDirCode" resultType="String" order="BEFORE">
 			SELECT 'DIR-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_code, -3)),0) + 1, 3, '0')
 			FROM prcs_dir
@@ -63,7 +63,7 @@
 	</insert>
 	
 	<!-- 상세생산지시 등록  -->
-	<insert id="insertPrcsDirDe" parameterType="prcsDirVO">
+	<insert id="insertPrcsDirDe" parameterType="PrcsDirVO">
 		<selectKey keyProperty="prcsDirDeCode" resultType="String" order="BEFORE">
 			SELECT 'DIRDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_de_code, -3)),0) + 1, 3, '0')
 			FROM prcs_dir_de
@@ -85,7 +85,7 @@
 							  )
 			 VALUES (
 						#{prcsDirDeCode}
-						, MAX_CODE()
+						, #{prcsDirCode}
 						, #{prodCode}
 						<if test="prcsPlanAmt > 0">
 						, #{prcsPlanAmt}
@@ -101,7 +101,7 @@
 	
 	
 	<!-- 미지시 생산계획 목록 조회 -->
-	<select id="selectNotDirPlanList" resultType="prcsPlanVO">
+	<select id="selectNotDirPlanList" resultType="PrcsPlanVO">
 		SELECT DISTINCT 
 			   p.prcs_plan_code, 
 			   p.prcs_plan_name,
@@ -114,24 +114,25 @@
 	
 		
 	<!-- 생산지시 등록시 상세생산계획 수정 -->
-	<update id="updateNotDirPlanList" parameterType="prcsPlanVO">
+	<update id="updateNotDirPlanList" parameterType="PrcsPlanVO">
 		UPDATE prcs_plan_de
 		   SET prcs_dir_sts = 'T2'
 		 WHERE prcs_plan_de_code = #{prcsPlanDeCode}
 	</update>
 	
 	<!-- 생산지시 등록시 자재 출고 -->
-	<insert id="insertMatOut" parameterType="String">
+	<insert id="insertMatOut" parameterType="Map">
 		{
 			CALL PR_MAT_OUT(
-				#{prcsDirDeCode}
+				#{prcsDirDeCode},
+				#{empCode}
 			)
 		}
 	</insert>
 	
 	
 	<!-- 제품별 총 자재 BOM 조회 -->
-	<select id="selectBomList" resultType="bomCodeVO">
+	<select id="selectBomList" resultType="BomCodeVO">
 		SELECT find_prod_name(prod_code) AS prod_name,
         	   find_prcs_name(prcs_code) AS prcs_name,
         	   mp_code,
@@ -141,7 +142,7 @@
       		   prcs_seq
 		  FROM v_prod_bom
 		 WHERE prod_code= #{prodCode}
-		   	   AND bom_yn='Y'
+		   	   AND bom_yn='O'
 		       AND mp_kind='M'
 		 ORDER BY prcs_seq
 	</select>

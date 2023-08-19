@@ -1,6 +1,7 @@
 package co.yedam.app.prcs.ing.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,7 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	@Override
 	public List<PrcsIngVO> selectPrcsIngList(String prcsDirDeCode, String prodCode) {
 		return prcsIngMapper.selectPrcsIngList(prcsDirDeCode, prodCode);
-	}
-	
-	
-	//진행 공정 등록
-	@Override
-	public int insertPrcsIng(String prcsDirDeCode) {
-		return prcsIngMapper.insertPrcsIng(prcsDirDeCode);
-
-	}
+	}	
 
 	//사용 가능한 설비 조회 (진행공정 모달)
 	@Override
@@ -41,5 +34,23 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	@Override
 	public List<BomCodeVO> selectMatBomList(PrcsIngVO prcsIngVO) {
 		return prcsIngMapper.selectMatBomList(prcsIngVO);
+	}
+
+	//작업시작 => 공정상태&설비 수정, 공정실적관리 등록 (진행공정 모달)
+	@Override
+	public int callPrcsStart(Map<String, String> map) {
+		return prcsIngMapper.callPrcsStart(map);
+	}
+
+	//작업종료 => 공정상태&설비 수정, 공정실적관리 수정 (진행공정 모달)
+	@Override
+	public int callPrcsEnd(Map<String, String> map) {
+		return prcsIngMapper.callPrcsEnd(map);
+	}
+	
+	//데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)
+	@Override
+	public List<PrcsIngVO> selectPrcsInfoList(PrcsIngVO prcsIngVO) {
+		return prcsIngMapper.selectPrcsInfoList(prcsIngVO);
 	}
 }

@@ -6,7 +6,7 @@
 <mapper namespace="co.yedam.app.prcs.manage.mapper.PrcsManageMapper">
 
 	<!-- 공정관리 조회 -->
-	<select id="selectPrcsManageList" resultType="prcsManageVO">
+	<select id="selectPrcsManageList" resultType="PrcsManageVO">
 		SELECT prcs_code,
 			   prcs_type,
 			   prcs_name,
@@ -17,7 +17,7 @@
 	
 	
 	<!-- 공정관리 등록 -->
-	<insert id="insertPrcsManage" parameterType="prcsManageVO">
+	<insert id="insertPrcsManage" parameterType="PrcsManageVO">
 		<selectKey keyProperty="prcs_code" resultType="String" order="BEFORE">
 			SELECT 'PRCS-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_code, -3)),0) + 1, 3, '0')
 			FROM prcs_dir

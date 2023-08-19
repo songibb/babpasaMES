@@ -32,6 +32,7 @@ public class PrcsIngVO {
 	//이름 가져오기
 	private String prodName;
 	private String prcsName;
+	private String empName;
 	
 	
 	

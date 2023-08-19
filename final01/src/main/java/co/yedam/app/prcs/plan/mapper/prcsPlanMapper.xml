@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.prcs.plan.mapper.PrcsPlanMapper">
 	<!-- 생산계획 조회 -->
-	<select id="selectPrcsPlanList" resultType="prcsPlanVO">
+	<select id="selectPrcsPlanList" resultType="PrcsPlanVO">
 		SELECT prcs_plan_code,
 			   prcs_plan_name,
 			   prcs_plan_date,
@@ -29,7 +29,7 @@
 	</select>
 
 	<!-- 상세생산계획 조회 -->
-	<select id="selectPrcsPlanDeList" resultType="prcsPlanVO">
+	<select id="selectPrcsPlanDeList" resultType="PrcsPlanVO">
 		SELECT prcs_plan_de_code,
                prcs_plan_code,
                prod_code,
@@ -47,7 +47,7 @@
 	
 	
 	<!-- 생산계획 등록 --> 
-	<insert id="insertPrcsPlan" parameterType="prcsPlanVO">
+	<insert id="insertPrcsPlan" parameterType="PrcsPlanVO">
 		<selectKey keyProperty="prcsPlanCode" resultType="String" order="BEFORE">
 			SELECT 'PLAN-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_code, -3)),0) + 1, 3, '0')
 			FROM prcs_plan
@@ -70,7 +70,7 @@
 	</insert>
 	
 	<!-- 상세생산계획 등록 --> 
-	<insert id="insertPrcsPlanDe" parameterType="prcsPlanVO">
+	<insert id="insertPrcsPlanDe" parameterType="PrcsPlanVO">
 		<selectKey keyProperty="prcsPlanDeCode" resultType="String" order="BEFORE">
 			SELECT 'PLANDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_plan_de_code, -3)),0) + 1, 3, '0')
 			FROM prcs_plan_de
@@ -99,7 +99,7 @@
 	</insert >
 
 	<!-- 생산계획 수정 -->
-	<update id="updatePrcsPlan" parameterType="prcsPlanVO">
+	<update id="updatePrcsPlan" parameterType="PrcsPlanVO">
 		UPDATE prcs_plan
 		<set>					
 			<if test="prcsPlanName != null and !prcsPlanName.equals('')">
@@ -119,7 +119,7 @@
 	</update>
 	
 	<!-- 상세생산계획 수정 -->	
-	<update id="updatePrcsPlanDe" parameterType="prcsPlanVO">
+	<update id="updatePrcsPlanDe" parameterType="PrcsPlanVO">
 		UPDATE prcs_plan_de
 		<set>				
 			<if test="prcsPlanCode != null and !prcsPlanCode.equals('')">
@@ -150,7 +150,7 @@
 	
 	
 	<!-- 미계획 주문서 조회 -->
-	<select id="selectNotPlanOrderList" resultType="orderVO">
+	<select id="selectNotPlanOrderList" resultType="OrderVO">
 		SELECT s.ord_code,
 			   s.ord_date, 
 			   a.act_name
@@ -160,7 +160,7 @@
 	</select>
 	
 	<!-- 미계획 상세 주문서 조회 -->
-	<select id="selectNotPlanOrderDeList" resultType="orderVO">
+	<select id="selectNotPlanOrderDeList" resultType="OrderVO">
 		SELECT s.ord_code, 
 			   d.prod_code,
  			   find_prod_name(d.prod_code) AS prod_name,
@@ -171,7 +171,7 @@
 	</select>
 	
 	<!-- 생산계획 등록시 주문서 수정 -->
-	<update id="updateNotPlanOrderList" parameterType="prcsPlanVO">
+	<update id="updateNotPlanOrderList" parameterType="PrcsPlanVO">
 		UPDATE sales_ord
 		   SET ord_sts = 'P2',
 	    	   prcs_plan_code = #{prcsPlanCode}
@@ -180,7 +180,7 @@
 	
 	
 	<!-- 생산계획 삭제시 주문서 수정 -->
-	<update id="UpdatePlanOrderList" parameterType="prcsPlanVO">
+	<update id="UpdatePlanOrderList" parameterType="PrcsPlanVO">
 		UPDATE sales_ord
 		   SET ord_sts = 'P1',
 	    	   prcs_plan_code = #{prcsPlanCode}
