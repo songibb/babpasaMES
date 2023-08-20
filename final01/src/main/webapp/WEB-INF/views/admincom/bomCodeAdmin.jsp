@@ -6,6 +6,91 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style>
+/*모달시작*/
+#actModal{ 
+	cursor:pointer;
+}
+  
+.modal{ 
+	position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
+}
+  
+.modal_content{
+	  /*모달창 크기 조절*/
+	  width:850px; height:600px;
+	  background:#fff; border-radius:10px;
+	  /*모달창 위치 조절*/
+	  position:relative; top:33%; left:45%;
+	  margin-top:-100px; margin-left:-200px;
+	  text-align:center;
+	  box-sizing:border-box;
+	  line-height:23px;
+}
+
+.m_head{
+	height: 10%;
+	margin : 0;
+	/*제목 높낮이 조절*/
+	padding: 17px;
+	display: flex;
+	justify-content: space-between;
+	background-color:rgb(232, 143, 33);
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+     
+.close_btn{
+	font-size: 20px;
+	color: black;
+	font-weight: 900;
+	cursor: pointer;
+}
+
+.modal_btn{
+	width: 80px;
+	height: 30px;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: bolder;
+	padding-top: 5px;
+	margin-left: 5px;
+	font-family: sans-serif;
+}
+.m_head{
+	height: 10%;
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	font-family: sans-serif;
+}
+
+.m_body{
+	height: 80%;
+	padding: 20px;
+}
+
+.m_footer{
+	height: 10%;
+	padding: 15px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	display: flex;
+	justify-content: end;
+}
+.cancle{
+	background-color: black;
+	color: white;
+}
+.save{
+	background-color: black;
+	color: white;
+}
+/*모달끝*/
+</style>
 <title>BOM관리</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -14,6 +99,7 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -49,7 +135,7 @@
 	   		</div>
 		</div>
 	</div> 
-		<div class="modal">
+<div class="modal">
    
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
@@ -59,13 +145,17 @@
        </div>
        <div class="m_body">
             <div id="modal_label"></div>
+            <div style="display: flex; justify-content: center;">
+	             <div id="modal_label2" style="width: 400px; margin-right: 10px"></div>
+	             <div id="modal_label3" style="width: 400px;"></div>
+	        </div>
        </div>
        <div class="m_footer">
             <div class="modal_btn cancle" id="close_btn">CANCLE</div>
             <div class="modal_btn save" id="save_btn">SAVE</div>
     </div>
   </div>
-	</div>
+</div>
 
     
 	<script>
@@ -92,53 +182,266 @@
 	
 	//저장 버튼 클릭 진행(insert만 진행)
 	function saveServer(){
-		
+		//BOM
 		let rowKey = bomgrid.getFocusedCell().rowKey;
 		let columnName = bomgrid.getFocusedCell().columnName;
 		
 		//편집 종료시켜야 마지막 입력 클릭된게 없어짐
 		bomgrid.finishEditing(rowKey, columnName);
 		
-		let list = bomgrid.getData();
-		let obj = list[0];
+		let rowKeyDe = deBomgrid.getFocusedCell().rowKey;
+		let columnNameDe = deBomgrid.getFocusedCell().columnName;
+		deBomgrid.finishEditing(rowKeyDe, columnNameDe);
+		
+		let bomInfo =  bomgrid.getModifiedRows();
+		let bomDeInfo = deBomgrid.getModifiedRows();
+		
+		console.log(bomInfo);
+    	console.log(bomDeInfo);
+		
+		let bNoValue = bomgrid.getValue(rowKey, 'bomNo');
+		if(bNoValue == null){
+			bomInsert();
+			
+		}
 		
 		
-		$.ajax({
-			url : 'bomInsert',
-			method : 'POST',
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(data){
-				let rowKey = deBomgrid.getFocusedCell().rowKey;
-				let columnName = deBomgrid.getFocusedCell().columnName;
-				deBomgrid.finishEditing(rowKey, columnName);
+		let flagIn = true;
+		
+		let noData = false;
+		
+		$.each(bomInfo, function(field, array){
+			
+			if(field == 'upDateRows' && array.length != 0){
 				
-				let deList = deBomgrid.getData();
-				$.each(deList, function(i, objDe){
-					deList[i]['bomNo'] =data;
-				})
-				
-				$.ajax({
-					url : 'bomDeInsert',
-					method : 'POST',
-					data : JSON.stringify(obj),
-					contentType : 'application/json',
-					success : function(data){
-						bomgrid.clear();
-						bomgrid.appendRow();
-						deBomgrid.clear();
-						deBomgrid.appendRow();
-						
-						alert('등록이 정상적으로 처리되었습니다');
-					},
-					error : function(reject){
-						console.log(reject);
+				$.each(array, function(i, obj){
+					for(let field in obj){
+						if(field == null){
+							flagIn = false;
+						}
 					}
 				})
+				if(flagIn){
+					
+					bomUpdate();
+				}else{
+					swal("수정할 값이 입력되지 않았습니다.","","warning");
+					if(noData == false){
+						swal("수정할 값이 입력되지 않았습니다.","","warning");
+						noData = true;
+					}
+				}
 			}
 		})
 		
+		$.each(bomDeInfo, function(deField, deArray){
+			if(bNoValue != null && deField == 'updatedRows' && deArray.length != 0){
+				$.each(deArray, function(i,obj2){
+					
+						for(let field in obj2){
+							if( field = ''&&field == null ){
+								flagIn = false;
+							}
+						}
+				})
+				
+				if(flagIn){
+					bomDeUpdate();
+				}else{
+					if(noData == false){
+						swal("수정할 값이 입력되지 않았습니다.","","warning");
+						flagIn= false;
+					}
+				}
+			}else if(deField == 'deleteRows' && deArray.length != 0){
+				let bomDeCodeList = [];
+				$.each(deArray, function(i, obj2){
+					let bomCode = array[i]['bomCode'];
+					bomDeCodeList.push(bomCode);
+					
+				})
+				 console.log(bomDeCodeList);
+				$.ajax({
+					url : 'bomDeDelete',
+					method : 'POST',
+					data : JSON.stringify(bomCodeList),
+					contentType : 'application/json',
+					success : function(data){	
+						//상세생산계획 그리드 지우기
+						deBomgrid.clear();
+						alert(data + "건 삭제가 완료되었습니다.");
+					},
+					error : function(reject){
+			 			console.log(reject);
+			 		}	
+				})
+				
+			}
+		})		
+	};
+		
+	
+	function bomInsert(){
+		
+		let falg= true;
+		
+		let list = bomgrid.getData();
+		let object = list[0];
+		
+		
+		//빈데이터 확인
+		$.each(list, function(i, obj){
+			for(let field in obj){
+					if(field != 'bomNo' && obj[field == null]){
+						falg = false;
+					}
+				}
+			})
+			
+/* 			let deList = deBomgrid.getData();
+		
+			$.each(deList, function(i, objDe){
+				deList[i]['bomNo'] = data;
+				
+				for(let field in objDe){
+					if(field != 'bomCode' && objDe[field] == null){
+					
+						flag = false;
+					}
+				}
+			})
+			
+			if (flag) {
+				let bomInsertList = {
+			            bomList: list,
+			            deBomList: deList
+			        };
+				$.ajax({
+		            url: 'bomInsert',
+		            method: 'POST',
+		            data: JSON.stringify(bomInsertList),
+		            contentType: 'application/json',
+		            success: function(data) {
+		                // 등록 후 그리드 내용 지우고, 행 추가
+		                bomgrid.clear();
+		 				bomgrid.appendRow();
+		 				deBomgrid.clear()
+						deBomgrid.appendRow();
+
+		                alert('등록이 완료되었습니다.');
+		            },
+		            error: function(reject) {
+		                console.log(reject);
+		            }
+		        });
+			}else{
+				alert('모든 값이 입력되지 않았습니다.');
+			} */
+			
+			
+			if(falg){
+				$.ajax({
+					url:'bomInsert',
+					method:'POST',
+					data:JSON.stringify(object),
+					contentType: 'application/json',
+					async:false,
+					success: function(data){
+						
+						let deList = deBomgrid.getData();
+						
+						$.each(deList, function(i, objDe){
+							deList[i]['bomNo'] = data;
+							
+							for(let field in objDe){
+								if(field != 'bomCode' && objDe[field] == null){
+								
+									flag = false;
+								}
+							}
+						})
+						
+						$.ajax({
+							url : 'bomDeInsert',
+							method : 'POST',
+							data : JSON.stringify(deList),
+							contentType : 'application/json',
+							async : false, 
+							success : function(data){
+								//등록 후 그리드 내용 지우고, 행추가
+		 						bomgrid.clear();
+		 						bomgrid.appendRow();
+		 						deBomgrid.clear()
+								deBomgrid.appendRow();
+
+								alert('등록이 완료되었습니다.');
+							},
+							error : function(reject){
+					 			console.log(reject);
+					 		}
+						})
+					},
+					error:function(reject){
+			 			console.log(reject)
+					}
+				})
+			}else{
+				alert('모든 값이 입력되지 않았습니다.');
+			} 
+		
 	}
+	
+	
+	function bomUpdate(){
+		let updateOk = 0;
+		
+		let list = bomgrid.getData();
+		
+		$.ajax({
+			url : 'bomUpdate',
+			method : 'POST',
+			data : JSON.stringify(list),
+			contentType : 'application/json',
+			success : function(data){	
+				updateOk = updateOk + data;
+				deBomgrid.clear();
+				deBomgrid.appendRow();
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+		
+		if(updateOk >0){
+			swal("수정이 완료되었습니다.","","success");
+		}
+	}
+	
+	function bomDeUpdate(){
+		let updateOk = 0;
+		
+		let deList = deBomgrid.getData();
+		
+		$.ajax({
+			url : 'bomDeUpdate',
+			method : 'POST',
+			data : JSON.stringify(deList),
+			contentType : 'application/json',
+			success : function(data){
+				updateOk = updateOk + data;
+				deBomgrid.clear();
+				deBomgrid.appendRow();
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+		
+		if(updateOk >0){
+			swal("수정이 완료되었습니다.","","success");
+		}
+		}
+	
 	var bomgrid = new tui.Grid({
         el: document.getElementById('bomgrid'),
         scrollX: false,
@@ -159,16 +462,6 @@
               name: 'prodName',
               editor: 'text'
             },
-          {
-            header: '등록날짜',
-            name: 'bomWdate',
-            hidden: true
-          },
-          {
-            header: '수정날짜',
-            name: 'bomUdate',
-            hidden: true
-          },
           {
             header: '사용여부',
             name: 'bomYn',
@@ -215,7 +508,7 @@
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
+        rowHeaders: ['rowNum', 'checkbox'],
         columns: [
           {
             header: 'NO',
@@ -227,23 +520,45 @@
             },
           {
                 header: '공정코드',
-                name: 'prcsCode',
+                name: 'prcsCode'
+            },
+            {
+                header: '공정이름',
+                name: 'prcsName',
                 editor: 'text'
             },
           {
             header: '자재/반제품구분',
             name: 'mpKind',
-            editor: 'text'
+            hidden: true
           },
           {
             header: '자재/반제품코드',
             name: 'mpCode',
-            editor: 'text'
+            hidden: true
           },
+          {
+              header: '자재/반제품이름',
+              name: 'mpName',
+              editor: 'text'
+            },
           {
             header: '단위',
             name: 'bomUnit',
-            editor: 'text'
+            formatter: 'listItemText',
+            editor: {
+                type: 'select',
+                options: {
+                  listItems: [
+                	<c:forEach items="${bomUnit}" var="u">
+                	 {
+                         text: '${u.commdeCode }',
+                         value: '${u.commdeCode }'
+                       }, 
+					</c:forEach>
+                  ]
+                }
+              }
           },
           {
             header: '사용량',
@@ -349,7 +664,7 @@
     	let columnName = deBomgrid.getFocusedCell().columnName;
     	let value = deBomgrid.getFocusedCell().value; 
     	
-    	if(columnName == 'prcsCode'){
+    	if(columnName == 'prcsName'){
     		$(".modal").fadeIn();
   	       Grid = createPrcsGrid();
   	       
@@ -363,9 +678,9 @@
  	        	if(prcsCode != null){
  	        		deBomgrid.setValue(rowKey, 'prcsCode', prcsCode);
  	        	}
- 	        	if(prcsName != null){
+ 	         	if(prcsName != null){
  	        		deBomgrid.setValue(rowKey, 'prcsName', prcsName);
- 	        	}
+ 	        	} 
   	    	 }
   	    	 
   	    	 if(rowKey2 != null){
@@ -376,6 +691,72 @@
   	    	 
   	       });
     	}
+    	
+
+    	if(columnName == 'mpName'){
+    		$(".modal").fadeIn();
+  	       matGrid = createMatGrid();
+  	       halfProdGrid = createHalfProdGrid();
+  	      
+  	  	   
+
+  	 		var matGrid;
+  	 		var halfProdGrid; 
+  	 		
+  	     	matGrid.on('dblclick', () => {
+  	     		let rowKey2 = matGrid.getFocusedCell().rowKey;
+  	    	 if(rowKey2 != null){
+  	    		let matCode = matGrid.getValue(rowKey2, 'matCode');
+ 	        	let matName = matGrid.getValue(rowKey2, 'matName');
+ 	        	deBomgrid.finishEditing(rowKey, columnName);
+ 	        	
+ 	        	if(matCode != null){
+ 	        		deBomgrid.setValue(rowKey, 'mpCode', matCode);
+ 	        		deBomgrid.setValue(rowKey, 'mpKind', 'M');
+ 	        	}
+ 	        	 if(matName != null){
+ 	        		deBomgrid.setValue(rowKey, 'mpName', matName);
+ 	        	} 
+  	    	 }
+  	    	if(rowKey2 != null){
+  	    		$(".modal").fadeOut();
+  	    			matGrid.destroy();
+  	    			halfProdGrid.destroy();
+  	    			
+  	    	 } 
+  	    	 
+  	       });
+  	     
+  	     	halfProdGrid.on('dblclick', () => {
+  	     		let rowKey3 = halfProdGrid.getFocusedCell().rowKey;
+  	  	    	 if(rowKey3 != null){
+  	  	    		let prodCode = halfProdGrid.getValue(rowKey3, 'prodCode');
+  	 	        	let prodName = halfProdGrid.getValue(rowKey3, 'prodName');
+  	 	        	deBomgrid.finishEditing(rowKey, columnName);
+  	 	        	
+  	 	        	if(prodCode != null){
+  	 	        		deBomgrid.setValue(rowKey, 'mpCode', prodCode);
+  	 	        		deBomgrid.setValue(rowKey, 'mpKind', 'P');
+  	 	        	}
+  	 	         	if(prodName != null){
+  	 	        		deBomgrid.setValue(rowKey, 'mpName', prodName);
+  	 	        	} 
+  	  	    	 }
+  	  	    	if(rowKey3 != null){
+  	  	    		$(".modal").fadeOut();
+  	  	    		halfProdGrid.destroy();
+  	  	    		matGrid.destroy();	
+  	  	    			
+  	  	    	 }  	
+  	  	    	 
+  	  	       });
+
+  	     	
+  	     	
+    	}
+    	
+    	
+    	
 	});
 	
 	function createPrcsGrid(){
@@ -429,19 +810,117 @@
 	}
 	
 	
+	// 자재 반제품 가져오는 그리드
+	function createMatGrid(){
+		var matGrid = new tui.Grid({
+			el: document.getElementById('modal_label3'),
+		       data: [
+		    	   <c:forEach items="${matList}" var="m" varStatus="status">
+		          	{
+		          		matCode : "${m.matCode}",
+		          		matName :"${m.matName}",
+		          		matUnit : "${m.matUnit}",
+		          		matStd : "${m.matStd}"
+		          	} <c:if test="${not status.last}">,</c:if>
+		          </c:forEach>
+		          ],
+			   scrollX: false,
+		       scrollY: false,
+		       minBodyHeight: 30,
+		       rowHeaders: ['rowNum'],
+		       selectionUnit: 'row',
+		       pagination: true,
+		       pageOptions: {
+		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		         useClient: true,
+		         perPage: 10
+		       },
+		       columns: [
+		    	     {
+		               header: '자재코드',
+		               name: 'matCode',
+		             },
+		             {
+		               header: '자재이름',
+		               name: 'matName',
+			         },
+		             {
+		               header: '단위',
+		               name: 'matUnit'
+		             },
+		             {
+			           header: '규격',
+			           name: 'matStd'
+			         }
+		 	    ]
+		      
+		     });
+		
+		
+		return matGrid
+		
+	}
+	
+	function createHalfProdGrid(){
+		var halfProdGrid = new tui.Grid({
+			el: document.getElementById('modal_label2'),
+		       data: [
+		    	   <c:forEach items="${semiProdList}" var="m" varStatus="status">
+		          	{
+		          		prodCode : "${m.prodCode}",
+		          		prodName :"${m.prodName}",
+		          		prodUnit : "${m.prodUnit}"
+		          	} <c:if test="${not status.last}">,</c:if>
+		          </c:forEach>
+		          ],
+			   scrollX: false,
+		       scrollY: false,
+		       minBodyHeight: 30,
+		       rowHeaders: ['rowNum'],
+		       selectionUnit: 'row',
+		       pagination: true,
+		       pageOptions: {
+		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		         useClient: true,
+		         perPage: 10
+		       },
+		       columns: [
+		    	     {
+		               header: '반제품코드',
+		               name: 'prodCode',
+		             },
+		             {
+		               header: '반제품이름',
+		               name: 'prodName',
+			         },
+		             {
+		               header: '단위',
+		               name: 'prodUnit'
+		             }
+		 	    ]
+		      
+		     });
+		
+		
+		return halfProdGrid
+	}
+	
+	
+	
 	
 	
 	$(".close_btn").click(function(){
         $(".modal").fadeOut();
          
   		Grid.destroy();
+  		
      });
 	
 	
 	
 	
 	
-	/* //제품명으로 BOM조회
+	//제품명으로 BOM조회
 	 $('#searchBtn').on('click', searchProdIn);
    function searchProdIn(e){
 	   let content = $('#bomSearch').val();
@@ -451,7 +930,25 @@
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
-			   grid.resetData(data);
+			   bomgrid.resetData(data);
+			   //수정시 사용할 그리드
+			    bomgrid.on('click', () => {
+			    	//클릭한 제품 BOM가져오기
+			    	let rowKey = bomgrid.getFocusedCell().rowKey;
+			    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
+
+			    	$.ajax({
+						url : 'bomDecodeList',
+						method : 'GET',
+						data : { bomNo : bomNo },
+						success : function(data){
+							deBomgrid.resetData(data);
+			 		    },
+						error : function(reject){
+				 			console.log(reject);
+				 		}	
+					})
+			  	});
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -459,96 +956,10 @@
 	   })
    }
 
-   //수정시 사용할 그리드
-    grid.on('click', () => {
-    	//클릭한 제품 BOM가져오기
-    	let rowKey = grid.getFocusedCell().rowKey;
-    	let bomNo = grid.getValue(rowKey, 'bomNo');
-
-    	$.ajax({
-			url : 'bomDecodeList',
-			method : 'GET',
-			data : { bomNo : bomNo },
-			success : function(data){
- 				grid2.resetData(data);
- 		    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}	
-		})
-  	});
+ 
     
-    var bomgrid = new tui.Grid({
-        el: document.getElementById('bomgrid'),
-        scrollX: false,
-        scrollY: false,
-        minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
-        columns: [
-          {
-            header: 'NO',
-            name: 'bomNo',
-          },
-          {
-              header: '제품코드',
-              name: 'prodCode',
-              editor: 'text'
-            },
-          {
-              header: '제품명',
-              name: 'prodName',
-              editor: 'text'
-            },
-          {
-            header: '등록날짜',
-            name: 'bomWdate',
-          },
-          {
-            header: '수정날짜',
-            name: 'bomUdate'   	
-          },
-          {
-            header: '사용여부',
-            name: 'bomYn',
-            formatter: 'listItemText',
-            editor: {
-                type: 'select',
-                options: {
-                  listItems: [
-                	<c:forEach items="${bomUseInfoList}" var="b">
-                	 {
-                         text: '${b.commdeName }',
-                         value: '${b.commdeCode }'
-                       }, 
-					</c:forEach>
-                  ]
-                }
-              } 
-          },
-          {
-            header: '공정사용여부',
-            name: 'bomPrcsYn',
-            formatter: 'listItemText',
-            editor: {
-                type: 'select',
-                options: {
-                  listItems: [
-                	<c:forEach items="${bomPrcsUseList}" var="p">
-                	 {
-                         text: '${p.commdeName }',
-                         value: '${p.commdeCode }'
-                       }, 
-					</c:forEach>
-                  ]
-                }
-              } 
-          }
-        ]
-      });
-    
-    
-    
-      */
+   
+      
 	
 	</script>
 </body>

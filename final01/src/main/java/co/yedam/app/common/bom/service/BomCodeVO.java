@@ -32,5 +32,11 @@ public class BomCodeVO {
 	
 	//생산관리에 사용
 	private String prcsSeq;
+	
+	
+	//BOM상세
+	private String mpName;
+	
+	
 
 }

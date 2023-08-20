@@ -34,6 +34,59 @@ public class BomCodeServiceImpl implements BomCodeService {
 		return bomCodeMapper.selectDeBomCodeList(bomNo);
 	}
 
+	@Override
+	public String bomCodeInsert(BomCodeVO bomCodeVO) {
+		int result = bomCodeMapper.bomCodeInsert(bomCodeVO);
+		String bomNo = bomCodeVO.getBomNo();
+		
+		if(result > 0) {
+			return bomNo;
+			
+		}else {
+			return "실패";
+		}
+	}
+
+	@Override
+	public int bomDeCodeInsert(List<BomCodeVO> list) {
+		int result = 0;
+		for(BomCodeVO vo : list) {
+			bomCodeMapper.bomDeCodeInsert(vo);
+			result++;
+		}
+		return result;
+	}
+
+	@Override
+	public int updateBom(List<BomCodeVO> list) {
+		int result = 0;
+		for(BomCodeVO vo : list) {
+			bomCodeMapper.updateBom(vo);
+			result++;
+		}
+		return result;
+	}
+
+	@Override
+	public int updateDeBom(List<BomCodeVO> list) {
+		int result = 0;
+		for(BomCodeVO vo : list) {
+			bomCodeMapper.updateDeBom(vo);
+			result++;
+		}
+		return result;
+	}
+
+	@Override
+	public int deleteDeBom(List<BomCodeVO> list) {
+		int result = 0;
+		for(BomCodeVO bomCode : list) {
+			bomCodeMapper.deleteDeBom(bomCode);
+			result++;
+		}
+		return result;
+	}
+
 
 
 }

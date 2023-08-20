@@ -2,6 +2,8 @@ package co.yedam.app.common.bom.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.yedam.app.common.bom.service.BomCodeVO;
 
 public interface BomCodeMapper {
@@ -20,6 +22,16 @@ public interface BomCodeMapper {
 	
 	//bom 상세등록
 	public int bomDeCodeInsert(BomCodeVO bomCodeVO);
+	
+	
+	//bom 수정
+	public int updateBom(BomCodeVO bomCodeVO);
+	
+	//bom 상세수정
+	public int updateDeBom(BomCodeVO bomCodeVO);
+	
+	//bom 상세 삭제
+	public int deleteDeBom(@Param("bomCode") BomCodeVO bomCode);
 
 	
 }
