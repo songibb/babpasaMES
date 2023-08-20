@@ -497,7 +497,7 @@
 			$(".modal").fadeOut();			
 		 	eqGridFn.destroy();
 		 	prcsBomGridFn.destroy();
-		 	ingGrid.reloadData();
+
 		});	
 
     })
