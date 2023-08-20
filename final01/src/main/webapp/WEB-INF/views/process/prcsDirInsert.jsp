@@ -427,16 +427,13 @@
 //           },
           {
             header: 'LOT번호',
-            name: 'bomAmt'
+            name: 'matLot'
           },
           {
        	  	header: '재고량',
-            name: 'bomAmt'
+            name: 'lotStock'
           }
-//           {
-//             header: '단위',
-//             name: 'bomUnit'
-//           },
+
         ]
       });
 
@@ -472,21 +469,24 @@
 		
     	//클릭한 BOM의 자재 LOT 가져오기
     	let rowKey = bomGrid.getFocusedCell().rowKey;
-    	let prodCode = bomGrid.getValue(rowKey, 'matCode');
-
-//     	$.ajax({
-// 			url : '',  ////LOT조회 함수 내가 만들어야하는지, 아님 있는거 가져올지
-// 			method : 'GET',
-// 			data : {  : matCode },
-// 			success : function(data){
-// 				matLotGrid.resetData(data);
-//  		    },
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}	
-// 		})
+    	let matCode = bomGrid.getValue(rowKey, 'mpCode');
+    	$.ajax({
+			url : 'matLotStockList',  
+			method : 'GET',
+			data : { materialCode : matCode },
+			success : function(data){
+				matLotGrid.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
 
   	});
+	
+	
+
+	
 	
     </script>
 </body>

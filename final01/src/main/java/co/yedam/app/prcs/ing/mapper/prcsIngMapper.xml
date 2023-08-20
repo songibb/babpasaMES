@@ -35,7 +35,8 @@
 	
 	<!-- 사용 가능한 설비 조회 (진행공정 모달) -->
 	<select id="selectWaitEquipList" resultType="EquipVO">
-		SELECT eq_code, 
+		SELECT DISTINCT 
+			   eq_code, 
 			   eq_name, 
 			   p.prcs_type, 
 			   i.prcs_code
