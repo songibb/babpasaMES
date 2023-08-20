@@ -65,4 +65,10 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 		 return result;
 	}
 
+	@Override
+	public List<ProductCodeVO> selectSemiProdList() {
+		
+		return productCodeMapper.selectSemiProdList();
+	}
+
 }

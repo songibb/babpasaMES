@@ -22,5 +22,10 @@ public interface ProductCodeMapper {
 	
 	//제품 삭제
 	public int deleteProdInfo(ProductCodeVO productCodeVO);
+	
+	
+	
+	//반제품만 보이기 
+	public List<ProductCodeVO> selectSemiProdList();
 
 }

@@ -26,6 +26,18 @@
 		ORDER BY prod_code
 	  </select>
 	  
+	  <select id="selectSemiProdList" resultType="ProductCodeVO">
+	  		SELECT  prod_code,
+					prod_kind,
+					find_cdnm('0E', prod_kind) AS kindName,
+					prod_name,
+					prod_unit,
+					prod_std
+			FROM com_prod
+			where prod_kind='S'
+		ORDER BY prod_code
+	  </select>
+	  
 	  
 	  <!-- 제품 등록 -->
 	  <insert id="insertProdInfo" parameterType="ProductCodeVO">

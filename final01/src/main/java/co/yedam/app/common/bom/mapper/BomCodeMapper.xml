@@ -38,15 +38,25 @@
   	
   	<!-- bom상세조회 -->
   	<select id="selectDeBomCodeList" resultType="BomCodeVO">
-	  		select  bom_code,
-					prcs_code,
-					mp_kind,
-					mp_code,
-					bom_unit,
-					bom_amt,
-					bom_no
-			from bom_detail
-			WHERE bom_no = #{bomNo}
+	  		SELECT  b.bom_code,
+					b.prcs_code,
+					find_prcs_name(prcs_code) AS prcsName,					
+					b.mp_kind,
+					find_cdnm('0X',mp_kind) AS kindName,	
+					b.mp_code,
+					CASE 
+				        WHEN SUBSTR(mp_code, 1, 4) = 'MAT-' THEN m.mat_name
+				        WHEN SUBSTR(mp_code, 1, 4) = 'PROD' THEN p.prod_name
+				        ELSE b.mp_code
+    				END AS mpName,
+					b.bom_unit,
+					b.bom_amt,
+					b.bom_no
+			FROM bom_detail b LEFT JOIN com_mat m
+									ON(b.mp_code = m.mat_code)
+							  LEFT JOIN com_prod p
+							  		ON(b.mp_code = p.prod_code)
+			WHERE b.bom_no = #{bomNo}
   	</select>
   	
   	<insert id="bomCodeInsert" parameterType="BomCodeVO">
@@ -82,7 +92,7 @@
   								)
   		VALUES					
 		  		(
-		  			#{bomCode},
+		  			get_primarycode('bomCode'),
 		  			#{prcsCode},
 		  			#{mpKind},
 		  			#{mpCode},
@@ -92,4 +102,30 @@
 		  			
 		  		)
   	</insert>
+  	
+  	<update id="updateBom" parameterType="BomCodeVO">
+  		UPDATE bom_header SET
+								prod_code= #{prodCode},
+								bom_udate= sysdate,
+								bom_yn= #{bomYn},
+								bom_prcs_yn= #{bomPrcsYn}
+		WHERE bom_no = #{bomNo}		
+  	</update>
+  	
+  	<update id="updateDeBom" parameterType="BomCodeVO">
+  		UPDATE bom_detail SET
+								prcs_code=#{prcsCode},
+								mp_kind=#{mpKind},
+								mp_code=#{mpCode},
+								bom_unit=#{bomUnit},
+								bom_amt=#{bomAmt}
+		WHERE bom_code = #{bomCode}
+  	</update>
+  	
+  	<delete id="deleteDeBom" parameterType="BomCodeVO">
+  		DELETE FROM bom_detail
+  		WHERE bom_code = #{bomCode}
+  	</delete>
+  	
+  	
   </mapper>

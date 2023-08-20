@@ -115,6 +115,12 @@ public class CommCodeServiceImpl implements CommCodeService {
 		return commCodeMapper.selectProdTypeInfo();
 	}
 
+	@Override
+	public List<CommCodeVO> selectBomUnit() {
+		
+		return commCodeMapper.selectBomUnit();
+	}
+
 
 
 

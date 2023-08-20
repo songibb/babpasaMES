@@ -189,7 +189,7 @@
 					commde_info,
 					commde_use
 				FROM com_commde
-		        where comm_code = '0X' and commde_use = 'O'
+		        where comm_code = '0Y' and commde_use = 'O'
 		ORDER BY commde_code
   	</select>
   	
@@ -228,6 +228,17 @@
 		FROM com_commde
         where comm_code = '0L' and commde_use = 'O'
 	ORDER BY commde_code 
+  	</select>
+  	
+  	<select id="selectBomUnit" resultType="CommCodeVO">
+  		SELECT  commde_code,
+					comm_code,
+					commde_name,
+					commde_info,
+					commde_use
+				FROM com_commde
+		        where comm_code = '0C' and commde_use = 'O'
+		ORDER BY commde_code
   	</select>
   	
   </mapper>

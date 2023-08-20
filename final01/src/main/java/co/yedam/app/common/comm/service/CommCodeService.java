@@ -52,5 +52,10 @@ public interface CommCodeService {
 
 	//제품 반/완제품 구분
 	public List<CommCodeVO> selectProdTypeInfo();
+	
+	
+
+	//BOM 단위
+	public List<CommCodeVO> selectBomUnit();
 		
 }

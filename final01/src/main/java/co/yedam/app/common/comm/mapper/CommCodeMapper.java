@@ -69,4 +69,8 @@ public interface CommCodeMapper {
 	public List<CommCodeVO> selectProdTypeInfo();
 	
 	
+	//BOM 단위
+	public List<CommCodeVO> selectBomUnit();
+	
+	
 }
