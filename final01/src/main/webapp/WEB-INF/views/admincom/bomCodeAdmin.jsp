@@ -87,6 +87,9 @@
 		deBomgrid.removeCheckedRows(false);
 	}
 	
+	//저장 버튼 클릭시 insert 진행
+	document.getElementById('deSave').addEventListener('click', saveServer);
+	
 	//저장 버튼 클릭 진행(insert만 진행)
 	function saveServer(){
 		
@@ -149,8 +152,7 @@
           },
           {
               header: '제품코드',
-              name: 'prodCode',
-              editor: 'text'
+              name: 'prodCode'
             },
           {
               header: '제품명',
@@ -251,121 +253,192 @@
         ]
       });
 	
+	var Grid;
+	bomgrid.on('dblclick' ,() => {
+		let rowKey = bomgrid.getFocusedCell().rowKey;
+    	let columnName = bomgrid.getFocusedCell().columnName;
+    	let value = bomgrid.getFocusedCell().value; 
+    	
+    	if(columnName == 'prodName'){
+    		$(".modal").fadeIn();
+  	       Grid = createProdGrid();
+  	       
+  	       Grid.on('dblclick', () => {
+  	    	 let rowKey2 = Grid.getFocusedCell().rowKey;
+  	    	 if(rowKey2 != null){
+  	    		let prodCode = Grid.getValue(rowKey2, 'prodCode');
+ 	        	let prodName = Grid.getValue(rowKey2, 'prodName');
+ 	        	bomgrid.finishEditing(rowKey, columnName);
+ 	        	
+ 	        	if(prodCode != null){
+ 	        		bomgrid.setValue(rowKey, 'prodCode', prodCode);
+ 	        	}
+ 	        	if(prodName != null){
+ 	        		bomgrid.setValue(rowKey, 'prodName', prodName);
+ 	        	}
+  	    	 }
+  	    	 
+  	    	 if(rowKey2 != null){
+  	    		$(".modal").fadeOut();
+	        		Grid.destroy();
+  	    	 }
+  	    	 
+  	    	 
+  	       });
+    	}
+	});
 	
-	 var Grid;
-		$("Modal").on('click', event =>{
-
-			  $(".modal").fadeIn();
-			  Grid = createEmpGrid();	
-			  
-			  Grid.on('click', event => {	
-					let rowKey = Grid.getFocusedCell().rowKey;
-					let empName = Grid.getValue(rowKey, 'empName');
-					let empCode = Grid.getValue(rowKey, 'empCode');
-					$(event.currentTarget).prev().val(empCode);
-					$(event.currentTarget).next().val(empName);
-					if(event.currentTarget.id == 'empModal'){
-			        	  obj.empCode = empCode;
-		    			  obj.empName = empName;
-			          }
-			  
-					$("#close_btn").click(function(){
-						  $(".modal").fadeOut(); 
-							Grid.destroy();
-							
-					})
-					});
-		})
-			  
-			  grid.on('dblclick' , () => {
-				  let rowKey = grid.getFocusedCell().rowKey;
-			      let columnName = grid.getFocusedCell().columnName;
-			      let value = grid.getFocusedCell().value;
-			      
-			    	if(columnName == 'empName'){
-			    		$(".modal").fadeIn();
-			 	       Grid = createEmpGrid();
-			 	       
-			 	       Grid.on('click', () => {
-			 	       		let rowKey2 = Grid.getFocusedCell().rowKey;
-			 	        	let empCode = Grid.getValue(rowKey2, 'empCode');
-			 	        	let empName = Grid.getValue(rowKey2, 'empName');
-			 	        	grid.finishEditing(rowKey, columnName);
-
-			 	    		if(empCode != null){
-			 	    			grid.setValue(rowKey, 'empCode', empCode);
-			 	    		}
-			 	    		if(empName != null){
-			 	    			grid.setValue(rowKey, 'empName', empName);
-			 	    		}
-			 	    		
-			 	    		
-			 	    		//선택시 모달창 닫기
-			 	    		if(empCode != null){
-			 	    			$(".modal").fadeOut();
-			 	        		Grid.destroy();
-			 	    		}
-
-			 	       });
-			    	} 
-			  	});
+	function createProdGrid(){
 		
-		   $("#close_btn").click(function(){
-		        $(".modal").fadeOut();
-		         
-		  		Grid.destroy();
+		var pordGrid = new tui.Grid({
+			el: document.getElementById('modal_label'),
+		       data: [
+		    	   <c:forEach items="${prodList}" var="p" varStatus="status">
+		          	{
+		          		prodCode : "${p.prodCode}",
+		          		prodName :"${p.prodName}",
+		          		kindName : "${p.kindName}",
+		          		prodUnit : "${p.prodUnit}",
+		          		prodStd : "${p.prodStd}"
+		          	} <c:if test="${not status.last}">,</c:if>
+		          </c:forEach>
+		          ],
+			   scrollX: false,
+		       scrollY: false,
+		       minBodyHeight: 30,
+		       rowHeaders: ['rowNum'],
+		       selectionUnit: 'row',
+		       pagination: true,
+		       pageOptions: {
+		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		         useClient: true,
+		         perPage: 10
+		       },
+		       columns: [
+		    	     {
+		               header: '제품코드',
+		               name: 'prodCode',
+		             },
+		             {
+		               header: '제품명',
+		               name: 'prodName',
+			         },
+		             {
+		               header: '제품구분',
+		               name: 'kindName'
+		             },
+		             {
+			           header: '단위',
+			           name: 'prodUnit'
+			         },
+		             {
+		               header: '규격',
+		               name: 'prodStd'
+		             }
+		 	    ]
+		      
 		     });
-		   
-		 //모달창 닫기
-			$("#close_btn").click(function(){
-		        $(".modal").fadeOut();
-		         
-		  		Grid.destroy();
+		
+		
+		return pordGrid
+	}
+	
+	
+	deBomgrid.on('dblclick' ,() => {
+		let rowKey = deBomgrid.getFocusedCell().rowKey;
+    	let columnName = deBomgrid.getFocusedCell().columnName;
+    	let value = deBomgrid.getFocusedCell().value; 
+    	
+    	if(columnName == 'prcsCode'){
+    		$(".modal").fadeIn();
+  	       Grid = createPrcsGrid();
+  	       
+  	       Grid.on('dblclick', () => {
+  	    	 let rowKey2 = Grid.getFocusedCell().rowKey;
+  	    	 if(rowKey2 != null){
+  	    		let prcsCode = Grid.getValue(rowKey2, 'prcsCode');
+ 	        	let prcsName = Grid.getValue(rowKey2, 'prcsName');
+ 	        	deBomgrid.finishEditing(rowKey, columnName);
+ 	        	
+ 	        	if(prcsCode != null){
+ 	        		deBomgrid.setValue(rowKey, 'prcsCode', prcsCode);
+ 	        	}
+ 	        	if(prcsName != null){
+ 	        		deBomgrid.setValue(rowKey, 'prcsName', prcsName);
+ 	        	}
+  	    	 }
+  	    	 
+  	    	 if(rowKey2 != null){
+  	    		$(".modal").fadeOut();
+	        		Grid.destroy();
+  	    	 }
+  	    	 
+  	    	 
+  	       });
+    	}
+	});
+	
+	function createPrcsGrid(){
+		
+		var prcsGrid = new tui.Grid({
+			el: document.getElementById('modal_label'),
+		       data: [
+		    	   <c:forEach items="${prcsList}" var="p" varStatus="status">
+		          	{
+		          		prcsCode : "${p.prcsCode}",
+		          		prcsType :"${p.prcsType}",
+		          		prcsName : "${p.prcsName}",
+		          		semiYn : "${p.semiYn}"
+		          	} <c:if test="${not status.last}">,</c:if>
+		          </c:forEach>
+		          ],
+			   scrollX: false,
+		       scrollY: false,
+		       minBodyHeight: 30,
+		       rowHeaders: ['rowNum'],
+		       selectionUnit: 'row',
+		       pagination: true,
+		       pageOptions: {
+		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		         useClient: true,
+		         perPage: 10
+		       },
+		       columns: [
+		    	     {
+		               header: '공정코드',
+		               name: 'prcsCode',
+		             },
+		             {
+		               header: '공정구분',
+		               name: 'prcsType',
+			         },
+		             {
+		               header: '공정이름',
+		               name: 'prcsName'
+		             },
+		             {
+			           header: '반제품공정구분',
+			           name: 'semiYn'
+			         }
+		 	    ]
+		      
 		     });
-			
-				//사원조회 모달 그리드
-				 function createEmpGrid(){
-				      var empGrid = new tui.Grid({
-				          el: document.getElementById('modal_label'),
-				          data: [
-				             <c:forEach items="${empList}" var="e" varStatus="status">
-				                {
-				                	empCode : "${e.empCode}",
-				                	empName :"${e.empName}",
-				                	commdeName :"${e.commdeName}"
-				                } <c:if test="${not status.last}">,</c:if>
-				             </c:forEach>
-				             ],
-				         scrollX: false,
-				          scrollY: false,
-				          minBodyHeight: 30,
-				          rowHeaders: ['rowNum'],
-				          selectionUnit: 'row',
-				          pagination: true,
-				          pageOptions: {
-				          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-				            useClient: true,
-				            perPage: 10
-				          },
-				          columns: [
-				             {
-				                  header: '사원코드',
-				                  name: 'empCode'
-				                },
-				                {
-				                  header: '사원명',
-				                  name: 'empName'
-				                },
-				                {
-				                  header: '부서명',
-				                  name: 'commdeName'
-				                }
-				           ]
-				         
-				        });
-				      
-				      return empGrid;
-				   };
+		
+		
+		return prcsGrid
+	}
+	
+	
+	
+	
+	$(".close_btn").click(function(){
+        $(".modal").fadeOut();
+         
+  		Grid.destroy();
+     });
+	
+	
+	
 	
 	
 	/* //제품명으로 BOM조회
