@@ -1,7 +1,6 @@
 package co.yedam.app.prcs.ing.web;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,14 +29,22 @@ public class PrcsIngController {
 		return list;
 	}
 	
-	//사용 가능한 설비 조회 (진행공정 모달)
+	//작업 시작 전 사용 가능한 설비 조회 (진행공정 모달)
 	@PostMapping("waitEquipList")
 	@ResponseBody
-	public List<EquipVO> getPrcsWatiEquipList(@RequestBody PrcsIngVO prcsIngVO){
+	public List<EquipVO> getPrcsWaitEquipList(@RequestBody PrcsIngVO prcsIngVO){
 		List<EquipVO> list = prcsIngService.selectWaitEquipList(prcsIngVO);
 		return list;
 	}
 		
+	//작업 시작 후 선택된 설비 조회 (진행공정 모달)
+	@PostMapping("selectEquip")
+	@ResponseBody
+	public List<EquipVO> getEquipList(@RequestParam String prcsDirDeCode, @RequestParam String prcsCode){
+		List<EquipVO> list = prcsIngService.selectEquip(prcsDirDeCode, prcsCode);
+		return list;
+	}
+	
 	//투입 자재별 소모량 조회 (진행공정 모달)
 	@PostMapping("matBomList")
 	@ResponseBody
@@ -48,21 +55,23 @@ public class PrcsIngController {
 	
 	//작업시작 => 공정상태&설비 수정, 공정실적관리 등록 (진행공정 모달)
 	@PostMapping("callPrcsStart")
-	public int callPrcsStart(Map<String, String> map) {	
-		return prcsIngService.callPrcsStart(map);
+	@ResponseBody
+	public int callPrcsStart(PrcsIngVO prcsIngVO) {	
+		return prcsIngService.callPrcsStart(prcsIngVO);
 	}
 	
 	//작업종료 => 공정상태&설비 수정, 공정실적관리 수정 (진행공정 모달)
 	@PostMapping("callPrcsEnd")
-	public int callPrcsEnd(Map<String, String> map) {	
-		return prcsIngService.callPrcsEnd(map);
+	@ResponseBody
+	public int callPrcsEnd(PrcsIngVO prcsIngVO) {	
+		return prcsIngService.callPrcsEnd(prcsIngVO);
 	}
 	
 	//데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)
-	@PostMapping("selectPrcsInfoList")
+	@GetMapping("selectPrcsInfoList")
 	@ResponseBody
-	public List<PrcsIngVO> selectPrcsInfoList(@RequestBody PrcsIngVO prcsIngVO) {	
-		return prcsIngService.selectPrcsInfoList(prcsIngVO);
+	public PrcsIngVO selectPrcsInfoList(@RequestParam String prcsDirDeCode, @RequestParam String prcsCode) {	
+		return prcsIngService.selectPrcsInfoList(prcsDirDeCode, prcsCode);
 	}
 	
 	//공정 실적 조회
