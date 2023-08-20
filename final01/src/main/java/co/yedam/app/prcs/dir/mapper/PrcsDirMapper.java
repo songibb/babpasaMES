@@ -1,6 +1,7 @@
 package co.yedam.app.prcs.dir.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -33,8 +34,8 @@ public interface PrcsDirMapper {
 	public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
 	//생산지시 등록시 자재 출고 (프로시저)
-	public int insertMatOut(String prcsDirDeCode);
-	
+	//public int insertMatOut(@Param("prcsDirDeCode") String prcsDirDeCode,  @Param("empCode") String empCode);
+	public int insertMatOut(Map<String, String> map);
 	
 	//BOM 조회
 	public List<BomCodeVO> selectBomList(@Param("prodCode") String prodCode, @Param("prcsDirAmt") Integer prcsDirAmt);

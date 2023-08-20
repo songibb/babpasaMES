@@ -19,13 +19,13 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//생산계획 조회
 	@Override
-	public List<PrcsPlanVO> getPrcsPlanList(String searchPlanName, String startDate, String endDate) {
+	public List<PrcsPlanVO> selectPrcsPlanList(String searchPlanName, String startDate, String endDate) {
 		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
 	}
 	
 	//상세생산계획 조회
 	@Override
-	public List<PrcsPlanVO> getPrcsPlanDeList(String prcsPlanCode) {
+	public List<PrcsPlanVO> selectPrcsPlanDeList(String prcsPlanCode) {
 		return prcsPlanMapper.selectPrcsPlanDeList(prcsPlanCode);
 	}
 
@@ -55,14 +55,6 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 		}
 		return result;
 	}
-
-	//생산계획 + 상세생산계획 등록
-//	@Override
-//	public int prcsPlanInsert(List<PrcsPlanVO> prcsPlanList) {
-//		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanList);		
-//		return result;
-//	}
-
 	
 	//생산계획 수정
 	@Override
@@ -103,19 +95,13 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//미계획 주문서 조회
 	@Override
-	public List<OrderVO> getNotPlanOrderList() {
+	public List<OrderVO> selectNotPlanOrderList() {
 		return prcsPlanMapper.selectNotPlanOrderList();
 	}
 	
 	//미계획 상세주문서 조회
-//	@Override
-//	public List<OrderVO> getNotPlanOrderDeList(String ordCode) {		
-//		return prcsPlanMapper.selectNotPlanOrderDeList(ordCode);
-//	}
-	
-	//미계획 상세주문서 조회
 	@Override
-	public List<OrderVO> getNotPlanOrderDeList(List<OrderVO> ordList) {	
+	public List<OrderVO> selectNotPlanOrderDeList(List<OrderVO> ordList) {	
 		
 		List<OrderVO> deList = new ArrayList<>();
 

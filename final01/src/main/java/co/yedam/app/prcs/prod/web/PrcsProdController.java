@@ -23,7 +23,7 @@ public class PrcsProdController {
 	public String getPrcsProdAllList(Model model){
 
 		//제품 목록 조회
-		model.addAttribute("prodList", prcsProdService.getProdList());
+		model.addAttribute("prodList", prcsProdService.selectProdList());
 		
 		return "process/prcsProdList";
 	}
@@ -32,7 +32,7 @@ public class PrcsProdController {
 	@GetMapping("selectPrcsProdList")
 	@ResponseBody
 	public List<PrcsProdVO> getPrcsProdList(@RequestParam String prodCode){
-		List<PrcsProdVO> list = prcsProdService.getPrcsProdList(prodCode);
+		List<PrcsProdVO> list = prcsProdService.selectPrcsProdList(prodCode);
 		return list;
 	}
 	

@@ -9,9 +9,6 @@ public interface PrcsManageMapper {
 	//공정관리 조회
 	public List<PrcsManageVO> selectPrcsManageList();
 	
-	//공정관리 조회 - 검색
-	public List<PrcsManageVO> selectPrcsManageSearch(PrcsManageVO prcsManageVO);
-	
 	//공정관리 등록
 	public int insertPrcsManage(PrcsManageVO prcsManageVO);
 	

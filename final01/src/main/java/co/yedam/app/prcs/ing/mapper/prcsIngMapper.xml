@@ -6,7 +6,7 @@
 <mapper namespace="co.yedam.app.prcs.ing.mapper.PrcsIngMapper">
 
 	<!-- 진행 공정 조회 -->
-	<select id="selectPrcsIngList" resultType="prcsIngVO">
+	<select id="selectPrcsIngList" resultType="PrcsIngVO">
 		SELECT prcs_ing_code,
 			   prcs_dir_de_code,
 			   prod_code,
@@ -19,7 +19,8 @@
 			   prcs_amt,
 			   find_cdnm('0T', prcs_dir_ing_sts) AS prcs_dir_ing_sts
 		  FROM prcs_ing
-		 WHERE prcs_dir_de_code = #{prcsDirDeCode} AND prod_code = #{prodCode}
+		 WHERE prcs_dir_de_code = #{prcsDirDeCode} 
+		 	   AND prod_code = #{prodCode}
 		 ORDER BY prcs_seq
 	</select>
 	
@@ -33,7 +34,7 @@
 		}
     </insert>
 	
-	<!-- 사용 가능한 설비 조회 (진행공정 모달) -->
+	<!-- 작업 시작 전 사용 가능한 설비 조회 (진행공정 모달) -->
 	<select id="selectWaitEquipList" resultType="EquipVO">
 		SELECT DISTINCT 
 			   eq_code, 
@@ -44,23 +45,94 @@
 		  					ON e.prcs_type = p.prcs_type
                 		  JOIN prcs_ing i
                 		  	ON p.prcs_code = i.prcs_code
-		 WHERE e.eq_sts='W' and i.prcs_code = #{prcsCode}
+		 WHERE e.eq_sts='W' 
+			   AND i.prcs_code = #{prcsCode}
+	</select>
+	
+	<!-- 작업 시작 후 선택된 설비 조회 (진행공정 모달) -->
+	<select id="selectEquip" resultType="EquipVO">
+		SELECT eq_code,
+			   find_eq_name(eq_code) AS eq_name
+		  FROM prcs_list
+		 WHERE prcs_dir_de_code = #{prcsDirDeCode}
+    		   AND prcs_code = #{prcsCode}
 	</select>
 	
 	<!-- 투입 자재별 소모량 조회 (진행공정 모달) -->
-	<select id="selectMatBomList" resultType="BomCodeVO">
+	<select id="selectMatBomList" resultType="PrcsIngVO">
 		SELECT find_prod_name(prod_code) AS prod_name,
         	   find_prcs_name(prcs_code) AS prcs_name,
         	   mp_code,
       		   find_mat_name(mp_code) AS mat_name,
-      		   bom_unit,
       		   bom_amt * #{prcsDirAmt} AS bom_amt
 		  FROM v_prod_bom
 		 WHERE prod_code= #{prodCode}
                AND prcs_code = #{prcsCode}
-		   	   AND bom_yn='Y'
+		   	   AND bom_yn='O'
 		       AND mp_kind='M'
+	</select>	   
+
+	<!-- 작업시작 => 공정상태&설비 수정, 공정실적관리 등록 (진행공정 모달) -->
+	<insert id="callPrcsStart" parameterType="Map">
+		{
+			CALL PR_PRCS_START(
+				#{prcsDirDeCode},
+				#{prcsCode},
+				#{eqCode},
+				#{empCode},
+				#{prcsStartTime}
+			)
+		}
+	</insert>
+	
+	<!-- 작업종료 => 공정상태&설비 수정, 공정실적관리 수정 (진행공정 모달) -->
+	<insert id="callPrcsEnd" parameterType="Map">
+		{
+			CALL PR_PRCS_END(
+				#{prcsDirDeCode},
+				#{prcsCode},
+				#{eqCode},
+				#{errAmt},
+				#{prcsEndTime}
+			)
+		}
+	</insert>
+	
+	<!-- 데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)-->
+<!-- 	(담당자, 불량량, 사용하는 설비, 작업시작 시간, 작업 종료 시간) -->
+	<select id="selectPrcsInfoList" resultType="PrcsIngVO">
+		SELECT prcs_list_code,
+			   prcs_dir_de_code,
+			   prod_code,
+			   prcs_code,
+			   eq_code,
+			   input_amt,
+			   err_amt,
+			   prcs_amt,
+			   prcs_start_time,
+			   prcs_end_time,
+			   emp_code
+		  FROM prcs_list
+		 WHERE prcs_dir_de_code = #{prcsDirDeCode} 
+		 	   AND prcs_code = #{prcsCode}
 	</select>
-		   
+	
+	<!-- 공정 실적 관리 조회 -->
+	<select id="selectPrcsList" resultType="PrcsIngVO">
+		SELECT prcs_list_code,
+			   prcs_dir_de_code,
+			   prod_code,
+			   prcs_code,
+			   eq_code,
+			   input_amt,
+			   err_amt,
+			   prcs_amt,
+			   prcs_start_time,
+			   prcs_end_time,
+			   emp_code
+		  FROM prcs_list
+	</select>
+	
+	
 
 </mapper>

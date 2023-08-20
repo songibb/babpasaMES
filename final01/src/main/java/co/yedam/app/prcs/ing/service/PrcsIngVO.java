@@ -1,6 +1,5 @@
 package co.yedam.app.prcs.ing.service;
 
-import java.util.Date;
 
 import lombok.Data;
 
@@ -18,17 +17,21 @@ public class PrcsIngVO {
 	private String prcsDirIngSts;				//공정상태
 	
 	//진행 공정 관리 모달창 - 투입 자재별 소모량에 필요
-	private String prcsDirAmt;
+	private int prcsDirAmt;
+	private String mpCode;
+	private String matName;
+	private int bomAmt;
 	
 	//공정 실적 관리
 	private String eqCode;
-	private Date prcsStartTime;
-	private Date prcsEndTime;
+	private String prcsStartTime;
+	private String prcsEndTime;
 	private String empCode;
 	
 	//이름 가져오기
 	private String prodName;
 	private String prcsName;
+	private String empName;
 	
 	
 	

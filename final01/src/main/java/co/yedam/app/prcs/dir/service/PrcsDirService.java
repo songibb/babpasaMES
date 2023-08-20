@@ -10,10 +10,10 @@ import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 
 public interface PrcsDirService {
 	//생산지시 조회
-	public List<PrcsDirVO> getPrcsDirList();
+	public List<PrcsDirVO> selectPrcsDirList();
 	
 	//상세생산지시 조회
-	public List<PrcsDirVO> getPrcsDirDeList(String prcsDirCode);
+	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode);
 	
 	//생산지시 등록
 	public String insertPrcsDir(PrcsDirVO prcsDirVo);
@@ -23,13 +23,13 @@ public interface PrcsDirService {
 	
 	
 	//미지시 생산계획 목록 조회 
-	public List<PrcsPlanVO> getNotDirPlanList();
+	public List<PrcsPlanVO> selectNotDirPlanList();
 	
 	//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
 	//public int updateNotDirPlanList(PrcsDirVO prcsDirVO);
 	
 	//BOM 조회
-	public List<BomCodeVO> getBomList(String prodCode, Integer prcsDirAmt);
+	public List<BomCodeVO> selectBomList(String prodCode, Integer prcsDirAmt);
 		
 	
 

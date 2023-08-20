@@ -142,14 +142,56 @@
 		let list = dirGrid.getData();
 		let obj = list[0];
 
-// 		let obj = {};
+		$.ajax({
+			url : 'prcsDirInsert',
+			method : 'POST',
+			data : JSON.stringify(obj),
+			contentType : 'application/json',
+			success : function(data){					
+				//상세생산지시 insert
+				let rowKey = dirDeGrid.getFocusedCell().rowKey;
+				let columnName = dirDeGrid.getFocusedCell().columnName;
+				//편집종료
+				dirDeGrid.finishEditing(rowKey, columnName);
+				
+				let deList = dirDeGrid.getData();
+				$.each(deList, function(i, objDe){
+					deList[i]['prcsDirCode'] = data;
+				})
 
-// 		obj['prcsPlanCode'] = dirGrid.getValue(rowKey, 'prcsPlanCode');
-// 		obj['prcsDirName'] = dirGrid.getValue(rowKey, 'prcsDirName');
-// 		obj['prcsStartDate'] = dirGrid.getValue(rowKey, 'prcsStartDate');
+				
+				//분할지시
+				//상세지시코드 for문돌려서 상세계획코드 구하기
+				// 상세계획코드 개수가 1이상일때  
+				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
+				// 아래 ajax 동작
+				//if()
 
-// 		//담당자 세션으로 가져와서 객체에 담기
-// 		obj['empCode'] = dirGrid.getValue(rowKey, 'empCode');
+				$.ajax({
+					url : 'prcsDirDeInsert',
+					method : 'POST',
+					data : JSON.stringify(deList),
+					contentType : 'application/json',
+					success : function(data){
+						//등록 후 그리드 내용 지우고, 행추가
+						dirGrid.clear();
+						dirGrid.appendRow();
+						dirDeGrid.clear();
+						dirDeGrid.appendRow();
+						
+						alert('등록이 완료되었습니다.');
+					},
+					error : function(reject){
+			 			console.log(reject);
+			 		}
+				})				
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}		
+		})
+	};
+
 
 
 // 		$.ajax({
@@ -158,17 +200,7 @@
 // 			data : JSON.stringify(obj),
 // 			contentType : 'application/json',
 // 			success : function(data){					
-// 				//상세생산지시 insert
-// 				let rowKey = dirDeGrid.getFocusedCell().rowKey;
-// 				let columnName = dirDeGrid.getFocusedCell().columnName;
-// 				//편집종료
-// 				dirDeGrid.finishEditing(rowKey, columnName);
 				
-// 				let deList = dirDeGrid.getData();
-// 				$.each(deList, function(i, objDe){
-// 					deList[i]['prcsDirCode'] = data;
-// 				})
-
 				
 // 				//분할지시
 // 				//상세지시코드 for문돌려서 상세계획코드 구하기
@@ -176,25 +208,6 @@
 // 				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
 // 				// 아래 ajax 동작
 // 				//if()
-
-// 				$.ajax({
-// 					url : 'prcsDirDeInsert',
-// 					method : 'POST',
-// 					data : JSON.stringify(deList),
-// 					contentType : 'application/json',
-// 					success : function(data){
-// 						//등록 후 그리드 내용 지우고, 행추가
-// 						dirGrid.clear();
-// 						dirGrid.appendRow();
-// 						dirDeGrid.clear();
-// 						dirDeGrid.appendRow();
-						
-// 						alert('등록이 완료되었습니다.');
-// 					},
-// 					error : function(reject){
-// 			 			console.log(reject);
-// 			 		}
-// 				})				
 // 			},
 // 			error : function(reject){
 // 	 			console.log(reject);
@@ -203,62 +216,36 @@
 			
 
 		
+// 		//상세생산지시 insert
+// 		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+// 		let deColumnName = dirDeGrid.getFocusedCell().columnName;
+// 		//편집종료
+// 		dirDeGrid.finishEditing(deRowKey, deColumnName);
+		
+// 		let deList = dirDeGrid.getData();
+
+// 		$.ajax({
+// 			url : 'prcsDirDeInsert',
+// 			method : 'POST',
+// 			data : JSON.stringify(deList),
+// 			contentType : 'application/json',
+// 			success : function(data){
+// 				//등록 후 그리드 내용 지우고, 행추가
+// 				dirGrid.clear();
+// 				dirGrid.appendRow();
+// 				dirDeGrid.clear();
+// 				dirDeGrid.appendRow();
+				
+// 				alert('등록이 완료되었습니다.');
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})				
+		
+		
+		
 // 	};
-
-
-
-		$.ajax({
-			url : 'prcsDirInsert',
-			method : 'POST',
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(data){					
-				
-				
-				//분할지시
-				//상세지시코드 for문돌려서 상세계획코드 구하기
-				// 상세계획코드 개수가 1이상일때  
-				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
-				// 아래 ajax 동작
-				//if()
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}		
-		})
-			
-
-		
-		//상세생산지시 insert
-		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
-		let deColumnName = dirDeGrid.getFocusedCell().columnName;
-		//편집종료
-		dirDeGrid.finishEditing(deRowKey, deColumnName);
-		
-		let deList = dirDeGrid.getData();
-
-		$.ajax({
-			url : 'prcsDirDeInsert',
-			method : 'POST',
-			data : JSON.stringify(deList),
-			contentType : 'application/json',
-			success : function(data){
-				//등록 후 그리드 내용 지우고, 행추가
-				dirGrid.clear();
-				dirGrid.appendRow();
-				dirDeGrid.clear();
-				dirDeGrid.appendRow();
-				
-				alert('등록이 완료되었습니다.');
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})				
-		
-		
-		
-	};
 
 
 	
