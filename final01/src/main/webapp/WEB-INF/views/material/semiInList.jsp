@@ -177,10 +177,10 @@
 	           <c:forEach items="${inList}" var="semi">
 	           	{
 	           	semiLot : "${semi.semiLot}",
-	           	prodCode :"${semi.prodCode}",
 	           	prodName :"${semi.prodName}",
 	           	semiInAmt :"${semi.semiInAmt}",
 	           	empName : "${semi.empName}",
+	           	useYn : "${semi.useYn}",
 	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
 	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
 	           	},
@@ -198,14 +198,6 @@
 	       },
 	       columns: [
 	 	      {
-	 	        header: '반제품 LOT',
-	 	        name: 'semiLot',
-	 	      },
-	 	      {
-	 	        header: '반제품코드',
-	 	        name: 'prodCode'
-	 	      },
-	 	      {
 	 	        header: '반제품명',
 	 	        name: 'prodName'
 	 	      },
@@ -214,8 +206,8 @@
 	 	        name: 'semiInAmt'
 	 	      },
 	 	      {
-	 	        header: '담당자',
-	 	        name: 'empName'
+	 	        header: '반제품 LOT',
+	 	        name: 'semiLot',
 	 	      },
 	 	      {
 		 	    header: '입고일자',
@@ -226,8 +218,15 @@
 		 	    header: '유통기한',
 		 	    name: 'semiExd',
 	 	  		className: 'yellow-background'
-		 	  }
-		 	 
+		 	  },
+		 	  {
+	 	    	header: '사용여부',
+	 	    	name: 'useYn'
+		 	  },
+	 	      {
+	 	        header: '담당자',
+	 	        name: 'empName'
+	 	      }
 	 	    ]
 	      
 	     });

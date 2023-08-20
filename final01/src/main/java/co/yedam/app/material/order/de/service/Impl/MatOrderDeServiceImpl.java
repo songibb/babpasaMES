@@ -24,9 +24,9 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	//전체조회에서 검색
 	@Override
 	public List<MatOrderDeVO> selectMatOrderSearch(String materialCode, String accountCode, String startDate,
-			String endDate) {
+			String endDate, String before, String comple) {
 		
-		return modm.selectMatOrderSearch(materialCode, accountCode, startDate, endDate);
+		return modm.selectMatOrderSearch(materialCode, accountCode, startDate, endDate, before, comple);
 	}
 	
 	//등록, 수정, 삭제

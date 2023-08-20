@@ -9,7 +9,7 @@
 		ON(a.mat_code = b.mat_code)
 		LEFT JOIN com_emp c
 		ON(a.emp_code = c.emp_code)
-		ORDER BY a.cal_code
+		ORDER BY a.cal_date DESC
 	</select>
 	
 	<select id="selectMatCalSearch" resultType="MatCalVO">
@@ -20,7 +20,7 @@
 		ON(a.emp_code = c.emp_code)
 		
 		<where>
-			<if test="materialCode != null and materialCode != ''">
+			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
 			<if test="calIn==2">
@@ -29,14 +29,78 @@
 			<if test="calOut==2">
 				AND cal_category != 'O'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(cal_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(cal_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.cal_code
+		ORDER BY a.cal_date DESC
+	</select>
+	
+	<insert id="insertMatCal" parameterType="MatCalVO">
+		INSERT INTO mat_cal(
+			CAL_CODE
+			, MAT_CODE
+			, MAT_LOT
+			, CAL_CATEGORY
+			, CAL_AMT
+			, CAL_DATE
+			, CAL_BAMT
+			, EMP_CODE
+		) VALUES (
+			get_primaryCode('matCal')
+			, #{matCode}
+			, #{matLot}
+			, #{calCategory}
+			, #{calAmt}
+			, #{calDate}
+			, #{calBamt}
+			, #{empCode}
+		)
+		
+	</insert>
+	<update id="insertMatInAtMatCal" parameterType="MatCalVO">
+		UPDATE mat_in
+		SET mat_in_amt = mat_in_amt <![CDATA[+]]> #{calAmt}, mat_stock = mat_stock <![CDATA[+]]> #{calAmt}
+		WHERE mat_lot = #{matLot}
+	</update>
+	
+	<insert id="insertMatOutAtMatCal" parameterType="MatCalVO">
+		INSERT INTO mat_out(
+			MAT_OUT_CODE
+			, MAT_CODE
+			, MAT_LOT
+			, MAT_OUT_AMT
+			, MAT_OUTD
+			, EMP_CODE
+			, PRCS_DIR_DE_CODE
+			, MAT_EXD
+			, ACT_CODE
+		) VALUES (
+			get_primaryCode('matOutCode')
+			, #{matCode}
+			, #{matLot}
+			, #{calAmt}
+			, #{calDate}
+			, #{empCode}
+			, '정산'
+			, #{matExd}
+			, #{actCode}
+		)
+	</insert>
+	<update id="updateMatInAtMatCal" parameterType="MatCalVO">
+		UPDATE mat_in
+		SET mat_stock = mat_stock <![CDATA[-]]> #{calAmt}
+		WHERE mat_lot = #{matLot}
+	</update>
+	
+	<!-- 거래처코드, 유통기한, testCode가져오기(mat_in, mat_out에 insert할 때 필요함)  -->
+	<select id="findMatLotInfoAtMatCal" resultType="MatInVO">
+		SELECT act_code, mat_exd
+		FROM mat_in
+		WHERE mat_lot = #{matLot}
 	</select>
 
 </mapper>

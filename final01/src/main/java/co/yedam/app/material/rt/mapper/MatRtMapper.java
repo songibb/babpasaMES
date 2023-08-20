@@ -15,6 +15,8 @@ public interface MatRtMapper {
 	
 	//검수완료 목록
 	public List<MatTestVO> selectMatTestFinishList();
+	//삭제 행 정보
+	public MatTestVO selectDeletedRowsInfo(MatRtVO vo);
 	
 	//등록
 	public int insertMatRtList(MatRtVO vo);

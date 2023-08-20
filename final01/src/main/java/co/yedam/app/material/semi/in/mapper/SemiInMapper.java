@@ -17,6 +17,9 @@ public interface SemiInMapper {
 	//생산완료된 반제품 목록
 	public List<SemiInVO> selectTestFinishList();
 	
+	//삭제된 행 정보
+	public SemiInVO selectDeleteRowsInfo(SemiInVO vo);
+	
 	//등록
 	public int insertSemiIn(SemiInVO vo);
 	
@@ -25,4 +28,6 @@ public interface SemiInMapper {
 	
 	//삭제
 	public int deleteSemiIn(SemiInVO vo);
+	
+	public int prcsIngStsUpdateAtSemiIn(SemiInVO vo);
 }

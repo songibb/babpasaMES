@@ -1,5 +1,6 @@
 package co.yedam.app.material.in.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,28 @@ public class MatInServiceImpl implements MatInService {
 		
 		return result;
 		
+	}
+
+	@Override
+	public List<MatInVO> getMatLotModal(String materialCode) {
+		
+		return mim.selectLotModal(materialCode);
+	}
+	
+	
+	//삭제한 행 정보찾기
+	@Override
+	public List<MatTestVO> getDeletedMatTest(List<MatInVO> list) {
+		List<MatTestVO> testList = new ArrayList<>();
+		if(list != null && list.size() > 0) {
+			for(MatInVO vo : list) {
+				MatTestVO testVO = mim.selectDeletedMatTest(vo);
+				testList.add(testVO);
+			}
+		}
+
+		return testList;
+	
 	}
 
 

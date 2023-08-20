@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, mat_test_yn, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
@@ -14,11 +14,11 @@
             ON (b.emp_code = d.emp_code)
             LEFT JOIN com_mat e
             ON (a.mat_code = e.mat_code)
-		ORDER BY a.mat_od_de_cd
+		ORDER BY b.mat_od_rq DESC
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd mat_od_cd, mat_test_yn, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
             LEFT JOIN com_act c
@@ -28,20 +28,26 @@
             LEFT JOIN com_mat e
             ON (a.mat_code = e.mat_code)
             <where>
-            	<if test="materialCode != null and materialCode != ''">
+            	<if test="materialCode != null and !materialCode.equals('')">
 					AND a.mat_code LIKE '%' || #{materialCode} || '%'
 				</if>
-				<if test="accountCode != null and accountCode != ''">
+				<if test="accountCode != null and !accountCode.equals('')">
 					AND b.act_code LIKE '%' || #{accountCode} || '%'
 				</if>
-				<if test="startDate != null and startDate != ''">
+				<if test="startDate != null and !startDate.equals('')">
 					AND TO_CHAR(b.mat_od_rq, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 				</if>
-				<if test="endDate != null and endDate != ''">
+				<if test="endDate != null and !endDate.equals('')">
 					AND TO_CHAR(b.mat_od_rq, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 				</if>
+				<if test="before==2">
+					AND a.mat_test_yn != 'N'
+				</if>
+				<if test="comple==2">
+					AND a.mat_test_yn != 'Y'
+				</if>
 			</where>
-			ORDER BY a.mat_od_de_cd
+			ORDER BY b.mat_od_rq DESC
 	</select>
 	
 	<!-- 등록 -->

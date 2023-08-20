@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
+	
 	h1{
 		font-weight : 700;
 	}
@@ -28,6 +29,8 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	
 </style>    
        
 </head>
@@ -194,7 +197,7 @@
 	           	{
 	           	calCode : "${cal.calCode}",
 	           	calCategory :"${cal.calCategory}",
-	           	matCode :"${cal.matCode}",
+	           	matLot :"${cal.matLot}",
 	           	matName : "${cal.matName}",
 	           	matUnit : "${cal.matUnit}",
 	           	matStd :"${cal.matStd}",
@@ -239,10 +242,7 @@
 					}
                	}   
 	 	      },
-	 	      {
-	 	        header: '자재코드',
-	 	        name: 'matCode'
-	 	      },
+	 	      
 	 	      {
           	  	header: '자재명',
 		 		name: 'matName' 
@@ -256,6 +256,11 @@
 	 	        name: 'matStd'
 	 	      },
 	 	      {
+		 	    header: '자재 LOT',
+		 	    name: 'matLot',
+		 	 	width: 150
+		 	  },
+	 	      {
 	 	        header: '기존수량',
 	 	        name: 'calBamt'
 	 	      },
@@ -264,18 +269,18 @@
 		 	    name: 'calAmt'
 		 	  },
 		 	  {
+			 	header: '정산일자',
+			 	name: 'calDate',
+ 	  		 	className: 'yellow-background'
+			  },
+		 	  {
 		 	    header: '최종수량',
 		 	    name: 'finalAmt'
 		 	  },
 		 	  {
 		 		header : '담당자명',
 		 		name : 'empName'
-		 	  },
-		 	  {
-			 	header: '정산일자',
-			 	name: 'calDate',
- 	  		 	className: 'yellow-background'
-			  }
+		 	  }
 	 	    ]
 	      
 	     });

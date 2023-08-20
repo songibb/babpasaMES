@@ -13,16 +13,16 @@
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
 		<where>
-			<if test="materialCode != null and materialCode != ''">
+			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
-			<if test="accountCode != null and accountCode != ''">
+			<if test="accountCode != null and !accountCode.equals('')">
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(a.mat_outd, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.mat_outd, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>

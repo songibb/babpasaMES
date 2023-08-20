@@ -23,4 +23,6 @@ public class SemiInVO {
 	private String testAmt;
 	private Date testDate;
 	
+	private String useYn;
+	
 }

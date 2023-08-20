@@ -10,7 +10,7 @@
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
-		ORDER BY a.semi_lot DESC
+		ORDER BY a.semi_out_date DESC
 	</select>
 	
 	<!-- 전체조회중 검색 -->
@@ -21,17 +21,17 @@
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
 		<where>
-			<if test="productCode != null and productCode != ''">
+			<if test="productCode != null and !productCode.equals('')">
 				AND a.prod_code LIKE '%' || #{productCode} || '%'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(a.semi_out_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.semi_out_date, 'YYYY-MM-DD' <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.semi_lot DESC
+		ORDER BY a.semi_out_date DESC
 	</select>
 
 </mapper>

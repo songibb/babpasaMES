@@ -32,6 +32,10 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	#grid{
+		height : 600px;
+	}
 </style>    
        
 </head>
@@ -107,7 +111,8 @@
 	           	empName : "${semi.empName}",
 	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
 	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`,
-	            prcsListCode : "${semi.prcsListCode}"
+	            prcsListCode : "${semi.prcsListCode}",
+	            useYn : "${semi.useYn}"
 	           	},
 	           </c:forEach>
 	          ],
@@ -123,12 +128,9 @@
 	       },
 	       columns: [
 	 	      {
-	 	        header: '반제품 LOT',
-	 	        name: 'semiLot'
-	 	      },
-	 	      {
 	 	        header: '반제품코드',
-	 	        name: 'prodCode'
+	 	        name: 'prodCode',
+	 	        hidden : true
 	 	      },
 	 	      {
 	 	        header: '반제품명',
@@ -142,16 +144,10 @@
 	 	        header: '입고량',
 	 	        name: 'semiInAmt'
 	 	      },
-	 	      
 	 	      {
-	 	        header: '담당자명',
-	 	        name: 'empName'
+	 	        header: '반제품 LOT',
+	 	        name: 'semiLot'
 	 	      },
-	 	      {
-		 	    header: '담당자코드',
-		 	    name: 'empCode',
-		 	    hidden : true
-		 	  },
 	 	      {
 		 	    header: '입고일자',
 		 	    name: 'semiInd',
@@ -173,10 +169,25 @@
 	 	  		      }
 	 	  		},
 	 	  		className: 'yellow-background'
+		 	  },
+	 	      {
+	 	        header: '담당자명',
+	 	        name: 'empName'
+	 	      },
+		 	  {
+		 		header: '사용여부',
+		 		name: 'useYn'
+		 	  },
+	 	      {
+		 	    header: '담당자코드',
+		 	    name: 'empCode',
+		 	    hidden : true
 		 	  }
 	 	    ]
 	      
 	     });
+	
+	setDisabled();
 	
 	
 	//test완료 목록 그리드
@@ -235,8 +246,42 @@
 		      
 		     });
 	
+	 //비활성화
+	function setDisabled(){
+		$.each(inGrid.getData(), function(idx, obj){
+				
+			if(obj['semiLot'] != null && (obj['useYn'] == '사용'  || obj['useYn'] == '사용완료')){
+				inGrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+	
 	 //삭제버튼
 	$('#delete').on("click",function(){
+		let checkList = inGrid.getCheckedRows();
+		
+		deleteList = [];
+		$.each(checkList, function(idx, obj){
+			deleteObj = {};
+			deleteObj['prcsListCode'] = obj['prcsListCode'];
+			deleteList.push(deleteObj);
+		})
+
+		$.ajax({
+			url : 'getDeletedSemiInfo',
+			method : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(deleteList),
+			success : function(data){
+				testGrid.appendRows(data);
+				
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		
+		
 		//그리드에서 행 지움
 		inGrid.removeCheckedRows(false);
 		//마우스 커서 없앰
@@ -292,6 +337,7 @@
 					success : function(data){
 						swal("성공", data +"건이 처리되었습니다.", "success");
 						selectAjax();
+						
 					},
 					error : function(reject){
 						console.log(reject);
@@ -306,12 +352,11 @@
 	
 	//검색 또는 DML 후 다시 LIST 불러오는 함수
 	function selectAjax(){
-		let mat = $('#matCodeInput').val();
-		let act = $('#actCodeInput').val();
+		let prod = $('#prodCodeInput').val();
 		let sd = $('#startDate').val();
-		let ed = $('#endDate').val();
-		   
-		let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+		let ed = $('#endDate').val();	   
+			  
+		let search = { productCode : prod , startDate : sd , endDate : ed };
 		$.ajax({
 			url : 'getSemiInFilter',
 			method : 'GET',
@@ -335,6 +380,7 @@
 					
 				})
 				inGrid.resetData(data2);
+				setDisabled();
 			}
 		})
 	}
@@ -347,17 +393,24 @@
 			data : search,
 			success : function(data2){
 				
-				$.each(data2, function(idx, obj){
-					
-					let date = new Date(obj['testDate']);
+				for(let i of data){
+					let date = new Date(i.semiInd);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-					obj['testDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-	
-				})
-				testGrid.resetData(data2);
-			}
+			   		i.semiInd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					date = new Date(i.semiExd);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+			   		i.semiExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			  }
+			   inGrid.resetData(data);
+			},
+			error : function(reject){
+				   console.log(reject);
+			   }
 		})
 	}
 	
@@ -435,36 +488,7 @@
 	//검색
     $('#searchBtn').on('click', searchSemiIn);
    function searchSemiIn(e){
-	   let prod = $('#prodCodeInput').val();
-	   let sd = $('#startDate').val();
-	   let ed = $('#endDate').val();	   
-		  
-	   let search = { productCode : prod , startDate : sd , endDate : ed };
-	   $.ajax({
-		   url : 'getSemiInFilter',
-		   method : 'GET',
-		   data : search ,
-		   success : function(data){
-			   
-			  for(let i of data){
-					let date = new Date(i.semiInd);
-					let year = date.getFullYear();    //0000년 가져오기
-					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-					let day = date.getDate();        //일자 가져오기
-			   		i.semiInd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-					
-					date = new Date(i.semiExd);
-					year = date.getFullYear();    //0000년 가져오기
-					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-					day = date.getDate();        //일자 가져오기
-			   		i.semiExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-			  }
-			   inGrid.resetData(data);
-		   },
-		   error : function(reject){
-			   console.log(reject);
-		   }
-	   });
+	   selectAjax();
    }
     
     //검색 옆 초기화버튼

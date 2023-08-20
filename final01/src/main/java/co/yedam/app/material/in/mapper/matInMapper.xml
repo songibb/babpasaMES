@@ -5,18 +5,18 @@
 <mapper namespace="co.yedam.app.material.in.mapper.MatInMapper">
 	<!-- 전체조회 -->
 	<select id="selectMatInList" resultType="MatInVO">
-		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
+		SELECT a.mat_lot mat_lot, mat_use_yn(mat_lot) use_yn, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd 
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c
 					ON(a.act_code = c.act_code)
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
-		ORDER BY a.mat_lot DESC
+		ORDER BY a.mat_ind DESC
 	</select>
 	<!-- 검색 -->
 	<select id="selectMatInSearch" resultType="MatInVO">
-		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd
+		SELECT a.mat_lot mat_lot, mat_use_yn(mat_lot) use_yn, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.act_code, a.mat_in_amt mat_in_amt, a.mat_test_code, a.emp_code, d.emp_name emp_name, a.mat_ind mat_ind, a.mat_exd mat_exd
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c
@@ -24,43 +24,60 @@
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
 		<where>
-			<if test="materialCode != null and materialCode != ''">
+			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
-			<if test="accountCode != null and accountCode != ''">
+			<if test="accountCode != null and !accountCode.equals('')">
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(a.mat_ind, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.mat_ind, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.mat_lot DESC
+		ORDER BY a.mat_ind DESC
 	</select>
 	
-	<select id="selectMatTestFinishList" resultType="MatTestVO">
 	<!-- 검수는 됐지만 입고 안된 자재들 목록-->
-	SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, mat_input_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
-	FROM mat_test a LEFT JOIN mat_in b
-	ON(a.mat_test_code = b.mat_test_code)
-	LEFT JOIN com_err b
-		ON(a.err_code = b.err_code)
-		LEFT JOIN mat_order_de c
-		ON(a.mat_od_de_cd = c.mat_od_de_cd)
-        LEFT JOIN com_mat d
-        ON(c.mat_code = d.mat_code)
-        LEFT JOIN mat_order f
-        ON(c.mat_od_cd = f.mat_od_cd)
-        LEFT JOIN com_act e
-        ON(f.act_code = e.act_code)
-	WHERE b.mat_test_code IS NULL
-	ORDER BY mat_test_date DESC
+	<select id="selectMatTestFinishList" resultType="MatTestVO">
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		FROM mat_test a LEFT JOIN mat_in b
+		ON(a.mat_test_code = b.mat_test_code)
+		LEFT JOIN com_err b
+			ON(a.err_code = b.err_code)
+			LEFT JOIN mat_order_de c
+			ON(a.mat_od_de_cd = c.mat_od_de_cd)
+	        LEFT JOIN com_mat d
+	        ON(c.mat_code = d.mat_code)
+	        LEFT JOIN mat_order f
+	        ON(c.mat_od_cd = f.mat_od_cd)
+	        LEFT JOIN com_act e
+	        ON(f.act_code = e.act_code)
+		WHERE b.mat_test_code IS NULL
+		ORDER BY mat_test_date DESC
+	</select>
+	
+	<!-- 하단 그리드 행삭제시 상단 그리드 데이터 올리기용 -->
+	<select id="selectDeletedMatTest" resultType="MatTestVO">
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		FROM mat_test a 
+		LEFT JOIN com_err b
+			ON(a.err_code = b.err_code)
+			LEFT JOIN mat_order_de c
+			ON(a.mat_od_de_cd = c.mat_od_de_cd)
+	        LEFT JOIN com_mat d
+	        ON(c.mat_code = d.mat_code)
+	        LEFT JOIN mat_order f
+	        ON(c.mat_od_cd = f.mat_od_cd)
+	        LEFT JOIN com_act e
+	        ON(f.act_code = e.act_code)
+		WHERE a.mat_test_code = #{matTestCode}
 	</select>
 	
 	<!-- 등록 -->
-	<update id="insertMatIn" parameterType="MatInVO">
+	<insert id="insertMatIn" parameterType="MatInVO">
 			INSERT INTO mat_in (
 				MAT_LOT
 				, MAT_CODE
@@ -82,7 +99,7 @@
 				, #{actCode}
 				, #{matInAmt}
 			)
-	</update>
+	</insert>
 	
 	<!-- 수정 -->
 	<update id="updateMatIn" parameterType="MatInVO">
@@ -98,4 +115,15 @@
 			WHERE mat_lot = #{matLot}
 		
 	</delete>
+	
+	<!-- 자재정산 -->
+	<select id="selectLotModal" resultType="MatInVO">
+		SELECT a.mat_code, b.mat_name, b.mat_unit, b.mat_std, a.mat_lot, a.mat_stock
+		FROM mat_in a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)	
+		<if test="materialCode != null and !materialCode.equals('')">
+			WHERE a.mat_code = #{materialCode}
+		</if>
+		ORDER BY a.mat_code
+	</select>
 </mapper>

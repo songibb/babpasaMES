@@ -10,7 +10,7 @@ import co.yedam.app.material.order.de.service.MatOrderDeVO;
 public interface MatOrderDeMapper {
 	//전체조회
 	public List<MatOrderDeVO> selectMatOrderList();
-	public List<MatOrderDeVO> selectMatOrderSearch(@Param("materialCode")String materialCode, @Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
+	public List<MatOrderDeVO> selectMatOrderSearch(@Param("materialCode")String materialCode, @Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate, @Param("before") String before, @Param("comple") String comple);
 	
 	//거래처목록, 구매품목 필요함
 	//구매품목 select

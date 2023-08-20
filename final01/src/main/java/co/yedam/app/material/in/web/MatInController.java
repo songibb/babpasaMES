@@ -81,10 +81,25 @@ public class MatInController {
 		return vo;
 	}
 	
+	//삭제한 행 1번 그리드로 가는 ajax
+	@PostMapping("getDeletedMatInfo")
+	@ResponseBody
+	public List<MatTestVO> getDeletedMatInfo(@RequestBody List<MatInVO> list) {
+		
+		return mis.getDeletedMatTest(list);
+	}
+	
 	//등록, 수정, 삭제
 	@PostMapping("matInDirSave")
 	@ResponseBody
 	public int matInDirSave(@RequestBody GridVO<MatInVO> data) {
 		return mis.modifyMatIn(data);
+	}
+	
+	//정산 페이지에서 matLot 조회
+	@GetMapping("getMatLotList")
+	@ResponseBody
+	public List<MatInVO> getMatLotList(@RequestParam(value="materialCode", required=false) String materialCode){
+		return mis.getMatLotModal(materialCode);
 	}
 }

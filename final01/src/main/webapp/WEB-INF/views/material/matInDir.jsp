@@ -36,6 +36,12 @@ h2{
 .yellow-background {
         background-color: rgb(255,253,235);
 }
+
+
+#grid {
+	height : 600px;
+}
+
 </style>    
        
 </head>
@@ -120,6 +126,7 @@ h2{
 	           	matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy-MM-dd"/>`,
 	           	empCode : "${mat.empCode}",
 	           	empName :"${mat.empName}",
+	           	useYn : "${mat.useYn}",
 	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy-MM-dd"/>`
 	           	},
 	           </c:forEach>
@@ -134,13 +141,11 @@ h2{
 		        perPage: 10
 		      },
 	        columns: [
-	        	 {
-	 	 	        header: '자재 LOT',
-	 	 	        name: 'matLot'
-	 	 	      },
+	        	 
 	 	 	      {
 	 	 	        header: '자재코드',
-	 	 	        name: 'matCode'
+	 	 	        name: 'matCode',
+	 	 	        hidden: true
 	 	 	      },
 	 	 	      {
 	 	 	        header: '자재명',
@@ -167,43 +172,67 @@ h2{
 	 	 	        header: '입고량',
 	 	 	        name: 'matInAmt'
 	 	 	      },
+		 		  {
+			 	 	header: '자재 LOT',
+			 	 	name: 'matLot',
+			 	 	width: 150
+			 	  },
 	 	 	      {
 		 	 	    header: '자재검수코드',
-		 	 	    name: 'matTestCode'
+		 	 	    name: 'matTestCode',
+			 	 	width: 150
 		 	 	  },
-	 	 	      {
-	 		 	    header: '담당자',
-	 		 	    name: 'empName'
-	 		 	  },
-	 		 	  {
-                      header: '담당자코드',            // [필수] 컬럼 이름
-                      name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
-                      hidden : true                   // [선택] 숨김 여부
-                  },
-	 		 	  {
-	 		 	    header: '입고일자',
-	 		 	    name: 'matInd',
-	 		 	    editor: {
-	 	  		      type: 'datePicker',
-	 	  		      options: {
-	 	  		    	  language: 'ko'
-	 	  		      }
-	 	  		    },
-	 	  		 	className: 'yellow-background'
-	 		 	  },
-	 		 	  {
-	 			 	header: '유통기한',
-	 			 	name: 'matExd',
-	 			 	editor: {
+		 	 	  {
+		 		 	    header: '입고일자',
+		 		 	    name: 'matInd',
+		 		 	    editor: {
 		 	  		      type: 'datePicker',
 		 	  		      options: {
 		 	  		    	  language: 'ko'
 		 	  		      }
-		 	  		},
-		 	  		className: 'yellow-background'
-	 			  }
+		 	  		    },
+		 	  		 	className: 'yellow-background'
+		 		 	},
+		 		 	{
+		 			 	header: '유통기한',
+		 			 	name: 'matExd',
+		 			 	editor: {
+			 	  		      type: 'datePicker',
+			 	  		      options: {
+			 	  		    	  language: 'ko'
+			 	  		      }
+			 	  		},
+			 	  		className: 'yellow-background'
+		 			},  
+	 	 	      	{
+	 		 	    	header: '담당자',
+	 		 	    	name: 'empName'
+	 		 	  	},
+                  	{
+                	  header: '사용여부',
+                	  name: 'useYn'
+                  	},
+	 		 	  	{
+                      header: '담당자코드',            // [필수] 컬럼 이름
+                      name: 'empCode',                 // [필수] 컬럼 매핑 이름 값
+                      hidden : true                   // [선택] 숨김 여부
+                  	}
+	 		 	  
 	        ]
 	      });  
+	
+	setDisabled();
+	
+	//비활성화
+	function setDisabled(){
+		$.each(inGrid.getData(), function(idx, obj){
+			
+			if(obj['matLot'] != null && (obj['useYn'] == '사용' || obj['useYn'] == '사용완료')){
+				inGrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+	
 	
 	
 	//test완료 목록 그리드
@@ -214,7 +243,7 @@ h2{
 		           	{
 		           	matTestCode : "${test.matTestCode}",
 		           	matOdDeCd : "${test.matOdDeCd}",
-		           	matInputAmt : "${test.matInputAmt}",
+		           	matAmt : "${test.matAmt}",
 		           	matCode : "${test.matCode}",
 		           	matName : "${test.matName}",
 		           	matUnit : "${test.matUnit}",
@@ -237,7 +266,7 @@ h2{
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		         useClient: true,
-		         perPage: 10
+		         perPage: 5
 		       },
 		       columns: [
 		    	  {
@@ -251,7 +280,7 @@ h2{
 		    	  },
 		 	      {
 		 	        header: '발주량',
-		 	        name: 'matInputAmt'
+		 	        name: 'matAmt'
 		 	      },
 		 	      {
 			 	        header: '자재코드',
@@ -306,7 +335,31 @@ h2{
 		     });
 	
 	 //삭제버튼
-	$('#delete').on("click",function(){
+	$('#delete').on("click", ev =>{
+		let checkList = inGrid.getCheckedRows();
+		
+		deleteList = [];
+		$.each(checkList, function(idx, obj){
+			deleteObj = {};
+			deleteObj['matTestCode'] = obj['matTestCode'];
+			deleteList.push(deleteObj);
+		})
+
+		$.ajax({
+			url : 'getDeletedMatInfo',
+			method : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(deleteList),
+			success : function(data){
+				testGrid.appendRows(data);
+				
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
+		
+		
 		//그리드에서 행 지움
 		inGrid.removeCheckedRows(false);
 		//마우스 커서 없앰
@@ -405,31 +458,31 @@ h2{
 					
 				})
 				inGrid.resetData(data2);
-			}
-		})
-	}
-	
-	//insert 후에는 1번 그리드도 내용이 업데이트 되어야 함
-	function resetTestList(){
-		$.ajax({
-			url : 'getMatTestInFilter',
-			method : 'GET',
-			data : search,
-			success : function(data2){
-				
-				$.each(data2, function(idx, obj){
-					
-					let date = new Date(obj['matTestDate']);
-					let year = date.getFullYear();    //0000년 가져오기
-					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-					let day = date.getDate();        //일자 가져오기
-					obj['matTestDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-	
+				setDisabled();
+				$.ajax({
+					url : 'getMatTestInFilter',
+					method : 'GET',
+					data : search,
+					success : function(data2){
+						
+						$.each(data2, function(idx, obj){
+							
+							let date = new Date(obj['matTestDate']);
+							let year = date.getFullYear();    //0000년 가져오기
+							let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+							let day = date.getDate();        //일자 가져오기
+							obj['matTestDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			
+						})
+						testGrid.resetData(data2);
+						
+					}
 				})
-				testGrid.resetData(data2);
 			}
 		})
 	}
+	
+	
 	
 	//거래처 검색 모달창
 	var Grid;

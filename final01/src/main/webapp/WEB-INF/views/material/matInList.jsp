@@ -270,12 +270,12 @@
 	           <c:forEach items="${inList}" var="mat">
 	           	{
 	           	matLot : "${mat.matLot}",
-	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
 	           	matUnit : "${mat.matUnit}",
 	           	matStd : "${mat.matStd}",
 	           	actName :"${mat.actName}",
 	           	matInAmt : "${mat.matInAmt}",
+	           	useYn : "${mat.useYn}",
 	           	empName : "${mat.empName}",
 	           	matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy-MM-dd"/>`,
 	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy-MM-dd"/>`
@@ -294,14 +294,7 @@
 	         perPage: 10
 	       },
 	       columns: [
-	 	      {
-	 	        header: '자재 LOT',
-	 	        name: 'matLot',
-	 	      },
-	 	      {
-	 	        header: '자재코드',
-	 	        name: 'matCode'
-	 	      },
+	 	     
 	 	      {
 	 	        header: '자재명',
 	 	        name: 'matName'
@@ -323,9 +316,10 @@
 	 	        name: 'matInAmt'
 	 	      },
 	 	      {
-		 	    header: '담당자',
-		 	    name: 'empName'
-		 	  },
+	 	        header: '자재 LOT',
+	 	        name: 'matLot',
+		 	 	width: 150
+	 	      },
 		 	  {
 		 	    header: '입고일자',
 		 	    name: 'matInd',
@@ -335,7 +329,15 @@
 			 	header: '유통기한',
 			 	name: 'matExd',
  	  		 	className: 'yellow-background'
-			  }
+			  },
+		 	  {
+		 		header: '사용여부',
+		 		name: 'useYn'
+		 	  },
+	 	      {
+		 	    header: '담당자',
+		 	    name: 'empName'
+		 	  }
 	 	    ]
 	      
 	     });

@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.calculator.service.MatCalService;
 import co.yedam.app.material.calculator.service.MatCalVO;
 import co.yedam.app.material.in.service.MatModalService;
@@ -46,7 +49,14 @@ public class MatCalController {
 	@GetMapping("matCalculateDir")
 	public String getMatCalDirPage(Model model) {
 		model.addAttribute("calList", mcs.getMatCalList());
-		
+		model.addAttribute("matList", mms.getMetList());
 		return "material/matCalculateDir";
+	}
+	
+	//insert
+	@PostMapping("matCalDirSave")
+	@ResponseBody
+	public int modifyMatCal(@RequestBody GridVO<MatCalVO> data) {
+		return mcs.modifyMatCal(data);
 	}
 }

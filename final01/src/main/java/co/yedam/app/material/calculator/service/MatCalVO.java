@@ -21,4 +21,8 @@ public class MatCalVO {
 	private String matStd;
 	private String matUnit;
 	private String empName;
+	
+	private String actCode;
+	private Date matExd;
+	
 }

@@ -211,14 +211,6 @@
 	 	        header: '출고량',
 	 	        name: 'semiOutAmt'
 	 	      },
-	 	      {
-	 	        header: '생산실적코드',
-	 	        name: 'prcsListCode'
-	 	      },
-	 	      {
-		 	    header: '담당자',
-		 	    name: 'empName'
-		 	  },
 		 	  {
 		 	    header: '출고일자',
 		 	    name: 'semiOutDate',
@@ -228,7 +220,15 @@
 			 	header: '유통기한',
 			 	name: 'semiExd',
 	 	  		className: 'yellow-background'
-			  }
+			  },
+	 	      {
+	 	        header: '생산실적코드',
+	 	        name: 'prcsListCode'
+	 	      },
+	 	      {
+		 	    header: '담당자',
+		 	    name: 'empName'
+		 	  }
 		 	 
 	 	    ]
 	      

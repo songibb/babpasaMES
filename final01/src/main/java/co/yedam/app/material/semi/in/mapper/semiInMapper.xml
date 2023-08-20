@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.semi.in.mapper.SemiInMapper">
 <!-- 전체조회 -->
 	<select id="selectSemiInList" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot semi_lot, semi_use_yn(semi_lot) use_yn, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -15,19 +15,19 @@
 	
 	<!-- 전체조회 검색 -->
 	<select id="selectSemiInSearch" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot semi_lot, semi_use_yn(semi_lot) use_yn,  a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_list_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
 		<where>
-			<if test="productCode != null and productCode != ''">
+			<if test="productCode != null and !productCode.equals('')">
 				AND a.prod_code LIKE '%' || #{productCode} || '%'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
@@ -52,11 +52,19 @@
 		ON(a.prod_code = c.prod_code)
 		WHERE b.prcs_list_code IS NULL
 		AND a.total_test_yn = 'Y'
-		ORDER BY prcs_list_code
+		ORDER BY a.test_date DESC
 	</select>
 	
+	<!-- 삭제 행 정보 -->
+	<select id="selectDeleteRowsInfo" resultType="SemiInVO">
+		SELECT a.prcs_list_code, a.prod_code, c.prod_name, a.test_amt, a.test_date
+		FROM prod_quality a
+		LEFT JOIN com_prod c
+		ON(a.prod_code = c.prod_code)
+		WHERE a.prcs_list_code = #{prcsListCode}
+	</select>
 	<!-- 등록 -->
-	<update id="insertSemiIn" parameterType="SemiInVO">
+	<insert id="insertSemiIn" parameterType="SemiInVO">
 			INSERT INTO semi_in (
 				SEMI_LOT,
 				PROD_CODE,
@@ -74,8 +82,17 @@
 				, #{empCode}
 				, #{prcsListCode}
 			)
+	</insert>
+	<update id="prcsIngStsUpdateAtSemiIn" parameterType="SemiInVO">
+		UPDATE prcs_ing
+		SET prcs_dir_ing_sts = 'S5'
+		WHERE prcs_dir_de_code = (SELECT prcs_dir_de_code
+								  FROM  prcs_list
+								  WHERE prcs_list_code = #{prcsListCode})
+		AND prcs_code = (SELECT prcs_code
+					     FROM  prcs_list
+						 WHERE prcs_list_code = #{prcsListCode})
 	</update>
-	
 	<!-- 수정 -->
 	<update id="updateSemiIn" parameterType="SemiInVO">
 			UPDATE semi_in

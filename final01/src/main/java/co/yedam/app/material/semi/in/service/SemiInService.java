@@ -15,7 +15,11 @@ public interface SemiInService {
 	//생산완료된 반제품 목록
 	public List<SemiInVO> selectTestFinishList();
 	
+	//삭제 행 정보
+	public List<SemiInVO> getDeletedRowsInfo(List<SemiInVO> list);
+	
 	//등록, 수정, 삭제
 	public int modifySemiIn(GridVO<SemiInVO> data);
+	
 	
 }

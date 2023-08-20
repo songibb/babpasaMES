@@ -338,7 +338,8 @@ function resetInput(e){
 	 	      },
 	 	      {
 	 	        header: '자재코드',
-	 	        name: 'matCode'
+	 	        name: 'matCode',
+	 	        hidden: true
 	 	      },
 	 	      {
 	 	        header: '자재명',
@@ -360,14 +361,6 @@ function resetInput(e){
 	 	        header: '출고량',
 	 	        name: 'matOutAmt'
 	 	      },
-	 	      {
-		 	    header: '생산 상세지시코드',
-		 	    name: 'prcsDirDeCode'
-		 	  },
-	 	      {
-		 	    header: '담당자',
-		 	    name: 'empName'
-		 	  },
 		 	  {
 		 	    header: '출고일자',
 		 	    name: 'matOutd',
@@ -377,7 +370,15 @@ function resetInput(e){
 			 	header: '유통기한',
 			 	name: 'matExd',
  	  		 	className: 'yellow-background'
-			  }
+			  },
+	 	      {
+		 	    header: '생산 상세지시코드',
+		 	    name: 'prcsDirDeCode'
+		 	  },
+	 	      {
+		 	    header: '담당자',
+		 	    name: 'empName'
+		 	  }
 	 	    ]
 	      
 	     });
