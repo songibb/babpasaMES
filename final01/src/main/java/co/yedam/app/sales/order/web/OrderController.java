@@ -62,4 +62,10 @@ public class OrderController {
 		return orderService.modifyOrder(data);
 	}
 	
+	//거래처 목록 모달 ajax(검색용)
+	@GetMapping("getActModalSearch")
+	@ResponseBody
+	public List<OrderVO> getActModalSearch(String actName){
+		return orderService.actSearchList(actName);
+	}
 }

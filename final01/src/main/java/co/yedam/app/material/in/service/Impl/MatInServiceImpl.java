@@ -11,6 +11,7 @@ import co.yedam.app.material.in.mapper.MatInMapper;
 import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.rt.service.MatTestVO;
+import co.yedam.app.material.search.service.SearchVO;
 
 @Service
 public class MatInServiceImpl implements MatInService {
@@ -27,15 +28,15 @@ public class MatInServiceImpl implements MatInService {
 	
 	//조회페이지에서 검색
 	@Override
-	public List<MatInVO> selectMatInSearch(String materialCode, String accountCode, String startDate, String endDate) {
-		// TODO Auto-generated method stub
-		return mim.selectMatInSearch(materialCode, accountCode, startDate, endDate);
+	public List<MatInVO> selectMatInSearch(SearchVO vo) {
+		
+		return mim.selectMatInSearch(vo);
 	}
 	
 	//검수됐지만 입고안 된 자재들 목록
 	@Override
 	public List<MatTestVO> selectMatTestFinishList() {
-		// TODO Auto-generated method stub
+		
 		return mim.selectMatTestFinishList();
 	}
 	
@@ -43,7 +44,7 @@ public class MatInServiceImpl implements MatInService {
 	@Override
 	public int modifyMatIn(GridVO<MatInVO> data) {
 		int result = 0;
-		// TODO Auto-generated method stub
+		
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 			for(MatInVO vo : data.getDeletedRows()) {
 				result += mim.deleteMatIn(vo);				

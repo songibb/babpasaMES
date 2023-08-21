@@ -6,11 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.rt.service.MatTestVO;
+import co.yedam.app.material.search.service.SearchVO;
 
 public interface MatInMapper {
 	//자재 입고 조회
 	public List<MatInVO> selectMatInList();
-	public List<MatInVO> selectMatInSearch(@Param("materialCode")String materialCode, @Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
+	public List<MatInVO> selectMatInSearch(SearchVO vo);
 	
 	//검수됐지만 입고안 된 자재들 목록
 	public List<MatTestVO> selectMatTestFinishList();

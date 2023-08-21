@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import co.yedam.app.material.order.de.service.MatOrderDeVO;
+
 import co.yedam.app.sales.order.service.OrderVO;
 
 public interface OrderMapper {
@@ -17,6 +17,8 @@ public interface OrderMapper {
 			, @Param("endDate")String endDate);
 	//거래처 목록
 	public List<OrderVO> selectActAllList();
+	//거래처 목록 검색
+	public List<OrderVO> selectActSearchList(String actName);
 	//제품목록
 	public List<OrderVO> selectProdAllList();
 	//주문 관리 - 미계획 주문 목록

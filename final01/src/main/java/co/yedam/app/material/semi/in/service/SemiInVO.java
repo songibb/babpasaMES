@@ -17,7 +17,7 @@ public class SemiInVO {
 	
 	//관리페이지
 	private String empCode;
-	private String prcsListCode;
+	private String prcsIngCode;
 	
 	//검수완료된 반제품 목록
 	private String testAmt;

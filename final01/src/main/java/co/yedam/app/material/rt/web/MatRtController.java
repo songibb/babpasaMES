@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
@@ -16,6 +15,7 @@ import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatRtVO;
 import co.yedam.app.material.rt.service.MatTestVO;
+import co.yedam.app.material.search.service.SearchVO;
 import co.yedam.app.sales.order.service.OrderService;
 
 @Controller
@@ -45,9 +45,9 @@ public class MatRtController {
 	//검색 ajax
 	@GetMapping("getMatRtFilter")
 	@ResponseBody
-	public List<MatRtVO> getMatRtFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
-		List<MatRtVO> vo = mrs.selectMatRtSearch(materialCode, accountCode, startDate, endDate);
-		return vo;
+	public List<MatRtVO> getMatRtFilter(SearchVO vo) {
+		List<MatRtVO> findVO = mrs.selectMatRtSearch(vo);
+		return findVO;
 	}
 	
 	//삭제한 행 1번 그리드로 가는 ajax

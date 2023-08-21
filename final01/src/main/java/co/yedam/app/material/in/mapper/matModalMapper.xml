@@ -8,4 +8,14 @@
 		FROM com_mat
 		ORDER BY mat_code
 	</select>
+	
+	<!-- 모달검색 -->
+	<select id="selectModalSearch" resultType="MatModalVO">
+		SELECT mat_code, mat_name, mat_unit, mat_std
+		FROM com_mat
+		<if test="matName != null and !matName.equals('')">
+		WHERE mat_name LIKE '%' || #{matName} || '%'
+		</if>
+		ORDER BY mat_code
+	</select>
 </mapper>

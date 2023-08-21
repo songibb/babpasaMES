@@ -28,4 +28,5 @@ public class MatInVO {
 	private Integer matStock;
 	
 	private String useYn;
+	private Integer bomAmt;
 }

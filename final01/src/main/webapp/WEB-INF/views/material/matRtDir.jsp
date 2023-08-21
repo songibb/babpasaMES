@@ -32,6 +32,26 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	.modal_content{
+	  /*모달창 크기 조절*/
+	  width:600px; height:700px;
+	  background:#fff; border-radius:10px;
+	  /*모달창 위치 조절*/
+	  position:relative; top:33%; left:45%;
+	  margin-top:-100px; margin-left:-200px;
+	  text-align:center;
+	  box-sizing:border-box;
+	  line-height:23px;
+	}
+	
+	.m_body > p{
+		display : inline-block;
+	}
+	
+	.m_body > input{
+		border : 1px solid black;
+	}
 </style>    
        
 </head>
@@ -62,6 +82,11 @@
                 				<br>
                 				<p>반품요청일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                				<br>
+                				<p>반품여부</p>
+                				<label for="before"><input type="checkbox" id="before" value="R4">반품중</label>
+                				<label for="ing"><input type="checkbox" id="ing" value="R5">반품완료</label>
+                				<label for="after"><input type="checkbox" id="after" value="R6">반품실패</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -89,6 +114,9 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
@@ -178,7 +206,13 @@
 		 	  },
 		 	  {
 		 	    header: '반품수량',
-		 	    name: 'matRtAmt'
+		 	    name: 'matRtAmt',
+	 	       	formatter(e) { 
+ 	 	        	if(e['value'] != null){
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	        }
 		 	  },
 			  {
 		 	    header: '검사일자',
@@ -278,7 +312,11 @@
 		    	  },
 		 	      {
 		 	        header: '발주량',
-		 	        name: 'matAmt'
+		 	        name: 'matAmt',
+		 	       	formatter(e) { 
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		 	           	return val;
+		 	        }
 		 	      },
 		 	      {
 			 	        header: '자재코드',
@@ -308,11 +346,19 @@
 			 	  },
 		 	      {
 		 	        header: '합격량',
-		 	        name: 'matYamt'
+		 	        name: 'matYamt',
+		 	       	formatter(e) { 
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		 	           	return val;
+		 	        }
 		 	      },
 		 	      {
 		 	        header: '불합격량',
-		 	        name: 'matNamt'
+		 	        name: 'matNamt',
+		 	       	formatter(e) { 
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		 	           	return val;
+		 	        }
 		 	      },
 		 	      {
 		 	    	  header : '불량코드',
@@ -443,8 +489,14 @@
 		let act = $('#actCodeInput').val();
 		let sd = $('#startDate').val();
 		let ed = $('#endDate').val();
-		   
-		let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+		
+		var checkboxList = [];
+		   let checkedList = $('input[type="checkbox"]:checked');
+		   $.each(checkedList, function(idx, obj){
+			   checkboxList.push(obj.value);
+		   })
+			  
+		   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, checkList : checkboxList };
 		$.ajax({
 			url : 'getMatRtFilter',
 			method : 'GET',
@@ -500,6 +552,7 @@
 	$("#actModal").on('click', event =>{
 			
 		$(".modal").fadeIn();
+		preventScroll();
 		Grid = createActGrid();
 		$('.modal_title h3').text('거래처 목록');
 		Grid.on('dblclick', event2 => {
@@ -518,6 +571,8 @@
 		    //선택시 모달창 닫기
 		    if(rowKey != null){
 		    	$(".modal").fadeOut();
+		    	activeScroll();
+		    	let inputContent = $('#modalSearch').val('');
 		        Grid.destroy();
 		    }
 
@@ -573,9 +628,10 @@
   	   return actGrid;
     }
 	
-	//자재 검색 모달창
+	//자재 모달창
 	$("#matModal").click(function(){
 		$(".modal").fadeIn();
+		preventScroll();
 		Grid = createMatGrid();
 		$('.modal_title h3').text('자재 목록');
 		Grid.on('dblclick', () => {
@@ -589,6 +645,8 @@
 		   	//선택시 모달창 닫기
 		   	if(rowKey != null){
 				$(".modal").fadeOut();
+				activeScroll();
+				let inputContent = $('#modalSearch').val('');
 		    	Grid.destroy();
 		   	}
 		});
@@ -641,12 +699,50 @@
 	     });
 	   
 	   return matGrid;
-  }
+  	}
+	
+	
+	//모달 검색
+	$('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '자재 목록'){
+				let modalSearchData = {matName : inputContent}
+				$.ajax({
+					url : 'getMatModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			} else if(title == '거래처 목록'){
+				let modalSearchData = {actName : inputContent}
+				$.ajax({
+					url : 'getActModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
+	
 	
 	//모달창 닫기버튼
 	$(".close_btn").click(function(){
     	$(".modal").fadeOut();
-         
+    	activeScroll();
+    	let inputContent = $('#modalSearch').val('');
   		Grid.destroy();
   	});
 	
@@ -724,6 +820,31 @@
     	
     	
   	});
+    
+ 	//스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
+   
+ //이전 날짜 선택불가
+   $( '#startDate' ).on( 'change', function() {
+     $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+   } );
+  //이후날짜 선택불가
+   $( '#endDate' ).on( 'change', function() {
+        $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+      } );
     
   
 	
