@@ -96,6 +96,15 @@ public class BomCodeServiceImpl implements BomCodeService {
 		return result;
 	}
 
+	
+	
+	//chart test
+	@Override
+	public List<BomCodeVO> chartTest() {
+		
+		return bomCodeMapper.chartTest();
+	}
+
 
 
 }

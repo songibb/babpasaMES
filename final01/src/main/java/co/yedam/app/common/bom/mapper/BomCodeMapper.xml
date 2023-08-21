@@ -28,7 +28,7 @@
 						b.bom_udate,
 						b.bom_yn,
 						b.bom_prcs_yn,
-						find_cdnm('0J', act_sts) AS bom_prcs_yn_name,
+						find_cdnm('0W', bom_prcs_yn) AS bom_prcs_yn_name,
 						c.prod_name
 				 FROM  bom_header b 
 				 join  com_prod c
@@ -132,6 +132,16 @@
   		DELETE FROM bom_detail
   		WHERE bom_code = #{bomCode}
   	</delete>
+  	
+  	
+  	<!-- 차트 test -->
+  	<select id="chartTest" resultType="BomCodeVO">
+  		select  bom_code,
+  				bom_amt
+  		from 	bom_detail
+  		where 	bom_amt >10
+  		order by bom_code
+  	</select>
   	
   	
   </mapper>

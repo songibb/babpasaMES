@@ -18,6 +18,7 @@ import co.yedam.app.common.bom.service.BomReqVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.mat.service.MatCodeService;
 import co.yedam.app.common.product.service.ProductCodeService;
+import co.yedam.app.common.product.service.ProductCodeVO;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 //2023/08/21/김상희
 //BOM관리
@@ -98,7 +99,6 @@ public class BomCodeController {
 	public int bomDeDelete(@RequestBody List<BomCodeVO> list){
 		return bomCodeService.deleteDeBom(list);
 	}
-	
 	
 	
 	

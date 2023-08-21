@@ -45,26 +45,26 @@
 	  		SELECT 'PROD-' || LPAD((NVL(MAX(SUBSTR(prod_code, -4)),0)+1),4,'0')
 	  		FROM com_prod
 	  	</selectKey>
-	  	INSERT INTO com_prod
-	  						(
-	  						 prod_code
-							,prod_kind
-							,prod_name
-							,prod_unit
-							<if test="prodStd != null and prodStd != ''">
-							,prod_std
-							</if>
-	  						)
-	  		VALUES
-	  				(
-	  				#{prodCode}
-	  				,#{prodKind}
-	  				,#{prodName}
-	  				,#{prodUnit}
-	  				<if test="prodStd != null and prodStd != ''">
-	  				,#{prodStd}
-	  				</if>
-	  				)
+		  	INSERT INTO com_prod
+		  						(
+		  						 prod_code
+								,prod_kind
+								,prod_name
+								,prod_unit
+								<if test="prodStd != null and prodStd != ''">
+								,prod_std
+								</if>
+		  						)
+		  		VALUES
+		  				(
+		  				#{prodCode}
+		  				,#{prodKind}
+		  				,#{prodName}
+		  				,#{prodUnit}
+		  				<if test="prodStd != null and prodStd != ''">
+		  				,#{prodStd}
+		  				</if>
+		  				)
 	  </insert>
 	  
 	  <update id="updateProdInfo"  parameterType="ProductCodeVO">
@@ -82,4 +82,21 @@
 	  		DELETE FROM com_prod
 	  		WHERE prod_code = #{prodCode}
 	  </delete>
+	  
+	  
+	  <!-- BOM 등록안된제품가져오기 -->
+	  <select id="bomNoProdList" resultType="ProductCodeVO">
+		 		SELECT  prod_code,
+						prod_kind,
+						find_cdnm('0E', prod_kind) AS kindName,
+						prod_name,
+						prod_unit,
+						prod_std
+				FROM com_prod
+	            WHERE prod_code not 
+	            					IN(SELECT prod_code
+	                                    FROM bom_header
+	                                   )
+				ORDER BY prod_code
+		</select>
   </mapper>

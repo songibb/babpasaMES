@@ -107,22 +107,23 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
+				<div style="display: flex; justify-content: space-between;">
 					<form>
-						<!-- <div id="customtemplateSearchAndButton">	 -->
-
 							제품명 <input type="text" placeholder="검색어를 입력하세요" id="bomSearch">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-		            	<!-- </div> -->
-	            	</form>
-	            	<div>
+					</form>
+					<button id="prodListModal" class="btn btn-info btn-icon-text">BOM 등록 가능 제품 가져오기</button>	
+		 	    </div>
+					<div>
 	            		<br>
 	            		<div style="display: flex; justify-content: space-between;">
 		            	<h5>제품bom등록</h5>
 		            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
 			           		<!-- <button id = "deDelete" class="btn btn-info btn-icon-text" >상세삭제</button> -->
+			           	
 		           		</div>
 		           		<div id="bomgrid"></div>
 		           		
@@ -260,7 +261,7 @@
 		//빈데이터 확인
 		$.each(list, function(i, obj){
 			for(let field in obj){
-					if(field != 'bomNo' && obj[field] == null){
+					if(field != 'bomNo' && field != 'bomPrcsYnName' && obj[field] == null){
 						flag = false;
 					}
 			}
@@ -346,7 +347,6 @@
 		 						bomgrid.appendRow();
 		 						deBomgrid.clear()
 								deBomgrid.appendRow();
-
 								alert('등록이 완료되었습니다.');
 							},
 							error : function(reject){
@@ -417,8 +417,7 @@
             },
           {
               header: '제품명',
-              name: 'prodName',
-              editor: 'text'
+              name: 'prodName'
             },
           {
             header: '사용여부',
@@ -440,10 +439,7 @@
           },
           {
             header: '공정사용여부',
-            name: 'bomPrcsYn',
-            formatter: 'listItemText',
-                         text: '${p.commdeName }',
-                         value: '${p.commdeCode }'
+            name: 'bomPrcsYnName'
           }
     
         ]
@@ -516,7 +512,7 @@
         ]
       });
 	
-	var Grid;
+/* 	var Grid;
 	bomgrid.on('dblclick' ,() => {
 		let rowKey = bomgrid.getFocusedCell().rowKey;
     	let columnName = bomgrid.getFocusedCell().columnName;
@@ -549,14 +545,58 @@
   	    	 
   	       });
     	}
+	}); */
+	
+	var Grid;
+	$("#prodListModal").click(function(){
+		
+    	
+    		$(".modal").fadeIn();
+  	       Grid = createProdGrid();
+  	       
+  	       Grid.on('dblclick', () => {
+  	    		 bomgrid.clear();
+				bomgrid.appendRow();
+				deBomgrid.clear()
+				deBomgrid.appendRow();
+  	    	 let rowKey2 = Grid.getFocusedCell().rowKey;
+  	    	 if(rowKey2 != null){
+  	    		let prodCode = Grid.getValue(rowKey2, 'prodCode');
+ 	        	let prodName = Grid.getValue(rowKey2, 'prodName');
+ 	        	bomgrid.setValue([0],'prodCode', prodCode);
+	        	bomgrid.setValue([0], 'prodName', prodName); 	        	
+ 	        	if(prodCode != null && prodName != null){
+ 	        		
+ 	        		$(".modal").fadeOut();
+	        		Grid.destroy();
+	        		
+ 	        	}
+  	    	 }
+  	    	 
+  	    	 
+  	    	 
+  	    	 
+  	       });
+    	
 	});
 	
 	function createProdGrid(){
 		
+			$.ajax({
+				url:"ajaxNoBOMList",
+				method:"GET",
+				success : function(result){
+			           Grid.resetData(result);
+			       },
+			       error : function(reject){
+						console.log(reject);
+				   }
+			})
+		
 		var pordGrid = new tui.Grid({
 			el: document.getElementById('modal_label'),
 		       data: [
-		    	   <c:forEach items="${prodList}" var="p" varStatus="status">
+		    	   <c:forEach items="${prodNoBomList}" var="p" varStatus="status">
 		          	{
 		          		prodCode : "${p.prodCode}",
 		          		prodName :"${p.prodName}",
