@@ -26,4 +26,10 @@ public interface BomCodeService {
 	
 	//bom 상세 삭제
 	public int deleteDeBom(List<BomCodeVO> list);
+	
+	
+	
+	
+	//chart test
+	public List<BomCodeVO> chartTest();
 }

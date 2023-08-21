@@ -33,6 +33,11 @@ public interface BomCodeMapper {
 	
 	//bom 상세 삭제
 	public int deleteDeBom(@Param("bomCode") BomCodeVO bomCode);
+	
+	
+	
+	//chart test
+	public List<BomCodeVO> chartTest();
 
 	
 }

@@ -23,6 +23,7 @@
             </a>
             <div class="collapse" id="ui-basic">
               	<ul class="nav flex-column sub-menu">
+              		<li class="nav-item"> <a class="nav-link" href="mainPage">메인</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="empinfo">사원 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">사원 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">공통 코드 조회</a></li>
