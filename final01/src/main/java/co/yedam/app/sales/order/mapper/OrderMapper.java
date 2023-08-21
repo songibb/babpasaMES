@@ -22,11 +22,13 @@ public interface OrderMapper {
 	//주문 관리 - 미계획 주문 목록
 	public List<OrderVO> selectAllNoPlanList();
 	//등록
-	public int insertOrder(@Param("data") OrderVO data);
+	public int insertOrder(OrderVO vo);
+	public int insertOrderDe(OrderVO vo);
 	
 	//수정
-	public int updateOrder(@Param("data") OrderVO data);
+	public int updateOrder(OrderVO vo);
 	
 	//삭제
-	public int deleteOrder(@Param("data") OrderVO data);
+	public int deleteOrder(OrderVO vo);
+	public int deleteOrderDe(OrderVO vo);
 }
