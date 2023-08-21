@@ -638,7 +638,7 @@ input[type="date"]{
 		if(orderGrid.getModifiedRows().updatedRows.length > 0 ){
 
 				$.each(orderGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == ""){
+					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['devDate'] == "" ){
 						flag = false;
 						return false;
 					}
