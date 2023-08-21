@@ -12,34 +12,34 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	
-	<context:property-placeholder location="classpath:config/db.properties"/>
+<!-- 	<context:property-placeholder location="classpath:config/db.properties"/> -->
 
 
  	<!-- 환경변수를 저장 -->  
-<!-- 	<bean id="environmentVariablesConfiguration" -->
-<!--      	class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig"> -->
- <!--  		알고리즘 value는 굳이 변경하지 않아도됨  -->
-<!--    		<property name="algorithm" value="PBEWithMD5AndDES" /> 		 -->
- <!--    		알고리즘을 유니크하게 만들기 위해 만드는 Key 값 => 프로젝트내의 그 어떤 파일에도 존재하면 안되고, 온라인에 오픈해서도 안됨 -->
-<!--    		<property name="password" value="${jasypt.encryptor.password}" /> -->
-<!--  	</bean> -->
+	<bean id="environmentVariablesConfiguration"
+     	class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+<!--   		알고리즘 value는 굳이 변경하지 않아도됨  -->
+   		<property name="algorithm" value="PBEWithMD5AndDES" /> 		
+<!--     		알고리즘을 유니크하게 만들기 위해 만드는 Key 값 => 프로젝트내의 그 어떤 파일에도 존재하면 안되고, 온라인에 오픈해서도 안됨 -->
+   		<property name="password" value="${jasypt.encryptor.password}" />
+ 	</bean>
 	
   	<!-- 암호화 작업 -->
-<!-- 	<bean id="configurationEncryptor" -->
-<!--      	class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor"> -->
-<!--   	 	<property name="config" ref="environmentVariablesConfiguration" /> -->
-<!--  	</bean> -->
+	<bean id="configurationEncryptor"
+     	class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+  	 	<property name="config" ref="environmentVariablesConfiguration" />
+ 	</bean>
 
 	<!-- Properties 파일을 읽어서 해석 -->
-<!-- 	<bean id="propertyConfigurer" -->
-<!--      class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer"> -->
-<!--    		<constructor-arg ref="configurationEncryptor" /> -->
-<!--    		<property name="locations"> -->
-<!-- 			<list> -->
-<!-- 			  <value>classpath:config/db.properties</value> -->
-<!-- 			</list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+	<bean id="propertyConfigurer"
+     class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+   		<constructor-arg ref="configurationEncryptor" />
+   		<property name="locations">
+			<list>
+			  <value>classpath:config/db.properties</value>
+			</list>
+		</property>
+	</bean>
 
 
 	
