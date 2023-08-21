@@ -19,6 +19,7 @@ public class BomCodeVO {
 	private String prodName;
 	private String prcsName;
 	private String matName;
+	private String bomPrcsYnName;
 	
 
 	//bom상세 관리 기능

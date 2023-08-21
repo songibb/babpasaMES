@@ -17,6 +17,8 @@ import co.yedam.app.common.act.service.ActCodeVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
+// 2023/08/21/김상희
+// 거래처관리
 
 @Controller
 public class ActCodeController {
@@ -50,8 +52,8 @@ public class ActCodeController {
 	@GetMapping("/actCodeAdmin")
 	public String actCodeAdmin(Model model) {
 		model.addAttribute("empList", empInfoService.selectEmpInfoList());
-		model.addAttribute("actTypeList", commCodeService.selectActTypeList());
-		model.addAttribute("actStsList", commCodeService.selectActStsList());
+		model.addAttribute("actTypeList", commCodeService.searchCommCodeUse("ACT-TYPE"));
+		model.addAttribute("actStsList", commCodeService.searchCommCodeUse("0J"));
 		return "admincom/actCodeAdmin";
 	}
 	

@@ -107,30 +107,33 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
-				<div class="table-responsive pt-3">
-
 					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>제품명</p>
-							<input type="text" placeholder="검색어를 입력하세요" id="bomSearch" ">
+						<!-- <div id="customtemplateSearchAndButton">	 -->
+
+							제품명 <input type="text" placeholder="검색어를 입력하세요" id="bomSearch">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
+		            	<!-- </div> -->
 	            	</form>
-	            	</div>
-	            	<h3> 제품bom등록 </h3>
-	            	<button id = "deSave" class="btn btn-info btn-icon-text">상세저장</button>
-		           		<button id = "deDelete" class="btn btn-info btn-icon-text" >상세삭제</button>
-		           		<button id = "deAdd" class="btn btn-info btn-icon-text">추가</button>
-	           		<div id="bomgrid"></div>
-	           		
-	           		<br>
-	           		<div>
-		           		<h3> bom상세등록 </h3>
+	            	<div>
+	            		<br>
+	            		<div style="display: flex; justify-content: space-between;">
+		            	<h5>제품bom등록</h5>
+		            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
+			           		<!-- <button id = "deDelete" class="btn btn-info btn-icon-text" >상세삭제</button> -->
+		           		</div>
+		           		<div id="bomgrid"></div>
 		           		
-		           		<div id="deBomgrid"></div>
+		           		<br>
+		           		<div>
+		           			<div style="display: flex; flex; justify-content: space-between;">
+			           		<h5> bom상세등록 </h5>
+			           		<button id = "deAdd" class="btn btn-info btn-icon-text" style="float: right">상세추가</button>
+			           		</div>
+			           		<div id="deBomgrid"></div>
+						</div>
 					</div>
 	   		</div>
 		</div>
@@ -159,6 +162,7 @@
 
     
 	<script>
+	
 	//페이지 호출할떄 BOM등록하는 창 호출
 	window.onload = function addRow(){
 		bomgrid.appendRow();
@@ -172,15 +176,15 @@
 	}
 	
 	//상세 BOM행삭제
-	document.getElementById('deDelete').addEventListener('click', deleteDeBom);
+/* 	document.getElementById('deDelete').addEventListener('click', deleteDeBom);
 	function deleteDeBom(){
 		deBomgrid.removeCheckedRows(false);
-	}
+	} */
 	
 	//저장 버튼 클릭시 insert 진행
 	document.getElementById('deSave').addEventListener('click', saveServer);
 	
-	//저장 버튼 클릭 진행(insert만 진행)
+	
 	function saveServer(){
 		//BOM
 		let rowKey = bomgrid.getFocusedCell().rowKey;
@@ -205,117 +209,82 @@
 			
 		}
 		
-		
 		let flagIn = true;
 		
 		let noData = false;
 		
 		$.each(bomInfo, function(field, array){
-			
 			if(field == 'upDateRows' && array.length != 0){
 				
 				$.each(array, function(i, obj){
 					for(let field in obj){
-						if(field == null){
+						if(obj[field] == null){
 							flagIn = false;
 						}
 					}
 				})
-				if(flagIn){
-					
-					bomUpdate();
-				}else{
-					swal("수정할 값이 입력되지 않았습니다.","","warning");
-					if(noData == false){
-						swal("수정할 값이 입력되지 않았습니다.","","warning");
-						noData = true;
-					}
-				}
+				
 			}
 		})
 		
 		$.each(bomDeInfo, function(deField, deArray){
-			if(bNoValue != null && deField == 'updatedRows' && deArray.length != 0){
+			if( deField == 'updatedRows' && deArray.length != 0){
 				$.each(deArray, function(i,obj2){
 					
 						for(let field in obj2){
-							if( field = ''&&field == null ){
+							if( field = ''&& obj2[field] == null ){
 								flagIn = false;
 							}
 						}
 				})
 				
-				if(flagIn){
-					bomDeUpdate();
-				}else{
-					if(noData == false){
-						swal("수정할 값이 입력되지 않았습니다.","","warning");
-						flagIn= false;
-					}
-				}
-			}else if(deField == 'deleteRows' && deArray.length != 0){
-				let bomDeCodeList = [];
-				$.each(deArray, function(i, obj2){
-					let bomCode = array[i]['bomCode'];
-					bomDeCodeList.push(bomCode);
-					
-				})
-				 console.log(bomDeCodeList);
-				$.ajax({
-					url : 'bomDeDelete',
-					method : 'POST',
-					data : JSON.stringify(bomCodeList),
-					contentType : 'application/json',
-					success : function(data){	
-						//상세생산계획 그리드 지우기
-						deBomgrid.clear();
-						alert(data + "건 삭제가 완료되었습니다.");
-					},
-					error : function(reject){
-			 			console.log(reject);
-			 		}	
-				})
-				
 			}
-		})		
+		})	
+		if(flagIn){
+			
+			bomUpdate();
+		}else{
+			swal("수정값이 모두 입력되지 않았습니다.","","warning");
+		}
+	
 	};
 		
-	
+	//등록 함수
 	function bomInsert(){
 		
-		let falg= true;
+		let flag= true;
 		
 		let list = bomgrid.getData();
 		let object = list[0];
-		
-		
+
 		//빈데이터 확인
 		$.each(list, function(i, obj){
 			for(let field in obj){
-					if(field != 'bomNo' && obj[field == null]){
-						falg = false;
-					}
-				}
-			})
-			
-/* 			let deList = deBomgrid.getData();
-		
-			$.each(deList, function(i, objDe){
-				deList[i]['bomNo'] = data;
-				
-				for(let field in objDe){
-					if(field != 'bomCode' && objDe[field] == null){
-					
+					if(field != 'bomNo' && obj[field] == null){
 						flag = false;
 					}
+			}
+		})
+		
+		
+		let deList = deBomgrid.getData();
+						
+		$.each(deList, function(i, objDe){
+			
+			for(let field in objDe){
+				if(field != 'bomCode' && field != 'bomNo' && objDe[field] == null){
+					flag = false;
 				}
-			})
+			}
+		})
 			
 			if (flag) {
+				
 				let bomInsertList = {
-			            bomList: list,
-			            deBomList: deList
-			        };
+					bomCodeVO: object,
+					bomList: deList
+		        };
+					
 				$.ajax({
 		            url: 'bomInsert',
 		            method: 'POST',
@@ -328,15 +297,18 @@
 		 				deBomgrid.clear()
 						deBomgrid.appendRow();
 
-		                alert('등록이 완료되었습니다.');
+		                swal("등록이 완료되었습니다.","","success");
 		            },
 		            error: function(reject) {
 		                console.log(reject);
 		            }
 		        });
 			}else{
-				alert('모든 값이 입력되지 않았습니다.');
-			} */
+
+				swal("모든 값이 입력되지 않았습니다.","","warning");
+
+				
+			} 
 			
 			
 			if(falg){
@@ -389,22 +361,29 @@
 			}else{
 				alert('모든 값이 입력되지 않았습니다.');
 			} 
-		
+
 	}
 	
-	
+	//수정 함수
 	function bomUpdate(){
 		let updateOk = 0;
-		
 		let list = bomgrid.getData();
+		let deList = deBomgrid.getData();
+		
+		let bomUpdateList = {
+				bomUpList: list,
+				bomUpDeList: deList
+	        };
 		
 		$.ajax({
 			url : 'bomUpdate',
 			method : 'POST',
-			data : JSON.stringify(list),
+			data : JSON.stringify(bomUpdateList),
 			contentType : 'application/json',
 			success : function(data){	
-				updateOk = updateOk + data;
+				if(data>1){
+					swal("수정이 완료되었습니다.","","success");
+				}
 				deBomgrid.clear();
 				deBomgrid.appendRow();
 			},
@@ -413,35 +392,8 @@
 	 		}
 		})
 		
-		if(updateOk >0){
-			swal("수정이 완료되었습니다.","","success");
-		}
 	}
 	
-	function bomDeUpdate(){
-		let updateOk = 0;
-		
-		let deList = deBomgrid.getData();
-		
-		$.ajax({
-			url : 'bomDeUpdate',
-			method : 'POST',
-			data : JSON.stringify(deList),
-			contentType : 'application/json',
-			success : function(data){
-				updateOk = updateOk + data;
-				deBomgrid.clear();
-				deBomgrid.appendRow();
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-		
-		if(updateOk >0){
-			swal("수정이 완료되었습니다.","","success");
-		}
-		}
 	
 	var bomgrid = new tui.Grid({
         el: document.getElementById('bomgrid'),
@@ -449,6 +401,11 @@
         scrollY: false,
         minBodyHeight: 30,
 		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 3,
+		},
         columns: [
           {
             header: 'NO',
@@ -485,20 +442,10 @@
             header: '공정사용여부',
             name: 'bomPrcsYn',
             formatter: 'listItemText',
-            editor: {
-                type: 'select',
-                options: {
-                  listItems: [
-                	<c:forEach items="${bomPrcsUseList}" var="p">
-                	 {
                          text: '${p.commdeName }',
                          value: '${p.commdeCode }'
-                       }, 
-					</c:forEach>
-                  ]
-                }
-              } 
           }
+    
         ]
       });
 	
@@ -509,7 +456,7 @@
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
-        rowHeaders: ['rowNum', 'checkbox'],
+        rowHeaders: ['rowNum'],
         columns: [
           {
             header: 'NO',
@@ -699,11 +646,7 @@
   	       matGrid = createMatGrid();
   	       halfProdGrid = createHalfProdGrid();
   	      
-  	  	   
-
-  	 		var matGrid;
-  	 		var halfProdGrid; 
-  	 		
+  	
   	     	matGrid.on('dblclick', () => {
   	     		let rowKey2 = matGrid.getFocusedCell().rowKey;
   	    	 if(rowKey2 != null){
@@ -810,10 +753,10 @@
 		return prcsGrid
 	}
 	
-	
+	var matGrid2;
 	// 자재 반제품 가져오는 그리드
 	function createMatGrid(){
-		var matGrid = new tui.Grid({
+		var matGrid2 = new tui.Grid({
 			el: document.getElementById('modal_label3'),
 		       data: [
 		    	   <c:forEach items="${matList}" var="m" varStatus="status">
@@ -858,12 +801,13 @@
 		     });
 		
 		
-		return matGrid
+		return matGrid2
 		
 	}
 	
+	var halfProdGrid3;
 	function createHalfProdGrid(){
-		var halfProdGrid = new tui.Grid({
+		var halfProdGrid3 = new tui.Grid({
 			el: document.getElementById('modal_label2'),
 		       data: [
 		    	   <c:forEach items="${semiProdList}" var="m" varStatus="status">
@@ -903,7 +847,7 @@
 		     });
 		
 		
-		return halfProdGrid
+		return halfProdGrid3
 	}
 	
 	
@@ -912,9 +856,15 @@
 	
 	$(".close_btn").click(function(){
         $(".modal").fadeOut();
-         
-  		Grid.destroy();
-  		
+        try {
+        	Grid.destroy();
+       } catch {}
+        try{
+        	matGrid.destroy();
+	  		halfProdGrid.destroy();
+        }catch {}
+	  	
+     
      });
 	
 	

@@ -36,21 +36,6 @@
 				ORDER BY comm_code
   	</select>
   	
-  	<!-- 공통코드 사용여부 조회 -->
-  	<select id="selectCommUseInfo" resultType="CommCodeVO">
-  			SELECT  commde_no,
-  					commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-		FROM com_commde
-        where comm_code = '0A' and commde_use = 'O'
-	ORDER BY commde_code 
-  	</select>
-  	
-  	
-  	
   	
   	<update id="commDeCodeUpdate" parameterType="CommCodeVO">
   	UPDATE com_commde SET
@@ -88,123 +73,20 @@
   	</delete>
   	
   	
-<!--   	
-  	<insert id="commDeCodeInsert" parameterType="CommCodeVO">
-  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
-	  		INSERT INTO com_commde
-	  								(
-	  								commde_no
-	  								,commde_code
-									,comm_code
-									,commde_name
-									,commde_info
-									,commde_use
-	  								)
-	  		VALUES
-			  		(
-			  		 get_primarycode('commDeNo')
-			  		,#{l.commdeCode}
-	  				,#{l.commCode}
-	  				,#{l.commdeName}
-	  				,#{l.commdeInfo}
-	  				,#{l.commdeUse}
-			  		)
-		</foreach>
-  	</insert>
+  	<!-- select box 실행시 필요한 공통코드 -->
+   <select id="searchCommCodeUse" resultType="CommCodeVO">
+		  			SELECT  commde_no,
+		  					commde_code,
+							comm_code,
+							commde_name,
+							commde_info,
+							commde_use
+					FROM com_commde
+					WHERE comm_code = #{commCode} 
+					AND commde_use = 'O'
+				ORDER BY commde_no
+  	</select>	
   	
-  	  	공통코드 수정
-  	<update id="commDeCodeUpdate" parameterType="CommCodeVO">
-  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
-	  		UPDATE com_commde SET
-	  							commde_code = #{l.commdeCode},
-								commde_name = #{l.commdeName},
-								commde_info = #{l.commdeInfo},
-								commde_use = #{l.commdeUse}
-			WHERE commde_no = #{l.commDeNo}
-		</foreach>
-  	</update>
-  	
-  	공통코드 삭제
-  	<delete id="commDeCodeDelete" parameterType="CommCodeVO">
-  		
-  		<foreach collection="data" item="l"  index="index" separator=";" open="DECLARE BEGIN" close="; END;">
-  			DELETE FROM com_commde
-  			WHERE commde_no = #{l.commDeNo}
-  		</foreach>
-  	</delete> -->
-  	
-  	<!-- act type만 조회하는 경우 -->
-  	<select id="selectActTypeList" resultType="CommCodeVO">
-  			SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-		FROM com_commde
-        where comm_code = 'ACT-TYPE' and commde_use = 'O'
-	ORDER BY commde_code 
-  	</select>
-  		
-  	<!-- act 거래여부 가져오기  -->
-  	<select id= "selectActStsList" resultType="CommCodeVO">
-		  	SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0J' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
-  	
-  	<!-- BOM사용 중 여부 -->
-  	<select id="selectBomUseInfo" resultType="CommCodeVO">
-  			SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0A' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
-  	
-  	<!-- BOM 공정 사용 중 여부 -->
-  	<select id="selectBomPrcsUseInfo" resultType="CommCodeVO">
-  			SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0W' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
-  	
-  	<!-- 자재 단위 공통코드리스트 -->
-  	<select id="selectMatUnitInfo" resultType="CommCodeVO">
-  			SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0Y' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
-  	
-  	
-  	<!-- 제품 관리 부분 반/완제품 구분 공통코드 -->
-  	<select id="selectProdTypeInfo" resultType="CommCodeVO">
-  			SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0E' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
   	
   	<!-- eqType만 조회하는 경우 (셀렉트 박스)  -->
   	<select id="selectEquipTypeList" resultType="CommCodeVO">
@@ -230,15 +112,5 @@
 	ORDER BY commde_code 
   	</select>
   	
-  	<select id="selectBomUnit" resultType="CommCodeVO">
-  		SELECT  commde_code,
-					comm_code,
-					commde_name,
-					commde_info,
-					commde_use
-				FROM com_commde
-		        where comm_code = '0C' and commde_use = 'O'
-		ORDER BY commde_code
-  	</select>
   	
   </mapper>

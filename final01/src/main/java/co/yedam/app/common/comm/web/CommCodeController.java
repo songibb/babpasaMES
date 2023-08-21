@@ -31,7 +31,7 @@ public class CommCodeController {
 	//공통코드 관리페이지
 	@GetMapping("/commCodeAdmin")
 	public String commCodeAdmin(Model model){
-		model.addAttribute("useList", commCodeService.selectCommUseInfo());
+		model.addAttribute("useList", commCodeService.searchCommCodeUse("0A"));
 		return "admincom/commCodeAdmin";
 	}
 	
