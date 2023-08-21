@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 		int result = 0;
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 			for(OrderVO vo : data.getDeletedRows()) {
-			result += orderMapper.deleteOrder(vo);
+				result += orderMapper.deleteOrder(vo);
 			}
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
