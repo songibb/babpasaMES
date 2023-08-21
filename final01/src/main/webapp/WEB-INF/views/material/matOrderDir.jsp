@@ -244,9 +244,11 @@
 		    	let planAmt = Grid2.getValue(rowKey, 'prcsPlanAmt');
 				if(rowKey >= 0){
 					
-					if(Grid3 != null){
+					if(Grid3 != null && Grid3.el != null){
+						
 						Grid3.destroy();
 					}
+					
 			    		
 				}
 				$.ajax({
@@ -279,7 +281,8 @@
 	  	          		prcsPlanName : "${plan.prcsPlanName}",
 	  	          		prodName :"${plan.prodName}",
 	  	          		prcsPlanAmt :"${plan.prcsPlanAmt}",
-	  	          		prodCode : "${plan.prodCode}"
+	  	          		prodCode : "${plan.prodCode}",
+	  	          		prcsPlanDate : "${plan.prcsPlanDate}"
 	  	          	} <c:if test="${not status.last}">,</c:if>
 	  	          </c:forEach>
 	  	          ],

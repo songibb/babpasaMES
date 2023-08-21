@@ -313,7 +313,7 @@
 					method : 'GET',
 					data : modalSearchData,
 					success : function(data){
-						console.log(data);
+						
 						Grid.resetData(data);
 					},
 					error : function(reject){
