@@ -68,7 +68,7 @@ public class BomCodeController {
 		model.addAttribute("bomUseInfoList", commCodeService.selectBomUseInfo());
 		model.addAttribute("bomPrcsUseList", commCodeService.selectBomPrcsUseInfo());
 		model.addAttribute("prodList", productCodeService.getProductCodeAll());
-		model.addAttribute("prcsList", prcsManageService.getPrcsManageList());
+		model.addAttribute("prcsList", prcsManageService.selectPrcsManageList());
 		model.addAttribute("matList", matCodeService.selectMatCodeList());
 		model.addAttribute("semiProdList", productCodeService.selectSemiProdList());
 		model.addAttribute("bomUnit", commCodeService.selectBomUnit());
