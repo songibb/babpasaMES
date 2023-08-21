@@ -81,7 +81,7 @@
 				                <br>
                 				<p>사용여부</p>
                 				<label for="before"><input type="checkbox" id="before" value="사용전">사용전</label>
-                				<label for="ing"><input type="checkbox" id="ing" value="사용">사용</label>
+                				<label for="ing"><input type="checkbox" id="ing" value="사용중">사용중</label>
                 				<label for="after"><input type="checkbox" id="after" value="사용완료">사용완료</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
