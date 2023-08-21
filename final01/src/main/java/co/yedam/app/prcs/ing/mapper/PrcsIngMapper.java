@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.equip.service.EquipVO;
 import co.yedam.app.prcs.ing.service.PrcsIngVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 public interface PrcsIngMapper {
 	//진행공정 조회
@@ -40,7 +41,7 @@ public interface PrcsIngMapper {
 	
 	
 	//공정 실적 조회
-	public List<PrcsIngVO> selectPrcsResultList();
+	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);
 	
 	
 	

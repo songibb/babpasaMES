@@ -650,7 +650,14 @@
 			{
 				header: '생산계획량',
 				name: 'prcsPlanAmt',
-				editor: 'text'
+				editor: 'text',
+				formatter: function(value){
+					//탈락량을 고려하여 주문수량의 10%를 더하여 생산계획량을 자동계산해서 기입. 수정 가능.
+					const rowData = value.row;
+                   	const prcsRqAmt = rowData.prcsRqAmt;
+                   	value = Math.round(prcsRqAmt * 1.1);
+					return value;
+				}
 			},
 			{
 				header: '우선순위',
@@ -674,6 +681,8 @@
 //      		}
 		]
 	});
+	
+	
 	
 
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회

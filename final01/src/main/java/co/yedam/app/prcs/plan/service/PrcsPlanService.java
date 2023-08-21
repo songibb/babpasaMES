@@ -7,7 +7,8 @@ import co.yedam.app.sales.order.service.OrderVO;
 
 public interface PrcsPlanService {
 	//생산계획 조회
-	public List<PrcsPlanVO> selectPrcsPlanList(String searchPlanName, String startDate, String endDate);
+	//public List<PrcsPlanVO> selectPrcsPlanList(String searchPlanName, String startDate, String endDate);
+	public List<PrcsPlanVO> selectPrcsPlanList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산계획 조회
 	public List<PrcsPlanVO> selectPrcsPlanDeList(String prcsPlanCode);

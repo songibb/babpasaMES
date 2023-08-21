@@ -39,19 +39,21 @@
 			
 			let rowKey = Grid.getFocusedCell().rowKey;
 	        let planCode = Grid.getValue(rowKey, 'prcsPlanCode');
+	        let prcsStartDate = Grid.getValue(rowKey, 'prcsStartDate');
 
 	        //모달창 닫기
 	        if(rowKey != null){
 	            $(".modal").fadeOut();
 	            Grid.destroy();   
-
+				
 	    		$.ajax({
 	    			url : 'prcsPlanDeList',
 	    			method : 'GET',
 	    			data : { prcsPlanCode : planCode },
 	    			success : function(data){
-	    	          	//선택한 계획의 내역(계획콛, 제품코드, 주문수량) 그리드에 가져오기
+	    	          	//선택한 계획의 내역(계획코드, 제품코드, 주문수량) 그리드에 가져오기
 	    	          	dirGrid.setColumnValues('prcsPlanCode', planCode);
+	    	          	dirGrid.setColumnValues('prcsStartDate', prcsStartDate);
 	    	          	dirDeGrid.resetData(data);
 	    			},
 	    			error : function(reject){

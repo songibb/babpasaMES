@@ -28,22 +28,20 @@
 		                Excel <i class="bi bi-printer"></i>                                                                              
 					</button>
 					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
+						<div id="customtemplateSearchAndButton">
+							<p>지시일자</p>
+                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 							<br>
-							<p>업체명</p>
-			                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-			                    <i class="bi bi-search" id="actModal"></i>
-			                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-			                <br>
 							
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
+							<p>제품명</p>
+               				<input type="text" id="searchProdCode">
+               				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
+               				<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
+
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>						
 		            	</div>
 	            	</form>
 	           		<div id="resultGrid"></div>
@@ -55,13 +53,36 @@
 	
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+		<jsp:include page="../comFn/prodModal.jsp"></jsp:include>
 	</div>
     
 	<script>
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchResultList);
+	
+	function searchResultList(){
+		let searchObj = {};
+		searchObj['searchProdCode'] = $('#searchProdCode').val();
+		searchObj['startDate'] = $('#startDate').val();
+		searchObj['endDate'] = $('#endDate').val();	   
 
+		$.ajax({
+			url : 'selectPrcsResultList',
+			method : 'GET',
+			data : searchObj,
+			success : function(data){	
+				resultGrid.resetData(data);
+			},
+			error : function(reject){
+				 console.log(reject);
+			}
+		});
+};
+	
+	
  	//공정 실적 조회
 	var resultGrid = new tui.Grid({
-        el: document.getElementById('resultGrid'),
+		el: document.getElementById('resultGrid'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -81,27 +102,12 @@
             name: 'prcsDirDeCode'
           },
           {
-            header: '제품코드',
-            name: 'prodCode',
-            hidden: true
-          },
-          {
             header: '제품명',
             name: 'prodName'
           },
           {
-            header: '공정코드',
-            name: 'prcsCode',
-            hidden: true
-          },
-          {
             header: '공정명',
             name: 'prcsName'
-          },
-          {
-            header: '설비코드',
-            name: 'eqCode',
-            hidden: true         
           },
           {
             header: '설비명',
@@ -127,12 +133,23 @@
             header: '작업종료시간',
             name: 'prcsEndTime'
           },
+          {
+             header: '지시등록일자',
+             name: 'prcsDirDate'
+          },
         ]
-      })  
+	})  
  	
+ 	
+	let searchObj = {};
+ 	searchObj['searchProdCode'] = $('#searchProdCode').val();
+ 	searchObj['startDate'] = $('#startDate').val();
+ 	searchObj['endDate'] = $('#endDate').val();
+
 	$.ajax({
         url : "selectPrcsResultList",
         method :"GET",
+        data : searchObj,
         success : function(data){
         	resultGrid.resetData(data);
         },
@@ -141,7 +158,28 @@
  		}
 	});
 
-    
+ 	
+ 	
+ 	
+	//엑셀 다운로드
+	const excelDownload = document.querySelector('.excelDownload');
+	   
+	document.addEventListener('DOMContentLoaded', ()=>{
+		excelDownload.addEventListener('click', function(e){
+			resultGrid.export('xlsx');
+		})
+	})
+ 	
+ 	
+ 	
+	//이전 날짜 선택불가
+    $('#startDate').on('change', function() {
+		$('#endDate').attr('min', $('#startDate').val());
+    });
+	//이후날짜 선택불가
+    $('#endDate').on('change', function() {
+		$('#startDate').attr('max', $('#endDate').val());
+	});
 	</script>
 
 </body>

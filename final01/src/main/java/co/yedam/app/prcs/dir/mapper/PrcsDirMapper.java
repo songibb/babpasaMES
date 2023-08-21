@@ -8,10 +8,11 @@ import org.apache.ibatis.annotations.Param;
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 public interface PrcsDirMapper {
 	//생산지시 조회
-	public List<PrcsDirVO> selectPrcsDirList();
+	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산지시 조회
 	public List<PrcsDirVO> selectPrcsDirDeList(@Param("prcsDirCode") String prcsDirCode);

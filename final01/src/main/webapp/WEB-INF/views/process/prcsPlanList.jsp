@@ -38,9 +38,6 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
 							<p>계획일자</p>
@@ -237,6 +234,18 @@
 		})
   	});
 		
+	
+
+ 	
+ 	
+	//이전 날짜 선택불가
+    $('#startDate').on('change', function() {
+		$('#endDate').attr('min', $('#startDate').val());
+    });
+	//이후날짜 선택불가
+    $('#endDate').on('change', function() {
+		$('#startDate').attr('max', $('#endDate').val());
+	});
 	</script>
 
 </body>

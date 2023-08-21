@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.equip.service.EquipVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 
 
@@ -31,6 +32,6 @@ public interface PrcsIngService {
 	public PrcsIngVO selectPrcsInfoList(String prcsDirDeCode, String prcsCode);
 	
 	
-	//공정 실적 조회
-	public List<PrcsIngVO> selectPrcsResultList();
+	//공정 실적 조회 (검색)
+	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);
 }

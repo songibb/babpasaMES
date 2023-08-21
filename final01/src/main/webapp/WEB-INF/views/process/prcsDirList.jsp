@@ -24,26 +24,15 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
-							<br>
-							<p>업체명</p>
-			                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-			                    <i class="bi bi-search" id="actModal"></i>
-			                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-			                <br>
-							
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
+							<p>지시일자</p>
+							<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
+
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 		            	</div>
 	            	</form>
 	           		<div id="dirGrid"></div>
@@ -61,6 +50,33 @@
 	</div>
     
 	<script>
+	
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchDirist);
+	
+	function searchDirist(){
+		let searchObj = {};
+		searchObj['startDate'] = $('#startDate').val();
+		searchObj['endDate'] = $('#endDate').val();	   
+
+		$.ajax({
+			url : 'selectPrcsDirList',
+			method : 'GET',
+			data : searchObj,
+			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let pdd = data[i]['prcsDirDate'];
+					data[i]['prcsDirDate'] = getDate(pdd);
+				})
+				dirGrid.resetData(data);
+				dirDeGrid.clear();	
+				},
+				error : function(reject){
+				 console.log(reject);
+				}
+		});
+	};
 	
 	//생산지시 조회
     var dirGrid = new tui.Grid({

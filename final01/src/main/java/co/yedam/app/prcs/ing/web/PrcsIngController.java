@@ -14,6 +14,7 @@ import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.equip.service.EquipVO;
 import co.yedam.app.prcs.ing.service.PrcsIngService;
 import co.yedam.app.prcs.ing.service.PrcsIngVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 //20230821 백송이 - 생산 관리, 진행 공정
 @Controller
 public class PrcsIngController {
@@ -75,17 +76,18 @@ public class PrcsIngController {
 	}
 	
 	
-//	//공정 실적 조회 - 페이지 호출
-//	@GetMapping("prcsResultList")
-//	public String getPrcsResultList() {
-//		return "process/prcsResutList";
-//	}
-//	//공정 실적 조회
-//	@GetMapping("prcsResultList")
-//	@ResponseBody
-//	public List<PrcsIngVO> selectPrcsResultList() {
-//		return prcsIngService.selectPrcsResultList();
-//	}
+	//공정 실적 조회 - 페이지 호출
+	@GetMapping("prcsResultList")
+	public String getPrcsResultList() {
+		return "process/prcsResultList";
+	}
+	
+	//공정 실적 조회 (+검색)
+	@GetMapping("selectPrcsResultList")
+	@ResponseBody
+	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO) {
+		return prcsIngService.selectPrcsResultList(prcsSearchVO);
+	}
 	
 
 	

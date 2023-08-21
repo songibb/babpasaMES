@@ -13,7 +13,6 @@
 			   prcs_start_date,
 			   prcs_end_date
 		  FROM prcs_plan
-
 		<where>
 			<if test="searchPlanName != null">
 				AND prcs_plan_name LIKE '%' || #{searchPlanName} || '%'
@@ -25,7 +24,7 @@
 				AND TO_CHAR(prcs_plan_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		 ORDER BY prcs_plan_code
+		 ORDER BY prcs_plan_code DESC
 	</select>
 
 	<!-- 상세생산계획 조회 -->
@@ -42,7 +41,7 @@
 			   prcs_amt
 		  FROM prcs_plan_de
 		 WHERE prcs_plan_code = #{prcsPlanCode}
-		 ORDER BY prcs_plan_de_code DESC
+		 ORDER BY prcs_plan_de_code
 	</select>
 	
 	
