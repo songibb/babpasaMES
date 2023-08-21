@@ -29,4 +29,8 @@ public interface PrcsIngService {
 	
 	//데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)
 	public PrcsIngVO selectPrcsInfoList(String prcsDirDeCode, String prcsCode);
+	
+	
+	//공정 실적 조회
+	public List<PrcsIngVO> selectPrcsResultList();
 }

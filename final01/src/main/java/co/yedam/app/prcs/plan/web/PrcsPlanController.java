@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.sales.order.service.OrderVO;
-
+//20230821 백송이 - 생산 계획
 @Controller
 public class PrcsPlanController {
 	
@@ -33,6 +33,7 @@ public class PrcsPlanController {
 	}
 	
 	//생산계획 조회 - 생산계획 관리 (검색)
+	//검색VO따로 만들기
 	@GetMapping("searchPlanList")
 	@ResponseBody
 	public List<PrcsPlanVO> getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 

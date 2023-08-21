@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
@@ -57,6 +58,8 @@ public class MatOrderDeController {
 		model.addAttribute("matOrderList", mo);
 		model.addAttribute("actList", orderService.actAllList());
 		model.addAttribute("matList", mms.getMetList());
+		//신규생산계획 조회
+		model.addAttribute("planList", mods.getNewPrcsPlan());
 		return "material/matOrderDir";
 	}
 		
@@ -66,6 +69,12 @@ public class MatOrderDeController {
 	public int matOrderDirInsert(@RequestBody GridVO<MatOrderDeVO> data) {
 		 return mods.modifyMatOrder(data); 
 	} 
-
+	
+	//해당 계획 자재 소모량
+	@GetMapping("getNewPrcsPlanUseAmt")
+	@ResponseBody
+	public List<MatInVO> getNewPrcsPlanUseAmt(String prodCode){
+		return mods.getNewPlanUseAmt(prodCode);
+	}
 	
 }

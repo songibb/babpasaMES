@@ -36,6 +36,26 @@
 	#grid{
 		height : 600px;
 	}
+	
+	.modal_content{
+	  /*모달창 크기 조절*/
+	  width:600px; height:700px;
+	  background:#fff; border-radius:10px;
+	  /*모달창 위치 조절*/
+	  position:relative; top:33%; left:45%;
+	  margin-top:-100px; margin-left:-200px;
+	  text-align:center;
+	  box-sizing:border-box;
+	  line-height:23px;
+	}
+	
+	.m_body > p{
+		display : inline-block;
+	}
+	
+	.m_body > input{
+		border : 1px solid black;
+	}
 </style>    
        
 </head>
@@ -61,6 +81,11 @@
 				                <br>
 				                <p>입고일자</p>
 				                <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+				                <br>
+                				<p>사용여부</p>
+                				<label for="before"><input type="checkbox" id="before" value="사용전">사용전</label>
+                				<label for="ing"><input type="checkbox" id="ing" value="사용">사용</label>
+                				<label for="after"><input type="checkbox" id="after" value="사용완료">사용완료</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -88,6 +113,9 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
@@ -111,7 +139,7 @@
 	           	empName : "${semi.empName}",
 	           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
 	           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`,
-	            prcsListCode : "${semi.prcsListCode}",
+	            prcsListCode : "${semi.prcsIngCode}",
 	            useYn : "${semi.useYn}"
 	           	},
 	           </c:forEach>
@@ -138,11 +166,17 @@
 	 	      },
 	 	      {
 			    header:'생산공정',
-			    name: 'prcsListCode'
+			    name: 'prcsIngCode'
 			  },
 	 	      {
 	 	        header: '입고량',
-	 	        name: 'semiInAmt'
+	 	        name: 'semiInAmt',
+	 	       	formatter(e) { 
+ 	 	        	if(e['value'] != null){
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	        }
 	 	      },
 	 	      {
 	 	        header: '반제품 LOT',
@@ -196,7 +230,7 @@
 		       data: [
 		           <c:forEach items="${testList}" var="test">
 		           	{
-		           	prcsListCode : "${test.prcsListCode}",
+		           	prcsListCode : "${test.prcsIngCode}",
 		           	prodCode : "${test.prodCode}",
 		           	prodName : "${test.prodName}",
 		           	testAmt : "${test.testAmt}",
@@ -217,7 +251,7 @@
 		       columns: [
 		    	  {
 		    		  header: '생산공정코드',
-			 	      name: 'prcsListCode'
+			 	      name: 'prcsIngCode'
 		    	  },
 		    	  {
 		    		  header: '반제품코드',
@@ -229,7 +263,13 @@
 		 	      },
 		 	      {
 			 	        header: '생산량',
-			 	        name: 'testAmt'
+			 	        name: 'testAmt',
+			 	       	formatter(e) { 
+		 	 	        	if(e['value'] != null){
+				 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			 	           		return val;
+			 	        	}
+			 	        }
 			 	  },
 			 	  {
 			 	        header: '검수일자',
@@ -244,7 +284,7 @@
 			 	  }
 		 	    ]
 		      
-		     });
+		});
 	
 	 //비활성화
 	function setDisabled(){
@@ -263,7 +303,7 @@
 		deleteList = [];
 		$.each(checkList, function(idx, obj){
 			deleteObj = {};
-			deleteObj['prcsListCode'] = obj['prcsListCode'];
+			deleteObj['prcsIngCode'] = obj['prcsIngCode'];
 			deleteList.push(deleteObj);
 		})
 
@@ -310,7 +350,7 @@
 		if(inGrid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(inGrid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['prodCode'] == "" ||obj2['semiInAmt'] == "" || obj2['semiExd'] == "" || obj2['semiInd'] == "" || obj2['prcsListCode']== ""){
+					if(obj2['prodCode'] == "" ||obj2['semiInAmt'] == "" || obj2['semiExd'] == "" || obj2['semiInd'] == "" || obj2['prcsIngCode']== ""){
 						flag = false;
 						return false;
 					}
@@ -354,9 +394,15 @@
 	function selectAjax(){
 		let prod = $('#prodCodeInput').val();
 		let sd = $('#startDate').val();
-		let ed = $('#endDate').val();	   
+		let ed = $('#endDate').val();	
+		
+		var checkboxList = [];
+		let checkedList = $('input[type="checkbox"]:checked');
+		$.each(checkedList, function(idx, obj){
+			checkboxList.push(obj.value);
+		})
 			  
-		let search = { productCode : prod , startDate : sd , endDate : ed };
+		let search = { productCode : prod , startDate : sd , endDate : ed, checkList : checkboxList };
 		$.ajax({
 			url : 'getSemiInFilter',
 			method : 'GET',
@@ -418,6 +464,7 @@
 	   var Grid;
 	     $("#prodModal").click(function(){
 	       $(".modal").fadeIn();
+	       preventScroll();
 	       Grid = createProdGrid();
 	       $('.modal_title h3').text('반제품 목록');
 	       Grid.on('dblclick', () => {
@@ -430,6 +477,8 @@
 	    		console.log(rowKey);
 	    		if(rowKey != null){
 	    			$(".modal").fadeOut();
+	    			activeScroll();
+	    			let inputContent = $('#modalSearch').val('');
 	        		Grid.destroy();
 	    		}
 
@@ -437,10 +486,11 @@
 	      	});
 	     
 	     $(".close_btn").click(function(){
-	         $(".modal").fadeOut();
-	         
-	  		Grid.destroy();
-	       });
+	        	$(".modal").fadeOut();
+	         	activeScroll();
+	         	let inputContent = $('#modalSearch').val('');
+	  			Grid.destroy();
+	     });
 	     
 	   //반제품 모달 그리드
 	     function createProdGrid(){
@@ -480,24 +530,46 @@
 	  	   
 	  	   return prodGrid;
 	     }
-	   //모달 끝
+	   
+	   
+	   //모달 검색
+	   $('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '반제품 목록'){
+				let modalSearchData = {matName : inputContent}
+				$.ajax({
+					url : 'getSemiModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
 	
 	
 	
-	//검색버튼
-	//검색
-    $('#searchBtn').on('click', searchSemiIn);
-   function searchSemiIn(e){
-	   selectAjax();
-   }
-    
-    //검색 옆 초기화버튼
-    $('#searchResetBtn').on('click', resetInput);
-    function resetInput(e){
- 	   $('input').each(function(idx, obj){
- 		   obj.value = '';
- 	   })
-    }
+		//검색버튼
+		//검색
+	   $('#searchBtn').on('click', searchSemiIn);
+	   function searchSemiIn(e){
+		   selectAjax();
+	   }
+	    
+	    //검색 옆 초기화버튼
+	    $('#searchResetBtn').on('click', resetInput);
+	    function resetInput(e){
+	 	   $('input').each(function(idx, obj){
+	 		   obj.value = '';
+	 	   })
+	    }
     
     
     
@@ -515,7 +587,7 @@
     	//let columnName = orderGrid.getFocusedCell().columnName;
     	//let value = orderGrid.getFocusedCell().value;	
     	
-    	let prcsListCode = testGrid.getValue(rowKey, 'prcsListCode');
+    	let prcsListCode = testGrid.getValue(rowKey, 'prcsIngCode');
     	let prodCode = testGrid.getValue(rowKey, 'prodCode');
     	let prodName = testGrid.getValue(rowKey, 'prodName');
     	let testAmt = testGrid.getValue(rowKey, 'testAmt');
@@ -526,7 +598,7 @@
     	testGrid.removeRow(rowKey);
     	
     	testGrid.blur();
-    	inGrid.appendRow({'prcsListCode' : prcsListCode,
+    	inGrid.appendRow({'prcsIngCode' : prcsListCode,
     					   'prodCode' : prodCode,
     					   'prodName' : prodName,
     					   'semiInAmt' : testAmt,
@@ -536,6 +608,23 @@
     	);
 	
   	});
+    
+ 	//스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
+
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
     
     //이전 날짜 선택불가
     $( '#startDate' ).on( 'change', function() {

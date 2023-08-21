@@ -15,8 +15,10 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
+import co.yedam.app.material.in.service.MatModalVO;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatTestVO;
+import co.yedam.app.material.search.service.SearchVO;
 import co.yedam.app.sales.order.service.OrderService;
 
 @Controller
@@ -49,9 +51,9 @@ public class MatInController {
 	//검색 ajax
 	@GetMapping("getMatInFilter")
 	@ResponseBody
-	public List<MatInVO> getMatInFilter(@RequestParam(value="materialCode", required=false) String materialCode, @RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
-		List<MatInVO> vo = mis.selectMatInSearch(materialCode, accountCode, startDate, endDate);
-		return vo;
+	public List<MatInVO> getMatInFilter(SearchVO vo) {
+		List<MatInVO> findVO = mis.selectMatInSearch(vo);
+		return findVO;
 	}
 	
 	//조회
@@ -101,5 +103,13 @@ public class MatInController {
 	@ResponseBody
 	public List<MatInVO> getMatLotList(@RequestParam(value="materialCode", required=false) String materialCode){
 		return mis.getMatLotModal(materialCode);
+	}
+	
+	
+	//자재모달창 검색 ajax
+	@GetMapping("getMatModalSearch")
+	@ResponseBody
+	public List<MatModalVO> getMatModalSearch(String matName){
+		return mms.selectModalSearch(matName);
 	}
 }

@@ -304,7 +304,62 @@
 		            }
 		        });
 			}else{
+
 				swal("모든 값이 입력되지 않았습니다.","","warning");
+
+				
+			} 
+			
+			
+			if(falg){
+				$.ajax({
+					url:'bomInsert',
+					method:'POST',
+					data:JSON.stringify(object),
+					contentType: 'application/json',
+					async:false,
+					success: function(data){
+												
+						let deList = deBomgrid.getData();
+						
+						$.each(deList, function(i, objDe){
+							deList[i]['bomNo'] = data;
+							
+							for(let field in objDe){
+								if(field != 'bomCode' && objDe[field] == null){
+								
+									flag = false;
+								}
+							}
+						})
+						
+						
+						$.ajax({
+							url : 'bomDeInsert',
+							method : 'POST',
+							data : JSON.stringify(deList),
+							contentType : 'application/json',
+							async : false, 
+							success : function(data){
+								//등록 후 그리드 내용 지우고, 행추가
+		 						bomgrid.clear();
+		 						bomgrid.appendRow();
+		 						deBomgrid.clear()
+								deBomgrid.appendRow();
+
+								alert('등록이 완료되었습니다.');
+							},
+							error : function(reject){
+					 			console.log(reject);
+					 		}
+						})
+					},
+					error:function(reject){
+			 			console.log(reject)
+					}
+				})
+			}else{
+				alert('모든 값이 입력되지 않았습니다.');
 			} 
 
 	}

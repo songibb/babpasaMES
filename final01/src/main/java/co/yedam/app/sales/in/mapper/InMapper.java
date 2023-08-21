@@ -15,4 +15,10 @@ public interface InMapper {
 			, @Param("endDate")String endDate);
 	//제품목록
 	public List<InVO> selectProdAllList();
+	//등록
+	public int insertProductIn(InVO vo);
+	//수정
+	public int updateProductIn(InVO vo);
+	//삭제
+	public int deleteProductIn(InVO vo);
 }

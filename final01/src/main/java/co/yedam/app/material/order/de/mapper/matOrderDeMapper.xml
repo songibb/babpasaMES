@@ -112,5 +112,27 @@
 			WHERE mat_od_de_cd = #{matOdDeCd}
 	</delete>
 	
-
+	
+	<!-- 신규 생산 계획 조회 -->
+	<select id="selectNewPrcsPlan" resultType="PrcsPlanVO">
+		SELECT prcs_plan_name, a.prod_code, b.prcs_plan_date, c.prod_name, prcs_plan_amt
+		FROM prcs_plan_de a LEFT JOIN prcs_plan b 
+		ON(a.prcs_plan_code = b.prcs_plan_code)
+		LEFT JOIN com_prod c
+		ON(a.prod_code = c.prod_code)
+		WHERE prcs_dir_yn = 'N'
+	</select>
+	
+	<!-- 해당 계획 자재 소모량 -->
+	<select id="selectNewPlanUseAmt" resultType="MatInVO">
+		SELECT mp_code mat_code, find_mat_name(mp_code) AS mat_name, SUM(bom_amt) AS bom_amt, NVL(mat_stock,0) AS mat_stock
+		FROM v_prod_bom a
+		LEFT JOIN (SELECT mat_code, SUM(mat_stock) AS mat_stock
+		           FROM mat_in
+		           GROUP BY mat_code) b
+		ON (a.mp_code = b.mat_code)
+		WHERE prod_code= #{prodCode}
+		AND bom_yn='O'
+		AND mp_kind='M' group by find_mat_name(mp_code), mp_code, mat_stock
+	</select>
 </mapper>

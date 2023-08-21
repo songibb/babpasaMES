@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.sales.in.mapper.InMapper;
 import co.yedam.app.sales.in.service.InService;
 import co.yedam.app.sales.in.service.InVO;
@@ -14,7 +16,7 @@ public class InServiceImpl implements InService {
 
 	@Autowired
 	InMapper inMapper;
-	
+
 	@Override
 	public List<InVO> getInList() {
 		return inMapper.selectInAllList();
@@ -30,4 +32,26 @@ public class InServiceImpl implements InService {
 		return inMapper.selectProdAllList();
 	}
 
+	@Override
+	public int modifyProdIn(GridVO<InVO> data) {
+		int result = 0;
+		if (data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
+			for (InVO vo : data.getDeletedRows()) {
+				result += inMapper.deleteProductIn(vo);
+			}
+		}
+		if (data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
+			for (InVO vo : data.getUpdatedRows()) {
+				result += inMapper.updateProductIn(vo);
+			}
+		}
+		if (data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			for (InVO vo : data.getCreatedRows()) {
+				result += inMapper.insertProductIn(vo);
+			}
+		}
+
+		return result;
+
+	}
 }

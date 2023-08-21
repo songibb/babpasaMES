@@ -40,11 +40,46 @@
 	ORDER BY prod_lot DESC
 	</select>
 	
-	<!-- 제품 목록 -->
+	<!-- 완제품인것만 제품 목록 -->
 	<select id="selectProdAllList" resultType="InVO">
 	SELECT prod_code, prod_name, prod_unit, prod_std
 	FROM com_prod
 	WHERE prod_kind = 'C'
 	ORDER BY prod_code DESC
 	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertProductIn" parameterType="InVO">
+			INSERT INTO mat_in (
+				prod_lot
+				, prod_code
+				, sales_in_date
+				, sales_in_amt
+				, prod_save_amt
+				, sales_in_exd
+				, emp_code
+			) VALUES (
+				get_primaryCode('prodLot')
+				, #{prodCode}
+				, #{salesInDate}
+				, #{salesInAmt}
+				, #{prodSaveAmt}
+				, #{salesInExd}
+				, #{empCode}
+			)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateProductIn" parameterType="InVO">
+			UPDATE sales_in
+			SET sales_in_date = #{salesInDate}, sales_in_exd = #{salesInExd}
+			WHERE prod_lot = #{podLot}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteProductIn" parameterType="InVO">
+			DELETE FROM sales_in
+			WHERE prod_lot = #{prodLot}
+		
+	</delete>
 </mapper>

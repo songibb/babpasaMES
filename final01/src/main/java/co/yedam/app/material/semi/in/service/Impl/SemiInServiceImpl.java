@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.material.search.service.SearchVO;
 import co.yedam.app.material.semi.in.mapper.SemiInMapper;
 import co.yedam.app.material.semi.in.service.SemiInService;
 import co.yedam.app.material.semi.in.service.SemiInVO;
@@ -25,9 +26,9 @@ public class SemiInServiceImpl implements SemiInService {
 	
 	//전체조회 중 검색
 	@Override
-	public List<SemiInVO> selectSemiInSearch(String productCode, String startDate, String endDate) {
+	public List<SemiInVO> selectSemiInSearch(SearchVO vo) {
 		
-		return sim.selectSemiInSearch(productCode, startDate, endDate);
+		return sim.selectSemiInSearch(vo);
 	}
 	
 	//반제품목록 모달창
@@ -82,6 +83,13 @@ public class SemiInServiceImpl implements SemiInService {
 		}
 
 		return testList;
+	}
+	
+	//모달 검색
+	@Override
+	public List<SemiInVO> getSemiModalSearch(String prodName) {
+		
+		return sim.getSemiModalSearch(prodName);
 	}
 
 	

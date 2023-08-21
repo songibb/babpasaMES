@@ -71,6 +71,17 @@
 		ORDER BY act_code
 
 	</select>
+	
+	<!-- 거래처목록 검색 -->
+	<select id="selectActSearchList" resultType="OrderVO">
+		SELECT act_code, act_name, act_sts, act_kind
+		FROM com_act
+		<if test="actName != null and !actName.equals('')">
+		WHERE act_name LIKE '%' || #{actName} || '%'
+		</if>
+		ORDER BY act_code
+	</select>
+	
 	<!-- 제품 목록 -->
 	<select id="selectProdAllList" resultType="OrderVO">
 		SELECT prod_code, prod_name, prod_unit, prod_std
@@ -117,71 +128,67 @@
 			FROM sales_ord
 			WHERE SUBSTR(ord_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
-		BEGIN
-		<!-- 첫번째 쿼리 -->
 		INSERT INTO
-		sales_ord(ord_code,
-		ord_date,
-		act_code,
-		emp_code,
-		prcs_plan_code
-		)
+		sales_ord(
+			ord_code
+			, ord_date
+			, act_code
+			, emp_code
+			, prcs_plan_code)
 		VALUES(
-		#{data[0].ordCode}
-		,#{data[0].ordDate}
-		,#{data[0].actCode}
-		,#{data[0].empCode}
-		,#{data[0].prcsPlanCode}
-		);
-		<!-- 두번째 쿼리 -->
-		<foreach collection="data" item="order" index="index"
-			open="" separator=" " close="">
+			#{ordCode}
+			,#{ordDate}
+			,#{actCode}
+			,#{empCode}
+			,#{prcsPlanCode}
+		)
+		</insert>
+		<insert id="insertOrderDe" parameterType="OrderVO">
+		<selectKey keyProperty="ordCode" resultType="String"
+			order="BEFORE">
+			SELECT 'ORD-' || TO_CHAR(sysdate, 'rrMMdd') ||
+			LPAD(NVL(MAX(SUBSTR(ord_code, -3)),0) + 1, 3, '0')
+			FROM sales_ord
+			WHERE SUBSTR(ord_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
 			INSERT INTO
-			sales_ord_de(sales_ord_de_code,
-			ord_code,
-			prod_code,
-			prcs_rq_amt,
-			dev_date
-			)
+				sales_ord_de(sales_ord_de_code,
+				ord_code,
+				prod_code,
+				prcs_rq_amt,
+				dev_date
+				)
 			VALUES
-
-			(get_primaryCode('salesOrdDeCode'),
-			#{ordCode},
-			#{data.prodCode},
-			#{data.prcsRqAmt},
-			#{data.devDate}
-			);
-		</foreach>
-
-		END;
+				(get_primaryCode('salesOrdDeCode'),
+				#{ordCode},
+				#{prodCode},
+				#{prcsRqAmt},
+				#{devDate}
+				)
 	</insert>
 
 <!-- 수정 -->
 	<update id="updateOrder" parameterType="OrderVO">
 			UPDATE sales_ord_de
 			SET
-			prcs_rq_amt = #{data.prcsRqAmt}
-			, prod_code = #{data.prodCode}
-			, dev_date = #{data.devDate}
-			WHERE sales_ord_de_code = #{data.salesOrdDeCode}
+			prcs_rq_amt = #{prcsRqAmt}
+			, prod_code = #{prodCode}
+			, dev_date = #{devDate}
+			WHERE sales_ord_de_code = #{salesOrdDeCode}
 	</update>
 
 <!-- 삭제 -->
-	<delete id="deleteOrder" parameterType="OrderVO">
-		BEGIN
-		<foreach collection="data" item="order" index="index"
-			separator=" " close="">
-			DELETE FROM sales_ord_de
-			WHERE sales_ord_de_code = #{order.salesOrdDeCode};
-		</foreach>
-
+<delete id="deleteOrder" parameterType="OrderVO">
 		DELETE FROM sales_ord
 		WHERE ord_code IN (
 		SELECT a.ord_code
 		FROM sales_ord a LEFT JOIN sales_ord_de b
 		ON(a.ord_code = b.ord_code)
-		WHERE sales_ord_de_code IS NULL);
-		END;
+		WHERE sales_ord_de_code IS NULL)
+	</delete>
+	<delete id="deleteOrderDe" parameterType="OrderVO">
+			DELETE FROM sales_ord_de
+			WHERE sales_ord_de_code = #{salesOrdDeCode};
 	</delete>
 
 </mapper>

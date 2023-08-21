@@ -11,6 +11,7 @@ import co.yedam.app.material.rt.mapper.MatRtMapper;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatRtVO;
 import co.yedam.app.material.rt.service.MatTestVO;
+import co.yedam.app.material.search.service.SearchVO;
 
 @Service
 public class MatRtServiceImpl implements MatRtService {
@@ -24,9 +25,9 @@ public class MatRtServiceImpl implements MatRtService {
 		return mrm.selectMatRtList();
 	}
 	@Override
-	public List<MatRtVO> selectMatRtSearch(String materialCode, String accountCode, String startDate, String endDate) {
+	public List<MatRtVO> selectMatRtSearch(SearchVO vo) {
 		
-		return mrm.selectMatRtSearch(materialCode, accountCode, startDate, endDate);
+		return mrm.selectMatRtSearch(vo);
 	}
 	
 	//검수완료목록

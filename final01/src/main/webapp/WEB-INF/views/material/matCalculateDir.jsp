@@ -35,6 +35,26 @@
 	#grid{
 		height: 600px;
 	}
+	
+	.modal_content{
+	  /*모달창 크기 조절*/
+	  width:600px; height:700px;
+	  background:#fff; border-radius:10px;
+	  /*모달창 위치 조절*/
+	  position:relative; top:33%; left:45%;
+	  margin-top:-100px; margin-left:-200px;
+	  text-align:center;
+	  box-sizing:border-box;
+	  line-height:23px;
+	}
+	
+	.m_body > p{
+		display : inline-block;
+	}
+	
+	.m_body > input{
+		border : 1px solid black;
+	}
 </style>    
        
 </head>
@@ -58,12 +78,12 @@
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
+                				<p>정산일자</p>
+                				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                				<br>
                 				<p>정산구분</p>
                 				<label for="calInCheck"><input type="checkbox" id="calInCheck" value="calIn">정산입고</label>
                 				<label for="calOutCheck"><input type="checkbox" id="calOutCheck" value="calOut">정산출고</label>
-                				<br>
-                				<p>정산일자</p>
-                				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -88,6 +108,9 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
@@ -103,6 +126,7 @@
 	 var Grid;
      $("#matModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createMatGrid();
        $('.modal_title h3').text('자재 목록');
        Grid.on('dblclick', () => {
@@ -116,6 +140,7 @@
    		//모달창 닫기
    		if(rowKey != null){
 			$(".modal").fadeOut();
+			activeScroll();
     		Grid.destroy();
 
    		}
@@ -123,14 +148,33 @@
      });
      
      $(".close_btn").click(function(){
-       $(".modal").fadeOut();
-       
+       	$(".modal").fadeOut();
+       	activeScroll();
 		Grid.destroy();
      });
      
 
   
-   //모달 끝
+     $('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '자재 목록'){
+				let modalSearchData = {matName : inputContent}
+				$.ajax({
+					url : 'getMatModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						console.log(data);
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -282,12 +326,24 @@
 	 	      },
 	 	      {
 	 	        header: '기존수량',
-	 	        name: 'calBamt'
+	 	        name: 'calBamt',
+	 	       	formatter(e) { 
+ 	 	        	if(e['value'] != null){
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	        }
 	 	      },
 	 	      {
 		 	    header: '정산수량',
 		 	    name: 'calAmt',
-		 	    editor: 'text'
+		 	    editor: 'text',
+	 	       	formatter(e) { 
+ 	 	        	if(e['value'] != null){
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	        }
 		 	  },
 		 	  {
 			 	header: '정산일자',
@@ -296,7 +352,13 @@
 			  },
 		 	  {
 		 	    header: '최종수량',
-		 	    name: 'finalAmt'
+		 	    name: 'finalAmt',
+	 	       	formatter(e) { 
+ 	 	        	if(e['value'] != null){
+		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	        }
 		 	  },
 		 	  {
 		 		header: '담당자명',
@@ -347,6 +409,7 @@
 		 //추가되는 행일 때 더블클릭 시 자재 모달창
 		   if(ev.columnName == 'matName' || ev.columnName == 'matUnit' || ev.columnName == 'matStd'){
 			   $(".modal").fadeIn();
+			   preventScroll();
 			   Grid = createMatGrid();
 			   $('.modal_title h3').text('자재 목록');
 			   
@@ -372,6 +435,7 @@
 		 	    		grid.setValue(mainRowKey, 'matStd', matStd);
 		 	    		
 		 	    		$(".modal").fadeOut();
+		 	    		activeScroll();
 		        		Grid.destroy();
 		 	    		
 		       		}
@@ -384,6 +448,7 @@
 			   Grid = createLotGrid(selectMatCode);
 			   Grid.refreshLayout();
 			   $(".modal").fadeIn();
+			   preventScroll();
 			   $('.modal_title h3').text('LOT 목록');
 			   
 			   Grid.on('dblclick', () => {
@@ -406,6 +471,7 @@
 		 	    		grid.setValue(mainRowKey, 'matStd', matStd);
 		 	    		
 		 	    		$(".modal").fadeOut();
+		 	    		activeScroll();
 		 	    		Grid.destroy();
 		 	    		
 		       		}
@@ -457,7 +523,13 @@
 	             },
 	             {
 	               header: '현재고량',
-	               name: 'matStock'
+	               name: 'matStock',
+		 	       	formatter(e) { 
+	 	 	        	if(e['value'] != null){
+			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		 	           		return val;
+		 	        	}
+		 	        }
 	             }
 	 	    ]
 	      
@@ -632,7 +704,22 @@
    }
  
    
+ 	//스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
 
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
    
    
   

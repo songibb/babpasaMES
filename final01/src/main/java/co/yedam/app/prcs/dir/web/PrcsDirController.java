@@ -16,7 +16,7 @@ import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.ing.service.PrcsIngService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
-
+// 20230821 백송이 - 생산 지시
 @Controller
 public class PrcsDirController {
 	
@@ -26,7 +26,7 @@ public class PrcsDirController {
 	@Autowired
 	PrcsIngService prcsIngService;
 	
-	//생산지시 조회
+	//생산지시 조회 - 페이지 호출
 	@GetMapping("prcsDirList")
 	public String getPrcsDirAllList(Model model) {
 		model.addAttribute("dirList", prcsDirService.selectPrcsDirList());
