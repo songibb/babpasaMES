@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.app.prcs.plan.mapper.PrcsPlanMapper;
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 @Service
@@ -19,8 +20,11 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//생산계획 조회
 	@Override
-	public List<PrcsPlanVO> selectPrcsPlanList(String searchPlanName, String startDate, String endDate) {
-		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
+//	public List<PrcsPlanVO> selectPrcsPlanList(String searchPlanName, String startDate, String endDate) {
+//		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
+//	}
+	public List<PrcsPlanVO> selectPrcsPlanList(PrcsSearchVO prcsSearchVO) {
+		return prcsPlanMapper.selectPrcsPlanList(prcsSearchVO);
 	}
 	
 	//상세생산계획 조회

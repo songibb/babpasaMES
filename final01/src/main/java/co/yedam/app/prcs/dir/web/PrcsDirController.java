@@ -16,6 +16,7 @@ import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.ing.service.PrcsIngService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 // 20230821 백송이 - 생산 지시
 @Controller
 public class PrcsDirController {
@@ -28,16 +29,16 @@ public class PrcsDirController {
 	
 	//생산지시 조회 - 페이지 호출
 	@GetMapping("prcsDirList")
-	public String getPrcsDirAllList(Model model) {
-		model.addAttribute("dirList", prcsDirService.selectPrcsDirList());
+	public String getPrcsDirAllList(PrcsSearchVO prcsSearchVO, Model model) {
+		model.addAttribute("dirList", prcsDirService.selectPrcsDirList(prcsSearchVO));
 		return "process/prcsDirList";
 	}
 	
 	//생산지시 조회 - 리스트
 	@GetMapping("selectPrcsDirList")
 	@ResponseBody
-	public List<PrcsDirVO> getPrcsDirAllList() {
-		List<PrcsDirVO> list = prcsDirService.selectPrcsDirList();
+	public List<PrcsDirVO> getPrcsDirAllList(PrcsSearchVO prcsSearchVO) {
+		List<PrcsDirVO> list = prcsDirService.selectPrcsDirList(prcsSearchVO);
 		return list;
 	}
 	

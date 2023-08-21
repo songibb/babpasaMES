@@ -2,15 +2,15 @@ package co.yedam.app.prcs.dir.service;
 
 import java.util.List;
 
-
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 
 
 public interface PrcsDirService {
 	//생산지시 조회
-	public List<PrcsDirVO> selectPrcsDirList();
+	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산지시 조회
 	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode);

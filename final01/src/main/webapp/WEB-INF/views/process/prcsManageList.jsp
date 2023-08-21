@@ -56,27 +56,7 @@
  			console.log(reject);
  		}
 	});
-	
-	
-	//공정관리 조회 - 검색
-	$('button:contains("검색")').on('submit', ajaxSearch);
-	
-	function ajaxSearch(e){
-		e.preventDefault();
-		
-		$.ajax({
-			url : "selectPrcsManageSearch",
-	        method :"post",      
-	        data : $('form').serialize(),
-	        success : function(result){
-	            grid.resetData(result);
-	        },
-	        error : function(reject){
-	 			console.log(reject);
-	 		}
-		});
 
-	}
 	
 	
     var grid = new tui.Grid({

@@ -5,11 +5,13 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 public interface PrcsPlanMapper {
 	//생산계획 조회
-	public List<PrcsPlanVO> selectPrcsPlanList(@Param("searchPlanName") String searchPlanName, @Param("startDate")String startDate, @Param("endDate")String endDate);
+	//public List<PrcsPlanVO> selectPrcsPlanList(@Param("searchPlanName") String searchPlanName, @Param("startDate")String startDate, @Param("endDate")String endDate);
+	public List<PrcsPlanVO> selectPrcsPlanList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산계획 조회
 	public List<PrcsPlanVO> selectPrcsPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);

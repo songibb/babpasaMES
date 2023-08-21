@@ -13,6 +13,7 @@ import co.yedam.app.equip.service.EquipVO;
 import co.yedam.app.prcs.ing.mapper.PrcsIngMapper;
 import co.yedam.app.prcs.ing.service.PrcsIngService;
 import co.yedam.app.prcs.ing.service.PrcsIngVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 @Service
 public class PrcsIngServiceImpl implements PrcsIngService {
@@ -74,9 +75,11 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 		return prcsIngMapper.selectPrcsInfoList(prcsDirDeCode, prcdCode);		
 	}
 
+	
+	//공정 실적 조회 (검색)
 	@Override
-	public List<PrcsIngVO> selectPrcsResultList() {
-		return prcsIngMapper.selectPrcsResultList();
+	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO) {
+		return prcsIngMapper.selectPrcsResultList(prcsSearchVO);
 	}
 
 

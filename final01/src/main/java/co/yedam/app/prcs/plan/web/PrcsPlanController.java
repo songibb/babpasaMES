@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.sales.order.service.OrderVO;
 //20230821 백송이 - 생산 계획
 @Controller
@@ -24,24 +25,29 @@ public class PrcsPlanController {
 	
 	//생산계획 조회
 	@GetMapping("prcsPlanList")
-	public String getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 
-									 @RequestParam(required=false) String startDate, 
-									 @RequestParam(required=false) String endDate, 
-									 Model model){
-		model.addAttribute("planList", prcsPlanService.selectPrcsPlanList(searchPlanName, startDate, endDate));	
+	public String getPrcsPlanAllList(PrcsSearchVO prcsSearchVO, Model model){
+		model.addAttribute("planList", prcsPlanService.selectPrcsPlanList(prcsSearchVO));	
 		return "process/prcsPlanList";
 	}
 	
 	//생산계획 조회 - 생산계획 관리 (검색)
-	//검색VO따로 만들기
+//	@GetMapping("searchPlanList")
+//	@ResponseBody
+//	public List<PrcsPlanVO> getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 
+//											   @RequestParam(required=false) String startDate, 
+//											   @RequestParam(required=false) String endDate){
+//		List<PrcsPlanVO> list = prcsPlanService.selectPrcsPlanList(searchPlanName, startDate, endDate);	
+//		return list;
+//	}
+	
+	//생산계획 조회 - 검색 VO 따로 만들어서 사용
 	@GetMapping("searchPlanList")
 	@ResponseBody
-	public List<PrcsPlanVO> getPrcsPlanAllList(@RequestParam(required=false) String searchPlanName, 
-											   @RequestParam(required=false) String startDate, 
-											   @RequestParam(required=false) String endDate){
-		List<PrcsPlanVO> list = prcsPlanService.selectPrcsPlanList(searchPlanName, startDate, endDate);	
+	public List<PrcsPlanVO> getPrcsPlanAllList(PrcsSearchVO prcsSearchVO){
+		List<PrcsPlanVO> list = prcsPlanService.selectPrcsPlanList(prcsSearchVO);	
 		return list;
 	}
+	
 	
 	//상세생산계획 조회 - 리스트
 	@GetMapping("prcsPlanDeList")

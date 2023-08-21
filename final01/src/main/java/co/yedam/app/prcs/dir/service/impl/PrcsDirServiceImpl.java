@@ -12,6 +12,7 @@ import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.ing.mapper.PrcsIngMapper;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 @Service
 public class PrcsDirServiceImpl implements PrcsDirService {
@@ -24,8 +25,8 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	
 	//생산지시 조회
 	@Override
-	public List<PrcsDirVO> selectPrcsDirList() {
-		return prcsDirMapper.selectPrcsDirList();
+	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO) {
+		return prcsDirMapper.selectPrcsDirList(prcsSearchVO);
 	}
 	
 	//상세생산지시 조회

@@ -283,7 +283,7 @@
    		      options: {
    		    	  language: 'ko'
    		      }
-   		    }
+   		    },
           },
 //           {
 //             header: '생산종료일자',

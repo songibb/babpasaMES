@@ -120,9 +120,9 @@
 	<select id="selectPrcsResultList" resultType="PrcsIngVO">
 		SELECT l.prcs_list_code,
 			   l.prcs_dir_de_code,
-			   l.prod_code,
-			   l.prcs_code,
-			   l.eq_code,
+			   find_prod_name(l.prod_code) AS prod_name,
+			   find_prcs_name(l.prcs_code) AS prcs_name,
+			   find_eq_name(l.eq_code) AS eq_name,
 			   l.input_amt,
 			   l.err_amt,
 			   l.prcs_amt,
@@ -135,12 +135,16 @@
 		  				   JOIN prcs_dir d 
 		  				     ON dd.prcs_dir_code = d.prcs_dir_code
 		<where>
+			<if test="searchProdCode != null and !searchProdCode.equals('')">
+					AND l.prod_code LIKE '%' || #{searchProdCode} || '%'
+			</if>
 			<if test="startDate != null and !startDate.equals('')">
-				AND TO_CHAR(prcs_plan_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+				AND TO_CHAR(d.prcs_dir_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				AND TO_CHAR(prcs_plan_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+				AND TO_CHAR(d.prcs_dir_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
+			
 		</where>
 		 ORDER BY prcs_list_code
 	</select>
