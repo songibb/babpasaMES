@@ -14,7 +14,7 @@
 			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
 			   find_emp_name(emp_code) AS emp_code
 		  FROM prcs_dir
-		 ORDER BY prcs_dir_code
+		 ORDER BY prcs_dir_code DESC
 	</select>
 	
 	<!-- 상세생산지시 조회 -->
@@ -77,10 +77,7 @@
 							    , prcs_plan_amt
 							    </if>
 							    , prcs_dir_amt
-							    , prcs_start_de_date
-							    <if test="prcsEndDeDate != null">
-							    , prcs_end_de_date
-							    </if>
+							    , prcs_start_de_date	 
 							    , emp_code
 							  )
 			 VALUES (
@@ -92,9 +89,6 @@
 						</if>
 						, #{prcsDirAmt}
 						, #{prcsStartDeDate}
-						<if test="prcsEndDeDate != null">
-						, #{prcsEndDeDate}
-						</if>
 						, #{empCode}
 					 )
 	</insert>
@@ -110,6 +104,7 @@
 		  FROM prcs_plan p JOIN prcs_plan_de d
                              ON p.prcs_plan_code = d.prcs_plan_code
          WHERE d.prcs_dir_sts = 'T1'
+         ORDER BY p.prcs_plan_code DESC
 	</select>
 	
 		

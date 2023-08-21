@@ -74,5 +74,10 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 		return prcsIngMapper.selectPrcsInfoList(prcsDirDeCode, prcdCode);		
 	}
 
+	@Override
+	public List<PrcsIngVO> selectPrcsResultList() {
+		return prcsIngMapper.selectPrcsResultList();
+	}
+
 
 }

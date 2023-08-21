@@ -347,7 +347,7 @@
 					contentType: 'application/json',
 					async:false,
 					success: function(data){
-						
+												
 						let deList = deBomgrid.getData();
 						
 						$.each(deList, function(i, objDe){
@@ -360,6 +360,7 @@
 								}
 							}
 						})
+						
 						
 						$.ajax({
 							url : 'bomDeInsert',

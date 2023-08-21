@@ -279,8 +279,6 @@
 	
 	
 	
-	
-	
 	//현재 시간 구하기
 	function getDateTime(){
 		var today = new Date();
@@ -356,18 +354,16 @@
 						//선택된 설비, bom그리드 생성
 						eqGridFn = createSelectEqGrid();
 						prcsBomGridFn = createPrcsBomGrid();	
-						
-						//담당자 input 비활성화
-	 					$('#empCode').prop('readonly', true);					
-	 					//작업시작 버튼 비활성화
-	 					$('#prcsStartBtn').prop('disabled', true);		
-						
+
 	 					//담당자 가져오기	
 	 					$('#empCode').val(data['empCode']);					
 	 					//작업시작시간 가져오기
 	 					$('#prcsStartTime').val(data['prcsStartTime']);
-
-
+	 					
+						//담당자 input 비활성화
+	 					$('#empCode').prop('readonly', true);					
+	 					//작업시작 버튼 비활성화
+	 					$('#prcsStartBtn').prop('disabled', true);	
 					} else{		
 						//작업 종료
 						
@@ -400,67 +396,88 @@
 		        console.log(reject);
 		    }				
 		})
-		
-		//작업 시작 버튼
-    	$('#prcsStartBtn').click(function(){			
-			
-    		//담당자 미입력시 작동X
-    		
-			//작업 시작 시간 입력
-			let startTime = getDateTime();
-			$('#prcsStartTime').val(startTime);
 
-	    	//eqCode 가져오기
-			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
-			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
-			//empCode 값 가져오기
-			let empCode = document.getElementById('empCode').value;	
-			
-	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
-			let startObj = {};
-	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
-	    	startObj['prcsCode'] = prcsCode;
-			startObj['eqCode'] = eqCode;
-			startObj['empCode'] = empCode;
-			startObj['prcsStartTime'] = startTime;
-			
-			console.log(startObj);
-			//ajax 프로시저
-			$.ajax({
-			    url : 'callPrcsStart',
-			    method : 'POST',
-			    data : startObj,
-			    success : function(data){
-			    	//담당자 input 비활성화
-					$('#empCode').prop('readonly', true);	
-			    	//작업종료 버튼 비활성화
-					$('#prcsStartBtn').prop('disabled', true);	
-			    },
-			    error : function(reject){
-			        console.log(reject);
-			    }	
-			})
-			
-			
-    	})
+    })
+    
+
+    //작업 시작 버튼
+   	$('#prcsStartBtn').click(function(){			
+
+   		//설비명 체크 안할 시 작동X
+   		
+   		//담당자 미입력시 작동X 
+   		if($('#empCode').val() == '' || $('#empCode').val() == null){
+   			alert('담당자를 입력하세요.');
+   		} else{
+   			//작업 시작 시간 입력
+   			let startTime = getDateTime();
+   			$('#prcsStartTime').val(startTime);
+		
+   			//prcsDirDeCode 가져오기
+   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
+   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
+   			//prcsCode 가져오기
+   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
+   			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+   	    	//eqCode 가져오기
+   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
+   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
+   			//empCode 값 가져오기
+   			let empCode = document.getElementById('empCode').value;	
+		  			
+   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
+   			let startObj = {};
+   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
+   	    	startObj['prcsCode'] = prcsCode;
+   			startObj['eqCode'] = eqCode;
+   			startObj['empCode'] = empCode;
+   			startObj['prcsStartTime'] = startTime;
+   			
+   			console.log(startObj);
+   			//ajax 프로시저
+   			$.ajax({
+   			    url : 'callPrcsStart',
+   			    method : 'POST',
+   			    data : startObj,
+   			    success : function(data){
+   			    	//담당자 input 비활성화
+   					$('#empCode').prop('readonly', true);	
+   			    	//작업종료 버튼 비활성화
+   					$('#prcsStartBtn').prop('disabled', true);	
+   			    },
+   			    error : function(reject){
+   			        console.log(reject);
+   			    }	
+   			})
+   			
+   		}		
+   	})
 
     	
-    	//작업 종료 버튼
-    	$('#prcsEndBtn').click(function(){
-			
-    		//불량량 미입력시 작동X
-    		
+   	//작업 종료 버튼
+   	$('#prcsEndBtn').click(function(){
+		
+   		//불량량 미입력시 작동X
+   		if($('#errAmt').val() == '' || $('#errAmt').val() == null){
+   			alert('불량량을 입력하세요.');
+   		} else{
 			//작업 종료 시간 입력
 			let endTime = getDateTime();
 			$('#prcsEndTime').val(endTime);
-
+					
+			//prcsDirDeCode 가져오기
+			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
+			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
+			//prcsCode 가져오기
+			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
+			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
 			//errAmt 가져오기
 			let errAmt = document.getElementById('errAmt').value;					
 	    	//eqCode 가져오기
 	    	eqGridFn.focus(0, 'eqCode');
 			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
 			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');	
-
+	
 			//empCode 가져오기
 			let empCode = document.getElementById('empCode').value;	
 			
@@ -489,26 +506,39 @@
 			        console.log(reject);
 			    }	
 			})
-    	})
-		
-
-		//닫기 버튼 
-		$("#close_btn").click(function(){
-			$(".modal").fadeOut();			
-		 	eqGridFn.destroy();
-		 	prcsBomGridFn.destroy();
-
-		});	
-
-    })
-    
-
-	
-    
-    
-    
+   		}
+   	})
    
-    
+   	
+    //닫기 버튼 
+	$("#close_btn").click(function(){
+		$(".modal").fadeOut();			
+	 	eqGridFn.destroy();
+	 	prcsBomGridFn.destroy();
+	 	
+	 	//클릭한 상세 지시의 상세지시코드, 제품코드 가져오기
+    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
+    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+		//클릭한 상세 지시의 제품코드 가져오기
+    	$.ajax({
+			url : 'prcsIngList',
+			method : 'GET',
+			data : { prcsDirDeCode : dirDeCode, prodCode : prodCode },
+			success : function(data){
+				ingGrid.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+
+	});	
+   
+    //진행공정 그리드 새로고침
+ 	function reloadIngGrid(){  
+	      $("#ingGrid").load(window.location.href + "#ingGrid");
+	}
  	
 
 

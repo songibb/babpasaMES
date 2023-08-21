@@ -39,8 +39,8 @@ public interface PrcsIngMapper {
 			 							@Param("prcsCode") String prcsCode);
 	
 	
-	
 	//공정 실적 조회
+	public List<PrcsIngVO> selectPrcsResultList();
 	
 	
 	
