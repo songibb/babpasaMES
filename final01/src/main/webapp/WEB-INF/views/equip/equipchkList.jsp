@@ -312,7 +312,7 @@
 	        
 	        
 	        $.ajax({
-			    url : 'equipCodeList',
+			    url : 'empCodeList',
 			    method : 'GET',
 			    success : function(data){
 			    	prodGrid.resetData(data);

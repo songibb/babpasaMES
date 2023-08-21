@@ -2,6 +2,7 @@ package co.yedam.app.quality.mat.web;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +16,11 @@ import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.quality.mat.service.MatChkService;
 import co.yedam.app.quality.mat.service.MatChkVO;
 
+//2023-08-19 장서영 -자재 검수 
+
 @Controller
 public class MatChkController {
-
+	
 	@Autowired
 	MatChkService matChkService;
 	
@@ -39,7 +42,7 @@ public class MatChkController {
 		return list;
 	}
 	
-	//등록, 수정, 삭제
+	//자재 검사 결과 등록
 	@PostMapping("matChkDirSave")
 	@ResponseBody
 	public int matChkDirSave(@RequestBody GridVO<MatChkVO> data) {

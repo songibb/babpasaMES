@@ -36,6 +36,7 @@ public class MatChkServiceImpl implements MatChkService {
 		public int modifyMatChk(GridVO<MatChkVO> data) {
 			int result = 0;
 			// TODO Auto-generated method stub
+			/*
 			if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 				for(MatChkVO vo : data.getDeletedRows()) {
 					result += matchkMapper.deleteMatChk(vo);				
@@ -46,6 +47,7 @@ public class MatChkServiceImpl implements MatChkService {
 					result += matchkMapper.updateMatChk(vo);				
 				}
 			}
+			*/
 			if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
 				for(MatChkVO vo : data.getCreatedRows()) {
 					result += matchkMapper.insertMatChk(vo);				
