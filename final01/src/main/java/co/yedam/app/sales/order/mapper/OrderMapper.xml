@@ -118,7 +118,12 @@
 			WHERE SUBSTR(ord_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
 		INSERT INTO
-		sales_ord
+		sales_ord(
+			ord_code
+			, ord_date
+			, act_code
+			, emp_code
+			, prcs_plan_code)
 		VALUES(
 			#{ordCode}
 			,#{ordDate}
@@ -128,28 +133,26 @@
 		)
 		</insert>
 		<insert id="insertOrderDe" parameterType="OrderVO">
-		<selectKey keyProperty="salesOrdDeCode" resultType="String"
+		<selectKey keyProperty="ordCode" resultType="String"
 			order="BEFORE">
-			SELECT 'ORDDE-' || TO_CHAR(sysdate, 'rrMMdd') ||
-			LPAD(NVL(MAX(SUBSTR(sales_ord_de_code, -3)),0) + 1, 3, '0')
-			FROM sales_ord_de
-			WHERE SUBSTR(sales_ord_de_code, 7, 6) = TO_CHAR(sysdate, 'rrMMdd')
+			SELECT 'ORD-' || TO_CHAR(sysdate, 'rrMMdd') ||
+			LPAD(NVL(MAX(SUBSTR(ord_code, -3)),0) + 1, 3, '0')
+			FROM sales_ord
+			WHERE SUBSTR(ord_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
 		</selectKey>
 			INSERT INTO
 				sales_ord_de(sales_ord_de_code,
 				ord_code,
 				prod_code,
 				prcs_rq_amt,
-				dev_date,
-				dev_yn
+				dev_date
 				)
 			VALUES
 				(get_primaryCode('salesOrdDeCode'),
 				#{ordCode},
 				#{prodCode},
 				#{prcsRqAmt},
-				#{devDate},
-				'N'
+				#{devDate}
 				)
 	</insert>
 
@@ -157,10 +160,10 @@
 	<update id="updateOrder" parameterType="OrderVO">
 			UPDATE sales_ord_de
 			SET
-			prcs_rq_amt = #{data.prcsRqAmt}
-			, prod_code = #{data.prodCode}
-			, dev_date = #{data.devDate}
-			WHERE sales_ord_de_code = #{data.salesOrdDeCode}
+			prcs_rq_amt = #{prcsRqAmt}
+			, prod_code = #{prodCode}
+			, dev_date = #{devDate}
+			WHERE sales_ord_de_code = #{salesOrdDeCode}
 	</update>
 
 <!-- 삭제 -->
