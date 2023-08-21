@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.bom.service.BomCodeService;
 import co.yedam.app.common.bom.service.BomCodeVO;
+import co.yedam.app.common.bom.service.BomReqVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.mat.service.MatCodeService;
 import co.yedam.app.common.product.service.ProductCodeService;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
-
+//2023/08/21/김상희
+//BOM관리
 
 @Controller
 public class BomCodeController {
@@ -65,53 +67,31 @@ public class BomCodeController {
 	@GetMapping("/bomCodeAdmin")
 	public String bomCodeAdmin(Model model) {
 		model.addAttribute("bomList", bomCodeService.getBomCodeAll());
-		model.addAttribute("bomUseInfoList", commCodeService.selectBomUseInfo());
-		model.addAttribute("bomPrcsUseList", commCodeService.selectBomPrcsUseInfo());
+		model.addAttribute("bomUseInfoList", commCodeService.searchCommCodeUse("0A"));
 		model.addAttribute("prodList", productCodeService.getProductCodeAll());
 		model.addAttribute("prcsList", prcsManageService.selectPrcsManageList());
 		model.addAttribute("matList", matCodeService.selectMatCodeList());
 		model.addAttribute("semiProdList", productCodeService.selectSemiProdList());
-		model.addAttribute("bomUnit", commCodeService.selectBomUnit());
+		model.addAttribute("bomUnit", commCodeService.searchCommCodeUse("0C"));
 		return "admincom/bomCodeAdmin";
 	}
 	
 	
-	/*
-	 * @PostMapping("/bomInsert")
-	 * 
-	 * @ResponseBody public int bomInsert(@RequestBody Map<String, Object>
-	 * bomInsertList) { int result = 0;
-	 * 
-	 * return result; }
-	 */
-	
 	 @PostMapping("/bomInsert")
 	 @ResponseBody 
-	 public String bomInsert(@RequestBody BomCodeVO bomCodeVO) {
-	 String bomNo = bomCodeService.bomCodeInsert(bomCodeVO); return bomNo; 
+	 public int bomInsert(@RequestBody BomReqVO bomReqVO) {
+		 int result = bomCodeService.bomCodeInsert(bomReqVO); 
+		 return result; 
 	 } 
-	  
-	 @PostMapping("/bomDeInsert")
-	 @ResponseBody 
-	 public int bomDeInsert(@RequestBody List<BomCodeVO> list) {
-	 return bomCodeService.bomDeCodeInsert(list); 
+	
+	 @PostMapping("bomUpdate")
+	 @ResponseBody
+	 public int bomUpdate(@RequestBody BomReqVO bomReqVO) {
+		 int result = bomCodeService.updateBom(bomReqVO);
+				 return result;
 	 }
 	 
 	
-	
-	
-	@PostMapping("/bomUpdate")
-	@ResponseBody
-	public int bomUpdate(@RequestBody List<BomCodeVO> list) {
-		return bomCodeService.updateBom(list);
-	}
-	
-	
-	@PostMapping("/bomDeUpdate")
-	@ResponseBody
-	public int bomDeUpdate(@RequestBody List<BomCodeVO> list) {
-		return bomCodeService.updateDeBom(list);
-	}
 	
 	@PostMapping("/bomDeDelete")
 	@ResponseBody 

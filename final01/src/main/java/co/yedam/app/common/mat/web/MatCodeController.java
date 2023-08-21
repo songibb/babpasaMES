@@ -33,7 +33,7 @@ public class MatCodeController {
 	@GetMapping("/matCodeList")
 	public String matCodeList(Model model) {
 		model.addAttribute("matList", matCodeService.selectMatCodeList());
-		model.addAttribute("unitList", commCodeService.selectMatUnitInfo());
+		model.addAttribute("unitList", commCodeService.searchCommCodeUse("0Y"));
 		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		
 		return "admincom/matCodeAdmin";

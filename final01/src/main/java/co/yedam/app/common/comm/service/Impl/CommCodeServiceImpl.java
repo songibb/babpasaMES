@@ -34,12 +34,15 @@ public class CommCodeServiceImpl implements CommCodeService {
 		return commCodeMapper.selectCommDeCodeList(commCode);
 	}
 	
+
 	@Override
-	public List<CommCodeVO> selectCommUseInfo() {
-		
-		return commCodeMapper.selectCommUseInfo();
-	}
+	public List<CommCodeVO> searchCommCodeUse(String code) {
 	
+		return commCodeMapper.searchCommCodeUse(code);
+	}
+
+	
+
 
 	@Override
 	public int updateCommDeCode(GridVO<CommCodeVO> data) {
@@ -68,12 +71,6 @@ public class CommCodeServiceImpl implements CommCodeService {
 	
 
 	@Override
-	public List<CommCodeVO> selectActTypeList() {
-		
-		return commCodeMapper.selectActTypeList();
-	}
-
-	@Override
 	public List<CommCodeVO> selectEquipTypeList(){
 		
 		return commCodeMapper.selectEquipTypeList();
@@ -85,41 +82,16 @@ public class CommCodeServiceImpl implements CommCodeService {
 		return commCodeMapper.selectEquipStsList();
 	}
 	
-	@Override
-	public List<CommCodeVO> selectActStsList() {
-		
-		return commCodeMapper.selectActStsList();
-	}
+	
 
-	@Override
-	public List<CommCodeVO> selectBomUseInfo() {
-		
-		return commCodeMapper.selectBomUseInfo();
-	}
+	
 
-	@Override
-	public List<CommCodeVO> selectBomPrcsUseInfo() {
-		
-		return commCodeMapper.selectBomPrcsUseInfo();
-	}
+	
 
-	@Override
-	public List<CommCodeVO> selectMatUnitInfo() {
-		
-		return commCodeMapper.selectMatUnitInfo();
-	}
+	
+	
 
-	@Override
-	public List<CommCodeVO> selectProdTypeInfo() {
-		
-		return commCodeMapper.selectProdTypeInfo();
-	}
-
-	@Override
-	public List<CommCodeVO> selectBomUnit() {
-		
-		return commCodeMapper.selectBomUnit();
-	}
+	
 
 
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.yedam.app.common.bom.mapper.BomCodeMapper;
 import co.yedam.app.common.bom.service.BomCodeService;
 import co.yedam.app.common.bom.service.BomCodeVO;
+import co.yedam.app.common.bom.service.BomReqVO;
 
 @Service
 public class BomCodeServiceImpl implements BomCodeService {
@@ -35,47 +36,54 @@ public class BomCodeServiceImpl implements BomCodeService {
 	}
 
 	@Override
-	public String bomCodeInsert(BomCodeVO bomCodeVO) {
-		int result = bomCodeMapper.bomCodeInsert(bomCodeVO);
-		String bomNo = bomCodeVO.getBomNo();
-		
-		if(result > 0) {
-			return bomNo;
+	public int bomCodeInsert(BomReqVO bomReqVO) {
+		//마스터 등록
+		int result = bomCodeMapper.bomCodeInsert(bomReqVO.getBomCodeVO());
+		String bomNo = String.valueOf(bomReqVO.getBomCodeVO().getBomNo());
+		System.out.println("1"+bomNo);
+		//디테일등록
+		System.out.println("------------------"+bomReqVO.getBomList());
+		for(BomCodeVO vo : bomReqVO.getBomList()) {
+			System.out.println("2"+vo);
+			vo.setBomNo(bomNo);
 			
-		}else {
-			return "실패";
-		}
-	}
-
-	@Override
-	public int bomDeCodeInsert(List<BomCodeVO> list) {
-		int result = 0;
-		for(BomCodeVO vo : list) {
 			bomCodeMapper.bomDeCodeInsert(vo);
 			result++;
 		}
+		
 		return result;
 	}
 
+	/*
+	 * @Override public int bomDeCodeInsert(List<BomCodeVO> list) { int result = 0;
+	 * for(BomCodeVO vo : list) { bomCodeMapper.bomDeCodeInsert(vo); result++; }
+	 * return result; }
+	 */
+
 	@Override
-	public int updateBom(List<BomCodeVO> list) {
-		int result = 0;
-		for(BomCodeVO vo : list) {
+	public int updateBom(BomReqVO bomReqVO) {
+		
+		int result =0;
+		
+		for(BomCodeVO vo : bomReqVO.getBomUpList()) {
 			bomCodeMapper.updateBom(vo);
 			result++;
 		}
-		return result;
-	}
-
-	@Override
-	public int updateDeBom(List<BomCodeVO> list) {
-		int result = 0;
-		for(BomCodeVO vo : list) {
+		
+		for(BomCodeVO vo : bomReqVO.getBomUpDeList()) {
 			bomCodeMapper.updateDeBom(vo);
 			result++;
 		}
+		
 		return result;
+		
 	}
+
+	/*
+	 * @Override public int updateDeBom(List<BomCodeVO> list) { int result = 0;
+	 * for(BomCodeVO vo : list) { bomCodeMapper.updateDeBom(vo); result++; } return
+	 * result; }
+	 */
 
 	@Override
 	public int deleteDeBom(List<BomCodeVO> list) {

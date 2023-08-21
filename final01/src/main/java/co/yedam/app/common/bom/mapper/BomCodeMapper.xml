@@ -28,11 +28,13 @@
 						b.bom_udate,
 						b.bom_yn,
 						b.bom_prcs_yn,
+						find_cdnm('0J', act_sts) AS bom_prcs_yn_name,
 						c.prod_name
-				FROM bom_header b join com_prod c
-		    	ON(b.prod_code=c.prod_code)
-		    	WHERE c.prod_name LIKE '%' || #{prodName} || '%'
-	    	ORDER BY b.bom_no
+				 FROM  bom_header b 
+				 join  com_prod c
+		    	   ON  (b.prod_code=c.prod_code)
+		    	WHERE  c.prod_name LIKE '%' || #{prodName} || '%'
+	    	    ORDER  BY b.bom_no
   	
   	</select>
   	
@@ -60,6 +62,10 @@
   	</select>
   	
   	<insert id="bomCodeInsert" parameterType="BomCodeVO">
+  		<selectKey keyProperty="bomNo" resultType="String" order="BEFORE">
+  			SELECT 'BNO-' || LPAD((NVL(MAX(SUBSTR(BOM_NO, -4)),0)+1),4,'0')
+            FROM BOM_HEADER
+  		</selectKey>
   		INSERT INTO bom_header
   							(
   								bom_no,
@@ -71,11 +77,11 @@
   							)
   		VALUES
 		  		(
-		  			get_primarycode('bomNo'),
+		  			#{bomNo},
 		  			#{prodCode},
 		  			sysdate,
 		  			#{bomYn},
-		  			#{bomPrcsYn}
+		  			'W2'
 		  		)
   	</insert>
   	

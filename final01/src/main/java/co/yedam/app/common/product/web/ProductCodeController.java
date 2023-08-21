@@ -51,7 +51,7 @@ public class ProductCodeController {
 	@GetMapping("/prodCodeAdmin")
 	public String prodCodeAdmin(Model model) {
 		model.addAttribute("prodList", productCodeService.getProductCodeAll());
-		model.addAttribute("prodTypeList", commCodeService.selectProdTypeInfo());
+		model.addAttribute("prodTypeList", commCodeService.searchCommCodeUse("0E"));
 		return "admincom/prodCodeAdmin";
 	}
 	

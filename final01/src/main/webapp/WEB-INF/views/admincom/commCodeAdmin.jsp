@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>공통코드관리조회</h3>
+	<h3>공통코드관리</h3>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -31,9 +31,9 @@
 		            </form>
 		            
 	            	<div style="display: flex; justify-content: flex-end;">
-	            		<input type="text" name="commCode" id="commCode" readonly="readonly">
+	            		<input type="text" name="commCode" id="commCode" readonly="readonly" style="margin-bottom: 0.2%; width: 5%">
 		            	<button id="save" class="btn btn-info btn-icon-text">저장</button>
-		            	<button id="delete" class="btn btn-info btn-icon-text">삭제</button>
+		            	<button id="delete" class="btn btn-info btn-icon-text">삭제</button> 
 	            		<button id="commAdd" class="btn btn-info btn-icon-text">추가</button>
 	            	</div>
 	            </div>
@@ -66,7 +66,7 @@
 	<script>
 	
 	
-	$('#delete').on("click",function(){
+ 	$('#delete').on("click",function(){
 		//그리드 행 지움
 		grid2.removeCheckedRows(false);
 		//마우스 커서 없앰

@@ -15,16 +15,14 @@ public interface BomCodeService {
 	public List<BomCodeVO> getBomDeCodeList(String bomNo);
 	
 	//bom 등록
-	public String bomCodeInsert(BomCodeVO bomCodeVO);
+	public int bomCodeInsert(BomReqVO bomReqVO);
 	
-	//bom 상세등록
-	public int bomDeCodeInsert(List<BomCodeVO> list);
 	
 	//bom 수정
-	public int updateBom(List<BomCodeVO> list);
+	public int updateBom(BomReqVO bomReqVO);
 	
 	//bom 상세수정
-	public int updateDeBom(List<BomCodeVO> list);
+	//public int updateDeBom(List<BomCodeVO> list);
 	
 	//bom 상세 삭제
 	public int deleteDeBom(List<BomCodeVO> list);
