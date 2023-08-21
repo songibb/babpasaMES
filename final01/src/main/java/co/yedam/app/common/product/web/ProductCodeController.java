@@ -88,5 +88,11 @@ public class ProductCodeController {
 	return result;
 	}
 	
+	@GetMapping("/ajaxNoBOMList")
+	@ResponseBody
+	public List<ProductCodeVO> ajaxNoBOMList(){
+		List<ProductCodeVO> prodNoBomList = productCodeService.bomNoProdList();
+		return prodNoBomList;
+	}
 	
 }

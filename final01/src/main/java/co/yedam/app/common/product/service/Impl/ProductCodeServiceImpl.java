@@ -71,4 +71,10 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 		return productCodeMapper.selectSemiProdList();
 	}
 
+	@Override
+	public List<ProductCodeVO> bomNoProdList() {
+		
+		return productCodeMapper.bomNoProdList();
+	}
+
 }
