@@ -16,7 +16,12 @@ public interface MatInService {
 	//검수됐지만 입고안 된 자재들 목록
 	public List<MatTestVO> selectMatTestFinishList();
 	
-	//등록
+	//삭제한 행 정보찾기
+	public List<MatTestVO> getDeletedMatTest(List<MatInVO> list);
+	
+	//등록, 수정, 삭제
 	public int modifyMatIn(GridVO<MatInVO> data);
-
+	
+	//정산 페이지
+	public List<MatInVO> getMatLotModal(String materialCode);
 }

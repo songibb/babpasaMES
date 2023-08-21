@@ -1,5 +1,6 @@
 package co.yedam.app.material.semi.in.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,25 @@ public class SemiInServiceImpl implements SemiInService {
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
 			for(SemiInVO vo : data.getCreatedRows()) {
 				result += sim.insertSemiIn(vo);
+				sim.prcsIngStsUpdateAtSemiIn(vo);
 			}
 		}
 		
 		return result;
+	}
+	
+	//삭제 행 정보
+	@Override
+	public List<SemiInVO> getDeletedRowsInfo(List<SemiInVO> list) {
+		List<SemiInVO> testList = new ArrayList<>();
+		if(list != null && list.size() > 0) {
+			for(SemiInVO vo : list) {
+				SemiInVO testVO = sim.selectDeleteRowsInfo(vo);
+				testList.add(testVO);
+			}
+		}
+
+		return testList;
 	}
 
 	

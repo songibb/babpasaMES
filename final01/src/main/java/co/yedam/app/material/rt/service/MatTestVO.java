@@ -8,7 +8,7 @@ import lombok.Data;
 public class MatTestVO {
 	
 	private String matTestCode;
-	private Integer matInputAmt;
+	private Integer matAmt;
 	private Integer matYamt;
 	private Integer matNamt;
 	private Date matTestDate;

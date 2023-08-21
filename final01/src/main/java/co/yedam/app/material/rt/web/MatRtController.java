@@ -50,6 +50,14 @@ public class MatRtController {
 		return vo;
 	}
 	
+	//삭제한 행 1번 그리드로 가는 ajax
+	@PostMapping("getDeletedRtInfo")
+	@ResponseBody
+	public List<MatTestVO> getDeletedMatInfo(@RequestBody List<MatRtVO> list) {
+			
+		return mrs.getDeletedRowsInfo(list);
+	}
+	
 	//관리페이지
 	@GetMapping("matRtDir")
 	public String getMatRtDir(Model model) {

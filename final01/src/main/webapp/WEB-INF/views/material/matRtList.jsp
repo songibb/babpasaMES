@@ -307,7 +307,6 @@ function resetInput(e){
 	           <c:forEach items="${rtList}" var="mat">
 	           	{
 	           	matOdDeCd : "${mat.matOdDeCd}",
-	           	matCode :"${mat.matCode}",
 	           	matName :"${mat.matName}",
 	           	matUnit : "${mat.matUnit}",
 	           	matStd : "${mat.matStd}",
@@ -337,10 +336,6 @@ function resetInput(e){
 	 	        name: 'matOdDeCd',
 	 	      },
 	 	      {
-	 	        header: '자재코드',
-	 	        name: 'matCode'
-	 	      },
-	 	      {
 	 	        header: '자재명',
 	 	        name: 'matName'
 	 	      },
@@ -365,10 +360,6 @@ function resetInput(e){
 		 	    header: '반품수량',
 		 	    name: 'matRtAmt'
 		 	  },
-		 	  {
-			 	header: '담당자',
-			 	name: 'empName'
-			  },
 			  {
 		 	    header: '검사일자',
 		 	    name: 'matTestDate',
@@ -387,9 +378,15 @@ function resetInput(e){
 						return "반품중";
 					} else if(e.value == 'R5'){
 						return "반품완료";
+					} else if(e.value == 'R6'){
+						return "반품실패";
 					}
                 }   
-		      }
+		      },
+		 	  {
+			 	header: '담당자',
+			 	name: 'empName'
+			  }
 	 	    ]
 	      
 	     });

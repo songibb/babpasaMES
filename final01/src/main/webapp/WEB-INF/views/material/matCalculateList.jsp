@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
+	
 	h1{
 		font-weight : 700;
 	}
@@ -28,6 +29,8 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	
 </style>    
        
 </head>
@@ -194,12 +197,13 @@
 	           	{
 	           	calCode : "${cal.calCode}",
 	           	calCategory :"${cal.calCategory}",
-	           	matCode :"${cal.matCode}",
+	           	matLot :"${cal.matLot}",
 	           	matName : "${cal.matName}",
 	           	matUnit : "${cal.matUnit}",
 	           	matStd :"${cal.matStd}",
 	           	calBamt : "${cal.calBamt}",
 	           	calAmt : "${cal.calAmt}",
+	           	empName : "${cal.empName}",
 	           	<c:if test="${cal.calCategory == 'I'}">
 	           		finalAmt : "${cal.calBamt + cal.calAmt}",
 	           	</c:if>
@@ -225,6 +229,7 @@
 	 	      {
 	 	        header: '정산 코드',
 	 	        name: 'calCode',
+	 	        hidden : true
 	 	      },
 	 	      {
 	 	        header: '정산구분',
@@ -237,10 +242,7 @@
 					}
                	}   
 	 	      },
-	 	      {
-	 	        header: '자재코드',
-	 	        name: 'matCode'
-	 	      },
+	 	      
 	 	      {
           	  	header: '자재명',
 		 		name: 'matName' 
@@ -254,6 +256,11 @@
 	 	        name: 'matStd'
 	 	      },
 	 	      {
+		 	    header: '자재 LOT',
+		 	    name: 'matLot',
+		 	 	width: 150
+		 	  },
+	 	      {
 	 	        header: '기존수량',
 	 	        name: 'calBamt'
 	 	      },
@@ -262,14 +269,18 @@
 		 	    name: 'calAmt'
 		 	  },
 		 	  {
+			 	header: '정산일자',
+			 	name: 'calDate',
+ 	  		 	className: 'yellow-background'
+			  },
+		 	  {
 		 	    header: '최종수량',
 		 	    name: 'finalAmt'
 		 	  },
 		 	  {
-			 	header: '정산일자',
-			 	name: 'calDate',
- 	  		 	className: 'yellow-background'
-			  }
+		 		header : '담당자명',
+		 		name : 'empName'
+		 	  }
 	 	    ]
 	      
 	     });
@@ -280,18 +291,22 @@
    
    function searchMatIn(e){
 	   let mat = $('#matCodeInput').val();
-	   let calIn = 'I';
-	   let calOut = 'O';
-	   if($('#calInCheck').checked && !$('#calOutCheck').checked){
-		   calOut = null;
-	   } else if(!$('#calInCheck').checked && $('#calOutCheck').checked){
-		   calIn = null;
+	   let calIn = '1';
+	   let calOut = '1';
+	   let calInCheck = document.getElementById('calInCheck');
+	   let calOutCheck = document.getElementById('calOutCheck');
+	   if(calInCheck.checked && !calOutCheck.checked){
+		   calOut = '2';
+	   } else if(!calInCheck.checked && calOutCheck.checked){
+		   calIn = '2';
 	   }
 	   let sd = $('#startDate').val();
 	   let ed = $('#endDate').val();	   
-		  
+	
+	   console.log(calIn);
+	   console.log(calOut);
 	   let search = { materialCode : mat , calIn : calIn , calOut : calOut , startDate : sd , endDate : ed };
-	   $.ajax({
+	    $.ajax({
 		   url : 'matCalFilterList',
 		   method : 'GET',
 		   data : search ,
@@ -309,8 +324,10 @@
 			   		} else {
 			   			i.finalAmt = i.calAmt + i.calBamt;
 			   		}
+			   		
+			   	
 			  }
-			   grid.resetData(data);
+			    grid.resetData(data);
 		   },
 		   error : function(reject){
 			   console.log(reject);

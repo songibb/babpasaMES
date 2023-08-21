@@ -180,15 +180,6 @@
 		 	    header: '반품수량',
 		 	    name: 'matRtAmt'
 		 	  },
-		 	  {
-		 		  header : '담당자코드',
-		 		  name : 'empCode',
-		 		  hidden : true
-		 	  },
-		 	  {
-			 	header: '담당자',
-			 	name: 'empName'
-			  },
 			  {
 		 	    header: '검사일자',
 		 	    name: 'matTestDate',
@@ -220,11 +211,24 @@
 	                       {
 		                     text: '반품완료',
 		                     value: 'R5'
-		                   } 
+		                   },
+		                   {
+		                	 text: '반품실패',
+		                	 value: 'R6'
+		                   }
 	                  ]
 	                }
 	              } 
-		      }
+		      },
+		 	  {
+		 		  header : '담당자코드',
+		 		  name : 'empCode',
+		 		  hidden : true
+		 	  },
+		 	  {
+			 	header: '담당자',
+			 	name: 'empName'
+			  }
 	 	    ]
 	      
 	     });
@@ -237,7 +241,7 @@
 		           	{
 		           	matTestCode : "${test.matTestCode}",
 		           	matOdDeCd : "${test.matOdDeCd}",
-		           	matInputAmt : "${test.matInputAmt}",
+		           	matAmt : "${test.matAmt}",
 		           	matCode : "${test.matCode}",
 		           	matName : "${test.matName}",
 		           	matUnit : "${test.matUnit}",
@@ -274,7 +278,7 @@
 		    	  },
 		 	      {
 		 	        header: '발주량',
-		 	        name: 'matInputAmt'
+		 	        name: 'matAmt'
 		 	      },
 		 	      {
 			 	        header: '자재코드',
@@ -329,8 +333,33 @@
 		      
 		     });
 	 
+	 setDisabled();
+	 
 	 //삭제버튼
 	 $('#delete').on("click",function(){
+		 let checkList = rtGrid.getCheckedRows();
+			
+			deleteList = [];
+			$.each(checkList, function(idx, obj){
+				deleteObj = {};
+				deleteObj['matTestCode'] = obj['matTestCode'];
+				deleteList.push(deleteObj);
+			})
+
+			$.ajax({
+				url : 'getDeletedRtInfo',
+				method : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(deleteList),
+				success : function(data){
+					testGrid.appendRows(data);
+					
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		 
 		//그리드에서 행 지움
 		rtGrid.removeCheckedRows(false);
 		//마우스 커서 없앰
@@ -397,6 +426,17 @@
 
 	}
 	
+	//비활성화
+	function setDisabled(){
+		$.each(rtGrid.getData(), function(idx, obj){
+			
+			if(obj['matRtCode'] != null && (obj['matRtSts'] == 'R5' || obj['matRtSts'] == 'R6')){
+				rtGrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+	
+	
 	//검색 또는 DML 후 다시 LIST 불러오는 함수
 	function selectAjax(){
 		let mat = $('#matCodeInput').val();
@@ -428,6 +468,7 @@
 					
 				})
 				rtGrid.resetData(data2);
+				setDisabled();
 			}
 		})
 	}

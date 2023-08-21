@@ -37,6 +37,14 @@ public class SemiInController {
 		return vo;
 	}
 	
+	//삭제한 행 1번 그리드로 가는 ajax
+	@PostMapping("getDeletedSemiInfo")
+	@ResponseBody
+	public List<SemiInVO> getDeletedMatInfo(@RequestBody List<SemiInVO> list) {
+				
+		return sis.getDeletedRowsInfo(list);
+	}
+	
 	//관리페이지
 	@GetMapping("semiInDir")
 	public String getSemiInDir(Model model) {

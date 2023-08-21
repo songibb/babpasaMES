@@ -25,6 +25,7 @@ public class MatInVO {
 	
 	private String matUnit;
 	private String matStd;
+	private Integer matStock;
 	
-	
+	private String useYn;
 }

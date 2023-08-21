@@ -33,16 +33,16 @@
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
 		<where>
-			<if test="materialCode != null and materialCode != ''">
+			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
-			<if test="accountCode != null and accountCode != ''">
+			<if test="accountCode != null and !accountCode.equals('')">
 				AND a.act_code LIKE '%' || #{accountCode} || '%'
 			</if>
-			<if test="startDate != null and startDate != ''">
+			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(a.mat_rt_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
-			<if test="endDate != null and endDate != ''">
+			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.mat_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
@@ -51,7 +51,7 @@
 	
 	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
 	<select id="selectMatTestFinishList" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, mat_input_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
 		FROM mat_test a LEFT JOIN com_err b
 		ON(a.err_code = b.err_code)
 		LEFT JOIN mat_order_de c
@@ -64,6 +64,22 @@
         ON(f.act_code = e.act_code)
 		WHERE err_rt_sts = 'R1'
 		ORDER BY mat_test_date DESC
+	</select>
+	
+	<!-- 삭제한 행 정보 -->
+	<select id="selectDeletedRowsInfo" resultType="MatTestVO">
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		FROM mat_test a LEFT JOIN com_err b
+		ON(a.err_code = b.err_code)
+		LEFT JOIN mat_order_de c
+		ON(a.mat_od_de_cd = c.mat_od_de_cd)
+        LEFT JOIN com_mat d
+        ON(c.mat_code = d.mat_code)
+        LEFT JOIN mat_order f
+        ON(c.mat_od_cd = f.mat_od_cd)
+        LEFT JOIN com_act e
+        ON(f.act_code = e.act_code)
+		WHERE a.mat_test_code = #{matTestCode}
 	</select>
 	
 	<!-- 반품 등록 -->

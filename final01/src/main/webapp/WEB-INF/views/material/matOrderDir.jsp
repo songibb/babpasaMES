@@ -33,6 +33,11 @@
         background-color: rgb(255,253,235);
 	}
 	
+	#grid{
+		height: 700px;
+		
+	}
+	
 </style>    
        
 </head>
@@ -64,8 +69,10 @@
                 				<br>
                 				<p>발주일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                				
-                				
+                				<br>
+                				<p>검수상태</p>
+                				<label for="before"><input type="checkbox" id="before" value="before">검수전</label>
+                				<label for="comple"><input type="checkbox" id="comple" value="comple">검수완료</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -114,7 +121,7 @@
 		orderGrid.removeCheckedRows(false);
 		//마우스 커서 없앰
 		orderGrid.blur();
-		});
+	});
 	
 	
 	//저장버튼
@@ -146,6 +153,8 @@
 			
 		}
 	}
+	
+	
 
 	//발주 form
 	var orderGrid = new tui.Grid({
@@ -166,6 +175,7 @@
 	           	actCode : "${mat.actCode}",
 	           	empName : "${mat.empName}",
 	           	empCode : "${mat.empCode}",
+	           	matTestYn : "${mat.matTestYn}",
 	           	matOdRq : `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`,
 	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy-MM-dd"/>`
 	           	}<c:if test="${not status.last}">,</c:if>
@@ -182,14 +192,9 @@
 	        columns: [
 	        	  {
 	 	 	        header: '발주코드',
-	 	 	        name: 'matOdCd'
+	 	 	        name: 'matOdCd',
+			 	 	width: 150
 	 	 	      },
-	 	 	      {
-		 	 	        header: '발주상세코드',
-		 	 	        name: 'matOdDeCd',
-		 	 	        hidden : true
-		 	 	        
-		 	 	  },
 	 	 	      {
 			 			header: '자재명',
 			 		 	name: 'matName',
@@ -232,33 +237,54 @@
 	                name: 'actCode',                 // [필수] 컬럼 매핑 이름 값
 	                hidden : true                // [선택] 숨김 여부
 	              },
-	 	 	      {
-                    header: '담당자명',            // [필수] 컬럼 이름
-                    name: 'empName'             // [필수] 컬럼 매핑 이름 값                   // [선택] 숨김 여부
-                  },
-                  {
-                    header: '담당자코드',            // [필수] 컬럼 이름
-                    name: 'empCode',                // [선택] 숨김 여부
-                    hidden : true
-                  },
+	 	 	      
 	 	 	      {
 	 	 	        header: '발주일자',
 	 	 	        name: 'matOdRq',
-	 	  		 	className: 'yellow-background'  
+	 	  		 	className: 'yellow-background'
 	 	 	      },
+	              {
+			 	 	    header: '납기요청일',
+			 	 	    name: 'matOdAcp',
+			 	 	  	editor: {
+			  		      type: 'datePicker',
+			  		      options: {
+			  		    	  language: 'ko'
+			  		      }
+			  		    },
+			  		  	className: 'yellow-background'
+			 	  },
+			 	  {
+			 		  header: '발주상세코드',
+			 		  name: 'matOdDeCd',
+			 		  hidden: true
+			 	  },
+			 	  {
+	                    header: '담당자코드',            // [필수] 컬럼 이름
+	                    name: 'empCode',
+	                    hidden :true
+	              },
+	              {
+	            	  header: '검수여부',
+	            	  name: 'matTestYn',
+	            	  formatter: function (e) {
+	      					if(e.value == 'Y'){
+	      						return "검수완료";
+	      					} else if(e.value == 'N'){
+	      						return "검수전";
+	      					}
+	                  }   
+	      		      
+	              },
 	 	 	      {
-		 	 	    header: '납기요청일',
-		 	 	    name: 'matOdAcp',
-		 	 	  	editor: {
-		  		      type: 'datePicker',
-		  		      options: {
-		  		    	  language: 'ko'
-		  		      }
-		  		    },
-		  		  	className: 'yellow-background'
-		 	 	  }
+	                    header: '담당자명',            // [필수] 컬럼 이름
+	                    name: 'empName'             // [필수] 컬럼 매핑 이름 값                   // [선택] 숨김 여부
+	              },
 	        ]
 	      });
+	
+	setDisabled();
+   
 	
 	
 
@@ -342,8 +368,17 @@
 		let act = $('#actCodeInput').val();
 		let sd = $('#startDate').val();
 		let ed = $('#endDate').val();
-		   
-		let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+		let comple = '1';
+		let before = '1';
+		   let beforeCheck = document.getElementById('before');
+		   let compleCheck = document.getElementById('comple');
+		   if(beforeCheck.checked && !compleCheck.checked){
+			   comple = '2';
+		   } else if(!beforeCheck.checked && compleCheck.checked){
+			   before = '2';
+		   }
+			  
+		   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, before : before, comple : comple};
 		$.ajax({
 			url : 'getMatOrderFilter',
 			method : 'GET',
@@ -367,6 +402,7 @@
 					
 				})
 				orderGrid.resetData(data2);
+				setDisabled();
 			}
 		})
 	}
@@ -436,10 +472,20 @@
 		     });
 	
 		
-		orderGrid.on('dblclick', () => {
+		orderGrid.on('dblclick', ev => {
     	let rowKey = orderGrid.getFocusedCell().rowKey;
     	let columnName = orderGrid.getFocusedCell().columnName;
     	let value = orderGrid.getFocusedCell().value;
+    	
+    	
+ 	   	let matOdCd = orderGrid.getValue(rowKey, 'matOdCd');
+ 	   	let matTestYn = orderGrid.getValue(rowKey, 'matTestYn');
+ 	   	if(matOdCd != null){
+ 		   if(matTestYn == 'Y'){
+ 			   ev.stop();
+ 			   return false;
+ 		   }
+ 	   	}
     	
     	if(columnName == 'matName'){
     		$(".modal").fadeIn();
@@ -481,6 +527,18 @@
     	
 
   	});
+		
+	//비활성화
+	function setDisabled(){
+		$.each(orderGrid.getData(), function(idx, obj){
+			
+			if(obj['matOdCd'] != null && obj['matTestYn'] == 'Y'){
+				orderGrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+	
+		
 	
 	//모달창 닫기
 	$(".close_btn").click(function(){

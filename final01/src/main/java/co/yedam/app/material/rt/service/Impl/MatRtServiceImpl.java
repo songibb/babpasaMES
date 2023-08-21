@@ -1,5 +1,6 @@
 package co.yedam.app.material.rt.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,20 @@ public class MatRtServiceImpl implements MatRtService {
 		
 		return result;
 		
+	}
+	
+	//삭제 행 정보
+	@Override
+	public List<MatTestVO> getDeletedRowsInfo(List<MatRtVO> list) {
+		List<MatTestVO> testList = new ArrayList<>();
+		if(list != null && list.size() > 0) {
+			for(MatRtVO vo : list) {
+				MatTestVO testVO = mrm.selectDeletedRowsInfo(vo);
+				testList.add(testVO);
+			}
+		}
+
+		return testList;
 	}
 	
 

@@ -14,9 +14,15 @@ public class MatCalVO {
 	private Integer calAmt;
 	private Date calDate;
 	private Integer calBamt;
+	private String empCode;
 	
 	//join
 	private String matName;
 	private String matStd;
 	private String matUnit;
+	private String empName;
+	
+	private String actCode;
+	private Date matExd;
+	
 }

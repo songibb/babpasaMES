@@ -15,6 +15,10 @@ public interface MatRtService {
 	
 	//검수완료 목록
 	public List<MatTestVO> selectMatTestFinishList();
+	
+	//삭제 행 정보
+	public List<MatTestVO> getDeletedRowsInfo(List<MatRtVO> list);
+	
 		
 	//등록, 수정, 삭제
 	public int modifyMatRt(GridVO<MatRtVO> data);

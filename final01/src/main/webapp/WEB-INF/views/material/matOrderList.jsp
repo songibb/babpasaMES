@@ -34,6 +34,9 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	#grid{
+		height: 800px;
+	}
 </style>    
        
 </head>
@@ -57,12 +60,16 @@
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>업체명</p>
-                				<input type="text" =id="actCodeInput">
+                				<input type="text" id="actCodeInput">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
                 				<p>발주일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                				<br>
+                				<p>검수상태</p>
+                				<label for="before"><input type="checkbox" id="before" value="before">검수전</label>
+                				<label for="comple"><input type="checkbox" id="comple" value="comple">검수완료</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -257,9 +264,18 @@
 	   let mat = $('#matCodeInput').val();
 	   let act = $('#actCodeInput').val();
 	   let sd = $('#startDate').val();
-	   let ed = $('#endDate').val();	   
+	   let ed = $('#endDate').val();	
+	   let before = '1';
+	   let comple = '1';
+	   let beforeCheck = document.getElementById('before');
+	   let compleCheck = document.getElementById('comple');
+	   if(beforeCheck.checked && !compleCheck.checked){
+		   comple = '2';
+	   } else if(!beforeCheck.checked && compleCheck.checked){
+		   before = '2';
+	   }
 		  
-	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed };
+	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, before : before, comple : comple};
 	   $.ajax({
 		   url : 'getMatOrderFilter',
 		   method : 'GET',
@@ -323,6 +339,8 @@
 	           	matTotalPrice : "${mat.matPrice * mat.matAmt}",
 	           	actName :"${mat.actName}",
 	           	empName : "${mat.empName}",
+	           	matOdDeCd : "${mat.matOdDeCd}",
+	           	matTestYn : "${mat.matTestYn}",
 	           	matOdRq : `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`,
 	           	matOdAcp :`<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy-MM-dd"/>`
 	           	}<c:if test="${not status.last}">,</c:if>
@@ -342,7 +360,7 @@
 	 	      {
 	 	        header: '발주코드',
 	 	        name: 'matOdCd',
-	 	        filter: 'select'
+		 	 	width: 150
 	 	      },
 	 	      {
 	 	        header: '자재명',
@@ -368,13 +386,10 @@
 	 	        header: '총액',
 	 	        name: 'matTotalPrice'
 	 	      },
+	 	     
 	 	      {
 		 	    header: '업체명',
 		 	    name: 'actName'
-		 	  },
-		 	  {
-		 	    header: '담당자',
-		 	    name: 'empName'
 		 	  },
 		 	  {
 	 	 	    header: '발주일자',
@@ -384,8 +399,29 @@
 		 	  {
 			 	header: '납기요청일',
 			 	name: 'matOdAcp',
- 	  		 	className: 'yellow-background'
-			  }
+	  		 	className: 'yellow-background'
+			  },
+			  {
+			 	header: '발주상세코드',
+			 	name: 'matOdDeCd',
+			 	hidden: true
+			  },
+			  {
+            	  header:'검수여부',
+            	  name:'matTestYn',
+            	  formatter: function (e) {
+      					if(e.value == 'Y'){
+      						return "검수완료";
+      					} else if(e.value == 'N'){
+      						return "검수전";
+      					}
+                  }   
+      		      
+              },
+		 	  {
+		 	    header: '담당자',
+		 	    name: 'empName'
+		 	  }
 	 	    ]
 	      
 	     });

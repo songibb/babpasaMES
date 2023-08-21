@@ -12,7 +12,7 @@
 			LEFT JOIN com_mat c
 		ON (a.mat_code = c.mat_code)
 		<where>
-			<if test="materialCode != null and materialCode != ''">
+			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
 		</where>

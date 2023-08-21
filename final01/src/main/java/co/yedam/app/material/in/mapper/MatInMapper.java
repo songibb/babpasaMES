@@ -15,6 +15,9 @@ public interface MatInMapper {
 	//검수됐지만 입고안 된 자재들 목록
 	public List<MatTestVO> selectMatTestFinishList();
 	
+	//삭제한 행 정보 찾기
+	public MatTestVO selectDeletedMatTest(MatInVO vo);
+	
 	//등록
 	public int insertMatIn(MatInVO vo);
 	
@@ -23,4 +26,7 @@ public interface MatInMapper {
 	
 	//삭제
 	public int deleteMatIn(MatInVO vo);
+	
+	//자재 정산
+	public List<MatInVO> selectLotModal(@Param("materialCode") String materialCode);
 }
