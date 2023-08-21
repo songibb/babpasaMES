@@ -45,6 +45,14 @@
 			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(a.mat_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
+			<choose>
+	            <when test="checkList != null and checkList.size != 0">
+	                and a.mat_rt_sts in 
+	                <foreach collection="checkList" item="item" index="index" separator="," open="(" close=")">
+	                    #{item}
+	                </foreach>
+	            </when>
+        	</choose>	
 		</where>
 		ORDER BY a.mat_rt_date DESC
 	</select>

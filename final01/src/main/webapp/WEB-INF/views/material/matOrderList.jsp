@@ -37,6 +37,26 @@
 	#grid{
 		height: 800px;
 	}
+	
+	.modal_content{
+	  /*모달창 크기 조절*/
+	  width:600px; height:700px;
+	  background:#fff; border-radius:10px;
+	  /*모달창 위치 조절*/
+	  position:relative; top:33%; left:45%;
+	  margin-top:-100px; margin-left:-200px;
+	  text-align:center;
+	  box-sizing:border-box;
+	  line-height:23px;
+	}
+	
+	.m_body > p{
+		display : inline-block;
+	}
+	
+	.m_body > input{
+		border : 1px solid black;
+	}
 </style>    
        
 </head>
@@ -94,6 +114,9 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
@@ -105,33 +128,37 @@
 	<script>
    
    //모달 시작
-   var Grid;
-   $("#actModal").click(function(){
-       $(".modal").fadeIn();
-       Grid = createActGrid();
-       $('.modal_title h3').text('거래처 목록');
-       Grid.on('dblclick', () => {
-        	let rowKey = Grid.getFocusedCell().rowKey;
-        	if(rowKey != null){
-        		let actCode = Grid.getValue(rowKey, 'actCode');
-            	let actName = Grid.getValue(rowKey, 'actName');
-        		$("#actCodeInput").val(actCode);
-        		$("#actNameFix").val(actName);
-        	}
-        	
-    		//모달창 닫기
-    		console.log(rowKey);
-    		if(rowKey != null){
-    			$(".modal").fadeOut();
-        		Grid.destroy();
-    		}
-
-    		});
-      	});
+	   var Grid;
+	   $("#actModal").click(function(){
+	       $(".modal").fadeIn();
+	       preventScroll();
+	       Grid = createActGrid();
+	       $('.modal_title h3').text('거래처 목록');
+	       Grid.on('dblclick', () => {
+	        	let rowKey = Grid.getFocusedCell().rowKey;
+	        	if(rowKey != null){
+	        		let actCode = Grid.getValue(rowKey, 'actCode');
+	            	let actName = Grid.getValue(rowKey, 'actName');
+	        		$("#actCodeInput").val(actCode);
+	        		$("#actNameFix").val(actName);
+	        	}
+	        	
+	    		//모달창 닫기
+	    		console.log(rowKey);
+	    		if(rowKey != null){
+	    			$(".modal").fadeOut();
+	    			activeScroll();
+	    			let inputContent = $('#modalSearch').val('');
+	        		Grid.destroy();
+	    		}
+	
+	    	});
+	    });
      
      
    $("#matModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createMatGrid();
        $('.modal_title h3').text('자재 목록');
        Grid.on('dblclick', () => {
@@ -147,6 +174,8 @@
    		//모달창 닫기
    		if(rowKey != null){
 			$(".modal").fadeOut();
+			activeScroll();
+			let inputContent = $('#modalSearch').val('');
     		Grid.destroy();
 
    		}
@@ -154,10 +183,11 @@
      });
      
      $(".close_btn").click(function(){
-         $(".modal").fadeOut();
-         
+        $(".modal").fadeOut();
+        activeScroll();
+        let inputContent = $('#modalSearch').val('');
   		Grid.destroy();
-       });
+     });
      
    //거래처 모달 그리드
      function createActGrid(){
@@ -257,6 +287,41 @@
 	   return matGrid;
   }
    //모달 끝
+   
+		$('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '자재 목록'){
+				let modalSearchData = {matName : inputContent}
+				$.ajax({
+					url : 'getMatModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						console.log(data);
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			} else if(title == '거래처 목록'){
+				let modalSearchData = {actName : inputContent}
+				$.ajax({
+					url : 'getActModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						console.log(data);
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
    
    //검색
     $('#searchBtn').on('click', searchMatIn);
@@ -376,15 +441,29 @@
               },
 	 	      {
 	 	        header: '단가(원)',
-	 	        name: 'matPrice'
+	 	        name: 'matPrice',
+	 	       	formatter(e) { 
+	 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           	return val +"원";
+	 	        },
+	 	        width: 120
 	 	      },
 	 	      {
 	 	        header: '발주량',
-	 	        name: 'matAmt'
+	 	        name: 'matAmt',
+	 	       	formatter(e) { 
+	 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           	return val;
+	 	        }
 	 	      },
 	 	      {
 	 	        header: '총액',
-	 	        name: 'matTotalPrice'
+	 	        name: 'matTotalPrice',
+	 	       	formatter(e) { 
+	 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           	return val +"원";
+	 	         },
+		 	        width: 120
 	 	      },
 	 	     
 	 	      {
@@ -427,6 +506,23 @@
 	     });
    
    
+   
+	//스크롤 막기
+ 	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+ 	}
+
+ 	//스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
    
   
      

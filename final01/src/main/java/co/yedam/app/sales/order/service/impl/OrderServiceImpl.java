@@ -62,6 +62,13 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result;
 	}
+	
+	//거래처 목록 검색
+	@Override
+	public List<OrderVO> actSearchList(String actName) {
+		
+		return orderMapper.selectActSearchList(actName);
+	}
 }
 
 

@@ -21,4 +21,10 @@ public class MatModalServiceImpl implements MatModalService {
 		return mmm.getMetList();
 	}
 
+	@Override
+	public List<MatModalVO> selectModalSearch(String matName) {
+		
+		return mmm.selectModalSearch(matName);
+	}
+
 }

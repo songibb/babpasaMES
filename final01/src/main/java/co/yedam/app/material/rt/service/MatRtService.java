@@ -3,6 +3,7 @@ package co.yedam.app.material.rt.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.material.search.service.SearchVO;
 
 
 
@@ -10,7 +11,7 @@ import co.yedam.app.common.grid.service.GridVO;
 public interface MatRtService {
 	//전체조회
 	public List<MatRtVO> selectMatRtList();
-	public List<MatRtVO> selectMatRtSearch(String materialCode, String accountCode, String startDate, String endDate);
+	public List<MatRtVO> selectMatRtSearch(SearchVO vo);
 	
 	
 	//검수완료 목록
