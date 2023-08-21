@@ -37,10 +37,10 @@ public class BomCodeServiceImpl implements BomCodeService {
 	@Override
 	public String bomCodeInsert(BomCodeVO bomCodeVO) {
 		int result = bomCodeMapper.bomCodeInsert(bomCodeVO);
-		String bomNo = bomCodeVO.getBomNo();
+		System.out.println(bomCodeVO);
 		
 		if(result > 0) {
-			return bomNo;
+			return null;
 			
 		}else {
 			return "실패";

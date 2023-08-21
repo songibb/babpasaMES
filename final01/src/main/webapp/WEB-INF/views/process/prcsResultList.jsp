@@ -73,8 +73,8 @@
 		},
         columns: [
           {
-            header: '진행공정관리코드',
-            name: 'prcsIngCode'
+            header: '공정실적관리코드',
+            name: 'prcsListCode'
           },
           {
             header: '상세지시코드',
@@ -91,15 +91,21 @@
           },
           {
             header: '공정코드',
-            name: 'prcsCode'
+            name: 'prcsCode',
+            hidden: true
           },
           {
             header: '공정명',
             name: 'prcsName'
           },
           {
-            header: '공정순서',
-            name: 'prcsSeq'
+            header: '설비코드',
+            name: 'eqCode',
+            hidden: true         
+          },
+          {
+            header: '설비명',
+            name: 'eqName'
           },
           {
             header: '투입량',
@@ -114,11 +120,26 @@
             name: 'prcsAmt'
           },
           {
-            header: '공정상태',
-            name: 'prcsDirIngSts'
-          }
+            header: '작업시작시간',
+            name: 'prcsStartTime'
+          },
+          {
+            header: '작업종료시간',
+            name: 'prcsEndTime'
+          },
         ]
       })  
+ 	
+	$.ajax({
+        url : "selectPrcsResultList",
+        method :"GET",
+        success : function(data){
+        	resultGrid.resetData(data);
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
+	});
 
     
 	</script>

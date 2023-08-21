@@ -13,8 +13,8 @@
 
 .container{
   display:block;
-  max-width:680px;
-  width:80%;
+  max-width:830px;
+  width:60%;
   margin:120px auto;
   background-color : #a3d179;
   height : 600px;
@@ -112,17 +112,17 @@ form{
   }
   
   .signin__btn{
-     background:#e9d21e;
+     background:#e9b61e;
      color:white;
      display:block;
-     width:92.5%;
-     max-width:680px;
+     width:60%;
+     max-width:600px;
      height:50px;
      border-radius:8px;
      margin:0 auto;
      border:none;
      cursor:pointer;
-     font-size:14px;
+     font-size:25px;
      font-family: 'Montserrat', sans-serif;
      box-shadow:0 15px 30px rgba(#e91e63,.36);
     transition:.2s linear;

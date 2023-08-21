@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
-
+//20230821 백송이 - 공정 관리
 @Controller
 public class PrcsManageController {
 	

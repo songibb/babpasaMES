@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.prcs.prod.service.PrcsProdService;
 import co.yedam.app.prcs.prod.service.PrcsProdVO;
-
+//20230821 백송이 제품별 공정
 @Controller
 public class PrcsProdController {
 	
