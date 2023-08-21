@@ -15,6 +15,8 @@ import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.equip.service.EquipChkService;
 import co.yedam.app.equip.service.EquipChkVO;
 
+//장서영 - 설비 점검
+
 @Controller
 public class EquipChkController {
 
@@ -62,9 +64,9 @@ public class EquipChkController {
 	 */
 	
 	//AJAX
-		@GetMapping("equipCodeList") 
+		@GetMapping("empCodeList") 
 		@ResponseBody
-		public List<EmpInfoVO> equipCodeList(){
+		public List<EmpInfoVO> empCodeList(){
 			List<EmpInfoVO> list = empInfoService.selectEmpInfoList();
 			return list;
 		}
