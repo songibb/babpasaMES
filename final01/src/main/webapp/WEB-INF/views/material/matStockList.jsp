@@ -135,7 +135,9 @@
 					$(".modal").fadeOut();
 					activeScroll();
 					let inputContent = $('#modalSearch').val('');
-		    		Grid.destroy();
+					if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	
 		   		}
 		     })
@@ -145,7 +147,9 @@
 		       	$(".modal").fadeOut();
 		       	activeScroll();
 		       	let inputContent = $('#modalSearch').val('');
-				Grid.destroy();
+		       	if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		});
 		
 		//모달 검색
@@ -321,9 +325,9 @@
 	    	let matCode = grid.getValue(rowKey, 'matCode');
 			if(rowKey >= 0){
 				
-					if(grid2 != null){
-						grid2.destroy();
-					}
+				if(grid2 != null && grid2.el != null){
+					grid2.destroy();	
+ 	    		}
 		    		
 			}
 				$.ajax({
@@ -377,10 +381,11 @@
 	 		   success : function(data){
 	 
 	 			   grid.resetData(data);
-	 			   if(grid2 != null){
+	 			   if(grid2 != null && grid2.el != null){
 						grid2.destroy();
 						grid2 = createGrid2();
 				   }
+	 			  
 	 		   },
 	 		   error : function(reject){
 	 			   console.log(reject);

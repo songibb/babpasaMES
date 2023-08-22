@@ -144,7 +144,9 @@
     			$(".modal").fadeOut();
     			activeScroll();
     			let inputContent = $('#modalSearch').val('');
-        		Grid.destroy();
+    			if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
     		}
 
     		});
@@ -186,7 +188,9 @@
 			$(".modal").fadeOut();
 			activeScroll();
 			let inputContent = $('#modalSearch').val('');
-    		Grid.destroy();
+			if(Grid != null && Grid.el != null){
+	    			Grid.destroy();	
+	    		}
 
    		}
      })
@@ -196,7 +200,9 @@
        	$(".modal").fadeOut();
        	activeScroll();
        	let inputContent = $('#modalSearch').val('');
-	 	Grid.destroy();
+       	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
      });
      
      

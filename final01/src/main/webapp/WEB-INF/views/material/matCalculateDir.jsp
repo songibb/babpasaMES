@@ -48,11 +48,11 @@
 	  line-height:23px;
 	}
 	
-	.m_body > p{
+	#m_body_s > p{
 		display : inline-block;
 	}
 	
-	.m_body > input{
+	#m_body_s > input{
 		border : 1px solid black;
 	}
 </style>    
@@ -108,12 +108,17 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<div id="m_body_s">
        			<p>이름</p>
                 <input type="text" id="modalSearch">
                 <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+                </div>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
+       			<div id="reset_btn">
+            	<div class="modal_btn cancle" id="resetModal">RESET</div>
+            	</div>
             	<div class="modal_btn cancle close_btn">CANCLE</div>
     		</div>
   		</div>
@@ -124,7 +129,8 @@
    //모달 시작
   
 	 var Grid;
-     $("#matModal").click(function(){
+     $("#matModal").click(function(e){
+    	$("#reset_btn").css("display","none");
        $(".modal").fadeIn();
        preventScroll();
        Grid = createMatGrid();
@@ -141,16 +147,26 @@
    		if(rowKey != null){
 			$(".modal").fadeOut();
 			activeScroll();
-    		Grid.destroy();
+			let inputContent = $('#modalSearch').val('');
+			$("#reset_btn").css("display","block");
+			if(Grid != null && Grid.el != null){
+	    			Grid.destroy();	
+	    		}
 
    		}
      })
      });
      
+     
      $(".close_btn").click(function(){
        	$(".modal").fadeOut();
        	activeScroll();
-		Grid.destroy();
+       	let inputContent = $('#modalSearch').val('');
+       	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
+       	$("#reset_btn").css("display","block");
+       	$("#m_body_s").css("display", "block");
      });
      
 
@@ -175,6 +191,10 @@
 				})
 			}
 		})
+		
+		
+		
+		
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -436,12 +456,34 @@
 		 	    		
 		 	    		$(".modal").fadeOut();
 		 	    		activeScroll();
-		        		Grid.destroy();
+		 	    		let inputContent = $('#modalSearch').val('');
+		 	    		if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 		 	    		
 		       		}
 
 		       });
+			   
+			   $('#resetModal').on('click', e => {
+				   grid.setValue(mainRowKey, 'matCode', '');
+	 	    		grid.setValue(mainRowKey, 'matName', '');
+	 	    		grid.setValue(mainRowKey, 'matUnit', '');
+	 	    		grid.setValue(mainRowKey, 'matStd', '');
+
+				   
+				   
+				   $(".modal").fadeOut();
+	 	    		activeScroll();
+	 	    		let inputContent = $('#modalSearch').val('');
+	 	    		if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
+	 	    		$("#m_body_s").css("display", "block");
+			   })
 		   } else if(ev.columnName == 'matLot' || ev.columnName == 'matBamt'){
+			   
+			   $("#m_body_s").css("display", "none");
 			   var selectMatCode = grid.getValue(mainRowKey, 'matCode');
 			   
 			   
@@ -451,7 +493,7 @@
 			   preventScroll();
 			   $('.modal_title h3').text('LOT 목록');
 			   
-			   Grid.on('dblclick', () => {
+			   Grid.on('dblclick', ev => {
 		       		let modalRowKey = Grid.getFocusedCell().rowKey;
 		       		if(modalRowKey != null){
 		       			let matLot = Grid.getValue(modalRowKey, 'matLot');
@@ -472,11 +514,31 @@
 		 	    		
 		 	    		$(".modal").fadeOut();
 		 	    		activeScroll();
-		 	    		Grid.destroy();
+		 	    		let inputContent = $('#modalSearch').val('');
+		 	    		if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
+		 	    		$("#m_body_s").css("display", "block");
 		 	    		
 		       		}
+		       		
 
 		       });
+			   
+			   $('#resetModal').on('click', e => {
+				   grid.setValue(mainRowKey, 'matLot', '');
+	 	    	   grid.setValue(mainRowKey, 'calBamt', '');
+
+				   
+				   
+				   $(".modal").fadeOut();
+	 	    		activeScroll();
+	 	    		let inputContent = $('#modalSearch').val('');
+	 	    		if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
+	 	    		$("#m_body_s").css("display", "block");
+			   })
 		   }
 		   
 		   

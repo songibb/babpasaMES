@@ -189,7 +189,9 @@
 		 	       	formatter(e) { 
 		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		 	           	return val;
-		 	        }
+		 	        },
+		 	        editor : 'text' 
+		 	        	
 			 	  },
 				  {
 			 	    header: '폐기일자',
@@ -208,7 +210,8 @@
 				  {
 					header: '비고',
 					name: 'matDpInfo',
-					width : 400
+					width : 400,
+					editor: 'text'
 				  }
 				 
 		 	    ]
@@ -395,7 +398,9 @@
 				$(".modal").fadeOut();
 				activeScroll();
 				let inputContent = $('#modalSearch').val('');
-		    	Grid.destroy();
+				if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		   	}
 		});
 	});
@@ -470,7 +475,7 @@
 					}
 				})
 			} 
-		})
+	})
 	
 	
 	//모달창 닫기버튼
@@ -478,22 +483,20 @@
     	$(".modal").fadeOut();
     	activeScroll();
     	let inputContent = $('#modalSearch').val('');
-  		Grid.destroy();
+    	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
   	});
 	
 	//검색버튼
 	//검색
-    $('#searchBtn').on('click', searchMatIn);
-    function searchMatRt(e){
+    $('#searchBtn').on('click', searchMatDis);
+    function searchMatDis(e){
 		   let mat = $('#matCodeInput').val();
 		   let sd = $('#startDate').val();
 		   let ed = $('#endDate').val();
 		   
-		   var checkboxList = [];
-		   let checkedList = $('input[type="checkbox"]:checked');
-		   $.each(checkedList, function(idx, obj){
-			   checkboxList.push(obj.value);
-		   })
+		 
 			  
 		   let search = { materialCode : mat , startDate : sd , endDate : ed };
 		   $.ajax({
@@ -553,6 +556,13 @@
     	rtGrid.removeRow(rowKey);
     	//마우스 커서 없앰
     	rtGrid.blur();
+    	
+    	let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let matDpDate = year + "-" + month + "-" + day;
+		
     	grid.appendRow( {
     					   'matIdentiCode' : matOdDeCd,
     					   'matCode' : matCode,
@@ -560,7 +570,14 @@
     					   'matUnit' : matUnit,
     					   'matStd' : matStd,
     					   'matDpAmt' : matRtAmt,
+    					   'matDpDate' : matDpDate,
+    					   'empCode' : `${user.id}`,
+    					   'empName' :`${user.empName}`,
     					   }, { at: 0 });
+    	
+    	
+		
+		
     	
     	
     	
@@ -583,6 +600,12 @@
     	exdGrid.removeRow(rowKey);
     	//마우스 커서 없앰
     	exdGrid.blur();
+    	
+    	let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let matDpDate = year + "-" + month + "-" + day;
     	grid.appendRow( {
 			   'matIdentiCode' : matLot,
 			   'matCode' : matCode,
@@ -590,6 +613,9 @@
 			   'matUnit' : matUnit,
 			   'matStd' : matStd,
 			   'matDpAmt' : matStock,
+			   'matDpDate' : matDpDate,
+			   'empCode' : `${user.id}`,
+			   'empName' :`${user.empName}`,
 			   }, { at: 0 });
     	
     	

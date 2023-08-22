@@ -149,7 +149,9 @@
 	    			$(".modal").fadeOut();
 	    			activeScroll();
 	    			let inputContent = $('#modalSearch').val('');
-	        		Grid.destroy();
+	    			if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	    		}
 	
 	    	});
@@ -176,7 +178,9 @@
 			$(".modal").fadeOut();
 			activeScroll();
 			let inputContent = $('#modalSearch').val('');
-    		Grid.destroy();
+			if(Grid != null && Grid.el != null){
+	    			Grid.destroy();	
+	    		}
 
    		}
      })
@@ -186,7 +190,9 @@
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
-  		Grid.destroy();
+        if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
      });
      
    //거래처 모달 그리드
