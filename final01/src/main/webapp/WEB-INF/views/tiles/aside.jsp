@@ -79,6 +79,8 @@
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matStockList">자재 재고 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCalculateList">자재 LOT 정산 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCalculateDir">자재 LOT 정산 등록</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisList">자재 폐기 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisDir">자재 폐기 등록</a></li>
               	</ul>
             </div>
 		</li>

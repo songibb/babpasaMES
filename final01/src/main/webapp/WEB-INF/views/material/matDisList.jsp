@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자재 반품 목록</title>
+<title>자재 폐기 목록</title>
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -58,7 +58,7 @@
        
 </head>
 <body>
-   <h1>자재 반품 목록</h1>
+   <h1>자재 폐기 목록</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
@@ -75,18 +75,9 @@
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
-                				<p>업체명</p>
-                				<input type="text" id="actCodeInput">
-                				<i class="bi bi-search" id="actModal"></i>
-                				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-                				<br>
-                				<p>반품요청일자</p>
+                				<p>폐기일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                 				<br>
-                				<p>반품여부</p>
-                				<label for="before"><input type="checkbox" id="before" value="R4">반품중</label>
-                				<label for="ing"><input type="checkbox" id="ing" value="R5">반품완료</label>
-                				<label for="after"><input type="checkbox" id="after" value="R6">반품실패</label>
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -97,7 +88,7 @@
             				</div>
         				</div>
 	    			</div>
-		            <h2>자재 반품 목록</h2>
+		            <h2>자재 폐기 목록</h2>
 		            <br>
 		            <div id="grid"></div>
 				</div>
@@ -126,31 +117,6 @@
    
 		//모달 시작
 		var Grid;
-		$("#actModal").click(function(){
-		       $(".modal").fadeIn();
-		       preventScroll();
-		       Grid = createActGrid();
-		       $('.modal_title h3').text('거래처 목록');
-		       Grid.on('dblclick', () => {
-		        	let rowKey = Grid.getFocusedCell().rowKey;
-		        	let actCode = Grid.getValue(rowKey, 'actCode');
-		        	let actName = Grid.getValue(rowKey, 'actName');
-		    		$("#actCodeInput").val(actCode);
-		    		$("#actNameFix").val(actName);
-		    		//모달창 닫기
-		    		console.log(rowKey);
-		    		if(rowKey != null){
-		    			$(".modal").fadeOut();
-		    			activeScroll();
-		    			let inputContent = $('#modalSearch').val('');
-		        		Grid.destroy();
-		    		}
-		
-		    	});
-		});
-  
-  
-  
 	     $("#matModal").click(function(){
 	         $(".modal").fadeIn();
 	         preventScroll();
@@ -181,55 +147,7 @@
 				Grid.destroy();
 		 });
   
-		//거래처 모달 그리드
-		  function createActGrid(){
-			   var actGrid = new tui.Grid({
-			       el: document.getElementById('modal_label'),
-			       data: [
-			    	   <c:forEach items="${actList}" var="a" varStatus="status">
-			          	{
-			          		actCode : "${a.actCode}",
-			          		actName :"${a.actName}",
-			          		actSts :"${a.actSts}",
-			          		actKind :"${a.actKind}"
-			          	} <c:if test="${not status.last}">,</c:if>
-			          </c:forEach>
-			          ],
-				   scrollX: false,
-			       scrollY: false,
-			       minBodyHeight: 30,
-			       rowHeaders: ['rowNum'],
-			       selectionUnit: 'row',
-			       pagination: true,
-			       pageOptions: {
-			       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-			         useClient: true,
-			         perPage: 10
-			       },
-			       columns: [
-			    	   {
-			               header: '거래처코드',
-			               name: 'actCode',
-			             },
-			             {
-			               header: '거래처명',
-			               name: 'actName'
-			             },
-			             {
-			               header: '거래상태',
-			               name: 'actSts'
-			             },
-			             {
-			               header: '거래처구분',
-			               name: 'actKind'
-			             }
-			 	    ]
-			      
-			     });
-			   
-			   return actGrid;
-		  }
-
+		
 		//자재 모달 그리드
 		 function createMatGrid(){
 			   var matGrid = new tui.Grid({
@@ -299,21 +217,7 @@
 						console.log(reject);
 					}
 				})
-			} else if(title == '거래처 목록'){
-				let modalSearchData = {actName : inputContent}
-				$.ajax({
-					url : 'getActModalSearch',
-					method : 'GET',
-					data : modalSearchData,
-					success : function(data){
-						
-						Grid.resetData(data);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				})
-			}
+			} 
 		})
 		
 		
@@ -322,7 +226,6 @@
 		$('#searchBtn').on('click', searchMatRt);
 		function searchMatRt(e){
 			   let mat = $('#matCodeInput').val();
-			   let act = $('#actCodeInput').val();
 			   let sd = $('#startDate').val();
 			   let ed = $('#endDate').val();
 			   
@@ -332,25 +235,19 @@
 				   checkboxList.push(obj.value);
 			   })
 				  
-			   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, checkList : checkboxList };
+			   let search = { materialCode : mat , startDate : sd , endDate : ed };
 			   $.ajax({
-				   url : 'getMatRtFilter',
+				   url : 'getMatDisFilter',
 				   method : 'GET',
 				   data : search ,
 				   success : function(data){
 					   
 					  for(let i of data){
-							let date = new Date(i.matTestDate);
+							let date = new Date(i.matDpDate);
 							let year = date.getFullYear();    //0000년 가져오기
 							let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 							let day = date.getDate();        //일자 가져오기
-					   		i.matTestDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-							
-							date = new Date(i.matRtDate);
-							year = date.getFullYear();    //0000년 가져오기
-							month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-							day = date.getDate();        //일자 가져오기
-					   		i.matRtDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					   		i.matDpDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
 					  }
 					   grid.resetData(data);
 				   },
@@ -382,19 +279,19 @@
 		   var grid = new tui.Grid({
 			       el: document.getElementById('grid'),
 			       data: [
-			           <c:forEach items="${rtList}" var="mat">
+			           <c:forEach items="${disList}" var="mat">
 			           	{
-			           	matOdDeCd : "${mat.matOdDeCd}",
-			           	matName :"${mat.matName}",
-			           	matUnit : "${mat.matUnit}",
-			           	matStd : "${mat.matStd}",
-			           	actName :"${mat.actName}",
-			           	matTestDate : `<fmt:formatDate value="${mat.matTestDate}" pattern="yyyy-MM-dd"/>`,
-			           	errInfo : "${mat.errInfo}",
-			           	matRtAmt :"${mat.matRtAmt}",
-			           	empName : "${mat.empName}",
-			           	matRtDate : `<fmt:formatDate value="${mat.matRtDate}" pattern="yyyy-MM-dd"/>`,
-			           	matRtSts : "${mat.matRtSts}"
+			           		matDpCode : "${mat.matDpCode}",
+			           		matIdentiCode :"${mat.matIdentiCode}",
+			           		matCode : "${mat.matCode}",
+			           		matName : "${mat.matName}",
+			           		matStd :"${mat.matStd}",
+			           		matDpDate : `<fmt:formatDate value="${mat.matDpDate}" pattern="yyyy-MM-dd"/>`,
+			           		matUnit : "${mat.matUnit}",
+			           		matDpAmt :"${mat.matDpAmt}",
+			           		empCode : "${mat.empCode}",
+			           		empName : "${mat.empName}",
+			           		matDpInfo : "${mat.matDpInfo}"
 			           	},
 			           </c:forEach>
 			          ],
@@ -410,65 +307,61 @@
 			       },
 			       columns: [
 			 	      {
-			 	        header: '발주상세코드',
-			 	        name: 'matOdDeCd',
+			 	        header: '자재폐기코드',
+			 	        name: 'matDpCode',
+			 	        hidden : true
 			 	      },
 			 	      {
-			 	        header: '자재명',
-			 	        name: 'matName'
+			 	        header: '자재 LOT / 발주상세코드',
+			 	        name: 'matIdentiCode',
+			 	        width : 200
 			 	      },
 			 	      {
-		          	  	header: '단위',
-				 		name: 'matUnit' 
+		          	  	header: '자재코드',
+				 		name: 'matCode',
+				 		hidden: true
 		              },
 		              {
-		          	  	header: '규격',
-				 		name: 'matStd'
+		          	  	header: '자재명',
+				 		name: 'matName'
 		              },
 			 	      {
-			 	        header: '업체명',
-			 	        name: 'actName'
+			 	        header: '단위',
+			 	        name: 'matUnit'
 			 	      },
 			 	      
 			 	      {
-				 	    header: '불량내용',
-				 	    name: 'errInfo'
+				 	    header: '규격',
+				 	    name: 'matStd'
 				 	  },
 				 	  {
-				 	    header: '반품수량',
-				 	    name: 'matRtAmt',
+				 	    header: '폐기수량',
+				 	    name: 'matDpAmt',
 			 	       	formatter(e) { 
 			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 			 	           	return val;
 			 	        }
 				 	  },
 					  {
-				 	    header: '검사일자',
-				 	    name: 'matTestDate',
+				 	    header: '폐기일자',
+				 	    name: 'matDpDate',
 			 	  		className: 'yellow-background'
 				 	  },
 					  {
-						header: '반품요청일',
-						name: 'matRtDate',
-		 	  		 	className: 'yellow-background'
+						header: '담당자코드',
+						name: 'empCode',
+		 	  		 	hidden : true
 					  },
 					  {
-						header: '반품상태',
-						name: 'matRtSts',
-						formatter: function (e) {
-							if(e.value == 'R4'){
-								return "반품중";
-							} else if(e.value == 'R5'){
-								return "반품완료";
-							} else if(e.value == 'R6'){
-								return "반품실패";
-							}
-		                }   
-				      },
-				 	  {
-					 	header: '담당자',
-					 	name: 'empName'
+						header: '담당자명',
+						name: 'empName'
+					  },
+					  {
+						header: '비고',
+						name: 'matDpInfo',
+						width : 400
 					  }
+					 
 			 	    ]
 			      
 		});

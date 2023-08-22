@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.yedam.app.material.dispose.mapper.MatDisMapper">
+
+	<!-- 전체조회 -->
+	<select id="selectMatDisList" resultType="MatDisVO">
+		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info
+		FROM mat_dispose a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		LEFT JOIN com_emp c
+		ON(a.emp_code = c.emp_code)
+		ORDER BY mat_dp_date DESC
+	</select>
+	
+	<!-- 검색 -->
+	<select id="selectMatDisSearch" resultType="MatDisVO">
+		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info
+		FROM mat_dispose a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		LEFT JOIN com_emp c
+		ON(a.emp_code = c.emp_code)
+		<where>
+			<if test="materialCode != null and !materialCode.equals('')">
+				AND a.mat_code LIKE '%' || #{materialCode} || '%'
+			</if>
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(a.mat_dp_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(a.mat_dp_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY mat_dp_date DESC
+	</select>
+	
+	<!-- 유통기한 만료 -->
+	<select id="selectOverDateList" resultType="MatInVO">
+		SELECT a.mat_lot,a.mat_code, mat_name, mat_std, mat_unit, mat_stock, mat_exd
+		FROM mat_in a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		WHERE mat_exd BETWEEN SYSDATE <![CDATA[-]]> 15 AND SYSDATE 
+		AND mat_stock <![CDATA[>]]> 0
+		ORDER BY mat_exd DESC
+	</select>
+	
+	<!-- 반품 실패 -->
+	<select id="selectRtFailList" resultType="MatRtVO">
+		SELECT a.mat_code, d.mat_name, d.mat_std, d.mat_unit, mat_rt_amt, e.commde_info err_info, mat_rt_date, mat_od_de_cd
+		FROM mat_rt a LEFT JOIN mat_test b
+		ON(a.mat_test_code = b.mat_test_code)
+		LEFT JOIN mat_dispose c
+		ON(b.mat_od_de_cd = c.mat_identi_code)
+		LEFT JOIN com_mat d
+		ON(a.mat_code = d.mat_code)
+        LEFT JOIN com_commde e
+        ON(b.err_code = e.commde_code)
+		WHERE mat_rt_sts = 'R6'
+		AND mat_identi_code IS NULL
+		ORDER BY mat_rt_date DESC
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertMatDis" parameterType="MatDisVO">
+		INSERT INTO mat_dispose(
+			mat_dp_code
+			, mat_identi_code
+			, mat_code
+			, mat_dp_amt
+			, mat_dp_date
+			, emp_code
+			<if test="matDpInfo != null and !matDpInfo.equals('')">
+			, mat_dp_info
+			</if>
+		) VALUES (
+			get_primaryCode('matDisCode')
+			, #{matIdentiCode}
+			, #{matCode}
+			, #{matDpAmt}
+			, #{matDpDate}
+			, #{empCode}
+			<if test="matDpInfo != null and !matDpInfo.equals('')">
+			, #{matDpInfo}
+			</if>
+		)
+	</insert>
+	
+	<!-- matLot일 때 등록 후 재고 변경 -->
+	<update id="updateMatStockAtMatDisIn" parameterType="MatDisVO">
+		UPDATE mat_in
+		SET mat_stock = mat_stock <![CDATA[-]]> #{matDpAmt}
+		WHERE mat_lot = #{matIdentiCode}
+	</update>
+	
+	<!-- 수정 -->
+	<update id="updateMatDis" parameterType="MatDisVO">
+		UPDATE mat_dispose
+		SET mat_dp_amt = #{matDpAmt}
+		WHERE mat_dp_code = #{matDpCode}
+	</update>
+	
+	<!-- matLot일 때 수정 후 재고 변경 -->
+	<update id="updateMatStockAtMatDisUp" parameterType="MatDisVO">
+		UPDATE mat_in
+		SET mat_stock = mat_stock <![CDATA[-]]> #{matChangeAmt}
+		WHERE mat_lot = #{matIdentiCode}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteMatDis" parameterType="MatDisVO">
+		DELETE FROM mat_dispose
+		WHERE mat_dp_code = #{matDpCode}
+	</delete>
+	
+	<!-- 삭제 후 재고 변경 -->
+	<update id="updateMatStockAtMatDisDe" parameterType="MatDisVO">
+		UPDATE mat_in
+		SET mat_stock = mat_stock <![CDATA[+]]> #{matDpAmt}
+		WHERE mat_lot = #{matIdentiCode}
+	</update>
+	
+	<!-- 삭제 행 정보 -->
+	
+</mapper>

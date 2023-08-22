@@ -50,11 +50,11 @@
 	
 	<!-- 검수는 됐지만 입고 안된 자재들 목록-->
 	<select id="selectMatTestFinishList" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, g.commde_info err_info, mat_test_date
 		FROM mat_test a LEFT JOIN mat_in b
 		ON(a.mat_test_code = b.mat_test_code)
-		LEFT JOIN com_err b
-			ON(a.err_code = b.err_code)
+		LEFT JOIN com_commde g
+			ON(a.err_code = g.commde_code)
 			LEFT JOIN mat_order_de c
 			ON(a.mat_od_de_cd = c.mat_od_de_cd)
 	        LEFT JOIN com_mat d
@@ -69,10 +69,10 @@
 	
 	<!-- 하단 그리드 행삭제시 상단 그리드 데이터 올리기용 -->
 	<select id="selectDeletedMatTest" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
 		FROM mat_test a 
-		LEFT JOIN com_err b
-			ON(a.err_code = b.err_code)
+		LEFT JOIN com_commde b
+			ON(a.err_code = b.commde_code)
 			LEFT JOIN mat_order_de c
 			ON(a.mat_od_de_cd = c.mat_od_de_cd)
 	        LEFT JOIN com_mat d

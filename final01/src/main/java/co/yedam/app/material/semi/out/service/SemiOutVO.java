@@ -11,7 +11,7 @@ public class SemiOutVO {
 	private String prodCode;
 	private String prodName;
 	private Integer semiOutAmt;
-	private String prcsListCode;
+	private String prcsIngCode;
 	private String empName;
 	private Date semiOutDate;
 	private Date semiExd;
