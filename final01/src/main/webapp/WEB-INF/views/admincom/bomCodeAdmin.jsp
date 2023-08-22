@@ -92,14 +92,23 @@
 /*모달끝*/
 </style>
 <title>BOM관리</title>
-	<!-- 토스트 페이지 네이션 -->
-    <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-    <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-    <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
-    <!-- 페이지 네이션 끝 -->
-    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- 토스트 페이지 네이션 dd-->
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script
+	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<!-- 페이지 네이션 끝 -->
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
+	rel="stylesheet">
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -188,6 +197,8 @@
 	//저장 버튼 클릭시 insert 진행
 	document.getElementById('deSave').addEventListener('click', saveServer);
 	
+	/* const target = document.getElementById('deleteBom'); */
+
 	
 	function saveServer(){
 		//BOM
@@ -404,9 +415,9 @@
 
 	$.ajax({
 		url : 'bomUpdateHeader',
-		method : 'POST',
-		data : JSON.stringify(list),
+		type : 'POST',
 		contentType : 'application/json',
+		 data : JSON.stringify(list),
 		success : function(data){	
 			if(data>1){
 				swal("수정이 완료되었습니다.","","success");
@@ -420,6 +431,82 @@
 	})
 	
 	}
+	
+	//BOM header 및 관련 detail 삭제
+	
+	$("#deleteBom").on('click',checked);
+	
+	function checked(){
+		var checkedRows = bomgrid.getCheckedRows();
+		let checkedBom = [];
+		if(checkedRows.length > 0){
+			var selectedRowIds = checkedRows.map(function(row){
+				let bomNo = bomgrid.getValue(row.rowKey, 'bomNo');
+				let obj = {bomNo:bomNo};
+				checkedBom.push(obj);
+			});
+		}
+		
+		swal({
+			  title: "정말삭제하시겠습니까?",
+			  text: "",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+					$.ajax({
+						url :'bomDelete',
+						type : 'POST',
+						contentType : 'application/json',
+						data : JSON.stringify(checkedBom),
+						success : function(result){
+								swal("BOM 삭제가 완료되었습니다", {icon: "success",});
+								   let content = $('#bomSearch').val();
+								   let search = { prodName : content };
+								   $.ajax({
+									   url : 'bomSearch',
+									   method : 'GET',
+									   data : search ,
+									   success : function(data){
+										   bomgrid.resetData(data);
+										   deBomgrid.clear();
+										   //수정시 사용할 그리드
+										    bomgrid.on('click', () => {
+										    	//클릭한 제품 BOM가져오기
+										    	let rowKey = bomgrid.getFocusedCell().rowKey;
+										    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
+
+										    	$.ajax({
+													url : 'bomDecodeList',
+													method : 'GET',
+													data : { bomNo : bomNo },
+													success : function(data){
+														deBomgrid.resetData(data);
+										 		    },
+													error : function(reject){
+											 			console.log(reject);
+											 		}	
+												})
+										  	});
+									   },
+									   error : function(reject){
+										   console.log(reject);
+									   }
+								   })
+								
+						}
+					})
+			    
+			  } else {
+			    swal("삭제가 취소되었습니다","",{icon: "warning",});
+			  }
+			});
+
+	}
+	
+	
 	
 	
 	var bomgrid = new tui.Grid({

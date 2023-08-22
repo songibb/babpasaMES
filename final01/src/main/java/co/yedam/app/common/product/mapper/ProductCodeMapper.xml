@@ -99,4 +99,17 @@
 	                                   )
 				ORDER BY prod_code
 		</select>
+		
+		
+		
+		<!-- 제품명 중복 확인 -->
+		<select id="prodNameUseCheck" resultType="ProductCodeVO">
+			SELECT  prod_code,
+					prod_kind,
+					prod_name,
+					prod_unit,
+					prod_std
+			FROM com_prod
+			WHERE prod_name = #{prodNameUse}
+		</select>
   </mapper>

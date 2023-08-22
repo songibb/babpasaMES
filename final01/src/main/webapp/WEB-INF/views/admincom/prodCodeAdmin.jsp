@@ -41,7 +41,8 @@
 				</tr>
 				<tr>
 					<th>제품명</th>
-					<td><input type="text" name="prodName" id="prodName">
+					<td><input type="text" name="prodName" id="prodName"></td>
+					<td><input type="text" name="prodBeforeName" id="prodBeforeName" style="display: none"></td>
 				</tr>
 				<tr>
 					<th>반/완제품구분</th>
@@ -183,7 +184,7 @@
     		 e.preventDefault();
     		 
     		 if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-    			 alert('필수 입력 정보를 모두 입력해 주세요.');
+    			 swal("필요한 정보를 모두 입력해 주세요.","","warning");
     		 }else{
     			 //수정 ajax
     			 prodUpdate(prodInfo);
@@ -191,10 +192,28 @@
     	}else{
     		e.preventDefault();
     		if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-   			 alert('필수 입력 정보를 모두 입력해 주세요.');
+    			swal("필요한 정보를 모두 입력해 주세요.","","warning");
    		 }else{
-   			 //동록 ajax
-   			 prodInsert(prodInfo);
+   			 	let prodNameCheck = {prodNameUse : prodInfo.prodName};
+   			 	
+	   			 $.ajax({
+	   			   url : 'prodCheck',
+	   			   method : 'GET',
+	   			   data : prodNameCheck,
+	   			   success : function(data){
+	   				   console.log(data);
+	   				   if(data== 1){
+	   					//동록 ajax
+	   		   			 prodInsert(prodInfo);
+	   				   }else{
+	   					swal("이미 존재하는 제품명입니다.","","warning");
+	   				   }
+	   			   },
+	   			   error : function(reject){
+	   				   console.log(reject);
+	   			   }
+	   		   })
+   			 
    		 }
     	}
     })
@@ -290,6 +309,7 @@
 			
 			$("#prodCode").val(prodCode);
 			$("#prodName").val(prodName);
+			$("#prodBeforeName").val(prodName);
 			$("#prodTypeList option[value='" + prodKind + "']").prop("selected", true);
 			$("#prodUnit").val(prodUnit);
 			$("#prodStd").val(prodStd);

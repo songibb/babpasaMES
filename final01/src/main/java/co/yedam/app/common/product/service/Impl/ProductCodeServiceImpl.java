@@ -77,4 +77,15 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 		return productCodeMapper.bomNoProdList();
 	}
 
+	@Override
+	public int prodNameUseCheck(String prodNameUse) {
+		List<ProductCodeVO> list = productCodeMapper.prodNameUseCheck(prodNameUse);
+		System.out.println(list);
+		if(list.isEmpty()) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
+
 }

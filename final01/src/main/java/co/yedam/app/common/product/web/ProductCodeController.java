@@ -95,4 +95,12 @@ public class ProductCodeController {
 		return prodNoBomList;
 	}
 	
+	@GetMapping("/prodCheck")
+	@ResponseBody
+	public int prodCheck(@RequestParam String prodNameUse) {
+		
+		return productCodeService.prodNameUseCheck(prodNameUse);
+		
+	}
+	
 }
