@@ -31,6 +31,6 @@ public interface OrderMapper {
 	public int updateOrder(OrderVO vo);
 	
 	//삭제
-	public int deleteOrder(OrderVO vo);
+	public int deleteOrder();
 	public int deleteOrderDe(OrderVO vo);
 }

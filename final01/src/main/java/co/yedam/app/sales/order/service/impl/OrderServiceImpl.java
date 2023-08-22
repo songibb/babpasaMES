@@ -47,8 +47,9 @@ public class OrderServiceImpl implements OrderService {
 		int result = 0;
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 			for(OrderVO vo : data.getDeletedRows()) {
-				result += orderMapper.deleteOrder(vo);
+				result += orderMapper.deleteOrderDe(vo);
 			}
+			orderMapper.deleteOrder();
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
 			for(OrderVO vo : data.getUpdatedRows()) {
@@ -56,8 +57,9 @@ public class OrderServiceImpl implements OrderService {
 			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
+			orderMapper.insertOrder(data.getCreatedRows().get(0));
 			for(OrderVO vo : data.getCreatedRows()) {
-				result += orderMapper.insertOrder(vo);
+				result += orderMapper.insertOrderDe(vo);
 			}
 		}
 		return result;
