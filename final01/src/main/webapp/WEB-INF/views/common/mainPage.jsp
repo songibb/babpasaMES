@@ -12,7 +12,7 @@
 </head>
 <body>
 
-     <div id="chart-area" style="width: 40%; height: 40%; min-width: 20%; min-height: 20%;">
+     <div id="chart-area" style="width: 900; height: 40%; min-width: 20%; min-height: 20%;">
 </div>
 </body>
 

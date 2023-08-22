@@ -121,9 +121,10 @@
 	            		<br>
 	            		<div style="display: flex; justify-content: space-between;">
 		            	<h5>제품bom등록</h5>
-		            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
-			           		<!-- <button id = "deDelete" class="btn btn-info btn-icon-text" >상세삭제</button> -->
-			           	
+		            	<div>
+			            	<button id = "deleteBom" class="btn btn-info btn-icon-text">삭제</button>
+			            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
+			           	</div>
 		           		</div>
 		           		<div id="bomgrid"></div>
 		           		
@@ -164,17 +165,19 @@
     
 	<script>
 	
+	
 	//페이지 호출할떄 BOM등록하는 창 호출
-	window.onload = function addRow(){
+/* 	window.onload = function addRow(){
 		bomgrid.appendRow();
 		deBomgrid.appendRow();
-	}
+	} */
 	
 	//상세BOM행추가
 	document.getElementById('deAdd').addEventListener('click', addDeBom);
 	function addDeBom(){
 		deBomgrid.appendRow();
 	}
+	
 	
 	//상세 BOM행삭제
 /* 	document.getElementById('deDelete').addEventListener('click', deleteDeBom);
@@ -228,7 +231,7 @@
 			}
 		})
 		
-		$.each(bomDeInfo, function(deField, deArray){
+/* 		$.each(bomDeInfo, function(deField, deArray){
 			if( deField == 'updatedRows' && deArray.length != 0){
 				$.each(deArray, function(i,obj2){
 					
@@ -240,7 +243,7 @@
 				})
 				
 			}
-		})	
+		})	 */
 		if(flagIn){
 			
 			bomUpdate();
@@ -365,7 +368,7 @@
 	}
 	
 	//수정 함수
-	function bomUpdate(){
+	/* function bomUpdate(){
 		let updateOk = 0;
 		let list = bomgrid.getData();
 		let deList = deBomgrid.getData();
@@ -392,6 +395,30 @@
 	 		}
 		})
 		
+	} */
+	
+	function bomUpdate(){
+	let updateOk = 0;
+	let list = bomgrid.getData();
+
+
+	$.ajax({
+		url : 'bomUpdateHeader',
+		method : 'POST',
+		data : JSON.stringify(list),
+		contentType : 'application/json',
+		success : function(data){	
+			if(data>1){
+				swal("수정이 완료되었습니다.","","success");
+			}
+			deBomgrid.clear();
+			deBomgrid.appendRow();
+		},
+		error : function(reject){
+ 			console.log(reject);
+ 		}
+	})
+	
 	}
 	
 	
@@ -400,7 +427,7 @@
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
+		rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
@@ -512,6 +539,32 @@
         ]
       });
 	
+ 	 function checkBomNo(ev){
+
+		 var rowKey = ev.rowKey;
+			 var rows = deBomgrid.findRows({
+			 		bomNo :null
+			 });
+			 
+		 let flag = false;
+		 $.each(rows, function(idx, obj){
+			 if(obj['rowKey'] ==rowKey){
+				 flag =true;
+				 return flag;
+			 }
+		 })
+		 return flag;
+		 
+	 }
+	
+	 deBomgrid.on('editingStart', function(ev){
+		 let flag = checkBomNo(ev);
+		 
+		 if(!flag){
+			 ev.stop();
+		 }
+	 }) 
+	
 /* 	var Grid;
 	bomgrid.on('dblclick' ,() => {
 		let rowKey = bomgrid.getFocusedCell().rowKey;
@@ -557,8 +610,7 @@
   	       Grid.on('dblclick', () => {
   	    		 bomgrid.clear();
 				bomgrid.appendRow();
-				deBomgrid.clear()
-				deBomgrid.appendRow();
+				deBomgrid.clear();
   	    	 let rowKey2 = Grid.getFocusedCell().rowKey;
   	    	 if(rowKey2 != null){
   	    		let prodCode = Grid.getValue(rowKey2, 'prodCode');
@@ -569,7 +621,7 @@
  	        		
  	        		$(".modal").fadeOut();
 	        		Grid.destroy();
-	        		
+
  	        	}
   	    	 }
   	    	 
@@ -648,11 +700,12 @@
 	
 	
 	deBomgrid.on('dblclick' ,() => {
+		
 		let rowKey = deBomgrid.getFocusedCell().rowKey;
     	let columnName = deBomgrid.getFocusedCell().columnName;
     	let value = deBomgrid.getFocusedCell().value; 
-    	
-    	if(columnName == 'prcsName'){
+    	let no = deBomgrid.getValue(rowKey,'bomNo');
+    	if(columnName == 'prcsName' && no ==null){
     		$(".modal").fadeIn();
   	       Grid = createPrcsGrid();
   	       
@@ -681,7 +734,7 @@
     	}
     	
 
-    	if(columnName == 'mpName'){
+    	if(columnName == 'mpName' && no ==null){
     		$(".modal").fadeIn();
   	       matGrid = createMatGrid();
   	       halfProdGrid = createHalfProdGrid();
@@ -922,32 +975,48 @@
 		   data : search ,
 		   success : function(data){
 			   bomgrid.resetData(data);
-			   //수정시 사용할 그리드
-			    bomgrid.on('click', () => {
-			    	//클릭한 제품 BOM가져오기
-			    	let rowKey = bomgrid.getFocusedCell().rowKey;
-			    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
-
-			    	$.ajax({
-						url : 'bomDecodeList',
-						method : 'GET',
-						data : { bomNo : bomNo },
-						success : function(data){
-							deBomgrid.resetData(data);
-			 		    },
-						error : function(reject){
-				 			console.log(reject);
-				 		}	
-					})
-			  	});
+			   deBomgrid.clear();
 		   },
 		   error : function(reject){
 			   console.log(reject);
 		   }
 	   })
    }
+   
+   
+	// 전체조회 페이지 띄우기
+   let content = $('#bomSearch').val();
+   let search = { prodName : content };
+   $.ajax({
+	   url : 'bomSearch',
+	   method : 'GET',
+	   data : search ,
+	   success : function(data){
+		   bomgrid.resetData(data);
+		   deBomgrid.clear();
+		   //수정시 사용할 그리드
+		    bomgrid.on('click', () => {
+		    	//클릭한 제품 BOM가져오기
+		    	let rowKey = bomgrid.getFocusedCell().rowKey;
+		    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
 
- 
+		    	$.ajax({
+					url : 'bomDecodeList',
+					method : 'GET',
+					data : { bomNo : bomNo },
+					success : function(data){
+						deBomgrid.resetData(data);
+		 		    },
+					error : function(reject){
+			 			console.log(reject);
+			 		}	
+				})
+		  	});
+	   },
+	   error : function(reject){
+		   console.log(reject);
+	   }
+   })
     
    
       
