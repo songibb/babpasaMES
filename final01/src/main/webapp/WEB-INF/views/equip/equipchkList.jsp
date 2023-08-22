@@ -45,25 +45,29 @@
 							    <option value="불합격">불합격</option>
 							    <option value="기타">기타</option>
 							</select>
+						
 							<br>
 							<p>점검일자</p>
 							 <p><input type="date"></p> ~ <p> <input type="date"></p>
 							<button type="button" class="btn btn-info btn-icon-text">검색</button>
+							</div>
 							
-							<div class="buttons">
-							<button id="save">저장</button>
-		            		<button id="orderModal">점검대상 조회</button>
-		            		</div>
 
 			
 						</div>	
 					</form>
+					
+					<div style="display: flex; justify-content: flex-end;" style="">
+
+							<button id="save">저장</button>          	
+	            	</div>
+	            	
 					<div id="grid"></div>	
 
                 </div>
 			</div>
 		</div>
-	</div>
+	
 <div class="modal">
    
   <div class="modal_content" 
@@ -135,7 +139,8 @@
 	 		})
 	 		
 	 		if(updateOk > 0){
-				alert('수정 성공');
+	 			alert('정보가 업데이트 되었습니다.')
+	 			/* swal("정보가 업데이트 되었습니다.","","success"); */
 			}
 	     }
 	     

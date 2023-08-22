@@ -111,7 +111,7 @@
               	<ul class="nav flex-column sub-menu">
                 	<li class="nav-item"> <a class="nav-link" href="MatQualChk">자재 검수 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="semiQualChk">반제품 품질 검사</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">완제품 품질 검사</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 검사</a></li>
               	</ul>
             </div>
 		</li>

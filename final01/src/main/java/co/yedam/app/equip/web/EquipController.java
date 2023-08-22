@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.act.service.ActCodeService;
+import co.yedam.app.common.act.service.ActCodeVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.equip.service.EquipService;
 import co.yedam.app.equip.service.EquipVO;
@@ -24,6 +26,9 @@ public class EquipController {
 	
 	@Autowired
 	CommCodeService commCodeService;
+	
+	@Autowired
+	ActCodeService actCodeService;
 	
 	//전체 설비
 	@GetMapping("/EquipList")
@@ -45,6 +50,7 @@ public class EquipController {
 		public String equipInsertForm(Model model) {
 			model.addAttribute("EquipTypeList", commCodeService.selectEquipTypeList());
 			model.addAttribute("EquipStsList", commCodeService.selectEquipStsList());
+			model.addAttribute("actList", actCodeService.selectActCodeList());
 			return "equip/equipInsert";
 		}
 		
@@ -97,5 +103,13 @@ public class EquipController {
 					
 		}
 		
-
+	//ajax조회
+	@GetMapping("/ajaxActCodeList2")
+	@ResponseBody
+	public List<ActCodeVO> ajaxActCodeList(){
+		List<ActCodeVO> actList = actCodeService.selectActCodeList();
+		return actList;
+	}
+		
+	
 }

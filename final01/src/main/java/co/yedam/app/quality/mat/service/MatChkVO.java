@@ -30,7 +30,7 @@ public class MatChkVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date matOdAcp;
 	
-	
+	private String empName;
 	
 	
 }

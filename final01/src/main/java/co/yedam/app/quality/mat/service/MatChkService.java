@@ -3,6 +3,7 @@ package co.yedam.app.quality.mat.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.equip.service.EquipChkVO;
 
 public interface MatChkService {
 
@@ -14,4 +15,7 @@ public interface MatChkService {
 	
 	//등록,수정,삭제
 	public int modifyMatChk(GridVO<MatChkVO> data);
+	
+	// 모달 : 사원 조회
+	public List<MatChkVO> selectEmpList();
 }

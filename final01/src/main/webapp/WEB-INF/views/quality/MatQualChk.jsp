@@ -5,6 +5,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<!-- 토스트 그리드 데이트피커 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<!-- 토스트 페이지 네이션 -->
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <meta charset="UTF-8">
 <title>자재 검수 페이지 </title>
 <!-- 토스트 페이지 네이션 -->
@@ -82,10 +89,15 @@
 			</div>
 		</div>
 	</div> 
-
+<div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 
 
 	<script>
+	
+	//저장버튼
+	document.getElementById('save').addEventListener('click', saveServer);
 	
 	//검수 목록 그리드
 	var matgrid = new tui.Grid({
@@ -116,8 +128,7 @@
 	        columns: [
 	        	  {
 	 	 	        header: '자재검수코드',
-	 	 	        name: 'matTestCode',
-	 	 	        editor: 'text'
+	 	 	        name: 'matTestCode'
 	 	 	      },
 	 	 	      {
 		 	 	        header: '자재발주코드',
@@ -145,14 +156,18 @@
 	              {
 		 	 	        header: '검수일자',
 		 	 	        name: 'matTestDate',
-		 	 	        editor:'text'
+		 	 	      	editor: {
+		 	  		      type: 'datePicker',
+		 	  		      options: {
+		 	  		    	  language: 'ko'
+		 	  		      }
+		 	  		    }
 		 	 	  },
 		 	 	  {
 		 	 	        header: '불량코드',
 		 	 	        name: 'errCode',
-		 	 	        editor:'text'
-		 	 	        
-		 	 	  },
+		 	 	        editor:'text'  
+		 	 	  },	 	 	  
 		 	 	  {
 		 	 	        header: '불량반품요청상태',
 		 	 	        name: 'errRtSts',
@@ -247,6 +262,241 @@
 		}
 
 	}
+	
+	//사원코드 - 행 클릭 모달
+    var Grid;
+    matgrid.on('click', () => {
+   	let rowKey = matgrid.getFocusedCell().rowKey;
+   	let columnName = matgrid.getFocusedCell().columnName;
+   	if(columnName == "empCode"){
+   		$(".modal").fadeIn();
+   	       Grid = createProdGrid();
+   	       
+   	       Grid.on('click', () => {
+   	       		let rowKey2 = Grid.getFocusedCell().rowKey;
+   	        	let empCode = Grid.getValue(rowKey2, 'empCode');
+   	        	let empName = Grid.getValue(rowKey2, 'empName');
+   	        	
+   	        	console.log(empCode);
+   	        	console.log(empName);
+
+   	        	matgrid.setValue(rowKey, 'empCode', empCode);
+   	        	matgrid.setValue(rowKey, 'empName', empName);
+   	    		//선택시 모달창 닫기
+   	    		if(rowKey != null){
+   	    			$(".modal").fadeOut();
+   	        		Grid.destroy();
+   	    		}
+
+   	       });
+   	}
+
+ 	});
+	
+	//모달창 닫기
+	$("#close_btn").click(function(){
+       $(".modal").fadeOut();
+        
+ 		Grid.destroy();
+    });
+	
+	
+	//사원 목록모달 그리드
+    function createProdGrid(){
+       var prodGrid = new tui.Grid({
+           el: document.getElementById('modal_label'),
+          scrollX: false,
+           scrollY: false,
+           minBodyHeight: 30,
+           rowHeaders: ['rowNum'],
+           selectionUnit: 'row',
+           pagination: true,
+           pageOptions: {
+           //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+             useClient: true,
+             perPage: 10
+           },
+           columns: [
+         	  	{
+                   header: '사원번호',
+                   name: 'empCode',
+                 },                  
+                 {
+                   header: '사원명',
+                   name: 'empName'
+                 }
+            ]
+          
+         });
+       
+       
+       $.ajax({
+		    url : 'empCodeList1',
+		    method : 'GET',
+		    success : function(data){
+		    	prodGrid.resetData(data);
+		    },
+		    error : function(reject){
+		        console.log(reject);
+		    }	
+		})		 
+       return prodGrid;
+    }
+	
+	
+	
+  //불량코드 - 행 클릭 모달
+    var Grid;
+    matgrid.on('click', () => {
+   	let rowKey = matgrid.getFocusedCell().rowKey;
+   	let columnName = matgrid.getFocusedCell().columnName;
+   	if(columnName == "errCode"){
+   		$(".modal").fadeIn();
+   	       Grid = createProdGrid2();
+   	       
+   	       Grid.on('click', () => {
+   	       		let rowKey2 = Grid.getFocusedCell().rowKey;
+   	       	let commdeCode = Grid.getValue(rowKey2, 'commdeCode');
+   	        	let commdeName = Grid.getValue(rowKey2, 'commdeName');
+
+   	        	matgrid.setValue(rowKey, 'errCode', commdeCode);
+   	        	matgrid.setValue(rowKey, 'commdeName', commdeName);
+   	    		//선택시 모달창 닫기
+   	    		if(rowKey != null){
+   	    			$(".modal").fadeOut();
+   	        		Grid.destroy();
+   	    		}
+
+   	       });
+   	}
+
+ 	});
+	
+	//모달창 닫기
+	$("#close_btn").click(function(){
+       $(".modal").fadeOut();
+        
+ 		Grid.destroy();
+    });
+	
+	
+	//불량 목록모달 그리드
+    function createProdGrid2(){
+       var prodGrid = new tui.Grid({
+           el: document.getElementById('modal_label'),
+          scrollX: false,
+           scrollY: false,
+           minBodyHeight: 30,
+           rowHeaders: ['rowNum'],
+           selectionUnit: 'row',
+           pagination: true,
+           pageOptions: {
+           //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+             useClient: true,
+             perPage: 10
+           },
+           columns: [
+         	  	{
+                   header: '불량코드',
+                   name: 'commdeCode',
+                 },                  
+                 {
+                   header: '불량명',
+                   name: 'commdeName'
+                 }
+            ]
+          
+         });
+       
+       
+       $.ajax({
+		    url : 'errCodeList',
+		    method : 'GET',
+		    success : function(data){
+		    	prodGrid.resetData(data);
+		    },
+		    error : function(reject){
+		        console.log(reject);
+		    }	
+		})		 
+       return prodGrid;
+    }
+	
+	
+	//불량반품상태 - 행 클릭 모달
+    var Grid;
+    matgrid.on('click', () => {
+   	let rowKey = matgrid.getFocusedCell().rowKey;
+   	let columnName = matgrid.getFocusedCell().columnName;
+   	if(columnName == "errRtSts"){
+   		$(".modal").fadeIn();
+   	       Grid = createProdGrid3();
+   	       
+   	       Grid.on('click', () => {
+   	       		let rowKey2 = Grid.getFocusedCell().rowKey;
+   	       	let commdeCode = Grid.getValue(rowKey2, 'commdeCode');
+
+   	        	matgrid.setValue(rowKey, 'errRtSts', commdeCode);
+   	    		//선택시 모달창 닫기
+   	    		if(rowKey != null){
+   	    			$(".modal").fadeOut();
+   	        		Grid.destroy();
+   	    		}
+
+   	       });
+   	}
+
+ 	});
+	
+	//모달창 닫기
+	$("#close_btn").click(function(){
+       $(".modal").fadeOut();
+        
+ 		Grid.destroy();
+    });
+	
+	
+	//불량 반품 상태 목록모달 그리드
+    function createProdGrid3(){
+       var prodGrid = new tui.Grid({
+           el: document.getElementById('modal_label'),
+          scrollX: false,
+           scrollY: false,
+           minBodyHeight: 30,
+           rowHeaders: ['rowNum'],
+           selectionUnit: 'row',
+           pagination: true,
+           pageOptions: {
+           //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+             useClient: true,
+             perPage: 10
+           },
+           columns: [
+         	  	{
+                   header: '자재반품코드',
+                   name: 'commdeCode',
+                 },                  
+                 {
+                   header: '반품상태',
+                   name: 'commdeName'
+                 }
+            ]
+          
+         });
+       
+       
+       $.ajax({
+		    url : 'matReturnCode',
+		    method : 'GET',
+		    success : function(data){
+		    	prodGrid.resetData(data);
+		    },
+		    error : function(reject){
+		        console.log(reject);
+		    }	
+		})		 
+       return prodGrid;
+    }
     </script>
     
     <div>
