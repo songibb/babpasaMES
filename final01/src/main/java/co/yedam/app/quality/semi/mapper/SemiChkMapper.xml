@@ -45,7 +45,7 @@
   		WHERE a.test_num =#{testNum}		
   	</select>
   	
-  	<!-- 품질 등록(수정) -->
+  	<!-- 반제품 품질 등록(수정) -->
   	<update id="SemiChkUpdate" parameterType="SemiChkVO">
   		UPDATE prod_quality_info SET
   				TEST_RESULT = #{testResult}

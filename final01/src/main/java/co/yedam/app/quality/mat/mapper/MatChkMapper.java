@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.yedam.app.equip.service.EquipChkVO;
 import co.yedam.app.quality.mat.service.MatChkVO;
 
 public interface MatChkMapper {
@@ -22,4 +23,7 @@ public interface MatChkMapper {
 	
 	//삭제
 	public int deleteMatChk(MatChkVO vo);
+	
+	//점검 담당자 모달 전체 리스트
+	public List<MatChkVO> selectEmpList();
 }

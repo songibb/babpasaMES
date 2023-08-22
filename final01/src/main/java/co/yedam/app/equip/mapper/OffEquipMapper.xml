@@ -14,13 +14,12 @@
   	
   	<!--모달 안에서의 전체 설비 조회  -->
   	<select id="selectAllequip" resultType="OffEquipVO">
-  		SELECT A.EQ_CODE
-  				,A.EQ_NAME
-  				,FIND_CDNM('0L', EQ_STS) AS EQ_STS
-  				,B.*
-  		FROM EQ_EQUIP A LEFT JOIN EQ_OFF B
-  			ON(A.EQ_CODE = B.EQ_CODE)
-  		ORDER BY A.EQ_CODE ASC
+  		SELECT EQ_CODE 
+		        ,EQ_NAME
+		        ,FIND_CDNM('0L', EQ_STS) AS EQ_STS
+		FROM EQ_EQUIP
+		WHERE EQ_STS = 'W'
+		ORDER BY EQ_CODE ASC
   	</select>
   	
   	

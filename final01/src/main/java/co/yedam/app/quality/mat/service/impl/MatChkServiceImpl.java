@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.equip.service.EquipChkVO;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.quality.mat.mapper.MatChkMapper;
 import co.yedam.app.quality.mat.service.MatChkService;
@@ -36,7 +37,7 @@ public class MatChkServiceImpl implements MatChkService {
 		public int modifyMatChk(GridVO<MatChkVO> data) {
 			int result = 0;
 			// TODO Auto-generated method stub
-			/*
+			
 			if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 				for(MatChkVO vo : data.getDeletedRows()) {
 					result += matchkMapper.deleteMatChk(vo);				
@@ -47,7 +48,7 @@ public class MatChkServiceImpl implements MatChkService {
 					result += matchkMapper.updateMatChk(vo);				
 				}
 			}
-			*/
+			
 			if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
 				for(MatChkVO vo : data.getCreatedRows()) {
 					result += matchkMapper.insertMatChk(vo);				
@@ -56,6 +57,13 @@ public class MatChkServiceImpl implements MatChkService {
 			
 			return result;
 			
+		}
+		
+		//모달 : 사원 조회
+		@Override
+		public List<MatChkVO> selectEmpList(){
+			return matchkMapper.selectEmpList();
+					
 		}
 
 }

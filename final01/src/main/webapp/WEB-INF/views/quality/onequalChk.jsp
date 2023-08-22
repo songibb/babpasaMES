@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>반제품 품질 검사</title>
+<title>완제품 품질 검사</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>반제품 품질 검사</h3>
+	<h3>완제품 품질 검사</h3>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -89,8 +89,8 @@
 					name: 'testNum'
 				},
 				{
-					header: '생산진행코드',
-					name: 'prcsIngCode'
+					header: '상세지시코드',
+					name: 'prcsDirDeCode'
 				},
 				{
 					header: '생산코드',
@@ -98,7 +98,7 @@
 				},
 				{
 					header: '생산량',
-					name: 'prcsAmt'
+					name: 'inputAmt'
 				},
 				{
 					header: '합격량',
@@ -109,8 +109,8 @@
 					name: 'nonPassAmt'
 				},
 				{
-					header : '검사날짜',
-					name :'testDate'
+					hedaer : '검사날짜',
+					name : 'testDate'
 				}
 				
 			]
@@ -178,8 +178,8 @@
 		               }
 				},
 				{
-					header: '담당자',
-					name: 'empCode'
+					hedaer: '담당자',
+					name : 'empCode'
 					
 				}
 			]
