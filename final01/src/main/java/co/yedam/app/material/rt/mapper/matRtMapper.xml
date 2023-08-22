@@ -5,15 +5,15 @@
 <mapper namespace="co.yedam.app.material.rt.mapper.MatRtMapper">
 <!-- 전체조회 -->
 	<select id="selectMatRtList" resultType="MatRtVO">
-		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std, d.act_name, a.act_code, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std, d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c
 					ON(a.mat_code = c.mat_code)
 						LEFT JOIN com_act d
 							ON(a.act_code = d.act_code)
-								LEFT JOIN com_err e
-									ON(b.err_code = e.err_code)
+								LEFT JOIN com_commde e
+									ON(b.err_code = e.commde_code)
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
 		ORDER BY a.mat_rt_date DESC
@@ -21,15 +21,15 @@
 	
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatRtSearch" resultType="MatRtVO">
-		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std,d.act_name, a.act_code, b.mat_test_date, e.err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std,d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c
 					ON(a.mat_code = c.mat_code)
 						LEFT JOIN com_act d
 							ON(a.act_code = d.act_code)
-								LEFT JOIN com_err e
-									ON(b.err_code = e.err_code)
+								LEFT JOIN com_commde e
+									ON(b.err_code = e.commde_code)
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
 		<where>
@@ -59,9 +59,9 @@
 	
 	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
 	<select id="selectMatTestFinishList" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
-		FROM mat_test a LEFT JOIN com_err b
-		ON(a.err_code = b.err_code)
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
+		FROM mat_test a LEFT JOIN com_commde b
+		ON(a.err_code = b.commde_code)
 		LEFT JOIN mat_order_de c
 		ON(a.mat_od_de_cd = c.mat_od_de_cd)
         LEFT JOIN com_mat d
@@ -76,8 +76,8 @@
 	
 	<!-- 삭제한 행 정보 -->
 	<select id="selectDeletedRowsInfo" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, err_info, mat_test_date
-		FROM mat_test a LEFT JOIN com_err b
+		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
+		FROM mat_test a LEFT JOIN com_commde b
 		ON(a.err_code = b.err_code)
 		LEFT JOIN mat_order_de c
 		ON(a.mat_od_de_cd = c.mat_od_de_cd)

@@ -109,7 +109,7 @@
        		<div class="m_body">
        			<p>이름</p>
                 <input type="text" id="modalSearch">
-                <button type="button" class="btn btn-info btn-icon-text">검색</button>
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
