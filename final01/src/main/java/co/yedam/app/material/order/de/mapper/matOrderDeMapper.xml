@@ -121,6 +121,7 @@
 		LEFT JOIN com_prod c
 		ON(a.prod_code = c.prod_code)
 		WHERE prcs_dir_yn = 'N'
+		ORDER BY b.prcs_plan_date DESC
 	</select>
 	
 	<!-- 해당 계획 자재 소모량 -->

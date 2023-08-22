@@ -567,7 +567,9 @@
 		    			$("#modal").fadeOut();
 		    			activeScroll();
 		    			let inputContent = $('#modalSearch').val('');
-		        		Grid.destroy();
+		    			if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 		    		}
 
 		    	});
@@ -594,7 +596,9 @@
 					$("#modal").fadeOut();
 					activeScroll();
 					let inputContent = $('#modalSearch').val('');
-		    		Grid.destroy();
+					if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 
 		   		}
 		     })
@@ -651,7 +655,9 @@
 	 	    			$("#modal").fadeOut();
 	 	    			activeScroll();
 	 	    			let inputContent = $('#modalSearch').val('');
-	 	        		Grid.destroy();
+	 	    			if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 	 	    		}
 	
 	 	       });
@@ -714,7 +720,9 @@
         $("#modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
-  		Grid.destroy();
+        if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
      });
 	
 	//거래처 모달 그리드
@@ -1018,7 +1026,9 @@
 		$(".close_btn2").click(function(){
 	        $("#modal2").fadeOut();
 	        activeScroll();
-	  		Grid2.destroy();
+	        if(Grid2 != null && Grid2.el != null){
+	    			Grid2.destroy();	
+	    		}
 	  		if(Grid3 != null && Grid3.el != null){
 				
 				Grid3.destroy();
