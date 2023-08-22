@@ -39,6 +39,8 @@ public interface PrcsIngMapper {
 	public PrcsIngVO selectPrcsInfoList(@Param("prcsDirDeCode") String prcsDirDeCode, 
 			 							@Param("prcsCode") String prcsCode);
 	
+	//공정별 공정상태 조회(진행공정 모달)
+	
 	
 	//공정 실적 조회
 	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);
