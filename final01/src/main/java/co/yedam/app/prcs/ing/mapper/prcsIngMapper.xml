@@ -97,7 +97,7 @@
 			)
 		}
 	</insert>
-	
+ 
 	<!-- 데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)-->
 	<select id="selectPrcsInfoList" resultType="PrcsIngVO">
 		SELECT prcs_list_code,
@@ -115,7 +115,7 @@
 		 WHERE prcs_dir_de_code = #{prcsDirDeCode} 
 		 	   AND prcs_code = #{prcsCode}
 	</select>
-	
+
 	<!-- 공정 실적 관리 조회 -->
 	<select id="selectPrcsResultList" resultType="PrcsIngVO">
 		SELECT l.prcs_list_code,
