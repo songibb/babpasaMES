@@ -17,4 +17,8 @@ public interface OutService {
 	public List<OutVO> getOutNList();
 	//등록, 수정, 삭제
 	public int modifyOut(GridVO<OutVO> data);
+	//lot list
+	public List<OutVO> LotList();
+	//order detail list
+	public List<OutVO> OrderDeList();
 }

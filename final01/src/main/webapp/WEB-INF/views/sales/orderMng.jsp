@@ -264,7 +264,7 @@ input[type="date"]{
 	var orderGrid = new tui.Grid({
 	        el: document.getElementById('grid'),
 	        data: [
-	        	<c:forEach items="${orderList}" var="order" varStatus="status">
+	        	<c:forEach items="${orderNList}" var="order" varStatus="status">
 	           	{
 	           		salesOrdDeCode : "${order.salesOrdDeCode}",
                	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
@@ -297,8 +297,13 @@ input[type="date"]{
 		         {
 		           header: '주문날짜',
 		           name: 'ordDate',
-		           editor: 'datePicker',
-		           value : '${order.ordDate}'
+		           value : '${order.ordDate}',
+		           editor: {
+		    		      type: 'datePicker',
+		    		      options: {
+		    		    	  language: 'ko'
+		    		      }
+		    		    }
 		         },
 		         {
 		           header: '거래처명',
@@ -323,7 +328,12 @@ input[type="date"]{
 		         {
 		           header: '납기일자',
 		           name: 'devDate',
-		           editor: 'datePicker'
+		           editor: {
+		    		      type: 'datePicker',
+		    		      options: {
+		    		    	  language: 'ko'
+		    		      }
+		    		    }
 		         },
 		         {
 		           header: '출고여부',

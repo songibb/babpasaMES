@@ -167,7 +167,7 @@
 				)
 	</insert>
 
-<!-- 수정 -->
+	<!-- 수정 -->
 	<update id="updateOrder" parameterType="OrderVO">
 			UPDATE sales_ord_de
 			SET
@@ -177,8 +177,8 @@
 			WHERE sales_ord_de_code = #{salesOrdDeCode}
 	</update>
 
-<!-- 삭제 -->
-<delete id="deleteOrder" parameterType="OrderVO">
+	<!-- 삭제 -->
+	<delete id="deleteOrder" parameterType="OrderVO">
 		DELETE FROM sales_ord
 		WHERE ord_code IN (
 		SELECT a.ord_code
@@ -188,7 +188,7 @@
 	</delete>
 	<delete id="deleteOrderDe" parameterType="OrderVO">
 			DELETE FROM sales_ord_de
-			WHERE sales_ord_de_code = #{salesOrdDeCode};
+			WHERE sales_ord_de_code = #{salesOrdDeCode}
 	</delete>
 
 </mapper>
