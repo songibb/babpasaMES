@@ -23,20 +23,15 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
 		            	</div>
 	            	</form>
+	            	
+	            	<button>추가</button>
+	            	<button>삭제</button>
+	            	<button>저장</button>
+            	
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -84,7 +79,7 @@
             name: 'prcsName'
           },
           {
-            header: '반제품',
+            header: '반제품생산공정여부',
             name: 'semiYn'
           }		          
         ]

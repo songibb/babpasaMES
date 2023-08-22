@@ -21,19 +21,22 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 		return prcsManageMapper.selectPrcsManageList();
 	}
 
-
 	//공정관리 등록
 	@Override
-	public int insertPrcsManage() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertPrcsManage(PrcsManageVO prcsManageVO) {
+		return prcsManageMapper.insertPrcsManage(prcsManageVO);
 	}
-	
+
+	//공정관리 수정
+	@Override
+	public int updatePrcsManage(PrcsManageVO prcsManageVO) {
+		return prcsManageMapper.updatePrcsManage(prcsManageVO);
+	}
+
 	//공정관리 삭제
 	@Override
-	public int updatePrcsManage() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deletePrcsManage(String prcsCode) {
+		return prcsManageMapper.deletePrcsManage(prcsCode);
 	}
 	
 
