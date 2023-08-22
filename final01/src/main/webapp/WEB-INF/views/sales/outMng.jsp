@@ -267,11 +267,12 @@ input[type="date"]{
 	        	<c:forEach items="${outList}" var="out">
 	              {
 		           		salesOutCode : "${out.salesOutCode}",
-			           	prodName : "${out.prodName}",
+		           		prodLot : "${out.prodLot}",
 			           	actName : "${out.actName}",
 			           	salesOutAmt : "${out.salesOutAmt}",
 			           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
-			           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
+			           	salesOutAmt : "${out.empCode}",
+			           	salesOutAmt : "${out.salesOrdDeCode}",
 	              }<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -292,43 +293,39 @@ input[type="date"]{
 		           name: 'salesOutCode',
 		         },
 		         {
-		           header: '제품명',
-		           name: 'prodName'
+		           header: '제품Lot',
+		           name: 'prodLot',
+		           editor : 'text'
+		         },
+		         {
+		           header: '상세주문코드',
+		           name: 'salesOrdDeCode',
+		           editor: 'text'
 		         },
 		         {
 		           header: '거래처명',
-		           name: 'actName'
+		           name: 'actName',
+		           value : '${out.actName}'
 		         },
 		         {
 		           header: '출고량',
-		           name: 'salesOutAmt'
+		           name: 'salesOutAmt',
+		           editor : 'text'
 		         },
 		         {
 		           header: '출고날짜',
 		           name: 'salesOutDate',
-		           editor: 'datePicker',
-		           value : '${out.salesOutDate}'
+		           editor: {
+		    		      type: 'datePicker',
+		    		      options: {
+		    		    	  language: 'ko'
+		    		      }
+		    		    }
 		         },
 		         {
-		           header: '유통기한',
-		           name: 'salesInExd',
-		           editor: 'datePicker',
-		           value : '${out.salesInExd}'
-		         },
-	         	{
-		           header: '출고여부',
-		           name: 'prodCode',
-		           hidden : true
-		         },
-	         	{
-		           header: '출고여부',
-		           name: 'salesOrdDeCode',
-		           hidden : true
-		         },
-		         {
-		           header: '출고여부',
-		           name: 'prodLot',
-		           hidden : true
+		           header: '직원코드',
+		           name: 'empCode',
+		           editor: 'text'
 		         },
 	         	{
 		           header: '출고여부',
@@ -337,7 +334,7 @@ input[type="date"]{
 		         },
 	         	{
 		           header: '출고여부',
-		           name: 'empCode',
+		           name: 'prodCode',
 		           hidden : true
 		         }
 	        ]
@@ -391,20 +388,20 @@ input[type="date"]{
 		outGrid.on('click', () => {
     	let rowKey = outGrid.getFocusedCell().rowKey;
     	let columnName = outGrid.getFocusedCell().columnName;
-    	if(columnName == "actName"){
+    	if(columnName == "prodLot"){
     		$(".modal").fadeIn();
-    	       Grid = createActGrid();
+    	       Grid = createLotGrid();
     	       
     	       Grid.on('click', () => {
     	       		let rowKey2 = Grid.getFocusedCell().rowKey;
-    	        	let actCode = Grid.getValue(rowKey2, 'actCode');
-    	        	let actName = Grid.getValue(rowKey2, 'actName');
-    	        	console.log(actCode);
-    	        	console.log(actName);
+    	        	let prodLot = Grid.getValue(rowKey2, 'prodLot');
+    	        	let prodCode = Grid.getValue(rowKey2, 'prodCode');
+    	        	console.log(prodLot);
+    	        	console.log(prodCode);
     	    		//$("#actCodeInput").val(actCode);
     	    		//$("#actNameFix").val(actName);
-    	    		outGrid.setValue(rowKey, 'actCode', actCode);
-    	    		outGrid.setValue(rowKey, 'actName', actName);
+    	    		outGrid.setValue(rowKey, 'prodLot', prodLot);
+    	    		outGrid.setValue(rowKey, 'prodCode', prodCode);
     	    		//선택시 모달창 닫기
     	    		if(rowKey != null){
     	    			$(".modal").fadeOut();
@@ -412,20 +409,23 @@ input[type="date"]{
     	    		}
 
     	       });
-    	} else if(columnName == 'prodName'){
+    	} else if(columnName == 'salesOrdDeCode'){
     		$(".modal").fadeIn();
- 	       Grid = createProdGrid();
+ 	       Grid = createODGrid();
  	       
  	       Grid.on('click', () => {
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
- 	        	let prodCode = Grid.getValue(rowKey2, 'prodCode');
- 	        	let prodName = Grid.getValue(rowKey2, 'prodName');
- 	        	console.log(prodCode);
- 	        	console.log(prodName);
+ 	        	let salesOrdDeCode = Grid.getValue(rowKey2, 'salesOrdDeCode');
+ 	        	let actName = Grid.getValue(rowKey2, 'actName');
+ 	        	let actCode = Grid.getValue(rowKey2, 'actCode');
+ 	        	console.log(salesOrdDeCode);
+ 	        	console.log(actName);
+ 	        	console.log(actCode);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
- 	    		outGrid.setValue(rowKey, 'prodCode', prodCode);
- 	    		outGrid.setValue(rowKey, 'prodName', prodName);
+ 	    		outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
+ 	    		outGrid.setValue(rowKey, 'actName', actName);
+ 	    		outGrid.setValue(rowKey, 'actCode', actCode);
  	    		//선택시 모달창 닫기
  	    		if(rowKey != null){
  	    			$(".modal").fadeOut();
@@ -440,6 +440,188 @@ input[type="date"]{
 
   	});
 	
+	//prodLot modal
+	 function createLotGrid(){
+  	   var odGrid = new tui.Grid({
+  	       el: document.getElementById('modal_label'),
+  	       data: [
+  	    	   <c:forEach items="${lotList}" var="lot" varStatus="status">
+  	          	{
+  	          	prodLot : "${lot.prodLot}",
+  	          	prodCode : "${lot.prodCode}",
+  	        	salesInDate : `<fmt:formatDate value="${lot.salesInDate}" pattern="yyyy-MM-dd"/>`,
+  	      		salesInAmt : "${lot.salesInAmt}",
+  	    		prodSaveAmt : "${lot.prodSaveAmt}",
+  	  			salesInExd : `<fmt:formatDate value="${lot.salesInExd}" pattern="yyyy-MM-dd"/>`,
+  				empCode : "${lot.empCode}",
+  				testNum : "${lot.testNum}"
+  	          	} <c:if test="${not status.last}">,</c:if>
+  	          </c:forEach>
+  	          ],
+  		   scrollX: false,
+  	       scrollY: false,
+  	       minBodyHeight: 30,
+  	       rowHeaders: ['rowNum'],
+  	       selectionUnit: 'row',
+  	       pagination: true,
+  	       pageOptions: {
+  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+  	         useClient: true,
+  	         perPage: 10
+  	       },
+  	       columns: [
+  	    	   {
+  	               header: '제품Lot',
+  	               name: 'prodLot',
+  	             },
+  	             {
+  	               header: '제품코드',
+  	               name: 'prodCode'
+  	             },
+  	             {
+  	               header: '입고날짜',
+  	               name: 'salesInDate'
+  	             },
+  	             {
+  	               header: '입고량',
+  	               name: 'salesInAmt'
+  	             },
+  	             {
+   	               header: '재고량',
+   	               name: 'prodSaveAmt'
+   	             },
+	             {
+ 	  	            header: '유통기한',
+ 	  	            name: 'salesInExd'
+ 	  	          },
+ 	  	          {
+  	    	        header: '직원코드',
+  	    	        name: 'empCode'
+  	    	       },
+  	      	       {
+  	    	  	    header: '품질검사번호',
+  	    	  	    name: 'testNum'
+  	    	  	   }
+  	 	    ]
+  	      
+  	     });
+  	   
+  	   return odGrid;
+     }
+	
+	//salesOrdDeCode modal
+	function createODGrid(){
+  	   var lotGrid = new tui.Grid({
+  	       el: document.getElementById('modal_label'),
+  	       data: [
+  	    	   <c:forEach items="${orderDeList}" var="order" varStatus="status">
+  	    	 {
+	           		salesOrdDeCode : "${order.salesOrdDeCode}",
+            	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
+            	 actCode : "${order.actCode}",
+	           	 actName : "${order.actName}",
+	           	 ordSts : "${order.ordSts}",
+	           	 prodName : "${order.prodName}",
+	           	 prcsRqAmt : "${order.prcsRqAmt}",
+	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
+	           	 devYn : "${order.devYn}",
+	           	 empCode : "${order.empCode}"
+	           	} <c:if test="${not status.last}">,</c:if>
+  	          </c:forEach>
+  	          ],
+  		   scrollX: false,
+  	       scrollY: false,
+  	       minBodyHeight: 30,
+  	       rowHeaders: ['rowNum'],
+  	       selectionUnit: 'row',
+  	       pagination: true,
+  	       pageOptions: {
+  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+  	         useClient: true,
+  	         perPage: 10
+  	       },
+  	       columns: [
+  	    	 {
+		           header: '주문상세코드',
+		           name: 'salesOrdDeCode',
+		         },
+		         {
+		           header: '주문날짜',
+		           name: 'ordDate',
+		           value : '${order.ordDate}',
+		           editor: {
+		    		      type: 'datePicker',
+		    		      options: {
+		    		    	  language: 'ko'
+		    		      }
+		    		    }
+		         },
+		         {
+		           header: '거래처명',
+		           name: 'actName',
+		           editor : 'text',
+		           value : '${order.actName}'
+		         },
+		         {
+		           header: '거래처코드',
+		           name: 'actCode',
+		         },
+		         {
+		           header: '생산계획상태',
+		           name: 'ordSts'
+		         },
+		         {
+		           header: '제품명',
+		           name: 'prodName',
+		           editor : 'text'
+		         },
+		         {
+		           header: '주문량',
+		           name: 'prcsRqAmt',
+		           editor : 'text'
+		         },
+		         {
+		           header: '납기일자',
+		           name: 'devDate',
+		           editor: {
+		    		      type: 'datePicker',
+		    		      options: {
+		    		    	  language: 'ko'
+		    		      }
+		    		    }
+		         },
+		         {
+		           header: '출고여부',
+		           name: 'devYn',
+		           value : '${order.devYn}'
+		         },
+		         {
+		           header: '주문코드',
+		           name: 'ordCode',
+		           hidden : true
+		         },
+		         {
+		           header: '직원코드',
+		           name: 'empCode',
+		           editor : 'text'
+		         },
+	         	{
+		           header: '생산계획코드',
+		           name: 'prcsPlanCode',
+		           hidden : true
+		         },
+	         	{
+		           header: '제품코드',
+		           name: 'prodCode',
+		           hidden : true
+		         }
+  	 	    ]
+  	      
+  	     });
+  	   
+  	   return lotGrid;
+     }
+		
 	//모달창 닫기
 	$("#close_btn").click(function(){
         $(".modal").fadeOut();
@@ -613,7 +795,7 @@ input[type="date"]{
 		if(outGrid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(outGrid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['ordDate'] == "" || obj2['actCode'] == "" || obj2['prodCode'] == "" || obj2['prcsRqAmt']=="" || obj2['devDate'] == "" || obj2['empCode'] == ""){
+					if(obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['salesOutDate'] == "" || obj2['salesOutAmt']=="" || obj2['empCode'] == "" || obj2['salesOrdDeCode'] == "" || obj2['prodLot'] == ""){
 						flag = false;
 						return false;
 					}

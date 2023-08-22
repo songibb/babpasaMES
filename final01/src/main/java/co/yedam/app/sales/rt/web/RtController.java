@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.rt.service.RtService;
 import co.yedam.app.sales.rt.service.RtVO;
 
@@ -32,4 +35,21 @@ public class RtController {
 		return vo;
 		
 	}
+		
+	// 반품 관리 조회들
+	@GetMapping("/rtMng")
+	public String rtMng(Model model) {
+		model.addAttribute("rtList", rtService.getAlreadyOutList());
+		
+		model.addAttribute("outList", rtService.getOutList());
+		return "sales/rtMng";
+	}
+	
+	
+	//등록, 수정, 삭제
+	@PostMapping("rtSave")
+	@ResponseBody
+	public int rtSave(@RequestBody GridVO<RtVO> data) {
+		return rtService.modifyRt(data);
+	}	
 }

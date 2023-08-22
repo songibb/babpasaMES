@@ -42,15 +42,16 @@
 	
 	<!-- 완제품인것만 제품 목록 -->
 	<select id="selectProdAllList" resultType="InVO">
-	SELECT prod_code, prod_name, prod_unit, prod_std
-	FROM com_prod
-	WHERE prod_kind = 'C'
+	SELECT i.prod_code, p.prod_name, i.sales_in_date, i.sales_in_amt, i.prod_save_amt, i.sales_in_exd, i.emp_code
+	FROM sales_in i join com_prod p
+                    on i.prod_code = p.prod_code
+	WHERE p.prod_kind = 'C'
 	ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 등록 -->
 	<insert id="insertProductIn" parameterType="InVO">
-			INSERT INTO mat_in (
+			INSERT INTO sales_in (
 				prod_lot
 				, prod_code
 				, sales_in_date

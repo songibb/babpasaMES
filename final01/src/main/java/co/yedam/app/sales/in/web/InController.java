@@ -43,6 +43,7 @@ public class InController {
 		@GetMapping("inProductList")
 		public String inProductList(Model model) {
 			model.addAttribute("prodAllList", inService.prodAllList());
+			model.addAttribute("prodList", inService.prodAllList());
 			return "sales/inMng";
 		}
 		
