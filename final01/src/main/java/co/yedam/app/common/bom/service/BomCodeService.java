@@ -18,6 +18,9 @@ public interface BomCodeService {
 	public int bomCodeInsert(BomReqVO bomReqVO);
 	
 	
+	//bom 최종 헤더만 수정하기
+	public int updateBomHeader(List<BomCodeVO> list);
+	
 	//bom 수정
 	public int updateBom(BomReqVO bomReqVO);
 	
