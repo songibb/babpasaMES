@@ -223,7 +223,7 @@
 				pagination: true,
 				pageOptions: {
 				useClient: true,
-				perPage: 10,
+				perPage: 5,
 				},
 		        columns:  [
 	 	      {
@@ -279,28 +279,21 @@
 		          success: function(result) {
 		            // result는 가져온 설비 정보를 담고 있음
 		            let eqName = result.eqName;
-		            let offNo = result.offNo;
-		            
-		            let offType = result.offType;
-		            let offInfo = result.offInfo;
-		            let offStime = result.offStime;
-		            let offEtime = result.offEtime;
+
 		            
 		            $('#eqCode').val(eqCode);
 		            $('#eqName').val(eqName);
-		            $('#offNo').val(offNo);
-		            $('#offType').val(offType);
-		            $('#offInfo').val(offInfo);
-		            $('#offStime').val(offStime);
-		            $('#offEtime').val(offEtime);
+		            
+		            $(".modal").fadeOut();
+		              Grid.destroy();
+
 		          },
 		          error: function(reject){
 		            console.log(reject);
 		          }
 		        });
 		        
-		        $(".modal").fadeOut();
-		        Grid.destroy();
+		        
 		      });
 		    });
   
@@ -437,6 +430,7 @@ $("#insertForm").on('submit', function(e){
 				}
 			});
 	}
+	
 	//수정 ajax 함수
 	function offequipUpdate(offequipInfo){
 		offequipInfo = getoffequipInfo();
@@ -464,7 +458,28 @@ $("#insertForm").on('submit', function(e){
 		.fail(reject => console.log(reject));
 	}
 	
-	
+	//조회 그리드 행 클릭시 해당 행 정보 input박스에 채우기 
+	grid.on('click', () => {
+		let rowKey = grid.getFocusedCell().rowKey;
+		let offNo = grid.getValue(rowKey, 'offNo');
+		let offCode = grid.getValue(rowKey, 'offCode');
+		let eqCode = grid.getValue(rowKey, 'eqCode');
+		let eqName = grid.getValue(rowKey, 'eqName');
+		let offType = grid.getValue(rowKey, 'offType');
+		let offInfo = grid.getValue(rowKey, 'offInfo');
+		let offStime = grid.getValue(rowKey, 'offStime');
+		let offEtime = grid.getValue(rowKey, 'offEtime');
+
+		
+		$("#offNo").val(offNo);
+		$("#offCode").val(offCode);
+		$("#eqCode").val(eqCode);
+		$("#eqName").val(eqName);
+		$("#offType").val(offType);
+		$("#offInfo").val(offInfo);
+		$("#offStime").val(offStime);
+		$("#offEtime").val(offEtime);
+	});
 
 	</script>
 </body>

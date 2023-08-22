@@ -10,7 +10,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
 	<ul class="nav">
     	<li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="mainPage">
             	<i class="mdi mdi-view-grid icon-grid menu-icon"></i>
               	<span class="menu-title">메인</span>
             </a>
@@ -23,7 +23,6 @@
             </a>
             <div class="collapse" id="ui-basic">
               	<ul class="nav flex-column sub-menu">
-              		<li class="nav-item"> <a class="nav-link" href="mainPage">메인</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="empinfo">사원 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">사원 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="#">공통 코드 조회</a></li>
@@ -79,6 +78,8 @@
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matStockList">자재 재고 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCalculateList">자재 LOT 정산 조회</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCalculateDir">자재 LOT 정산 등록</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisList">자재 폐기 조회</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisDir">자재 폐기 등록</a></li>
               	</ul>
             </div>
 		</li>
@@ -111,7 +112,7 @@
               	<ul class="nav flex-column sub-menu">
                 	<li class="nav-item"> <a class="nav-link" href="MatQualChk">자재 검수 관리</a></li>
                 	<li class="nav-item"> <a class="nav-link" href="semiQualChk">반제품 품질 검사</a></li>
-                	<li class="nav-item"> <a class="nav-link" href="pages/icons/mdi.html">완제품 품질 검사</a></li>
+                	<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 검사</a></li>
               	</ul>
             </div>
 		</li>

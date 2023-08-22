@@ -107,6 +107,10 @@
 				{
 					header: '불합격량',
 					name: 'nonPassAmt'
+				},
+				{
+					header : '검사날짜',
+					name :'testDate'
 				}
 				
 			]
@@ -172,6 +176,11 @@
 		                   }
 
 		               }
+				},
+				{
+					header: '담당자',
+					name: 'empCode'
+					
 				}
 			]
 			

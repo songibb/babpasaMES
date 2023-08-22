@@ -100,6 +100,12 @@ public class BomCodeController {
 		return bomCodeService.deleteDeBom(list);
 	}
 	
+	@PostMapping("/bomUpdateHeader")
+	@ResponseBody
+	public int bomUpdateHeader(@RequestBody List<BomCodeVO> list) {
+		return bomCodeService.updateBomHeader(list);
+	}
+	
 	
 	
 }

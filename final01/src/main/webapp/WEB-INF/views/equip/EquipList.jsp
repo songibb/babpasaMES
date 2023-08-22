@@ -185,7 +185,7 @@
 			 	    	  name : 'highTemp'
 			 	      },
 			 	      {
-			 	    	 hedaer : '최저온도',
+			 	    	 header : '최저온도',
 			 	    	 name : 'lowTemp'
 			 	      }
 			 	      

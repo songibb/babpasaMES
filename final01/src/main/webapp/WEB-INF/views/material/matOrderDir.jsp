@@ -43,7 +43,7 @@
 	  width:600px; height:700px;
 	  background:#fff; border-radius:10px;
 	  /*모달창 위치 조절*/
-	  position:relative; top:33%; left:45%;
+	  position:relative; top:28%; left:45%;
 	  margin-top:-100px; margin-left:-200px;
 	  text-align:center;
 	  box-sizing:border-box;
@@ -65,10 +65,10 @@
 	  
 	.modal_content2{
 		  /*모달창 크기 조절*/
-		  width:1000px; height:850px;
+		  width:1000px; height:750px;
 		  background:#fff; border-radius:10px;
 		  /*모달창 위치 조절*/
-		  position:relative; top:18%; left:30%;
+		  position:relative; top:26%; left:32%;
 		  margin-top:-100px; margin-left:-200px;
 		  text-align:center;
 		  box-sizing:border-box;
@@ -112,18 +112,8 @@
 		padding: 20px;
 	}
 	
-	.m_footer2{
-		height: 10%;
-		padding: 15px;
-		border-bottom-left-radius: 10px;
-		border-bottom-right-radius: 10px;
-		display: flex;
-		justify-content: end;
-	}
-	.cancle2{
-		background-color: black;
-		color: white;
-	}
+	
+	
 	
 /*모달끝*/
 	
@@ -190,7 +180,7 @@
 			</div>
 		</div>
 	</div> 
-	<div class="modal">
+	<div class="modal" id="modal">
    		<div class="modal_content">
         	<div class="m_head">
             	<div class="modal_title"><h3>목록</h3></div>
@@ -199,7 +189,7 @@
        		<div class="m_body">
        			<p>이름</p>
                 <input type="text" id="modalSearch">
-                <button type="button" class="btn btn-info btn-icon-text">검색</button>
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
@@ -207,8 +197,8 @@
     		</div>
   		</div>
 	</div>
-	<div class="modal2">
-   		<div class="modal_content2">
+	<div class="modal modal2" id="modal2">
+   		<div class="modal_content modal_content2">
         	<div class="m_head2">
             	<div class="modal_title2"><h3>신규 생산계획 목록</h3></div>
             	<div class="close_btn2" id="close_btn2">X</div>
@@ -219,169 +209,12 @@
             	<h3>해당 생산 계획 자재 소모량</h3>
             	<div id="modal_label3"></div>
        		</div>
-       		<div class="m_footer2">
-            	<div class="modal_btn2 cancle2 close_btn2">CANCLE</div>
-    		</div>
   		</div>
 	</div>
 
 
 	<script>
-		//2번째 모달창
-		var Grid2;
-		$("#newPrcsPlanView").click(function(){
-			$(".modal2").fadeIn();
-			preventScroll();
-			Grid2 = createPrcsNewPlanGrid();
-			
-			//첫번째 그리드 클릭시 두번째 그리드 생성
-			Grid2.on('dblclick', () => {
-		    	
-		    	
-		    	//클릭한 계획의 계획코드 가져오기
-		    	let rowKey = Grid2.getFocusedCell().rowKey;
-		    	let prodCode = Grid2.getValue(rowKey, 'prodCode');
-		    	let planAmt = Grid2.getValue(rowKey, 'prcsPlanAmt');
-				if(rowKey >= 0){
-					
-					if(Grid3 != null && Grid3.el != null){
-						
-						Grid3.destroy();
-					}
-					
-			    		
-				}
-				$.ajax({
-					url : 'getNewPrcsPlanUseAmt',
-					method : 'GET',
-					data : { prodCode : prodCode },
-					success : function(data){
-							
-						Grid3 = createPrcsNewPlanAmtGrid(planAmt);
-						Grid3.resetData(data);
-			 		},
-					error : function(reject){
-				 		console.log(reject);
-				 	}	
-				
-		    	
-				})
-		  	
-		    })
-		});
 		
-		
-		//신규 생산계획 그리드
-		function createPrcsNewPlanGrid(){
-	  	   	var prcsNewPlanGrid = new tui.Grid({
-	  	       el: document.getElementById('modal_label2'),
-	  	       data: [
-	  	    	   <c:forEach items="${planList}" var="plan" varStatus="status">
-	  	          	{
-	  	          		prcsPlanName : "${plan.prcsPlanName}",
-	  	          		prodName :"${plan.prodName}",
-	  	          		prcsPlanAmt :"${plan.prcsPlanAmt}",
-	  	          		prodCode : "${plan.prodCode}",
-	  	          		prcsPlanDate : "${plan.prcsPlanDate}"
-	  	          	} <c:if test="${not status.last}">,</c:if>
-	  	          </c:forEach>
-	  	          ],
-	  		   scrollX: false,
-	  	       scrollY: false,
-	  	       minBodyHeight: 30,
-	  	       rowHeaders: ['rowNum'],
-	  	       selectionUnit: 'row',
-	  	       pagination: true,
-	  	       pageOptions: {
-	  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	  	         useClient: true,
-	  	         perPage: 4
-	  	       },
-	  	       columns: [
-	  	    	   	{
-	  	               header: '계획명',
-	  	               name: 'prcsPlanName',
-	  	             },
-	  	             {
-	  	               header: '제품명',
-	  	               name: 'prodName'
-	  	             },
-	  	             {
-	  	               header: '제품코드',
-	  	               name : 'prodCode',
-	  	               hidden : true
-	  	             },
-	  	             {
-	  	               header: '계획량',
-	  	               name: 'prcsPlanAmt',
-	  			 	   formatter(e) { 
-			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-			 	           	return val;
-			 	        }
-	  	             },
-	  	             {
-	  	               header : '계획날짜',
-	  	               name: 'prcsPlanDate',
-			 	  	   className: 'yellow-background'
-	  	             }
-	  	 	    ]
-	  	      
-	  	     });
-	  	   
-	  	   	return prcsNewPlanGrid;
-	     }
-		
-		
-		
-		
-		//두번째 그리드 내용
-		var Grid3;
-		function createPrcsNewPlanAmtGrid(planAmt){
-	    	var prcsNewPlanAmtGrid = new tui.Grid({
-	            el: document.getElementById('modal_label3'),
-	            scrollX: false,
-	            scrollY: false,
-	            minBodyHeight: 30,
-	    		rowHeaders: ['rowNum'],
-	    		pagination: true,
-	    		pageOptions: {
-	    			useClient: true,
-	    			perPage: 10,
-	    		},
-	            columns: [
-	              {
-	                header: '자재명',
-	                name: 'matName'
-	              },
-	              {
-	                header: '자재 소모량',
-	                name: 'bomAmt',
-		 	       	formatter(e) {
-	                	value = e['value'] * planAmt
-		 	        	val = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		 	           	return val;
-		 	        }
-	              },
-	              {
-	                header: '현재고량',
-	                name: 'matStock'
-	              }
-	            ]
-	          });
-	    	
-	    	return prcsNewPlanAmtGrid;
-		}
-
-		
-		//2번째 모달창 닫기
-		$(".close_btn2").click(function(){
-	        $(".modal2").fadeOut();
-	        activeScroll();
-	  		Grid2.destroy();
-	  		if(Grid3 != null){
-	  			Grid3.destroy();
-	  		}
-	    });
 	
 	
 	
@@ -709,7 +542,7 @@
 		var Grid;
 		$("#actModal, #selectActModal").on('click', event =>{
 			
-		       $(".modal").fadeIn();
+		       $("#modal").fadeIn();
 		       preventScroll();
 		       Grid = createActGrid();
 		       $('.modal_title h3').text('거래처 목록');
@@ -731,7 +564,7 @@
 
 		    		//모달창 닫기
 		    		if(rowKey != null){
-		    			$(".modal").fadeOut();
+		    			$("#modal").fadeOut();
 		    			activeScroll();
 		    			let inputContent = $('#modalSearch').val('');
 		        		Grid.destroy();
@@ -742,7 +575,7 @@
 			
 		     
 		$("#matModal").click(function(){
-		       $(".modal").fadeIn();
+		       $("#modal").fadeIn();
 		       preventScroll();
 		       Grid = createMatGrid();
 		       $('.modal_title h3').text('자재 목록');
@@ -758,7 +591,7 @@
 		       	
 		   		//모달창 닫기
 		   		if(rowKey != null){
-					$(".modal").fadeOut();
+					$("#modal").fadeOut();
 					activeScroll();
 					let inputContent = $('#modalSearch').val('');
 		    		Grid.destroy();
@@ -784,7 +617,7 @@
 	 	   	}
 	    	
 	    	if(columnName == 'matName'){
-	    		$(".modal").fadeIn();
+	    		$("#modal").fadeIn();
 	    		preventScroll();
 	 	       	Grid = createMatGrid();
 	 	      $('.modal_title h3').text('자재 목록');
@@ -815,7 +648,7 @@
 	 	    		
 	 	    		//선택시 모달창 닫기
 	 	    		if(rowKey2 != null){
-	 	    			$(".modal").fadeOut();
+	 	    			$("#modal").fadeOut();
 	 	    			activeScroll();
 	 	    			let inputContent = $('#modalSearch').val('');
 	 	        		Grid.destroy();
@@ -878,7 +711,7 @@
 	
 	//모달창 닫기
 	$(".close_btn").click(function(){
-        $(".modal").fadeOut();
+        $("#modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
   		Grid.destroy();
@@ -1037,6 +870,160 @@
           orderGrid.export('xlsx');
        })
     })
+    
+    //2번째 모달창
+		var Grid2;
+		$("#newPrcsPlanView").click(function(){
+			$("#modal2").fadeIn();
+			preventScroll();
+			Grid2 = createPrcsNewPlanGrid();
+			
+			//첫번째 그리드 클릭시 두번째 그리드 생성
+			Grid2.on('dblclick', () => {
+		    	
+		    	
+		    	//클릭한 계획의 계획코드 가져오기
+		    	let rowKey = Grid2.getFocusedCell().rowKey;
+		    	let prodCode = Grid2.getValue(rowKey, 'prodCode');
+		    	let planAmt = Grid2.getValue(rowKey, 'prcsPlanAmt');
+				if(rowKey >= 0){
+					
+					if(Grid3 != null && Grid3.el != null){
+						
+						Grid3.destroy();
+					}
+					
+			    		
+				}
+				$.ajax({
+					url : 'getNewPrcsPlanUseAmt',
+					method : 'GET',
+					data : { prodCode : prodCode },
+					success : function(data){
+							
+						Grid3 = createPrcsNewPlanAmtGrid(planAmt);
+						Grid3.resetData(data);
+			 		},
+					error : function(reject){
+				 		console.log(reject);
+				 	}	
+				
+		    	
+				})
+		  	
+		    })
+		});
+		
+		
+		//신규 생산계획 그리드
+		function createPrcsNewPlanGrid(){
+	  	   	var prcsNewPlanGrid = new tui.Grid({
+	  	       el: document.getElementById('modal_label2'),
+	  	       data: [
+	  	    	   <c:forEach items="${planList}" var="plan" varStatus="status">
+	  	          	{
+	  	          		prcsPlanName : "${plan.prcsPlanName}",
+	  	          		prodName :"${plan.prodName}",
+	  	          		prcsPlanAmt :"${plan.prcsPlanAmt}",
+	  	          		prodCode : "${plan.prodCode}",
+	  	          		prcsPlanDate : "${plan.prcsPlanDate}"
+	  	          	} <c:if test="${not status.last}">,</c:if>
+	  	          </c:forEach>
+	  	          ],
+	  		   scrollX: false,
+	  	       scrollY: false,
+	  	       minBodyHeight: 30,
+	  	       rowHeaders: ['rowNum'],
+	  	       selectionUnit: 'row',
+	  	       pagination: true,
+	  	       pageOptions: {
+	  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	  	         useClient: true,
+	  	         perPage: 4
+	  	       },
+	  	       columns: [
+	  	    	   	{
+	  	               header: '계획명',
+	  	               name: 'prcsPlanName',
+	  	             },
+	  	             {
+	  	               header: '제품명',
+	  	               name: 'prodName'
+	  	             },
+	  	             {
+	  	               header: '제품코드',
+	  	               name : 'prodCode',
+	  	               hidden : true
+	  	             },
+	  	             {
+	  	               header: '계획량',
+	  	               name: 'prcsPlanAmt',
+	  			 	   formatter(e) { 
+			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			 	           	return val;
+			 	        }
+	  	             },
+	  	             {
+	  	               header : '계획날짜',
+	  	               name: 'prcsPlanDate',
+			 	  	   className: 'yellow-background'
+	  	             }
+	  	 	    ]
+	  	      
+	  	     });
+	  	   
+	  	   	return prcsNewPlanGrid;
+	     }
+		
+		
+		
+		
+		//두번째 그리드 내용
+		var Grid3;
+		function createPrcsNewPlanAmtGrid(planAmt){
+	    	var prcsNewPlanAmtGrid = new tui.Grid({
+	            el: document.getElementById('modal_label3'),
+	            scrollX: true,
+	            scrollY: true,
+	            minBodyHeight: 30,
+	    		rowHeaders: ['rowNum'],
+	    		pagination: true,
+	    		
+	            columns: [
+	              {
+	                header: '자재명',
+	                name: 'matName'
+	              },
+	              {
+	                header: '자재 소모량',
+	                name: 'bomAmt',
+		 	       	formatter(e) {
+	                	value = e['value'] * planAmt
+		 	        	val = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		 	           	return val;
+		 	        }
+	              },
+	              {
+	                header: '현재고량',
+	                name: 'matStock'
+	              }
+	            ]
+	          });
+	    	
+	    	return prcsNewPlanAmtGrid;
+		}
+
+		
+		//2번째 모달창 닫기
+		$(".close_btn2").click(function(){
+	        $("#modal2").fadeOut();
+	        activeScroll();
+	  		Grid2.destroy();
+	  		if(Grid3 != null && Grid3.el != null){
+				
+				Grid3.destroy();
+			}
+	    });
 	
 
     </script>

@@ -72,6 +72,7 @@
 		ON(a.prod_code = c.prod_code)
 		WHERE b.prcs_ing_code IS NULL
 		AND a.total_test_yn = 'Y'
+		AND a.test_semi_yn = 'S'
 		ORDER BY a.test_date DESC
 	</select>
 	

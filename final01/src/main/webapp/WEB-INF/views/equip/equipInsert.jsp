@@ -109,18 +109,18 @@
 			</select>
          </td>
          <th>거래처</th>
-         <td><input type="text" name="actCode" id="actCode"></td>
+         <td><input type="text" name="actCode" id="actCode"><button type="button" id="actModal2">설비조회</button></td>
       
       </tr>
       <tr>
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
          <th>제작일자</th>
-         <td><input type="text" name="makeDate" id="makeDate"></td>
+         <td><input type="date" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>구매일자</th>
-         <td><input type="text" name="buyDate" id="buyDate"></td>
+         <td><input type="date" name="buyDate" id="buyDate"></td>
          <th>점검주기</th>
          <td><input type="text" name="chkCycle" id="chkCycle">일</td>
       </tr>
@@ -140,18 +140,6 @@
          <th>최고온도</th>
          <td><input type="text" name="highTemp" id="highTemp"> ℃  </td>
       </tr>
-      <tr>
-         <th>설비이미지</th>
-         <td><input type="file" name="eqImg" id="eqImg" multiple></td>
-         		<c:choose>
-					<c:when test="${not empty equipInsert.eqImg }">
-						<td><img src='<c:url value="/resources/${equipInsert.eqImg}" />'></td>
-					</c:when>
-					<c:otherwise>
-						<td>파일 없음</td>
-					</c:otherwise>
-				</c:choose>
-      </tr>
    </table>
    <br>
    <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
@@ -160,6 +148,7 @@
    <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
 </form>   
+
    
 <div class="modal">
    
@@ -171,6 +160,7 @@
        </div>
        <div class="m_body">
             <div id="actGrid"></div>
+             <div id="modal_label"></div>
        </div>
         <div class="m_footer">
             <div class="modal_btn save" id="save_btn">SAVE</div>
@@ -183,8 +173,7 @@
 	</div>
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
 <script>
 		
 	var Grid;
@@ -212,11 +201,9 @@
 						    let year = date.getFullYear();
 						    let month = ('0' + (date.getMonth() + 1)).substr(-2);   //month 0부터 시작하기때문에 1을 더함, '0'을 앞에 붙여서 두자리로 표현
 						    let day = ('0' + date.getDate()).substr(-2);    //'0'을 앞에 붙여서 두자리로 표현
-						    //substr(음수) : 오른쪽 부터 잘라냄 -> 원래 두자리 숫자는 0을 제외하고 잘라와서 그대로 표현 
-					   
+						    //substr(음수) : 오른쪽 부터 잘라냄 -> 원래 두자리 숫자는 0을 제외하고 잘라와서 그대로 표현 			   
 						$('#makeDate').val(year + '-' + month + '-' + day);
-						    
-						$('#buyDate').val(data.buyDate);
+						$('#buyDate').val(year + '-' + month + '-' + day);
 						$('#chkCycle').val(data.chkCycle);
 						$("#EquipStsList option[value='" + eqSts + "']").prop("selected", true);
 						$('#eqImg').val(data.eqImg);
@@ -252,20 +239,31 @@
 				}
 		});
 	});
-
-	$("#close_btn").click(function(){
-	  $(".modal").fadeOut(); 
-		Grid.destroy();
-	});
 	
-	$("#save_btn").click(function(){
-        $(".modal").fadeOut();
-         
-  		Grid.destroy();
-     });
+	//거래처 모달 시작
+
+	 $("#actModal2").click(function(){
+       $(".modal").fadeIn();
+       Grid = createActGrid2();
+       
+       Grid.on('click', () => {
+           let rowKey = Grid.getFocusedCell().rowKey;
+           let actCode = Grid.getValue(rowKey, 'actCode');
+           let actName = Grid.getValue(rowKey, 'actName');
+          $("#actCode").val(actCode);
+          $("#actName").val(actName);
+          //모달창 닫기
+          console.log(rowKey);
+          if(rowKey != null){
+             $(".modal").fadeOut();
+              Grid.destroy();
+          }
+
+          });
+        });
 
 	
-	function createActGrid(){
+	 function createActGrid(){
 		   var actGrid = new tui.Grid({
 			      el: document.getElementById('actGrid'),
 				   scrollX: false,
@@ -295,11 +293,64 @@
 				 	      }
 				    ]
 			    })
-		   
-		   
-		   
+
 		   return actGrid;
 	}
+	
+	$("#close_btn").click(function(){
+	  $(".modal").fadeOut(); 
+		Grid.destroy();
+	});
+	
+	$("#save_btn").click(function(){
+        $(".modal").fadeOut();
+         
+  		Grid.destroy();
+     });
+
+
+
+	
+	 //거래처 리스트 모달 그리드
+	   function createActGrid2(){
+	      var actGrid = new tui.Grid({
+	          el: document.getElementById('modal_label'),
+	          data: [
+	             <c:forEach items="${actList}" var="a" varStatus="status">
+	                {
+	                   actCode : "${a.actCode}",
+	                   actName :"${a.actName}"
+	                } <c:if test="${not status.last}">,</c:if>
+	             </c:forEach>
+	             ],
+	         scrollX: false,
+	          scrollY: false,
+	          minBodyHeight: 30,
+	          rowHeaders: ['rowNum'],
+	          selectionUnit: 'row',
+	          pagination: true,
+	          pageOptions: {
+	          //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	            useClient: true,
+	            perPage: 10
+	          },
+	          columns: [
+	             {
+	                  header: '거래처코드',
+	                  name: 'actCode',
+	                },
+	                {
+	                  header: '거래처명',
+	                  name: 'actName'
+	                }
+	           ]
+	         
+	        });
+	      
+	      return actGrid;
+	   }
+	
+	
 	
 	//수정
 	 $('#update').on('click',ajaxEquipUpdate);
@@ -333,6 +384,8 @@
 		.fail(reject =>console.log(reject));
 		}; 
 		
+		
+		
 		//삭제
 		$('#deleteEq').click(function(){
 			var eqCode = $('#eqCode').val();
@@ -352,76 +405,9 @@
 			})
 		});
 
-		
-	/* 	//설비타입 모달
-		var Grid;
-		$("#actModal2").click(function(){
-		  $(".modal").fadeIn();
-		  Grid = createeqTypeGrid();
-		  Grid.on('click', () => {
-				let rowKey = Grid.getFocusedCell().rowKey;
-				let eqType = Grid.getValue(rowKey, 'eqType');
-		
-				$.ajax({
-					url : 'getEquipType',
-					method : 'GET',
-					data : { eqType : eqType },
-					success : function(data){
-							$('#eqType').val(data.eqType);
 
-					    },
-					error : function(reject){
-			 			console.log(reject);
-			 		}	
-				})
-			});
-
-			  
-		  $.ajax({
-			    url : "selectEquipAllList",
-			    method :"GET",
-			    success : function(result){
-			        Grid.resetData(result);
-			    },
-			    error : function(reject){
-						console.log(reject);
-					}
-			});
-		});
-
-		$("#close_btn").click(function(){
-		  $(".modal").fadeOut(); 
-			Grid.destroy();
-		});
-
-		
-		function createeqTypeGrid(){
-			   var eqTypeGrid = new tui.Grid({
-				      el: document.getElementById('eqTypeGrid'),
-					   scrollX: false,
-				      scrollY: false,
-				      minBodyHeight: 30,
-				      rowHeaders: ['rowNum'],
-				      selectionUnit: 'row',
-				      pagination: true,
-				      pageOptions: {
-				      //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-				        useClient: true,
-				        perPage: 10
-				      },
-				      columns: [
-					 	      {
-					 	        header: '설비구분',
-					 	        name: 'eqType'
-					 	      }
-					    ]
-				    })
-			   
-			   
-			   
-			   return eqTypeGrid;
-		} */
-		
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 </body>
 </html>

@@ -105,6 +105,16 @@ public class BomCodeServiceImpl implements BomCodeService {
 		return bomCodeMapper.chartTest();
 	}
 
+	@Override
+	public int updateBomHeader(List<BomCodeVO> list) {
+		int result = 0;
+		for(BomCodeVO bomCode : list) {
+			bomCodeMapper.updateBom(bomCode);
+			result++;
+		}
+		return result; 
+	}
+
 
 
 }
