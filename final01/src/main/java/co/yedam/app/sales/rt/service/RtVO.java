@@ -29,5 +29,4 @@ public class RtVO {
 	
 	private String prodUnit;
 	private String prodStd;
-	private String prodLot;
 }

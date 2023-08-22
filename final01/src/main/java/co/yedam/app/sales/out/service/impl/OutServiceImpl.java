@@ -62,14 +62,4 @@ public class OutServiceImpl implements OutService {
 		}
 		return result;
 	}
-
-	@Override
-	public List<OutVO> LotList() {
-		return outMapper.selectLotList();
-	}
-
-	@Override
-	public List<OutVO> OrderDeList() {
-		return outMapper.selectOrderDeList();
-	}
 }

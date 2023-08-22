@@ -82,80 +82,59 @@
 						ON (o.prod_code = i.prod_code)
 						JOIN sales_ord_de d
 						ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	WHERE d.dev_yn = 'N'
 	ORDER BY sales_out_code DESC
   	</select>
 	
 	
 	<!-- 출고 등록 -->
 	<insert id="insertOut" parameterType="OutVO">
-	CALL insert_sales_out
-	(
-	#{prodCode}
-	, #{actCode}
-	, #{salesOutDate}
-	, #{salesOutAmt}
-	, #{empCode}
-	, #{salesOrdDeCode}
-	, #{prodLot}	
-	)
-<!-- 			INSERT 	INTO sales_out -->
-<!-- 			( -->
-<!-- 			sales_out_code -->
-<!-- 			, prod_code -->
-<!-- 			, act_code -->
-<!-- 			, sales_out_date -->
-<!-- 			, sales_out_amt -->
-<!-- 			, emp_code -->
-<!-- 			, sales_ord_de_code -->
-<!-- 			, prod_lot -->
-<!-- 			) -->
-<!-- 			VALUES -->
-<!-- 			( -->
-<!-- 			get_primaryCode('salesOutCode') -->
-<!-- 			, #{prodCode} -->
-<!-- 			, #{actCode} -->
-<!-- 			, #{salesOutDate} -->
-<!-- 			, #{salesOutAmt} -->
-<!-- 			, #{empCode} -->
-<!-- 			, #{salesOrdDeCode} -->
-<!-- 			, #{prodLot} -->
-<!-- 			)  -->
+		<selectKey keyProperty="salesOutCode" resultType="String" order="BEFORE">
+			SELECT 'OUT-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(sales_out_code, -3)),0) + 1, 3, '0')
+			FROM sales_out
+			WHERE SUBSTR(sales_out_code, 5, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+			INSERT 	INTO sales_out
+			(
+			sales_out_code
+			, prod_code
+			, act_code
+			, sales_out_date
+			, sales_out_amt
+			, emp_code
+			, sales_ord_de_code
+			, prod_lot
+			)
+			VALUES
+			(
+			#{salesOutCode}
+			, #{prodCode}
+			, #{actCode}
+			, #{salesOutDate}
+			, #{salesOutAmt}
+			, #{empCode}
+			, #{salesOrdDeCode}
+			, #{prodLot}
+			) 
+			<!-- 두번째 쿼리 -->
 	</insert>
 	
 	<!-- 수정 -->
-<!-- 	<update id="updateOut" parameterType="OutVO"> -->
-  		
-<!--   	</update> -->
+	<update id="updateOut" parameterType="OutVO">
+  	UPDATE  SET
+			prod_code = #{commdeCode},
+			act_code = #{commdeName},
+			<!-- 반품이나 출고를 하면 재고가 변동되어야하기 때문에
+			프로시져 만들어서 해야함. -->
+			commde_info = #{commdeInfo},
+			commde_use = #{commdeUse}
+	WHERE commde_no = #{commDeNo}
+  	</update>
   	
   	<!-- 삭제 -->
   		<delete id="deleteOut" parameterType="OutVO">
-		CALL delete_sales_out
-		(#{salesOutCode})
+  			DELETE FROM com_commde
+  			WHERE commde_no = #{commDeNo}
   	</delete>
   	
-  	<!-- lot list -->
-  	<select id="selectLotList" resultType="OutVO">
-  	SELECT *
-  	FROM sales_in
-  	ORDER BY prod_lot
-  	</select>
-  	<!-- orderde list -->
-  	<select id="selectOrderDeList" resultType="OutVO">
-  	SELECT d.sales_ord_de_code sales_ord_de_code
-		, o.ord_date ord_date
-		, a.act_code act_code
-		, a.act_name act_name
-		, o.ord_sts ord_sts
-		, p.prod_name prod_name
-		, d.prcs_rq_amt prcs_rq_amt
-		, d.dev_date dev_date
-		, d.dev_yn dev_yn
-		FROM sales_ord o JOIN sales_ord_de d
-		ON (o.ord_code = d.ord_code)
-		JOIN com_prod p
-		ON (d.prod_code = p.prod_code)
-		JOIN com_act a
-		ON (o.act_code = a.act_code)
-		ORDER BY o.ord_code DESC
-  	</select>
   </mapper>

@@ -22,16 +22,11 @@ public interface OutMapper {
 	//출고완료된 품목만 보여주는 출고 리스트
 	public List<OutVO> selectOutNList();
 	//등록
-	public int insertOut(OutVO vo);
+	public int insertOut(@Param("data") OutVO vo);
 	
 	//수정
-	public int updateOut(OutVO vo);
+	public int updateOut(@Param("data") OutVO vo);
 	
 	//삭제
-	public int deleteOut(OutVO vo);
-	
-	//lot list
-	public List<OutVO> selectLotList();
-	//order detail list
-	public List<OutVO> selectOrderDeList();
+	public int deleteOut(@Param("data") OutVO vo);
 }

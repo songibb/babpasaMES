@@ -38,14 +38,4 @@ public class OutVO {
 	private Date endDate;
 	
 	private String prodLot;
-	private Date salesInDate;
-	private int salesInAmt;
-	private int prodSaveAmt;
-	private String testNum;
-	
-	private Date ordDate;
-	private String ordSts;
-	private int prcsRqAmt;
-	private Date devDate;
-	private String devYn;
 }

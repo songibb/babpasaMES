@@ -46,7 +46,7 @@ public class OrderController {
 	@GetMapping("/orderMng")
 	public String orderMngList(Model model) {
 		//전체 주문서 목록
-		model.addAttribute("orderNList", orderService.getNoPlan());
+		model.addAttribute("orderList", orderService.getNoPlan());
 		//거래처 목록 -> 모달
 		model.addAttribute("actList", orderService.actAllList());
 		//제품 목록 - 완제품만 -> 모달

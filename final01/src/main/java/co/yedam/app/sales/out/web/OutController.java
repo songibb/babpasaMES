@@ -50,10 +50,6 @@ public class OutController {
 		model.addAttribute("actList", outService.actAllList());
 		// 제품 목록 -> 모달
 		model.addAttribute("prodList", outService.prodAllList());
-		
-		model.addAttribute("lotList", outService.LotList());
-		
-		model.addAttribute("orderDeList", outService.OrderDeList());
 		return "sales/outMng";
 	}
 
