@@ -94,10 +94,10 @@ public class BomCodeController {
 	 
 	
 	
-	@PostMapping("/bomDeDelete")
+	@PostMapping("/bomDelete")
 	@ResponseBody 
-	public int bomDeDelete(@RequestBody List<BomCodeVO> list){
-		return bomCodeService.deleteDeBom(list);
+	public int bomDelete(@RequestBody List<BomCodeVO> list){
+		return bomCodeService.bomDelete(list);
 	}
 	
 	@PostMapping("/bomUpdateHeader")

@@ -27,8 +27,8 @@ public interface BomCodeService {
 	//bom 상세수정
 	//public int updateDeBom(List<BomCodeVO> list);
 	
-	//bom 상세 삭제
-	public int deleteDeBom(List<BomCodeVO> list);
+	//bom 삭제
+	public int bomDelete(List<BomCodeVO> list);
 	
 	
 	

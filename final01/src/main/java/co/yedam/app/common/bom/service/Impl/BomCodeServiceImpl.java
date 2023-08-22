@@ -1,6 +1,8 @@
 package co.yedam.app.common.bom.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,12 +89,22 @@ public class BomCodeServiceImpl implements BomCodeService {
 	 */
 
 	@Override
-	public int deleteDeBom(List<BomCodeVO> list) {
+	public int bomDelete(List<BomCodeVO> list) {
+		
+		
 		int result = 0;
-		for(BomCodeVO bomCode : list) {
-			bomCodeMapper.deleteDeBom(bomCode);
+		
+		for(BomCodeVO bomNo : list) {
+			bomCodeMapper.deleteBom(bomNo);
 			result++;
 		}
+		
+		for(BomCodeVO bomNo : list) {
+			bomCodeMapper.deleteDeBom(bomNo);
+			
+		}
+		
+		
 		return result;
 	}
 

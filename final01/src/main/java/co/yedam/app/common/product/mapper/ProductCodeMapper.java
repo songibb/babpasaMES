@@ -31,5 +31,8 @@ public interface ProductCodeMapper {
 	
 	// BOM 등록안된제품가져오기
 	public List<ProductCodeVO> bomNoProdList();
+	
+	//동일제품명 중복 확인용
+	public List<ProductCodeVO> prodNameUseCheck(String prodNameUse);
 
 }

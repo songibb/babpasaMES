@@ -31,8 +31,11 @@ public interface BomCodeMapper {
 	//bom 상세수정
 	public int updateDeBom(BomCodeVO bomCodeVO);
 	
+	//bom 삭제
+	public int deleteBom(BomCodeVO bomNo);
+	
 	//bom 상세 삭제
-	public int deleteDeBom(@Param("bomCode") BomCodeVO bomCode);
+	public int deleteDeBom(BomCodeVO bomNo);
 	
 	
 	
