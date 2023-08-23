@@ -34,4 +34,10 @@ public interface MatDisMapper {
 	public int deleteMatDis(MatDisVO vo);
 	//자재 재고 +
 	public int updateMatStockAtMatDisDe(MatDisVO vo);
+	
+	//삭제한 행 정보(rt)
+	public MatRtVO deletedRtInfo(MatDisVO vo);
+	
+	//삭제한 행 정보(exd)
+	public MatInVO deletedExdInfo(MatDisVO vo);
 }

@@ -70,6 +70,7 @@
                    	</button>
                    	<button class="btn btn-info btn-icon-text" id="save">저장</button>
                 	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+                	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: flex-end;">
             				<div style="flex: 1;">
@@ -140,14 +141,16 @@
 		           		matDpAmt :"${mat.matDpAmt}",
 		           		empCode : "${mat.empCode}",
 		           		empName : "${mat.empName}",
-		           		matDpInfo : "${mat.matDpInfo}"
+		           		matDpInfo : "${mat.matDpInfo}",
+		           		beforeMatDpAmt : "${mat.matDpAmt}",
+		           		matChangeAmt : 0
 		           	},
 		           </c:forEach>
 		          ],
 			   scrollX: false,
 		       scrollY: false,
 		       minBodyHeight: 30,
-		       rowHeaders: ['rowNum'],
+		       rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		       pagination: true,
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
@@ -193,6 +196,11 @@
 		 	        editor : 'text' 
 		 	        	
 			 	  },
+			 	  {
+			 		header: '본래폐기수량',
+			 		name: 'beforeMatDpAmt',
+			 		hidden: true
+			 	  },
 				  {
 			 	    header: '폐기일자',
 			 	    name: 'matDpDate',
@@ -212,6 +220,11 @@
 					name: 'matDpInfo',
 					width : 400,
 					editor: 'text'
+				  },
+				  {
+					header: '차이수량',
+					name: 'matChangeAmt',
+					hidden: true
 				  }
 				 
 		 	    ]
@@ -269,7 +282,7 @@
 			 	        name: 'matStd'
 			 	  },
 			 	  {
-			 	        header: '반품요청량',
+			 	        header: '반품실패량',
 			 	        name: 'matRtAmt'
 			 	  },
 			 	  {
@@ -349,32 +362,230 @@
 	 
 	 
 	 //삭제버튼
-	 $('#delete').on("click",function(){
-		 
-		});
+	$('#delete').on("click",function(){
+		let checkList = grid.getCheckedRows();
+		
+		let deleteRtList = [];
+		let deleteExdList = [];
+		$.each(checkList, function(idx, obj){
+			if(obj['matIdentiCode'].substr(0,4) == 'MODC'){
+				deleteRtObj = {};
+				deleteRtObj['matIdentiCode'] = obj['matIdentiCode'];
+				deleteRtList.push(deleteRtObj);
+			} else {
+				deleteExdObj = {};
+				deleteExdObj['matIdentiCode'] = obj['matIdentiCode'];
+				deleteExdList.push(deleteExdObj);
+			}
+			
+		})
+		
+		
+			$.ajax({
+				url : 'getDeletedRtDisInfo',
+				method : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(deleteRtList),
+				success : function(data){
+					$.each(data, function(idx, obj){
+						let date = new Date(obj['matRtDate']);
+						let year = date.getFullYear();    //0000년 가져오기
+						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+						let day = date.getDate();        //일자 가져오기
+						obj['matRtDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					})
+					rtGrid.appendRows(data);
+					
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		
+		
+		
+			$.ajax({
+				url : 'getDeletedExdDisInfo',
+				method : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(deleteExdList),
+				success : function(data){
+					$.each(data, function(idx, obj){
+						let date = new Date(obj['matExd']);
+						let year = date.getFullYear();    //0000년 가져오기
+						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+						let day = date.getDate();        //일자 가져오기
+						obj['matExd'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					})
+					exdGrid.appendRows(data);
+					
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		
+		
+		//그리드에서 행 지움
+		grid.removeCheckedRows(false);
+		//마우스 커서 없앰
+		grid.blur(); 
+	});
 	//저장버튼
 	document.getElementById('save').addEventListener('click', saveServer);
 	
+	//변화량 구하기
+	 grid.on('afterChange', (ev) => {
+		
+		let change = ev.changes[0];
+		let rowData = grid.getRow(change.rowKey);
+		
+		if(rowData.matIdentiCode != null){
+			if(change.columnName == 'matDpAmt'){
+				finalAmt = Number(rowData.matDpAmt) - Number(rowData.beforeMatDpAmt);
+				grid.setValue(change.rowKey, 'matChangeAmt', finalAmt);
+			}
+		}
+	});
+	
+	
 	//저장 함수
 	function saveServer() {	
+		grid.blur();
+		let modifyGridInfo = grid.getModifiedRows();
 		
-
+		// 수정된게 없으면 바로 빠져나감
+		
+		if(!grid.isModified()){
+			swal("", "변경사항이 없습니다", "warning");
+			return false;
+		}
+		
+		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
+		var flag = true;
+		//create, modify, delete 포함하는 전체 배열을 도는 each문			
+			
+		if(grid.getModifiedRows().createdRows.length > 0 ){
+				
+				$.each(grid.getModifiedRows().createdRows, function(idx, obj){
+					if(obj['matIdentiCode'] == '' || obj['matName'] == '' || obj['matUnit'] == '' || obj['matStd'] == '' || obj['matDpAmt'] == '' || obj['matDpDate'] ==  '' || obj['empName'] == ''){
+						flag = false;
+						return false;
+					}
+				})
+		}
+		
+		if(grid.getModifiedRows().updatedRows.length > 0 ){
+			$.each(grid.getModifiedRows().updatedRows, function(idx, obj){
+				
+					if( obj['matDpAmt'] == ''){
+						flag = false;
+						return false;
+					}
+				
+			})
+		}
+				
+		
+		
+		if(flag){
+				$.ajax({
+					url : 'matDisDirSave',
+					method : 'POST',
+					data : JSON.stringify(grid.getModifiedRows()),
+					contentType : 'application/json',
+					success : function(data){
+						swal("성공", data +"건이 처리되었습니다.", "success");
+						selectAjax();
+						getReRtList();
+						getReExdList();
+					},
+					error : function(reject){
+						console.log(reject);
+						swal("실패", "", "error");
+					}
+				})
+		} else {
+			swal("", "값이 입력되지 않았습니다", "warning");
+		}
 	}
 	
-	//비활성화
-	function setDisabled(){
-		
-	}
 	
 	
 	//검색 또는 DML 후 다시 LIST 불러오는 함수
 	function selectAjax(){
+		let mat = $('#matCodeInput').val();
+		let sd = $('#startDate').val();
+		let ed = $('#endDate').val();
 		
+			  
+		let search = { materialCode : mat , startDate : sd , endDate : ed };
+		$.ajax({
+			url : 'getMatDisFilter',
+			method : 'GET',
+			data : search,
+			success : function(data2){
+				
+				$.each(data2, function(idx, obj){
+					
+					let date = new Date(obj['matDpDate']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['matDpDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+										
+				})
+				grid.resetData(data2);
+				
+			}
+		})
 	}
 	
-	//insert 후에는 1번 그리드도 내용이 업데이트 되어야 함
-	function resetTestList(){
-		
+	//save후 rt 다시 불러옴
+	function getReRtList(){
+		$.ajax({
+			url: 'getRtFailFilter',
+			method: 'GET',
+			success: function(result){
+				$.each(data2, function(idx, obj){
+					
+					let date = new Date(obj['matRtDate']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['matRtDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+										
+				})
+				rtGrid.resetData(result);
+			},
+			error: function(reject){
+				console.log(reject);
+			}
+		})
+	}
+	
+	//save후 exd 다시 불러옴
+	function getReExdList(){
+		$.ajax({
+			url: 'getOverDateFilter',
+			method : 'GET',
+			success: function(result){
+				$.each(data2, function(idx, obj){
+					
+					let date = new Date(obj['matExd']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['matExd'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+										
+				})
+				
+				exdGrid.resetData(result);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		})
 	}
 	
 	//거래처 검색 모달창
@@ -490,35 +701,8 @@
 	
 	//검색버튼
 	//검색
-    $('#searchBtn').on('click', searchMatDis);
-    function searchMatDis(e){
-		   let mat = $('#matCodeInput').val();
-		   let sd = $('#startDate').val();
-		   let ed = $('#endDate').val();
-		   
-		 
-			  
-		   let search = { materialCode : mat , startDate : sd , endDate : ed };
-		   $.ajax({
-			   url : 'getMatDisFilter',
-			   method : 'GET',
-			   data : search ,
-			   success : function(data){
-				   
-				  for(let i of data){
-						let date = new Date(i.matDpDate);
-						let year = date.getFullYear();    //0000년 가져오기
-						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-						let day = date.getDate();        //일자 가져오기
-				   		i.matDpDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-				  }
-				   grid.resetData(data);
-			   },
-			   error : function(reject){
-				   console.log(reject);
-			   }
-		   });
-	}
+    $('#searchBtn').on('click', selectAjax);
+    
     
     //검색 옆 초기화버튼
     $('#searchResetBtn').on('click', resetInput);
@@ -541,8 +725,7 @@
 	//상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
 	rtGrid.on('dblclick', () => {
 		let rowKey = rtGrid.getFocusedCell().rowKey;
-    	//let columnName = orderGrid.getFocusedCell().columnName;
-    	//let value = orderGrid.getFocusedCell().value;	
+    	
     	
     	let matOdDeCd = rtGrid.getValue(rowKey, 'matOdDeCd');
     	let matCode = rtGrid.getValue(rowKey, 'matCode');

@@ -25,4 +25,10 @@ public interface MatDisService {
 		//등록, 수정, 삭제
 		public int modifyMatDis(GridVO<MatDisVO> data);
 		
+		//삭제 행 정보(rt)
+		public List<MatRtVO> getDeletedRtInfo(List<MatDisVO> list);
+		
+		//삭제 행 정보(exd)
+		public List<MatInVO> getDeletedExdInfo(List<MatDisVO> list);
+		
 }
