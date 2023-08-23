@@ -18,4 +18,5 @@ public class CommCodeVO {
 	private int commDeNo;
 	
 	private String useName;
+	
 }

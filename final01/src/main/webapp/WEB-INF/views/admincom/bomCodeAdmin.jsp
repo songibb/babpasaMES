@@ -198,7 +198,7 @@
 	document.getElementById('deSave').addEventListener('click', saveServer);
 	
 	/* const target = document.getElementById('deleteBom'); */
-
+	
 	
 	function saveServer(){
 		//BOM
@@ -235,7 +235,9 @@
 					for(let field in obj){
 						if(obj[field] == null){
 							flagIn = false;
+						
 						}
+						
 					}
 				})
 				
@@ -290,6 +292,10 @@
 				if(field != 'bomCode' && field != 'bomNo' && objDe[field] == null){
 					flag = false;
 				}
+				 if(isNaN(objDe['bomAmt'])==true){
+					flag = false;
+					
+				} 
 			}
 		})
 			
@@ -311,7 +317,7 @@
 		 				bomgrid.appendRow();
 		 				deBomgrid.clear()
 						deBomgrid.appendRow();
-
+		 				
 		                swal("등록이 완료되었습니다.","","success");
 		            },
 		            error: function(reject) {
@@ -320,7 +326,8 @@
 		        });
 			}else{
 
-				swal("모든 값이 입력되지 않았습니다.","","warning");
+				alert("오류");
+				 swal("오류","모든값이 입력되지 않았거나 정보 타입을 확인해 주세요","warning"); 
 
 				
 			} 
@@ -423,7 +430,7 @@
 				swal("수정이 완료되었습니다.","","success");
 			}
 			deBomgrid.clear();
-			deBomgrid.appendRow();
+			stopEdit();
 		},
 		error : function(reject){
  			console.log(reject);
@@ -472,6 +479,7 @@
 									   success : function(data){
 										   bomgrid.resetData(data);
 										   deBomgrid.clear();
+										   stopEdit();
 										   //수정시 사용할 그리드
 										    bomgrid.on('click', () => {
 										    	//클릭한 제품 BOM가져오기
@@ -484,6 +492,7 @@
 													data : { bomNo : bomNo },
 													success : function(data){
 														deBomgrid.resetData(data);
+														stopEdit();
 										 		    },
 													error : function(reject){
 											 			console.log(reject);
@@ -621,7 +630,11 @@
           {
             header: '사용량',
             name: 'bomAmt',
-            editor: 'text'
+            editor: 'text',
+            validation: {
+ 	 	        dataType: 'number',
+ 	 	        required: true
+ 	 	      }
           }
         ]
       });
@@ -649,9 +662,41 @@
 		 
 		 if(!flag){
 			 ev.stop();
+			 
 		 }
 	 }) 
-	
+	 
+	 //공정진행중인것은 수정못하게 막기
+	 function stopEdit(){
+		$.each(bomgrid.getData(), function(idx, obj){
+			
+			if(obj['bomPrcsYnName'] == '공정사용중'){
+				bomgrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+ 	/* function checkPrcsUse(ev){
+		 
+		 var rowKey = ev.rowKey;
+		 	var rows = bomgrid.findRows({
+		 		bomPrcsYnName : '공정사용중'
+		 	});
+		 let prflag = false;
+		 $.each(rows,function(idx, obj){
+			 if(obj['rowKey'] ==rowKey){
+				 prflag=true;
+			 }return prflag;
+		 })
+		 return prflag;	
+	 }
+	 
+	 bomgrid.on('editingStart', function(ev){
+		 let prflag = checkPrcsUse(ev);
+		 
+		 if(prflag){
+			 ev.stop();
+		 }
+	 })  */
 /* 	var Grid;
 	bomgrid.on('dblclick' ,() => {
 		let rowKey = bomgrid.getFocusedCell().rowKey;
@@ -1063,6 +1108,7 @@
 		   success : function(data){
 			   bomgrid.resetData(data);
 			   deBomgrid.clear();
+			   stopEdit();
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -1082,6 +1128,8 @@
 		   bomgrid.resetData(data);
 		   deBomgrid.clear();
 		   //수정시 사용할 그리드
+		   //공정사용중인것 수정못하게 막기
+		 	 stopEdit();
 		    bomgrid.on('click', () => {
 		    	//클릭한 제품 BOM가져오기
 		    	let rowKey = bomgrid.getFocusedCell().rowKey;
@@ -1099,12 +1147,25 @@
 			 		}	
 				})
 		  	});
+		    
 	   },
 	   error : function(reject){
 		   console.log(reject);
 	   }
    })
     
+   
+
+
+
+
+
+
+
+
+
+
+
    
       
 	

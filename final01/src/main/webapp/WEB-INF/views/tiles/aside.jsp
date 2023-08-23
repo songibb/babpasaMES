@@ -28,10 +28,10 @@
                 		<li class="nav-item"> <a class="nav-link" href="empinfo">사원 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="#">사원 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="empDir">사원 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="#">공통 코드 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="commCodeList">공통 코드 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
                 		<li class="nav-item"> <a class="nav-link" href="commCodeAdmin">공통 코드 관리</a></li>
@@ -43,10 +43,10 @@
                 		<li class="nav-item"> <a class="nav-link" href="prodCodeAdmin">제품 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="#">자재 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="matCodeList">자재 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="matCodeList">자재 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="matCodeAdmin">자재 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
                 		<li class="nav-item"> <a class="nav-link" href="ActCodeList">거래처 조회</a></li>
