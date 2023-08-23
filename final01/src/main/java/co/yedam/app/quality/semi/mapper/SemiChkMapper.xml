@@ -13,6 +13,8 @@
   			   ,A.NON_PASS_AMT
   			   ,c.semi_yn 
 		FROM prod_quality a 
+
+
 		
 		JOIN prcs_ing b
 		  ON (a.prcs_ing_code = b.prcs_ing_code)

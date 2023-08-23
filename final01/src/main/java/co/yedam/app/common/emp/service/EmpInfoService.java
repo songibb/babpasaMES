@@ -13,7 +13,8 @@ public interface EmpInfoService {
 	//사원코드 단건조회
 	public EmpInfoVO getEmpInfoOne(EmpInfoVO empInfoVO);
 	
-	
+	//사원등록(+)
+	public int insertNewEmp(EmpInfoVO empInfoVO);
 	
 
 }
