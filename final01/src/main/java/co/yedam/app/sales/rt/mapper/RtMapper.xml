@@ -11,6 +11,15 @@
 			, o.sales_out_amt sales_out_amt
 			, r.sales_rt_amt sales_rt_amt
 			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+			, r.sales_rt_code sales_rt_code
+			, r.prod_lot prod_lot
+			, r.sales_out_code sales_out_code
+			, r.sales_rt_amt sales_rt_amt
+			, r.sales_rt_date sales_rt_date
+			, r.sales_rt_why sales_rt_why
+			, r.emp_code emp_code
+			, r.prod_code prod_code
+			, o.sales_out_amt sales_out_amt
 	FROM sales_rt r JOIN com_prod p
 					ON (r.prod_code = p.prod_code)
 					JOIN sales_out o
@@ -77,6 +86,7 @@
 				, #{salesRtWhy}
 				, #{empCode}
 				, #{prodLot}
+				, #{salesOrdDeCode}
 			)
 	</insert>
 	
@@ -90,7 +100,12 @@
 	<!-- 삭제 -->
 	<delete id="deleteRt" parameterType="RtVO">
 			CALL delete_sales_rt
-			(#{salesRtCode)
+			(
+			#{salesRtCode}
+			, #{salesRtAmt}
+			, #{prodLot}
+			, #{salesOrdDeCode}
+			)
 		
 	</delete>
 	
