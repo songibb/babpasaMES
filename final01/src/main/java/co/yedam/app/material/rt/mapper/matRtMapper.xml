@@ -16,7 +16,7 @@
 									ON(b.err_code = e.commde_code)
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
-		ORDER BY a.mat_rt_date DESC
+		ORDER BY a.mat_rt_date
 	</select>
 	
 	<!-- 전체조회에서 검색 -->
@@ -54,7 +54,7 @@
 	            </when>
         	</choose>	
 		</where>
-		ORDER BY a.mat_rt_date DESC
+		ORDER BY a.mat_rt_date
 	</select>
 	
 	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
@@ -71,14 +71,14 @@
         LEFT JOIN com_act e
         ON(f.act_code = e.act_code)
 		WHERE err_rt_sts = 'R1'
-		ORDER BY mat_test_date DESC
+		ORDER BY mat_test_date
 	</select>
 	
 	<!-- 삭제한 행 정보 -->
 	<select id="selectDeletedRowsInfo" resultType="MatTestVO">
 		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
 		FROM mat_test a LEFT JOIN com_commde b
-		ON(a.err_code = b.err_code)
+		ON(a.err_code = b.commde_code)
 		LEFT JOIN mat_order_de c
 		ON(a.mat_od_de_cd = c.mat_od_de_cd)
         LEFT JOIN com_mat d

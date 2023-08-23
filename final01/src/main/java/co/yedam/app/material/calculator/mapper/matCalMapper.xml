@@ -9,7 +9,7 @@
 		ON(a.mat_code = b.mat_code)
 		LEFT JOIN com_emp c
 		ON(a.emp_code = c.emp_code)
-		ORDER BY a.cal_date DESC
+		ORDER BY a.cal_date
 	</select>
 	
 	<select id="selectMatCalSearch" resultType="MatCalVO">
@@ -36,7 +36,7 @@
 				AND TO_CHAR(cal_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.cal_date DESC
+		ORDER BY a.cal_date
 	</select>
 	
 	<insert id="insertMatCal" parameterType="MatCalVO">

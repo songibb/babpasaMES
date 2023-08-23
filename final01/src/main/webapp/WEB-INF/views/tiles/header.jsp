@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <script src="${pageContext.request.contextPath}/resources/js/template.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/off-canvas.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/hoverable-collapse.js"></script>
@@ -19,8 +20,8 @@
        	</button>
         
 		<ul class="navbar-nav navbar-nav-right">
-    		<li class="nav-item dropdown">
-    			<a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+    		<!--<li class="nav-item dropdown">
+    			  <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
             		<i class="fa-regular fa-bell icon-bell mx-0"></i>
               		<span class="count"></span>
             	</a>
@@ -67,19 +68,31 @@
               		</a>
 				</div>
 			</li>
+			-->
         	<li class="nav-item nav-profile dropdown">
         		<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              	김상희
+              	${user.empName}
             	</a>
             	<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              		<a class="dropdown-item">
-                		<i class="bi bi-gear text-primary"></i>
-                			Settings
-              		</a>
-              		<a class="dropdown-item">
-                		<i class="bi bi-power text-primary"></i>
-                			Logout
-              		</a>
+              		
+              			<sec:authorize access="!isAuthenticated()">
+              		<a class="dropdown-item" href="loginForm">
+							
+							
+	                			<i class="bi bi-power text-primary" ></i>
+	                			login
+	                			</a>
+                			
+							
+						</sec:authorize>
+              			<sec:authorize access="isAuthenticated()">
+							<a class="dropdown-item" href="logout">
+							<sec:csrfInput/>
+                			<i class="bi bi-power text-primary"></i>
+                				Logout
+							</a>
+						</sec:authorize>
+              		
             	</div>
 			</li>
           

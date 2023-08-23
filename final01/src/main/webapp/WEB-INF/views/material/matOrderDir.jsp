@@ -934,7 +934,7 @@
 	  	          		prodName :"${plan.prodName}",
 	  	          		prcsPlanAmt :"${plan.prcsPlanAmt}",
 	  	          		prodCode : "${plan.prodCode}",
-	  	          		prcsPlanDate : "${plan.prcsPlanDate}"
+	  	          		prcsPlanDate : `<fmt:formatDate value="${plan.prcsPlanDate}" pattern="yyyy-MM-dd"/>`
 	  	          	} <c:if test="${not status.last}">,</c:if>
 	  	          </c:forEach>
 	  	          ],
