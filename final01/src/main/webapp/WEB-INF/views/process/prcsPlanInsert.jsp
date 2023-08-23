@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +17,30 @@
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+
+<style type="text/css">
+#planContainer{
+	display: flex;
+	justify-content: space-between;
+}
+#leftGrid{
+    width: 800px;
+    margin-right: 20px;
+}
+#leftGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+#rightGrid{
+    width: 800px;
+}
+#rightGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+</style>
 
 </head>
 <body>
@@ -43,23 +68,34 @@
 	            	</form>		
 				</div>
 				
-				<p>생산 계획</p>
-            	<div>
-            		<button id="orderModal" class="btn btn-info btn-icon-text">주문서조회</button>
-            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
-            		<button id="remove" class="btn btn-info btn-icon-text">삭제</button>
-            	</div>
-           		<div id="planGrid"></div>
-           		
-            	<p>상세 생산 계획</p>
-            	<div>
-            		<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
-            	</div>
-           		<div id="planDeGrid"></div>
-           		<div id="prcsGrid"></div>
+				<div id="planContainer">
+					<div id="leftGrid">
+						<div id="leftGridHeader">
+							<span>생산 계획</span>	
+							<div>
+								<button id="save" class="btn btn-info btn-icon-text">저장</button>
+			            		<button id="remove" class="btn btn-info btn-icon-text">삭제</button>
+							</div>
+						</div>
+							            	
+		           		<div id="planGrid"></div>					
+					</div>
+					<div id="rightGrid">
+						<div id="rightGridHeader">
+							<span>상세 생산 계획</span>
+							<div>
+			            		<button id="orderModal" class="btn btn-info btn-icon-text">주문서조회</button>
+
+			            	</div>
+						</div>		
+	           			<div id="planDeGrid"></div>
+					</div>
+				</div>
+				
 	   		</div>
 		</div>
 	</div> 
+
 	
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
@@ -72,8 +108,6 @@
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
-	//행추가
-	document.getElementById('deAdd').addEventListener('click', addDeRow);
 	//삭제
 	document.getElementById('remove').addEventListener('click', removeRow);
 	
@@ -118,62 +152,58 @@
 	//저장 - 등록, 수정, 삭제 전부 가능
     function saveServer() {	
 		//편집종료
-//     	planGrid.blur();
-//     	planDeGrid.blur();
-//     	Remove focus from the focused cell.
-//     	Save editing value and finishes to edit.
+    	planGrid.blur();
+    	planDeGrid.blur();
+
     	//생산계획 편집종료
-		let rowKey = planGrid.getFocusedCell().rowKey;
-		let columnName = planGrid.getFocusedCell().columnName;
-		planGrid.finishEditing(rowKey, columnName);
+ 		let rowKey = planGrid.getFocusedCell().rowKey;
+// 		let columnName = planGrid.getFocusedCell().columnName;
+// 		planGrid.finishEditing(rowKey, columnName);
 		
 		//상세생산계획 편집종료
 		let rowKeyDe = planDeGrid.getFocusedCell().rowKey;
-		let columnNameDe = planDeGrid.getFocusedCell().columnName;
-		planDeGrid.finishEditing(rowKeyDe, columnNameDe);
+// 		let columnNameDe = planDeGrid.getFocusedCell().columnName;
+// 		planDeGrid.finishEditing(rowKeyDe, columnNameDe);
     	
-    	//그리드 createdRows, updatedRows, deletedRows 전부 가져오기
-		let gridInfo = planGrid.getModifiedRows();
-    	let deGridInfo = planDeGrid.getModifiedRows();
-		
-    	console.log(gridInfo);
-    	console.log(deGridInfo);
-		
-		
-    	
-    	
-    	
-      	//let rowKey = planGrid.getFocusedCell();
+
+		//만약 상세생산계획의 수정한 부분이 이미 지시가 내려졌다면 수정, 삭제 불가
+
     	let codeValue = planGrid.getValue(rowKey, 'prcsPlanCode');	
+    	
 		if(codeValue == null){
 			//insert
 			planInsert();	
 			
-// 		} else{
-// 			//update
 			
-// 			//alert 표시를 위한 변수
-// 			let updateOk = false;
-// 			let updateDeOk = false;
+		} else{
+			//update
+			planUpdate();
 			
-// 			planUpdate();
-// 			planDeUpdate();
+			//alert 표시를 위한 변수
+			let updateOk = false;
+			let updateDeOk = false;
 			
-// 			if(updateOk == true && updateDeOk == true){
-// 				alert('수정완료');
-// 			}
+			planUpdate();
+			planDeUpdate();
+			
+			if(updateOk == true && updateDeOk == true){
+				alert('수정완료');
+			}
+
+
+
 		}
 		
 		
 		
 		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
-		let flag = true; 
+		//let flag = true; 
 		
 		//update시 데이터 없는 경우 경고창 중복 방지할 변수
 		let noDataAlert = false;
 		
 		//insert, update, delete 전부 가져오기
-		$.each(gridInfo, function(field, array){				
+// 		$.each(gridInfo, function(field, array){				
 // 			if(field == 'createdRows' && array.length != 0){				
 // 				//insert
 // 				$.each(array, function(i, obj){
@@ -205,151 +235,96 @@
 // 				}
 				
 // 			} else if(field == 'updatedRows' && array.length != 0){
-			if(field == 'updatedRows' && array.length != 0){
-				//update(planGrid)	
-				$.each(array, function(i, obj){
-					for(let field in obj){
-						if(field == 'prcsPlanName' && obj['prcsPlanName'] == ''){
-							flag = false;
-							console.log('계획명:' + flag);
-						} else if(field == 'empCode' && obj['empCode'] == ''){
-							flag = false;
-							console.log('담당자:' + flag);
-						} else if(field == 'prcsStartDate' && obj['prcsStartDate'] == ''){
-							flag = false;
-							console.log('시작:' + flag);
-						} else if(field == 'prcsEndDate' && obj['prcsEndDate'] == ''){
-							flag = false;
-							console.log('종료:' + flag);
-						}
-					}
-				})
+// 			if(field == 'updatedRows' && array.length != 0){
+// 				//update(planGrid)	
+// 				$.each(array, function(i, obj){
+// 					for(let field in obj){
+// 						if(field == 'prcsPlanName' && obj['prcsPlanName'] == ''){
+// 							flag = false;
+// 							console.log('계획명:' + flag);
+// 						} else if(field == 'empCode' && obj['empCode'] == ''){
+// 							flag = false;
+// 							console.log('담당자:' + flag);
+// 						} else if(field == 'prcsStartDate' && obj['prcsStartDate'] == ''){
+// 							flag = false;
+// 							console.log('시작:' + flag);
+// 						} else if(field == 'prcsEndDate' && obj['prcsEndDate'] == ''){
+// 							flag = false;
+// 							console.log('종료:' + flag);
+// 						}
+// 					}
+// 				})
 
-				if(flag){	
-					planUpdate();
-				} else {
-					if(noDataAlert == false){
-						alert('수정할 값이 입력되지 않았습니다.');
-						noDataAlert = true;
-					}
-				}
+// 				if(flag){	
+// 					planUpdate();
+// 				} else {
+// 					if(noDataAlert == false){
+// 						alert('수정할 값이 입력되지 않았습니다.');
+// 						noDataAlert = true;
+// 					}
+// 				}
 				
-			} else if(field == 'deletedRows' && array.length != 0){
-				//delete
-				let planCodeList = [];			
-				$.each(array, function(i, obj){
-					let planCode = array[i]['prcsPlanCode'];
-					planCodeList.push(planCode);
-				})
-				console.log(planCodeList);
+// 			} else if(field == 'deletedRows' && array.length != 0){
+// 				//delete
+// 				let planCodeList = [];			
+// 				$.each(array, function(i, obj){
+// 					let planCode = array[i]['prcsPlanCode'];
+// 					planCodeList.push(planCode);
+// 				})
+// 				console.log(planCodeList);
 				
-				$.ajax({
-					url : 'prcsPlanDelete',
-					method : 'POST',
-					data : JSON.stringify(planCodeList),
-					contentType : 'application/json',
-					success : function(data){	
-						//상세생산계획 그리드 지우기
-						planDeGrid.clear();
-						alert(data + "건 삭제가 완료되었습니다.");
-					},
-					error : function(reject){
-			 			console.log(reject);
-			 		}		
-				})					
-			}	
-		})
+// 				$.ajax({
+// 					url : 'prcsPlanDelete',
+// 					method : 'POST',
+// 					data : JSON.stringify(planCodeList),
+// 					contentType : 'application/json',
+// 					success : function(data){	
+// 						//상세생산계획 그리드 지우기
+// 						planDeGrid.clear();
+// 						alert(data + "건 삭제가 완료되었습니다.");
+// 					},
+// 					error : function(reject){
+// 			 			console.log(reject);
+// 			 		}		
+// 				})					
+// 			}	
+// 		})
 		
-		$.each(deGridInfo, function(deField, deArray){
-			//update(planDeGrid)
-			if(codeValue != null && deField == 'updatedRows' && deArray.length != 0){
-				$.each(deArray, function(i, obj2){
-					for(let field in obj2){
-						if(field == 'prodCode' && obj2['prodCode'] == ''){
-							flag = false;
-							console.log('제품코드:' + flag);
-						} else if(field == 'prcsRqAmt' && obj2['prcsRqAmt'] == ''){
-							flag = false;
-							console.log('주문수량:' + flag);
-						} else if(field == 'prcsPlanAmt' && obj2['prcsPlanAmt'] == ''){
-							flag = false;
-							console.log('생산계획량:' + flag);
-						}
-					}
-				})
+// 		$.each(deGridInfo, function(deField, deArray){
+// 			//update(planDeGrid)
+// 			if(codeValue != null && deField == 'updatedRows' && deArray.length != 0){
+// 				$.each(deArray, function(i, obj2){
+// 					for(let field in obj2){
+// 						if(field == 'prodCode' && obj2['prodCode'] == ''){
+// 							flag = false;
+// 							console.log('제품코드:' + flag);
+// 						} else if(field == 'prcsRqAmt' && obj2['prcsRqAmt'] == ''){
+// 							flag = false;
+// 							console.log('주문수량:' + flag);
+// 						} else if(field == 'prcsPlanAmt' && obj2['prcsPlanAmt'] == ''){
+// 							flag = false;
+// 							console.log('생산계획량:' + flag);
+// 						}
+// 					}
+// 				})
 				
-				if(flag){	
-					planDeUpdate();
-				} else {
-					//update에서 경고창이 떴다면 다시 뜨지 않게 조건 걸기 
-					if (noDataAlert == false){		
-						alert('수정할 값이 입력되지 않았습니다.');
-						flag = false;
-					}
-				}
-			}			
-		})
+// 				if(flag){	
+// 					planDeUpdate();
+// 				} else {
+// 					//update에서 경고창이 떴다면 다시 뜨지 않게 조건 걸기 
+// 					if (noDataAlert == false){		
+// 						alert('수정할 값이 입력되지 않았습니다.');
+// 						flag = false;
+// 					}
+// 				}
+// 			}			
+// 		})
 		
 
   
 
-	};
+ 	};
 
-	//insert ajax
-// 	function planInsert(){
-// 		//생산계획 편집종료
-// // 		let rowKey = planGrid.getFocusedCell().rowKey;
-// // 		let columnName = planGrid.getFocusedCell().columnName;
-// // 		planGrid.finishEditing(rowKey, columnName);
-		
-// 		let list = planGrid.getData();
-// 		let object = list[0];
-		
-// 		$.ajax({
-// 			url : 'prcsPlanInsert',
-// 			method : 'POST',
-// 			data : JSON.stringify(object),
-// 			contentType : 'application/json',
-// 			success : function(data){									
-// 				//상세생산계획 편집종료
-// // 				let rowKeyDe = planDeGrid.getFocusedCell().rowKey;
-// // 				let columnNameDe = planDeGrid.getFocusedCell().columnName;
-// // 				planDeGrid.finishEditing(rowKeyDe, columnNameDe);
-				
-// 				let deList = planDeGrid.getData();
-// 				$.each(deList, function(i, objDe){
-// 					deList[i]['prcsPlanCode'] = data;
-			
-// 				})
-				
-// 				$.ajax({
-// 					url : 'prcsPlanDeInsert',
-// 					method : 'POST',
-// 					data : JSON.stringify(deList),
-// 					contentType : 'application/json',
-// 					success : function(data){
-// 						//등록 후 그리드 내용 지우고, 행추가
-// // 						planGrid.clear();
-// // 						planGrid.appendRow();
-// 						planDeGrid.clear();
-// 						planDeGrid.appendRow();
-						
-// 						//주문서 테이블에 계획코드, 계획상태 update하기-> prcsPlanDeInsert controller에서 하면 될듯
-
-// 						alert('등록이 완료되었습니다.');
-
-// 					},
-// 					error : function(reject){
-// 			 			console.log(reject);
-// 			 		}
-// 				})				
-// 			},
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}		
-// 		})
-		
-// 	}
 
 	
 	
@@ -357,73 +332,57 @@
 	
 	function planInsert(){
 		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
-		let inFlag = true; 
-		let inFlagDe = true;
-		
+		let flag = true; 
+
 		let list = planGrid.getData();
-		let object = list[0];
-		
+		let object = list[0];	
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
 				//console.log(field+'-'+obj[field]);
 				if(field != 'prcsPlanCode' && obj[field] == null){
-					inFlag = false;
+					flag = false;
 				}
 			}
 		})
 
-		if(inFlag){			
+
+		let deList = planDeGrid.getData();
+		//빈 데이터 있는지 체크
+		$.each(deList, function(i, objDe){
+			for(let field in objDe){
+				console.log(field+'-'+objDe[field]);			
+				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null){
+					flag = false;
+				}
+			}					
+		})		
+
+		let planInsertList = { prcsPlanVO: object, insertList: deList };
+		
+		if(flag){			
 			$.ajax({
 				url : 'prcsPlanInsert',
 				method : 'POST',
-				data : JSON.stringify(object),
+				data : JSON.stringify(planInsertList),
 				contentType : 'application/json',
 				async : false, 
 				success : function(data){									
-					
-					let deList = planDeGrid.getData();
-					console.log(deList)
-					$.each(deList, function(i, objDe){
-						deList[i]['prcsPlanCode'] = data;
-						//prcsPlanVO에 ordCode 추가
-						
-						//빈 데이터 있는지 체크
-						for(let field in objDe){
-							//console.log(field+'-'+objDe[field]);
-							if(field != 'prcsPrio' && objDe[field] == null){
-								inFlagDe = false;
-							}
-						}		
-					})
+					//등록 후 그리드 내용 지우고, 행추가
+					planGrid.clear();
+					planGrid.appendRow();
+					planDeGrid.clear()
+					planDeGrid.appendRow();
 
-					$.ajax({
-						url : 'prcsPlanDeInsert',
-						method : 'POST',
-						data : JSON.stringify(deList),
-						contentType : 'application/json',
-						async : false, 
-						success : function(data){
-							//등록 후 그리드 내용 지우고, 행추가
-	 						planGrid.clear();
-	 						planGrid.appendRow();
-							planDeGrid.clear()
-							planDeGrid.appendRow();
-
-							alert('등록이 완료되었습니다.');
-						},
-						error : function(reject){
-				 			console.log(reject);
-				 		}
-					})				
-					
+					swal("등록이 완료되었습니다.", "", "success");
+			
 				},
 				error : function(reject){
 		 			console.log(reject);
 		 		}		
 			})
 		} else {
-			alert('추가할 값이 입력되지 않았습니다.');
+			swal("모든 값이 입력되지 않았습니다.", "", "warning");
 		}
 	}
 	
@@ -501,6 +460,7 @@
 	
 	
 	
+	
 	//삭제
 // 	function removeRow(){
 // 		let message = confirm("정말 삭제하시겠습니까?");
@@ -537,10 +497,11 @@
 // 	}
 	
 
+
 	
 	//페이지 호출시 생산계획 등록하는 행 자동 생성
 	window.onload = function addRow(){
-		planGrid.appendRow();
+		planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
 		planDeGrid.appendRow();
 	} 
 
@@ -577,9 +538,14 @@
 //             name: 'prcsPlanDate',
 //             hidden:  true
 //           },
+		  {
+            header: '담당자코드',
+            name: 'empCode',
+            hidden: true
+          },
           {
             header: '담당자',
-            name: 'empCode',
+            name: 'empName',
             editor: 'text'
           },
 //           {
@@ -609,6 +575,8 @@
           }
         ]
 	});
+	
+	
 	
 	//상세생산계획 grid
 	var planDeGrid = new tui.Grid({
@@ -650,19 +618,13 @@
 			{
 				header: '생산계획량',
 				name: 'prcsPlanAmt',
-				editor: 'text',
-				formatter: function(value){
-					//탈락량을 고려하여 주문수량의 10%를 더하여 생산계획량을 자동계산해서 기입. 수정 가능.
-					const rowData = value.row;
-                   	const prcsRqAmt = rowData.prcsRqAmt;
-                   	value = Math.round(prcsRqAmt * 1.1);
-					return value;
-				}
+				editor: 'text'
 			},
 			{
 				header: '우선순위',
 				name: 'prcsPrio',
 				editor: 'text'
+
 			},
 // 			{
 // 				header: '지시수량',
@@ -683,6 +645,7 @@
 	});
 	
 	
+
 	
 
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
@@ -710,8 +673,10 @@
 	
 
 	
-
 	
+
     </script>
+    
+	
 </body>
 </html>

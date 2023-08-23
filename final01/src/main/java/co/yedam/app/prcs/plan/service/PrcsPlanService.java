@@ -14,16 +14,18 @@ public interface PrcsPlanService {
 	public List<PrcsPlanVO> selectPrcsPlanDeList(String prcsPlanCode);
 	
 	//생산계획 등록
-	public String insertPrcsPlan(PrcsPlanVO prcsPlanVO);
+	//public String insertPrcsPlan(PrcsPlanVO prcsPlanVO);
+	public int insertPrcsPlan(PrcsPlanReqVO prcsPlanReqVO);
 	
 	//상세생산계획 등록
-	public int insertPrcsPlanDe(List<PrcsPlanVO> list);
+	//public int insertPrcsPlanDe(List<PrcsPlanVO> list);
 
 	//생산계획 수정
-	public int updatePrcsPlan(List<PrcsPlanVO> list);
+	//public int updatePrcsPlan(List<PrcsPlanVO> list);
+	public int updatePrcsPlan(PrcsPlanReqVO prcsPlanReqVO);
 	
 	//상세생산계획 수정
-	public int updatePrcsPlanDe(List<PrcsPlanVO> list);
+	//public int updatePrcsPlanDe(List<PrcsPlanVO> list);
 		
 	//생산계획 삭제
 	public int deletePrcsPlan(List<String> list);

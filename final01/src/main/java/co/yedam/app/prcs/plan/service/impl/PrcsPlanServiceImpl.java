@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.prcs.plan.mapper.PrcsPlanMapper;
+import co.yedam.app.prcs.plan.service.PrcsPlanReqVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.prcs.plan.service.PrcsSearchVO;
@@ -35,53 +36,66 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 
 	//생산계획 등록
 	@Override
-	public String insertPrcsPlan(PrcsPlanVO prcsPlanVO) {
+	public int insertPrcsPlan(PrcsPlanReqVO prcsPlanReqVO) {	
+		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanReqVO.getPrcsPlanVO());
+		
 		//selectKey 값 가져오기
-		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanVO);
-		String prcsPlanCode = String.valueOf(prcsPlanVO.getPrcsPlanCode());
-		if(result > 0) {
-			return prcsPlanCode;
-		} else {
-			return "실패";
-		}
-	}
-	
-	//상세생산계획 등록
-	@Override
-	public int insertPrcsPlanDe(List<PrcsPlanVO> list) {
-		int result = 0;
-		for(PrcsPlanVO vo : list) {
-			prcsPlanMapper.insertPrcsPlanDe(vo);
+		String prcsPlanCode = String.valueOf(prcsPlanReqVO.getPrcsPlanVO().getPrcsPlanCode());		
+
+		//상세생산계획 등록
+		int resultDe = 0;
+		for(PrcsPlanVO vo : prcsPlanReqVO.getInsertList()) {
+			vo.setPrcsPlanCode(prcsPlanCode);
 			
-			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
-			prcsPlanMapper.updateNotPlanOrderList(vo);
-			result++;
+			prcsPlanMapper.insertPrcsPlanDe(vo);
+			resultDe++;
 		}
+		
+		result = result + resultDe;
 		return result;
 	}
 	
+	//상세생산계획 등록
+//	@Override
+//	public int insertPrcsPlanDe(List<PrcsPlanVO> list) {
+//		int result = 0;
+//		for(PrcsPlanVO vo : list) {
+//			prcsPlanMapper.insertPrcsPlanDe(vo);
+//			
+//			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+//			prcsPlanMapper.updateNotPlanOrderList(vo);
+//			result++;
+//		}
+//		return result;
+//	}
+	
 	//생산계획 수정
 	@Override
-	public int updatePrcsPlan(List<PrcsPlanVO> list) {		
+	public int updatePrcsPlan(PrcsPlanReqVO prcsPlanReqVO) {		
 		int result = 0;
-		for(PrcsPlanVO vo : list) {
-			prcsPlanMapper.updatePrcsPlan(vo);
-			
+		for(PrcsPlanVO vo : prcsPlanReqVO.getUpdateList()) {
+			prcsPlanMapper.updatePrcsPlan(vo);			
 			result++;
 		}	
+		
+		//상세생산계획 수정
+		for(PrcsPlanVO vo : prcsPlanReqVO.getUpdateDeList()) {
+			prcsPlanMapper.updatePrcsPlanDe(vo);		
+		}
+			
 		return result;
 	}
 	
 	//상세생산계획 수정
-	@Override
-	public int updatePrcsPlanDe(List<PrcsPlanVO> list) {		
-		int result = 0;
-		for(PrcsPlanVO vo : list) {
-			prcsPlanMapper.updatePrcsPlanDe(vo);
-			result++;
-		}
-		return result;
-	}
+//	@Override
+//	public int updatePrcsPlanDe(List<PrcsPlanVO> list) {		
+//		int result = 0;
+//		for(PrcsPlanVO vo : list) {
+//			prcsPlanMapper.updatePrcsPlanDe(vo);
+//			result++;
+//		}
+//		return result;
+//	}
 	
 	//생산계획 삭제
 	@Override
