@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>반제품 품질 검사</title>
+<title>반제품 품질 조회</title>
    <!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -17,7 +17,7 @@
 </head>
 <body>
    <div class="black_bg"></div>
-   <h3>반제품 품질 검사</h3>
+   <h3>반제품 품질 조회</h3>
    <div class="col-lg-12 stretch-card">
       <div class="card">
          <div class="card-body">
@@ -25,7 +25,6 @@
                   
                   <div style="display: flex; justify-content: flex-end;">
 
-                     <button id="save" class="btn btn-info btn-icon-text">저장</button>
                   </div>
                </div>
                <div id="container" style="display: flex; justify-content: center;">
@@ -35,35 +34,24 @@
          </div>
       </div> 
    </div>
-   
-      <div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
-   </div>
-   
+  
+   <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
    <script>
-   //저장버튼
-   document.getElementById('save').addEventListener('click', commSave);
+
    
       //공통코드 조회 ajax
       $.ajax({
-         url : 'ajaxPrcsIngChkList',
+         url : 'ajaxAllPrcsIngChkList',
          method : 'GET',
          success : function(result){
-            console.log(result);
+        	 
+        	 $.each(result, function(i, objDe){
+					let td = result[i]['testDate'];
+					result[i]['testDate'] = getDate(td);
+
+				})
              grid.resetData(result);
          },
          error : function(reject){
@@ -99,6 +87,18 @@
             {
                header: '생산량',
                name: 'prcsAmt'
+            },
+            {
+               header: '합격량',
+               name: 'passAmt'
+            },
+            {
+               header: '불합격량',
+               name: 'nonPassAmt'
+            },
+            {
+               header : '검사날짜',
+               name :'testDate'
             }
             
          ]
@@ -112,7 +112,7 @@
          scrollX: false,
          scrollY: false,
           minBodyHeight: 30,
-          rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+          rowHeaders: [{type: 'rowNum'}],
          pagination: true,
          pageOptions: {
             useClient: true,
@@ -146,8 +146,7 @@
             },
             {
                header: '검사값',
-               name: 'testResult',
-               editor: 'text'
+               name: 'testResult'
             },
             {
                header: '적합여부',
@@ -155,14 +154,13 @@
             },
             {
                header: '담당자',
-               name: 'empCode',
-               editor: 'text'
+               name: 'empCode'
                
             }
          ]
          
       })
-      
+ 
       //자동 계산
       grid2.on('afterChange', (ev) => {
       
@@ -206,71 +204,7 @@
           $("#testNum").val(testNum);
           
       });
-      
-      
-      
-      function commSave(){
-         grid2.blur();
-         let modifyGridInfo = grid2.getModifiedRows();
-
-         //변경사항없으면 빠져나감
-         if(!grid2.isModified()){
-            swal("변경사항이 없습니다","","warning");
-            return false;
-         }
-         
-         
-         //입력 빠뜨린곳 없으면 true
-         let flag = true;
-         
-         if(grid2.getModifiedRows().updatedRows.length > 0 ){
-
-            $.each(grid2.getModifiedRows().updatedRows, function(idx2, obj2){
-               if(obj2['commdeCode'] == "" ||obj2['commdeName'] =="" || obj2['commdeInfo'] == "" || obj2['commdeUse'] == ""){
-                  flag = false;
-                  return false;
-               }
-            })
-            
-      	}
-         
-         let rowKey = grid.getFocusedCell().rowKey;
-         let testNum = grid.getValue(rowKey, 'testNum');
-         let prcsIngCode = grid.getValue(rowKey, 'prcsIngCode');
-         let semiVO = {};
-         semiVO['testNum'] = testNum;
-         semiVO['prcsIngCode'] = prcsIngCode;
-         
-         let semiAllList = {
-        		 semiList : grid2.getModifiedRows().updatedRows,
-        		 semiChkVO : semiVO
-         };
-
-         
-         console.log(semiAllList);
-         console.log(grid2.getData());
-         if(flag){
-  
-            $.ajax({
-               url : 'updateSemiChk',
-               method : 'POST',
-               data : JSON.stringify(semiAllList),
-               contentType : 'application/json',
-               success : function(data){
-            	   
-                  swal("성공", data+"건이 처리되었습니다","success");
-               },
-               error : function(reject){
-                  console.log(reject);
-               }
-            })
-
-            
-      } else {
-         alert("값이 입력되지 않았습니다.");
-      }
-
-   }
+ 
 
    </script>
 </body>

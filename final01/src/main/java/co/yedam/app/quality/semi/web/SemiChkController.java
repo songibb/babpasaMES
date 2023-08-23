@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.quality.semi.service.SemiChkReqVO;
 import co.yedam.app.quality.semi.service.SemiChkService;
 import co.yedam.app.quality.semi.service.SemiChkVO;
 
@@ -23,7 +23,7 @@ public class SemiChkController {
 	@Autowired
 	SemiChkService semiChkService;
 	
-	//공정 진행 조회
+	//검사 페이지 - 공정 진행 조회
 	@GetMapping("/semiQualChk")
 	public String selectPrcsIngList(Model model) {
 		model.addAttribute("semiQualChk", semiChkService.selectPrcsIng());
@@ -31,12 +31,28 @@ public class SemiChkController {
 		
 	}
 	
-	//ajax 조회
+	//검사 페이지 - ajax 조회
 	@GetMapping("/ajaxPrcsIngChkList")
 	@ResponseBody
 	public List<SemiChkVO> ajaxPrcsIngChkList(){
 		List<SemiChkVO> prcsIngChkList = semiChkService.selectPrcsIng();
 		return prcsIngChkList;
+	}
+	
+	
+	//조회 페이지 - 모든 공정 진행 조회
+	@GetMapping("/semiQualChkList")
+	public String selectAllPrcsIngList(Model model) {
+		model.addAttribute("semiQualChkList", semiChkService.selectAllPrcsIng());
+		return "quality/semiQualChkList";
+	}
+	
+	//조회 페이지 - ajax 조회
+	@GetMapping("/ajaxAllPrcsIngChkList")
+	@ResponseBody
+	public List<SemiChkVO> ajaxAllPrcsIngChkList(){
+		List<SemiChkVO> allPrcsIngChkList = semiChkService.selectAllPrcsIng();
+		return allPrcsIngChkList;
 	}
 	
 	//해당 공정 진행 별 검사항목(상세 그리드)
@@ -50,8 +66,8 @@ public class SemiChkController {
 	//상세 품질 검사 수정(저장버튼)
 	@PostMapping("/updateSemiChk")
 	@ResponseBody
-	public int SemiChkUpdate(@RequestBody GridVO<SemiChkVO> data) {
-		return semiChkService.SemiChkUpdate(data);
+	public int SemiChkUpdate(@RequestBody SemiChkReqVO semiChkReqVO) {
+		return semiChkService.SemiChkUpdate(semiChkReqVO);
 	}
 	
 }

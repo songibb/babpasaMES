@@ -177,7 +177,7 @@
 	         scrollX: false,
 	         scrollY: false,
 	         minBodyHeight: 30,
-	         rowHeaders: ['rowNum', 'checkbox'],
+	         rowHeaders: ['rowNum'],
 	         pagination: true,
 				pageOptions: {
 				useClient: true,
