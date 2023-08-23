@@ -8,9 +8,11 @@
 	<!-- 공정관리 조회 -->
 	<select id="selectPrcsManageList" resultType="PrcsManageVO">
 		SELECT prcs_code,
-			   find_cdnm('PRCS-TYPE', prcs_type) AS prcs_type,
+			   prcs_type,
+			   find_cdnm('PRCS-TYPE', prcs_type) AS prcs_type_kr,
 			   prcs_name,
-			   semi_yn
+			   semi_yn,
+			   find_cdnm('0U', semi_yn) AS semi_yn_kr
 		  FROM prcs_manage
 		 ORDER BY prcs_code DESC
 	</select>
@@ -18,21 +20,21 @@
 	
 	<!-- 공정관리 등록 -->
 	<insert id="insertPrcsManage" parameterType="PrcsManageVO">
-		<selectKey keyProperty="prcs_code" resultType="String" order="BEFORE">
-			SELECT 'PRCS-' || LPAD((NVL(MAX(SUBSTR(prod_code, -4)),0)+1),4,'0')
+		<selectKey keyProperty="prcsCode" resultType="String" order="BEFORE">
+			SELECT 'PRCS-' || LPAD((NVL(MAX(SUBSTR(prcs_code, -4)),0)+1),4,'0')
 			FROM prcs_manage
 		</selectKey>
 		INSERT INTO prcs_manage (
-								prcs_code
-								, prcs_type
-								, prcs_name
-								, prcs_semi_yn
-							 )
+									prcs_code
+									, prcs_type
+									, prcs_name
+									, semi_yn
+							 	)
 			 VALUES (
 						#{prcsCode}
 						, #{prcsType}
 						, #{prcsName}
-						, #{prcsSemiYn}
+						, #{semiYn}
 					 )
 	</insert>
 	
@@ -41,10 +43,10 @@
 		UPDATE prcs_manage 
 		<set>
 			<if test="prcsType != null and !prcsType.equals('')">
-				prcs_type = #{prcsType}
+				prcs_type = #{prcsType},
 			</if>
 			<if test="prcsName != null and !prcsName.equals('')">
-				prcs_name = #{prcsName}
+				prcs_name = #{prcsName},
 			</if>
 			<if test="semiYn != null and !semiYn.equals('')">
 				semi_yn = #{semiYn}
@@ -54,7 +56,7 @@
 	</update>
 
 	<!-- 공정관리 삭제 -->
-	<delete id="deletePrcsManage" parameterType="String">
+	<delete id="deletePrcsManage" parameterType="PrcsManageVO">
 		DELETE FROM prcs_manage
 		 WHERE prcs_code = #{prcsCode}
 	</delete>
