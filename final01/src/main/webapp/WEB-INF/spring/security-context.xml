@@ -18,7 +18,7 @@
       <security:intercept-url pattern="/admin/**" access="hasAuthority('A')"/>
       <security:intercept-url pattern="/**" access="isAuthenticated()"/>
       <security:form-login login-page="/loginForm" authentication-success-handler-ref="customLoginSuccess"/>
-      <security:logout logout-url="/logout" logout-success-url="/home.jsp"/>
+      <security:logout logout-url="/logout" logout-success-url="/loginForm"/>
       <security:csrf disabled="true"/>
    </security:http>
    

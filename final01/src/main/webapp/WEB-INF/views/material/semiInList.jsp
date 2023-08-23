@@ -66,8 +66,6 @@
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
                    	</button>
-                   	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
@@ -202,7 +200,7 @@
 			let inputContent = $('#modalSearch').val();
 			
 			if(title == '반제품 목록'){
-				let modalSearchData = {matName : inputContent}
+				let modalSearchData = {prodName : inputContent}
 				$.ajax({
 					url : 'getSemiModalSearch',
 					method : 'GET',

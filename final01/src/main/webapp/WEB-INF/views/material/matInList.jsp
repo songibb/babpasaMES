@@ -443,18 +443,18 @@
    //검색
     $('#searchBtn').on('click', searchMatIn);
     function searchMatIn(e){
-	   let mat = $('#matCodeInput').val();
-	   let act = $('#actCodeInput').val();
-	   
-	   var checkboxList = [];
-	   let checkedList = $('input[type="checkbox"]:checked');
-	   $.each(checkedList, function(idx, obj){
-		   checkboxList.push(obj.value);
-	   })
-	   
+    	let mat = $('#matCodeInput').val();
+		let act = $('#actCodeInput').val();
+		   
+		var checkboxList = [];
+		let checkedList = $('input[type="checkbox"]:checked');
+		$.each(checkedList, function(idx, obj){
+			checkboxList.push(obj.value);
+		})
+		   
 
-	   let sd = $('#startDate').val();
-	   let ed = $('#endDate').val();	   
+		let sd = $('#startDate').val();
+		let ed = $('#endDate').val();	 
 	   
  
 	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, checkList : checkboxList };

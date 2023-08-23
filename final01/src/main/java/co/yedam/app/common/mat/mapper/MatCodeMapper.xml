@@ -53,8 +53,16 @@
 				WHERE mat_code = #{matCode}
 	</update>
 	
-	<delete id="matCodeDelete" parameterType="MatCodeVO">
+	<!-- <delete id="matCodeDelete" parameterType="MatCodeVO">
 				DELETE FROM com_mat
 				WHERE mat_code = #{matCode}	
-	</delete>		
+	</delete> -->
+	<delete id="matCodeDelete" statementType="CALLABLE" parameterType="MatCodeVO">
+		{call mat_Delete(
+		
+		        #{matCode}
+		        , #{result, mode=OUT, jdbcType=NUMERIC}
+		
+		    )}
+	</delete>	
   </mapper>

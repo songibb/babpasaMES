@@ -165,10 +165,10 @@
             header: '생산시작일자',
             name: 'prcsStartDeDate'
           },
-//           {
-//             header: '생산마감일자',
-//             name: 'prcsEndDeDate'
-//           },
+          {
+            header: '생산마감일자',
+            name: 'prcsEndDeDate'
+          },
           {
             header: '공정진행상태',
             name: 'prcsIngSts'
