@@ -145,6 +145,12 @@
                 	<security:authorize access="hasAnyAuthority('A','M')">
                 		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCalculateDir">자재 LOT 정산 등록</a></li>
                 	</security:authorize>
+                	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisList">자재 폐기 조회</a></li>
+                	</security:authorize>
+                	<security:authorize access="hasAnyAuthority('A','M')">
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matDisDir">자재 폐기 관리</a></li>
+                	</security:authorize>
               	</ul>
             </div>
 		</li>

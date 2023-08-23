@@ -4,11 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.material.stock.mapper.MatLotStockMapper">
 	<select id="selectMatLotStockList" resultType="MatLotStockVO">
-		SELECT a.mat_code mat_code, a.mat_lot mat_lot, a.mat_in_amt <![CDATA[-]]> NVL(b.amt2,0) lot_stock, a.mat_exd mat_exd, c.mat_name mat_name
-		FROM (SELECT mat_in_amt, mat_lot, mat_code, mat_exd FROM mat_in WHERE mat_code = #{materialCode}) a LEFT JOIN (SELECT SUM(mat_out_amt) amt2, mat_lot FROM mat_out WHERE mat_code = #{materialCode} GROUP BY mat_lot) b
-		ON(a.mat_lot = b.mat_lot)
-		LEFT JOIN com_mat c
-		ON (a.mat_code = c.mat_code)
+		SELECT a.mat_code, a.mat_lot, a.mat_stock lot_stock, a.mat_exd, b.mat_name
+		FROM mat_in a LEFT JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		WHERE a.mat_code = #{materialCode}
+		AND a.mat_stock <![CDATA[>]]> 0
 		ORDER BY a.mat_exd
 	</select>
 </mapper>

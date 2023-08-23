@@ -817,6 +817,12 @@
     	testGrid.removeRow(rowKey);
     	//마우스 커서 없앰
     	testGrid.blur();
+    	
+    	let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let matRtDate = year + "-" + month + "-" + day;
     	rtGrid.appendRow( {'matTestCode' : matTestCode,
     					   'matOdDeCd' : matOdDeCd,
     					   'matCode' : matCode,
@@ -830,11 +836,9 @@
     					   'matRtAmt' : matNamt,
     					   'matTestDate' : matTestDate,
     					   'empCode' : ${user.id},
+    					   'matRtDate' : matRtDate,
     					   'empName' : `${user.empName}`}, { at: 0 });
-    	
-    	
-    	
-  	});
+  		});
     
  	//스크롤 막기
   	function preventScroll(){
