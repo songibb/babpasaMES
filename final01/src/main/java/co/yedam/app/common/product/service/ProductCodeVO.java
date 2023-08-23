@@ -16,4 +16,7 @@ public class ProductCodeVO {
 	
 	//등록 수정 시 제품명 중복 확인용
 	private String prodNameUse;
+	
+	
+	private String result;
 }

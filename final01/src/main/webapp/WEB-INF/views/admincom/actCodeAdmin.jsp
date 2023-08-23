@@ -362,7 +362,14 @@
 	                contentType : 'application/json',
 	                data : JSON.stringify(checkedAct),
 	                success : function(result){
-	                	alert(result + '개의 거래처가 삭제되었습니다.');
+	                	  let errCount = result.length;
+	                	  let checkCount = checkedAct.length;
+	                	  let successCount = checkCount-errCount;
+	                	  if(errCount==0){
+	                		  alert("모두 삭제 완료");
+	                	  }
+	                	  swal(successCount +"개 거래처 삭제 성공!\n "
+	                			  + errCount +"개 거래처 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
 						$.ajax({
 						       url : "ajaxActCodeList",
 						       method :"GET",

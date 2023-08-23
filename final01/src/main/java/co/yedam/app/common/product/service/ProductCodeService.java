@@ -21,7 +21,7 @@ public interface ProductCodeService {
 	public Map<String, String> updateProdInfo(ProductCodeVO productCodeVO);
 	
 	//제품 삭제
-	public int deleteProdInfo(ProductCodeVO productCodeVO);
+	public List<String> deleteProdInfo(List<ProductCodeVO> checkedProd);
 	
 	
 	//반제품만 보이기 

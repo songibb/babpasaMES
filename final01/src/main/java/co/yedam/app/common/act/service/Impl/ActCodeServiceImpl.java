@@ -1,5 +1,6 @@
 package co.yedam.app.common.act.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +68,19 @@ public class ActCodeServiceImpl implements ActCodeService{
 	 */
 
 	@Override
-	public int deleteActInfo(ActCodeVO actCodeVO) {
+	public List<String> deleteActInfo(List<ActCodeVO> checkedAct) {
 		
-		int result = actCodeMapper.deleteActInfo(actCodeVO);
+		List<String> list = new ArrayList<>();
 		
-		return result;
-	
-		
+		for(ActCodeVO vo : checkedAct) {
+			actCodeMapper.deleteActInfo(vo);
+			
+			String error = vo.getResult();
+			if(error != null) {
+				list.add(error);
+			}
+		}
+		return list;
 	}
 
 
