@@ -78,10 +78,22 @@
 		WHERE prod_code = #{prodCode}
 	  </update>
 	  
-	  <delete id="deleteProdInfo"  parameterType="ProductCodeVO">
+<!-- 	  <delete id="deleteProdInfo"  parameterType="ProductCodeVO">
 	  		DELETE FROM com_prod
 	  		WHERE prod_code = #{prodCode}
-	  </delete>
+	  </delete> -->
+	  
+	  
+	  <delete id="deleteProdInfo" statementType="CALLABLE" parameterType="ProductCodeVO">
+
+		    {call prod_Delete(
+		
+		        #{prodCode}
+		        , #{result, mode=OUT, jdbcType=VARCHAR}
+		
+		    )}
+
+		</delete>
 	  
 	  
 	  <!-- BOM 등록안된제품가져오기 -->
