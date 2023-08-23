@@ -54,4 +54,14 @@ public class InServiceImpl implements InService {
 		return result;
 
 	}
+
+	@Override
+	public List<InVO> CProdList() {
+		return inMapper.selectCProd();
+	}
+
+	@Override
+	public List<InVO> inMngList() {
+		return inMapper.inMngList();
+	}
 }

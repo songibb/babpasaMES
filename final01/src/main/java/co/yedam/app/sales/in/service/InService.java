@@ -14,4 +14,8 @@ public interface InService {
 	public List<InVO> prodAllList();
 	//등록, 수정, 삭제
 	public int modifyProdIn(GridVO<InVO> data);
+	//검수까지 마친 생산품 목록
+	public List<InVO> CProdList();
+	//입고관리 페이지 그리드
+	public List<InVO> inMngList();
 }

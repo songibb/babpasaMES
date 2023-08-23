@@ -21,4 +21,8 @@ public interface InMapper {
 	public int updateProductIn(InVO vo);
 	//삭제
 	public int deleteProductIn(InVO vo);
+	//검수까지 마친 생산품 목록
+	public List<InVO> selectCProd();
+	//입고관리 페이지 그리드
+	public List<InVO> inMngList();
 }
