@@ -23,65 +23,15 @@
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
-<!-- <style>
-        body {
-            font-family: 'Nanum Gothic', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-
-        h2 {
-            text-align: left;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        input[type="text"], select {
-            width: 50;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            margin-right: 10px;
-            padding: 8px 16px;
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>	  -->
+	 
+	<style>
+	
+	    .yellow-background {
+	        background-color: rgb(255,253,235);
+		}
+		
+    </style>
+    
 </head>
 
 <body>
@@ -104,7 +54,9 @@
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 		            	</div>
+        
 					<div id="grid"></div>
+
                 </div>
                 <hr>
                 <div>
@@ -149,7 +101,7 @@
             </div>
          </div>    
      </div>           
-	
+
 
 
 	<script>
@@ -249,11 +201,14 @@
 			 	  },
 			 	 {
 				 	 header: '시작시간',
-				 	 name: 'offStime'
+				 	 name: 'offStime',
+			 	  	 className: 'yellow-background'
+				 	 
 				 },
 				 {
 			 	     header: '종료시간',
-			 	     name: 'offEtime'
+			 	     name: 'offEtime',
+			 	  	 className: 'yellow-background'
 			 	  }
 		 	      
   

@@ -22,70 +22,7 @@
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
 	 
 
-<style>
-	body {
-      font-family: 'Nanum Gothic', sans-serif;
-		font-family: 'Noto Sans KR', sans-serif;
-    }
-    .search-container {
-      display: flex;
-      align-items: center;
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-    }
 
-    .search-icon {
-      margin-right: 10px;
-      color: #888;
-    }
-
-    .search-input {
-      border: none;
-      outline: none;
-      font-size: 16px;
-      width: 100%;
-      padding: 5px;
-    }
-    .col-lg-12 stretch-card{
-    	margin-top : 30px;
-    }
-    
-    #customtemplateSearchAndButton{
-    	margin-bottom : 80px;
-    	float : left;	
-    }
-    
-    #customtemplateSearchAndButton input, #modalTitle input{
-    	border : 1px solid black; 
-    	display : inline-block;
-    }
-    
-    #customtemplateSearchAndButton p, #modalTitle p{
-    	display : inline-block;
-    	padding-bottom: 10px;
-    	padding-right : 10px;
-    }
-    
-    #customtemplateSearchAndButton .blackcolorInputBox{
-    	background-color : #868e96;
-    }
-    
-    .btn-icon-text{
-    	margin : 5px;
-    	padding : 7px;
- 		border-radius : 9px;
- 		height : 33px;
-    }
-    
-    .excelDownload{
-    	margin-top : 120px;
-    	float : right;
-    }
-
-    
-</style>
 </head>
 <body>
 <form>
@@ -124,8 +61,8 @@
 		        		makeDate : "<fmt:formatDate value='${equip.makeDate}' pattern='yyyy-MM-dd'/>",		        		
 		        		buyDate : "<fmt:formatDate value='${equip.buyDate}' pattern='yyyy-MM-dd'/>",
 		        		chkCycle : "${equip.chkCycle}",
-		        		eqSts : "${equip.eqSts}",
-		        		eqType : "${equip.eqType}",
+		        		eqSts2 : "${equip.eqSts2}",
+		        		eqType2 : "${equip.eqType2}",
 		        		highTemp : "${equip.highTemp}",
 		        		lowTemp : "${equip.lowTemp}",   		
 		        	}<c:if test="${not status.last}">,</c:if>
@@ -174,11 +111,11 @@
 			 	      
 			 	      {
 			 	        header: '설비상태',
-			 	        name: 'eqSts'
+			 	        name: 'eqSts2'
 			 	      },
 			 	      {
 			 	        header: '설비구분',
-			 	        name: 'eqType'
+			 	        name: 'eqType2'
 			 	      },
 			 	      {
 			 	    	  header :'최고온도',
