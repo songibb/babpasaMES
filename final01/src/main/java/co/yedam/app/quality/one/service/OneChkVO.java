@@ -42,4 +42,6 @@ public class OneChkVO {
 	private String testName;
 	private int passValue;
 	
+	private String testSemiYn;
+	
 }

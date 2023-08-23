@@ -19,7 +19,8 @@
   		chk_type = #{chkType},
   		eq_chk_yn = #{eqChkYn},
   		emp_code = #{empCode},
-  		chk_note = #{chkNote}
+  		chk_note = #{chkNote},
+  		chk_next_date = #{chkNextDate}
   	</set>
 	WHERE eq_code = #{eqCode}  
   </update>
