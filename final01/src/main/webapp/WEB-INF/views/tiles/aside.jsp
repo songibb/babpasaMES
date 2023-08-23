@@ -191,11 +191,17 @@
               	<ul class="nav flex-column sub-menu">
               		<security:authorize access="hasAnyAuthority('A','Q')">
                 		<li class="nav-item"> <a class="nav-link" href="MatQualChk">자재 검수 관리</a></li>
-                	</security:authorize>
-                	<security:authorize access="hasAnyAuthority('A','Q')">
+                  </security:authorize>
+                  <security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
+                		<li class="nav-item"> <a class="nav-link" href="semiQualChkList">반제품 품질 조회</a></li>
+                  </security:authorize>
+                  <security:authorize access="hasAnyAuthority('A','Q')">
                 		<li class="nav-item"> <a class="nav-link" href="semiQualChk">반제품 품질 검사</a></li>
-                	</security:authorize>
-                	<security:authorize access="hasAnyAuthority('A','Q')">
+                  </security:authorize>
+                  <security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
+                		<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 조회</a></li>
+                  </security:authorize>
+                  <security:authorize access="hasAnyAuthority('A','Q')">
                 		<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 검사</a></li>
                 	</security:authorize>
               	</ul>

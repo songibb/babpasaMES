@@ -14,8 +14,6 @@
   			   ,c.semi_yn 
 		FROM prod_quality a 
 
-
-		
 		JOIN prcs_ing b
 		  ON (a.prcs_ing_code = b.prcs_ing_code)
 		  
@@ -28,11 +26,34 @@
 		ORDER BY prcs_ing_code
   	</select>
   
+  <!-- 조회 페이지 : 모든 공정 진행 중 조회  -->
+  <select id="selectAllPrcsIng" resultType="SemiChkVO">
+  		SELECT A.TEST_NUM
+  			   ,A.TEST_DATE
+  			   ,B.PRCS_ING_CODE
+  			   ,B.PRCS_CODE
+  			   ,B.PRCS_AMT
+  			   ,A.PASS_AMT
+  			   ,A.NON_PASS_AMT
+  			   ,c.semi_yn 
+  			   
+		FROM prod_quality a 
+
+		JOIN prcs_ing b
+		  ON (a.prcs_ing_code = b.prcs_ing_code)
+		  
+		JOIN prcs_manage c
+		  ON (b.prcs_code = c.prcs_code)
+		  
+		WHERE c.semi_yn = 'Y'
+		  
+		ORDER BY prcs_ing_code
+	</select>
+	
   	<!-- 검사 실시 리스트(클릭 상세)  -->
 	<select id="selectSemiChkList" resultType="SemiChkVO">
   		SELECT A.TEST_NUM
   			   ,A.PRCS_ING_CODE
-  			   ,A.TEST_NUM
   			   ,B.TEST_NUM_INFO
   			   ,B.TEST_CODE
   			   ,B.PASS_VALUE
@@ -55,4 +76,14 @@
   		WHERE test_num_info =#{testNumInfo}
   	</update>
   	
+  	<!-- 반제품 등록(수정) 프로시저 호출 -->
+  	<update id="SemiChkUpdatePr" parameterType="SemiChkVO">
+  		{
+  		CALL UPDATE_SEMI_TEST_INFO(
+			#{testNum}
+  			,#{prcsIngCode}
+  			)
+  		}
+  	
+  	</update>
   </mapper>
