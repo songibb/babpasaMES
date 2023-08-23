@@ -132,9 +132,7 @@
 		    			$(".modal").fadeOut();
 		    			activeScroll();
 		    			let inputContent = $('#modalSearch').val('');
-		    			if(Grid != null && Grid.el != null){
-		 	    			Grid.destroy();	
-		 	    		}
+		        		Grid.destroy();
 		    		}
 		
 		    	});
@@ -144,9 +142,7 @@
 	         	$(".modal").fadeOut();
 	         	activeScroll();
 	         	let inputContent = $('#modalSearch').val('');
-	         	if(Grid != null && Grid.el != null){
- 	    			Grid.destroy();	
- 	    		}
+	  			Grid.destroy();
 	     });
 	     
 	     function createProdGrid(){
@@ -194,7 +190,7 @@
 			let inputContent = $('#modalSearch').val();
 			
 			if(title == '반제품 목록'){
-				let modalSearchData = {matName : inputContent}
+				let modalSearchData = {prodName : inputContent}
 				$.ajax({
 					url : 'getSemiModalSearch',
 					method : 'GET',
@@ -230,7 +226,7 @@
 		           	prodCode :"${semi.prodCode}",
 		           	prodName :"${semi.prodName}",
 		           	semiOutAmt :"${semi.semiOutAmt}",
-		           	prcsListCode : "${semi.prcsListCode}",
+		           	prcsIngCode : "${semi.prcsIngCode}",
 		           	empName : "${semi.empName}",
 		           	semiOutDate : `<fmt:formatDate value="${semi.semiOutDate}" pattern="yyyy-MM-dd"/>`,
 		           	semiExd :`<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
@@ -279,8 +275,8 @@
 		 	  		className: 'yellow-background'
 				  },
 		 	      {
-		 	        header: '생산실적코드',
-		 	        name: 'prcsListCode'
+		 	        header: '생산공정코드',
+		 	        name: 'prcsIngCode'
 		 	      },
 		 	      {
 			 	    header: '담당자',

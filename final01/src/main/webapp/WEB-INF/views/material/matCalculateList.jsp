@@ -352,7 +352,7 @@
 			   		if(i.calCategory == 'I'){
 			   			i.finalAmt = i.calBamt + i.calAmt;
 			   		} else {
-			   			i.finalAmt = i.calAmt + i.calBamt;
+			   			i.finalAmt =  i.calBamt - i.calAmt;
 			   		}
 			   		
 			   	
@@ -364,6 +364,28 @@
 		   }
 	   });
    }
+   
+   //모달검색
+   $('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '자재 목록'){
+				let modalSearchData = {matName : inputContent}
+				$.ajax({
+					url : 'getMatModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						console.log(data);
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			}
+		})
    
    
    

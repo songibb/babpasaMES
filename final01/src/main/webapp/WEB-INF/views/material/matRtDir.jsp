@@ -398,6 +398,15 @@
 				contentType : 'application/json',
 				data : JSON.stringify(deleteList),
 				success : function(data){
+					
+					$.each(data, function(idx, obj){
+						let date = new Date(obj['matTestDate']);
+						let year = date.getFullYear();    //0000년 가져오기
+						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+						let day = date.getDate();        //일자 가져오기
+						obj['matTestDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					})
+					
 					testGrid.appendRows(data);
 					
 				},

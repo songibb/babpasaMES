@@ -542,7 +542,7 @@
 			let inputContent = $('#modalSearch').val();
 			
 			if(title == '반제품 목록'){
-				let modalSearchData = {matName : inputContent}
+				let modalSearchData = {prodName : inputContent}
 				$.ajax({
 					url : 'getSemiModalSearch',
 					method : 'GET',
