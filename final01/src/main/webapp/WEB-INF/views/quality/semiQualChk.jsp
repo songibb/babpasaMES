@@ -162,29 +162,39 @@
 				},
 				{
 					header: '적합여부',
-					name :'passYn',
-					 formatter: function(props) {
-		                   const rowData = props.row;
-		                   const passValue = parseInt(rowData.passValue)
-		                   const testResult = parseInt(rowData.testResult);
-		                   
-		                   if (passValue > testResult) {
-		                       
-		                       return 'Y';
-		                   }else{
-		                	   return 'N';
-		                   }
-
-		               }
+					name :'passYn'
 				},
 				{
 					header: '담당자',
-					name: 'empCode'
+					name: 'empCode',
+					editor: 'text'
 					
 				}
 			]
 			
 		})
+		
+		//자동 계산
+		grid2.on('afterChange', (ev) => {
+		
+		let change = ev.changes[0];
+		let rowData = grid2.getRow(change.rowKey);
+		
+		
+		
+		if(change.columnName == 'testResult'){
+			if(rowData.testResult != null && rowData.testResult != ""){
+				let passYn;
+				if(rowData.testResult < rowData.passValue){
+					passYn = 'Y';
+				} else if(rowData.testResult >= rowData.passValue){
+					passYn = 'N';
+				}
+				grid2.setValue(change.rowKey, 'passYn', passYn);
+			}
+		}
+		});
+		//끝
 		
 		grid.on('click', () => {
 			let rowKey = grid.getFocusedCell().rowKey;
@@ -247,6 +257,7 @@
 			
 			
 			if(flag){
+				let data = grid2.getModifiedRows();
 				$.ajax({
 					url : 'updateSemiChk',
 					method : 'POST',

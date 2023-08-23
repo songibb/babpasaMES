@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.emp.mapper.EmpMapper">
 	<select id="getEmp" resultType="EmpVO">
 		SELECT emp_code id,
-			   '{noop}'||emp_pw pwd,
+			   '{bcrypt}' || emp_pw pwd,
 			   emp_role role,
 			   emp_name
 		FROM com_emp

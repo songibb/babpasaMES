@@ -10,6 +10,7 @@
    <security:http pattern="/**/tiles/**" security="none"/>
    
    <bean id="customLoginSuccess" class="co.yedam.app.emp.service.CustomLoginSuccessHandler"></bean>
+   <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
    
    <security:http use-expressions="true">
       <security:intercept-url pattern="/home.jsp" access="permitAll()"/>

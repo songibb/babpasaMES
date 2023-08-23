@@ -253,7 +253,7 @@
 			let month = ('0' + (now.getMonth() + 1)).substr(-2);
 			let day = ('0' + now.getDate()).substr(-2);
 			let matOdRq = year + "-" + month + "-" + day;
-		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq, 'empCode' : ${user.id}, 'empName' : `${user.empName}`}, { at: 0 });	
+		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });	
 			
 		}
 	}
