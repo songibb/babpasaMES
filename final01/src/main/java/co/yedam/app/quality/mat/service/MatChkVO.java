@@ -32,5 +32,10 @@ public class MatChkVO {
 	
 	private String empName;
 	
+	private String matName;
+	
+	private String errRtStsName;
+	private String errCodeName;
+	
 	
 }

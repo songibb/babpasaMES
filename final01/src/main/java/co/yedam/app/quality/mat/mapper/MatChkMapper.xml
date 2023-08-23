@@ -13,7 +13,10 @@
   				,t.emp_code
   				,t.mat_od_de_cd
   				,t.err_rt_sts
-  				,o.mat_amt	  
+  				,o.mat_amt
+  				,find_mat_name(mat_code) AS mat_name
+  				,find_cdnm('0I', err_rt_sts) AS err_rt_sts_name
+  				,find_cdnm('ERR-TYPE', err_code) AS err_code_name 
   		FROM mat_test t JOIN mat_order_de o
   			ON(o.mat_od_de_cd = t.mat_od_de_cd)
   		ORDER BY t.mat_test_code

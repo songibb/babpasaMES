@@ -25,4 +25,5 @@ public class EquipVO {
 	private String prcsType;
 	
 	private String eqType2;
+	private String eqSts2;
 }

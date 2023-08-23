@@ -324,9 +324,9 @@
 
 				
 			} 
+	}	
 			
-			
-			if(falg){
+/* 			if(falg){
 				$.ajax({
 					url:'bomInsert',
 					method:'POST',
@@ -376,8 +376,8 @@
 				alert('모든 값이 입력되지 않았습니다.');
 			} 
 
-	}
 	
+	 */
 	//수정 함수
 	/* function bomUpdate(){
 		let updateOk = 0;

@@ -18,6 +18,6 @@ public interface ActCodeService {
 		public Map<String, String> updateActInfo(ActCodeVO actCodeVO);
 		
 		//거래처 삭제
-		public int deleteActInfo(ActCodeVO actCodeVO);
+		public List<String> deleteActInfo(List<ActCodeVO> checkedAct);
 
 }

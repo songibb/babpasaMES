@@ -52,7 +52,7 @@ public class EmpInfoController {
 	
 	
 	//사원코드 단건조회
-	@GetMapping("getComEmpCode")
+	@GetMapping("/getComEmpCode")
 	@ResponseBody
 	public EmpInfoVO getComEmpCode(@RequestParam String empCode) {
 		EmpInfoVO vo = new EmpInfoVO();
