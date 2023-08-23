@@ -352,40 +352,63 @@
 		            	let actCode = grid.getValue(row.rowKey, 'actCode');
 		            	let obj = {actCode :actCode};
 		            	checkedAct.push(obj);   
+		            	
+		            	swal({
+		      			  title: "정말삭제하시겠습니까?",
+		      			  text: "",
+		      			  icon: "warning",
+		      			  buttons: true,
+		      			  dangerMode: true,
+		      			})
+		      			.then((willDelete) => {
+		      				if(willDelete){
+		      					$.ajax({
+					                url : 'actCheckedDelete',
+					                type : 'POST',
+					                contentType : 'application/json',
+					                data : JSON.stringify(checkedAct),
+					                success : function(result){
+					                	  let errCount = result.length;
+					                	  let checkCount = checkedAct.length;
+					                	  let successCount = checkCount-errCount;
+					                	  
+					                	  if(errCount==0){
+					                		  swal("삭제 완료되었습니다","", {icon: "success",});
+					                		
+					                	  }else if(successCount==0){
+					                		  swal("모두 이미 사용중인 거래처로 삭제가 실패되었습니다","", {icon: "error",});
+					                	  }else{
+					                	  swal(successCount +"개 거래처 삭제 성공!\n "
+					                			  + errCount +"개 거래처 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
+					                	  }
+										$.ajax({
+										       url : "ajaxActCodeList",
+										       method :"GET",
+										       success : function(result){
+										           grid.resetData(result);
+										       },
+										       error : function(reject){
+													console.log(reject);
+												}
+											});
+					                 
+					                },
+					                error : function(reject){
+					                    console.log(reject);
+					                }
+					            })
+		      				}else {
+		      				    swal("삭제가 취소되었습니다","",{icon: "warning",});
+		      			  }
+		      			});
+		            	
 		            });
 		            
+		        }else{
+		        	swal("선택된 체크박스가 없습니다","","warning");
 		        }
 		        
-		        $.ajax({
-	                url : 'actCheckedDelete',
-	                type : 'POST',
-	                contentType : 'application/json',
-	                data : JSON.stringify(checkedAct),
-	                success : function(result){
-	                	  let errCount = result.length;
-	                	  let checkCount = checkedAct.length;
-	                	  let successCount = checkCount-errCount;
-	                	  if(errCount==0){
-	                		  alert("모두 삭제 완료");
-	                	  }
-	                	  swal(successCount +"개 거래처 삭제 성공!\n "
-	                			  + errCount +"개 거래처 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
-						$.ajax({
-						       url : "ajaxActCodeList",
-						       method :"GET",
-						       success : function(result){
-						           grid.resetData(result);
-						       },
-						       error : function(reject){
-									console.log(reject);
-								}
-							});
-	                 
-	                },
-	                error : function(reject){
-	                    console.log(reject);
-	                }
-	            })
+		        
 		        
 		    }
 		    
