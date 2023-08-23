@@ -20,7 +20,8 @@
 				comm_code,
 				commde_name,
 				commde_info,
-				commde_use
+				commde_use,
+				find_cdnm('0A', commde_use) AS useName
 		FROM com_commde
 		WHERE comm_code = #{commCode}
 	ORDER BY commde_code

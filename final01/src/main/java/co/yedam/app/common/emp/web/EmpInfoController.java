@@ -12,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.emp.mapper.EmpMapper;
@@ -27,6 +29,9 @@ import co.yedam.app.emp.mapper.EmpMapper;
 public class EmpInfoController {
 	@Autowired
 	EmpInfoService empInfoService;
+	
+	@Autowired
+	CommCodeService commCodeService;
 	
 	//로그인용(+)
 	EmpMapper empService;
@@ -63,7 +68,9 @@ public class EmpInfoController {
 	
 	//사원관리 페이지(+)
 	@GetMapping("empDir")
-	public String getEmpDirPage() {
+	public String getEmpDirPage(Model model) {
+		model.addAttribute("inputDeptList", commCodeService.searchCommCodeUse("DEPT-TYPE"));
+		model.addAttribute("inputRoleList", commCodeService.searchCommCodeUse("0B"));
 		return "admincom/empCodeAdmin";
 	}
 	
@@ -79,7 +86,25 @@ public class EmpInfoController {
 		return result;
 	}
 	
+	//사원 ajax 조회
+	@GetMapping("/ajaxEmpList")
+	@ResponseBody
+	public List<EmpInfoVO> ajaxEmpList(@RequestParam String empName ){
+		List<EmpInfoVO> vo = empInfoService.empSelect(empName);
+		return vo;
+	}
 	
+	
+	//사원 정보 수정
+	@PostMapping("/empInfoUpdate")
+	@ResponseBody
+	public int empInfoUpdate(@RequestBody EmpInfoVO vo) {
+		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+		String pw = vo.getEmpPw();
+		vo.setEmpPw(enco.encode(pw));
+		
+		return empInfoService.updateEmpInfo(vo);
+	}
 
 	
 }

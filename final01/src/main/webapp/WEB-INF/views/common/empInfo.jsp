@@ -79,8 +79,8 @@
 		           		empCode : "${e.empCode}",
 		           		empName : "${e.empName}",
 		           		empDate : "<fmt:formatDate value='${e.empDate}' pattern='yyyy-MM-dd'/>",
-		           		empRole : "${e.empRole}",
-		           		commdeName : "${e.commdeName}",
+		           		empRoleName : "${e.empRoleName}",
+		           		deptcodeName : "${e.deptcodeName}",
 		           		empTel : "${e.empTel}"
 		           	} <c:if test="${not status.last}">,</c:if>
 		           </c:forEach>
@@ -109,11 +109,11 @@
 		         },
 		         {
 		           header: '직급정보',
-		           name: 'empRole'
+		           name: 'empRoleName'
 		         },
 		         {
 		           header: '부서명',
-		           name: 'commdeName',
+		           name: 'deptcodeName',
 		           filter: 'select'
 		         },
 		         {
