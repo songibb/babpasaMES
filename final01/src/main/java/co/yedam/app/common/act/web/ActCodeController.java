@@ -95,14 +95,9 @@ public class ActCodeController {
 	 */
 	@PostMapping("/actCheckedDelete")
 	@ResponseBody 
-	public int delete(@RequestBody List<ActCodeVO> checkedAct) {
-		int result = 0;
-		for(ActCodeVO vo : checkedAct) {
-			
-			result += actCodeService.deleteActInfo(vo);
-			
-		}
-		return result;
+	public List<String> actCheckedDelete(@RequestBody List<ActCodeVO> checkedAct) {
+		return actCodeService.deleteActInfo(checkedAct);
+		
 	}
 	
 }

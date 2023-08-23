@@ -79,10 +79,19 @@
 	
 	</delete> -->
 	
-	<delete id="deleteActInfo" parameterType="ActCodeVO">
+	<delete id="deleteActInfo" statementType="CALLABLE" parameterType="ActCodeVO">
 	
-	DELETE FROM com_act
-	WHERE act_code = #{actCode}
+	{call act_Delete(
+		
+		        #{actCode}
+		        , #{result, mode=OUT, jdbcType=VARCHAR}
+		
+		    )}
 	
 	</delete>
+	
+	
+	
+	
+	
   </mapper>

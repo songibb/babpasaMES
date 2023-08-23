@@ -60,7 +60,7 @@
 	
 		//공통코드 조회 ajax
 		$.ajax({
-			url : 'ajaxPrcsIngChkList',
+			url : 'ajaxLastPrcsList',
 			method : 'GET',
 			success : function(result){
 				console.log(result);
@@ -109,7 +109,7 @@
 					name: 'nonPassAmt'
 				},
 				{
-					hedaer : '검사날짜',
+					header : '검사날짜',
 					name : 'testDate'
 				}
 				
@@ -145,7 +145,8 @@
 				},
 				{
 					header: '검사코드',
-					name: 'testCode'
+					name: 'testCode',
+					hidden: true
 				},
 				{
 					header: '검사명',
@@ -162,36 +163,47 @@
 				},
 				{
 					header: '적합여부',
-					name :'passYn',
-					 formatter: function(props) {
-		                   const rowData = props.row;
-		                   const passValue = parseInt(rowData.passValue)
-		                   const testResult = parseInt(rowData.testResult);
-		                   
-		                   if (passValue > testResult) {
-		                       
-		                       return 'Y';
-		                   }else{
-		                	   return 'N';
-		                   }
-
-		               }
+					name :'passYn'
 				},
 				{
-					hedaer: '담당자',
-					name : 'empCode'
+					header: '담당자',
+					name : 'empCode',
+					editor: 'text'
 					
 				}
 			]
 			
 		})
 		
+		
+		 //자동 계산
+	      grid2.on('afterChange', (ev) => {
+	      
+	      let change = ev.changes[0];
+	      let rowData = grid2.getRow(change.rowKey);
+	      
+	      
+	      
+	      if(change.columnName == 'testResult'){
+	         if(rowData.testResult != null && rowData.testResult != ""){
+	            let passYn;
+	            if(rowData.testResult < rowData.passValue){
+	               passYn = 'Y';
+	            } else if(rowData.testResult >= rowData.passValue){
+	               passYn = 'N';
+	            }
+	            grid2.setValue(change.rowKey, 'passYn', passYn);
+	         }
+	      }
+	      });
+	      //끝
+	      
 		grid.on('click', () => {
 			let rowKey = grid.getFocusedCell().rowKey;
 	    	let testNum = grid.getValue(rowKey, 'testNum');
 	    	console.log(testNum);
 	    	$.ajax({
-	    		url : 'ajaxSemiChkList',
+	    		url : 'ajaxOneChkList',
 				method : 'GET',
 				data : { testNum : testNum },
 				success : function(data){
@@ -248,7 +260,7 @@
 			
 			if(flag){
 				$.ajax({
-					url : 'updateSemiChk',
+					url : 'updateOneChk',
 					method : 'POST',
 					data : JSON.stringify(grid2.getModifiedRows()),
 					contentType : 'application/json',

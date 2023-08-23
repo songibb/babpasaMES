@@ -26,6 +26,11 @@
 		margin-top : 120px;
 		float : right;
 	}
+	
+	#matDeModal {
+		margin-top : 120px;
+		float : left;
+	}
 
 	h1{
 		font-weight : 700;
@@ -107,13 +112,17 @@
 	           	{
 	           		matTestCode : "${matChk.matTestCode}",
 	           		matOdDeCd : "${matChk.matOdDeCd}",
+	           		matName : "${matChk.matName}",
 	           		matAmt : "${matChk.matAmt}",
 	           		matYamt : "${matChk.matYamt}",
 	           		matNamt : "${matChk.matNamt}",
 	           		empCode : "${matChk.empCode}",
 	           		matTestDate : `<fmt:formatDate value="${matChk.matTestDate}" pattern="yyyy-MM-dd"/>`,
 	           		errCode : "${matChk.errCode}",
-	           		errRtSts : "${matChk.errRtSts}"
+	           		errCodeName : "${matChk.errCodeName}",
+	           		errRtSts : "${matChk.errRtSts}",
+	           		errRtStsName :"${matChk.errRtStsName}" 
+	           			
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -134,6 +143,10 @@
 		 	 	        header: '자재발주코드',
 		 	 	        name: 'matOdDeCd'
 		 	 	        
+		 	 	  },
+		 	 	  {
+			 	 		header: '자재명',
+			 	 		name : 'matName'
 		 	 	  },
 	 	 	      {
 			 			header: '자재전체투입량',
@@ -161,17 +174,33 @@
 		 	  		      options: {
 		 	  		    	  language: 'ko'
 		 	  		      }
-		 	  		    }
+		 	  		    },
+				 	  	className: 'yellow-background'
 		 	 	  },
 		 	 	  {
 		 	 	        header: '불량코드',
 		 	 	        name: 'errCode',
-		 	 	        editor:'text'  
-		 	 	  },	 	 	  
+		 	 	        editor:'text',
+		 	 	        hidden: true
+		 	 	  },
+		 	 	 {
+		 	 	        header: '불량명',
+		 	 	        name: 'errCodeName',
+		 	 	        editor:'text'
+		 	 	  },
 		 	 	  {
 		 	 	        header: '불량반품요청상태',
 		 	 	        name: 'errRtSts',
+		 	 	        editor:'text',
+		 	 	        hidden: true
+		 	 	     
+		 	 	       
+		 	 	  },
+		 	 		{
+		 	 	        header: '불량반품요청상태',
+		 	 	        name: 'errRtStsName',
 		 	 	        editor:'text'
+		 	 	       
 		 	 	  }
 		 	 	  
 	        ]
@@ -350,7 +379,7 @@
     matgrid.on('click', () => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
-   	if(columnName == "errCode"){
+   	if(columnName == "errCodeName"){
    		$(".modal").fadeIn();
    	       Grid = createProdGrid2();
    	       
@@ -360,7 +389,7 @@
    	        	let commdeName = Grid.getValue(rowKey2, 'commdeName');
 
    	        	matgrid.setValue(rowKey, 'errCode', commdeCode);
-   	        	matgrid.setValue(rowKey, 'commdeName', commdeName);
+   	        	matgrid.setValue(rowKey, 'errCodeName', commdeName);
    	    		//선택시 모달창 닫기
    	    		if(rowKey != null){
    	    			$(".modal").fadeOut();
@@ -428,15 +457,17 @@
     matgrid.on('click', () => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
-   	if(columnName == "errRtSts"){
+   	if(columnName == "errRtStsName"){
    		$(".modal").fadeIn();
    	       Grid = createProdGrid3();
    	       
    	       Grid.on('click', () => {
    	       		let rowKey2 = Grid.getFocusedCell().rowKey;
    	       	let commdeCode = Grid.getValue(rowKey2, 'commdeCode');
+   	     	let commdeName = Grid.getValue(rowKey2, 'commdeName');
 
    	        	matgrid.setValue(rowKey, 'errRtSts', commdeCode);
+   	        	matgrid.setValue(rowKey, 'errRtStsName', commdeName);
    	    		//선택시 모달창 닫기
    	    		if(rowKey != null){
    	    			$(".modal").fadeOut();

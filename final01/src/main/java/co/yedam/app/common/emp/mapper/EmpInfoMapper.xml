@@ -38,4 +38,30 @@
   		from com_emp
   		where emp_code = #{empCode}
   	</select>
+  	
+  	<!-- 사원등록(+) -->
+  	<insert id="insertNewEmp" parameterType="EmpInfoVO">
+  		INSERT INTO com_emp(
+  			EMP_CODE
+			, EMP_NAME
+			, EMP_DATE
+			, EMP_TEL
+			, EMP_PW
+			, EMP_ROLE
+			<if test="deptCode != null and !deptCode.equals('')">
+			, DEPT_CODE
+			</if>
+  		) VALUES (
+  			get_primarycode('empCode')
+  			, #{empName}
+  			, SYSDATE
+  			, #{empTel}
+  			, #{empPw}
+  			, 'N'
+  			<if test="deptCode != null and !deptCode.equals('')">
+			, #{deptCode}
+			</if>
+  		)
+  	
+  	</insert>
   </mapper>

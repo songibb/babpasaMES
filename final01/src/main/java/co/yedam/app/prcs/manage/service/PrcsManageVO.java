@@ -13,6 +13,9 @@ public class PrcsManageVO {
 	//검색
 	private String prcsSearch;
 	
-
+	//select
+	private String prcsTypeKr;
+	private String semiYnKr;
 	
+
 }

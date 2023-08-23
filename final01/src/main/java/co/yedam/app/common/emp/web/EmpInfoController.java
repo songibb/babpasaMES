@@ -2,17 +2,23 @@ package co.yedam.app.common.emp.web;
 
 
 
+
 import java.util.List;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.emp.service.EmpInfoVO;
+import co.yedam.app.emp.mapper.EmpMapper;
+
 
 
 
@@ -21,6 +27,13 @@ import co.yedam.app.common.emp.service.EmpInfoVO;
 public class EmpInfoController {
 	@Autowired
 	EmpInfoService empInfoService;
+	
+	//로그인용(+)
+	EmpMapper empService;
+	
+	//암호화(+)
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	
 	//사원전체조회
 	@GetMapping("/empinfo")
@@ -39,7 +52,7 @@ public class EmpInfoController {
 	
 	
 	//사원코드 단건조회
-	@GetMapping("getComEmpCode")
+	@GetMapping("/getComEmpCode")
 	@ResponseBody
 	public EmpInfoVO getComEmpCode(@RequestParam String empCode) {
 		EmpInfoVO vo = new EmpInfoVO();
@@ -47,6 +60,25 @@ public class EmpInfoController {
 		EmpInfoVO findVO = empInfoService.getEmpInfoOne(vo);
 		return findVO;
 	}
+	
+	//사원관리 페이지(+)
+	@GetMapping("empDir")
+	public String getEmpDirPage() {
+		return "admincom/empCodeAdmin";
+	}
+	
+	//사원등록 post(+)
+	@PostMapping("/createNewAccount")
+	@ResponseBody
+	public int createNewAccout(EmpInfoVO vo) {
+		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+		String pw = vo.getEmpPw();
+		vo.setEmpPw(enco.encode(pw));
+		
+		int result = empInfoService.insertNewEmp(vo);
+		return result;
+	}
+	
 	
 
 	

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.equip.service.EquipChkService;
@@ -26,11 +27,14 @@ public class EquipChkController {
 	@Autowired
 	EmpInfoService empInfoService;
 	
+	@Autowired
+	CommCodeService commCodeService;
 	
 	//전체 점검설비
 	@GetMapping("equipchkList")
 	public String getEquipChkList(Model model) {
 		model.addAttribute("equipchkList",equipChkService.getEquipChkList());
+		model.addAttribute("equipPassType", commCodeService.searchCommCodeUse("0N"));
 		return "equip/equipchkList";
 	}
 	

@@ -34,6 +34,13 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 		
 		return empInfoMapper.getEmpInfoOne(empInfoVO);
 	}
+	
+	//사원등록(+)
+	@Override
+	public int insertNewEmp(EmpInfoVO empInfoVO) {
+		
+		return empInfoMapper.insertNewEmp(empInfoVO);
+	}
 
 	
 }
