@@ -40,13 +40,50 @@
 	ORDER BY prod_lot DESC
 	</select>
 	
-	<!-- 완제품인것만 제품 목록 -->
+	<!-- 제품목록 -->
 	<select id="selectProdAllList" resultType="InVO">
-	SELECT i.prod_code, p.prod_name, i.sales_in_date, i.sales_in_amt, i.prod_save_amt, i.sales_in_exd, i.emp_code
-	FROM sales_in i join com_prod p
-                    on i.prod_code = p.prod_code
-	WHERE p.prod_kind = 'C'
-	ORDER BY prod_code DESC
+	SELECT prod_lot
+			, prod_code
+			, sales_in_date
+			, sales_in_amt
+			, prod_save_amt
+			, sales_in_exd
+			, emp_code 
+	FROM sales_in
+	ORDER BY prod_lot 
+	</select>
+	
+	<!-- 입고관리 그리드 -->
+	<select id="inMngList" resultType="InVO">
+	SELECT prod_lot
+			, prod_code
+			, sales_in_date
+			, sales_in_amt
+			, prod_save_amt
+			, sales_in_exd
+			, emp_code
+			, test_num
+	FROM sales_in
+	ORDER BY prod_lot
+	</select>
+	
+	<!-- 검수완료된 완제품 목록  -->
+	<select id="selectCProd" resultType="InVO">
+	SELECT d.sales_ord_de_code, i.input_amt, i.err_amt, i.prcs_amt
+	FROM sales_ord_de d LEFT JOIN prcs_ing i
+                    		ON (d.prod_code = i.prod_code)
+	WHERE d.sales_ord_de_code = (SELECT sales_ord_de_code 
+	                             FROM sales_ord_de
+	                             WHERE ord_code = (SELECT ord_code
+	                                               FROM sales_ord
+	                                               WHERE prcs_plan_code = (SELECT prcs_plan_code
+	                                                                       FROM prcs_dir
+	                                                                       WHERE prcs_dir_code = (SELECT prcs_dir_code
+	                                                                                              FROM prcs_dir_de
+	                                                                                              WHERE prcs_dir_de_code IN (SELECT prcs_dir_de_code
+	                                                                                                                         FROM prcs_ing
+	                                                                                                                         WHERE prcs_dir_ing_sts = 'S5'
+	                                                                                                                         )))))
 	</select>
 	
 	<!-- 등록 -->
@@ -83,4 +120,21 @@
 			WHERE prod_lot = #{prodLot}
 		
 	</delete>
+	
+ 	<!-- 하단 그리드 행삭제시 상단 그리드 데이터 올리기용 --> 
+<!-- 	<select id="selectDeletedTest" resultType="InVO"> -->
+<!-- 		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date -->
+<!-- 		FROM mat_test a  -->
+<!-- 		LEFT JOIN com_commde b -->
+<!-- 			ON(a.err_code = b.commde_code) -->
+<!-- 			LEFT JOIN mat_order_de c -->
+<!-- 			ON(a.mat_od_de_cd = c.mat_od_de_cd) -->
+<!-- 	        LEFT JOIN com_mat d -->
+<!-- 	        ON(c.mat_code = d.mat_code) -->
+<!-- 	        LEFT JOIN mat_order f -->
+<!-- 	        ON(c.mat_od_cd = f.mat_od_cd) -->
+<!-- 	        LEFT JOIN com_act e -->
+<!-- 	        ON(f.act_code = e.act_code) -->
+<!-- 		WHERE a.mat_test_code = #{matTestCode} -->
+<!-- 	</select> -->
 </mapper>

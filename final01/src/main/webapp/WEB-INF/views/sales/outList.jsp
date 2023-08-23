@@ -394,7 +394,7 @@
       return prodGrid;
    }
    
-   //전체 주문 목록 조회 그리드
+   //전체 출고 목록 조회 그리드
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
@@ -446,33 +446,49 @@
 		           name: 'salesInExd'
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '제품코드',
 		           name: 'prodCode',
 		           hidden : true
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '주문상세코드',
 		           name: 'salesOrdDeCode',
 		           hidden : true
 		         },
 		         {
-		           header: '출고여부',
+		           header: '제품LOT',
 		           name: 'prodLot',
 		           hidden : true
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '거래처코드',
 		           name: 'actCode',
 		           hidden : true
 		         },
 	         	{
-		           header: '출고여부',
+		           header: '직원코드',
 		           name: 'empCode',
+		           hidden : true
+		         },
+		         {
+		           header: '재고량',
+		           name: 'prodSaveAmt',
 		           hidden : true
 		         }
            ]
          
         });
+//    setDisabled();
+	
+// 	//비활성화
+// 	function setDisabled(){
+// 		$.each(grid.getData(), function(idx, obj){
+			
+// 			if(obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)){
+// 				inGrid.disableRow(obj['rowKey']);
+// 			}
+// 		})
+// 	}
    
  	//검색 버튼
    $('#searchBtn').on('click', searchOrderList);

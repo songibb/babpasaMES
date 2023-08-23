@@ -31,4 +31,14 @@ public class InVO {
 	
 	private Date startDate;
 	private Date endDate;
+	
+	private String salesOrdDeCode;
+	private int inputAmt;
+	private int errAmt;
+	private int prcsAmt;
+	private String ordCode;
+	private String prcsPlanCode;
+	private String prcsDirCode;
+	private String prcsDirDeCode;
+	private String prcsDirIngSts;
 }
