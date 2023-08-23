@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.emp.service.EmpInfoService;
+import co.yedam.app.common.emp.service.EmpInfoVO;
+import co.yedam.app.prcs.plan.service.PrcsPlanReqVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanService;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.prcs.plan.service.PrcsSearchVO;
@@ -22,6 +25,9 @@ public class PrcsPlanController {
 	
 	@Autowired
 	PrcsPlanService prcsPlanService;
+	
+	@Autowired
+	EmpInfoService empInfoService;
 	
 	//생산계획 조회
 	@GetMapping("prcsPlanList")
@@ -66,33 +72,31 @@ public class PrcsPlanController {
 	//생산계획 등록
 	@PostMapping("prcsPlanInsert")
 	@ResponseBody
-	public String prcsPlanInsert(@RequestBody PrcsPlanVO prcsPlanVO) { 
-		//selectKey값 가져오기
-		String prcsPlanCode = prcsPlanService.insertPrcsPlan(prcsPlanVO);
-		return prcsPlanCode;
+	public int prcsPlanInsert(@RequestBody PrcsPlanReqVO prcsPlanReqVO) { 
+		return prcsPlanService.insertPrcsPlan(prcsPlanReqVO);
 	}
 	
 	//상세생산계획 등록
-	@PostMapping("prcsPlanDeInsert")
-	@ResponseBody
-	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> list) {			
-		return prcsPlanService.insertPrcsPlanDe(list);
-	}
-	
+//	@PostMapping("prcsPlanDeInsert")
+//	@ResponseBody
+//	public int prcsPlanDeInsert(@RequestBody List<PrcsPlanVO> list) {			
+//		return prcsPlanService.insertPrcsPlanDe(list);
+//	}
+
 
 	//생산계획 수정
 	@PostMapping("prcsPlanUpdate")
 	@ResponseBody
-	public int prcsPlanUpdate(@RequestBody List<PrcsPlanVO> list) { 		
-		return prcsPlanService.updatePrcsPlan(list);
+	public int prcsPlanUpdate(@RequestBody PrcsPlanReqVO prcsPlanReqVO) { 		
+		return prcsPlanService.updatePrcsPlan(prcsPlanReqVO);
 	}
 	
 	//상세생산계획 수정
-	@PostMapping("prcsPlanDeUpdate")
-	@ResponseBody
-	public int prcsPlanUpdateDe(@RequestBody List<PrcsPlanVO> list) { 
-		return prcsPlanService.updatePrcsPlanDe(list);
-	}
+//	@PostMapping("prcsPlanDeUpdate")
+//	@ResponseBody
+//	public int prcsPlanUpdateDe(@RequestBody List<PrcsPlanVO> list) { 
+//		return prcsPlanService.updatePrcsPlanDe(list);
+//	}
 	
 	//생산계획 삭제
 	@PostMapping("prcsPlanDelete")
@@ -119,6 +123,13 @@ public class PrcsPlanController {
 	}
 		
 
+	
+	//사원 전체 조회 (모달)
+	@GetMapping("ajaxEmpCodeList")
+	@ResponseBody
+	public List<EmpInfoVO> getEmpCodeList(){
+		return empInfoService.selectEmpInfoList();
+	}
 	
 
 }

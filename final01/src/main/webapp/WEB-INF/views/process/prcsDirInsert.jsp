@@ -436,18 +436,21 @@
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
     	let dirAmt = dirDeGrid.getValue(rowKey, 'prcsDirAmt');
-
-    	$.ajax({
-			url : 'bomList',
-			method : 'GET',
-			data : { prodCode : prodCode, prcsDirAmt : dirAmt },
-			success : function(data){
-				bomGrid.resetData(data);
- 		    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}	
-		})
+		
+    	if(prodCode != null){
+    		$.ajax({
+    			url : 'bomList',
+    			method : 'GET',
+    			data : { prodCode : prodCode, prcsDirAmt : dirAmt },
+    			success : function(data){
+    				bomGrid.resetData(data);
+     		    },
+    			error : function(reject){
+    	 			console.log(reject);
+    	 		}	
+    		})
+    	}
+    	
 
   	});
 	

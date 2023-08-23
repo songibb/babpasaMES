@@ -19,12 +19,13 @@
 <style type="text/css">
 #planContainer{
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 }
-#planGrid{
+#leftGrid{
     width: 800px;
+    margin-right: 20px;
 }
-#planDeGrid{
+#rightGrid{
     width: 800px;
 }
 
@@ -56,8 +57,14 @@
 				</div>
 				
 				<div id="planContainer">
-            		<div id="planGrid"></div>
-           			<div id="planDeGrid"></div>
+					<div id="leftGrid">
+						<span>생산 계획</span>
+            			<div id="planGrid"></div>
+            		</div>
+            		<div id="rightGrid">
+            			<span>상세 생산 계획</span>
+           				<div id="planDeGrid"></div>
+           			</div>
             	</div>
 	   		</div>
 		</div>
@@ -69,6 +76,7 @@
     
 	<script>
 	
+
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
 
@@ -169,14 +177,14 @@
 			perPage: 5,
 		},
         columns: [
-          {
-            header: '상세계획코드',
-            name: 'prcsPlanDeCode'
-          },
-          {
-            header: '계획코드',
-            name: 'prcsPlanCode'
-          },
+//           {
+//             header: '상세계획코드',
+//             name: 'prcsPlanDeCode'
+//           },
+//           {
+//             header: '계획코드',
+//             name: 'prcsPlanCode'
+//           },
           {
             header: '제품코드',
             name: 'prodCode',
