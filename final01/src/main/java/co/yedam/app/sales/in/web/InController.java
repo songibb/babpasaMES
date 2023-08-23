@@ -40,7 +40,7 @@ public class InController {
 	}
 	
 	//관리페이지
-		@GetMapping("inProductList")
+		@GetMapping("inMng")
 		public String inProductList(Model model) {
 			model.addAttribute("prodAllList", inService.prodAllList());
 			model.addAttribute("prodList", inService.prodAllList());

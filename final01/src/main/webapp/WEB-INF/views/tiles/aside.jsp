@@ -46,14 +46,14 @@
             </a>
             <div class="collapse" id="form-elements">
               	<ul class="nav flex-column sub-menu">
-              		<li class="nav-item"><a class="nav-link" href="orderList">주문 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="orderMng">주문 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="outList">완제품 출고 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="outMng">완제품 출고 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="rtList">완제품 반품 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="rtMng">완제품 반품 관리</a></li>
-                	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>
-                	<li class="nav-item"><a class="nav-link" href="inMng">완제품 재고 관리</a></li>
+              		<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/orderList">주문 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/orderMng">주문 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/outList">완제품 출고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/outMng">완제품 출고 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/rtList">완제품 반품 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/rtMng">완제품 반품 관리</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/inList">완제품 재고 조회</a></li>
+                	<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/inMng">완제품 재고 관리</a></li>
               	</ul>
             </div>
 		</li>

@@ -264,7 +264,9 @@ input[type="date"]{
 	           		salesRtAmt : "${rt.salesRtAmt}",
 	           		salesRtDate : `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
 	           		salesRtWhy : "${rt.salesRtWhy}",
-	           		empCode : "${rt.empCode}"
+	           		empCode : "${rt.empCode}",
+	           		prodCode : "${rt.prodCode}",
+	           		salesOutAmt : "${rt.salesOutAmt}"
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -303,13 +305,18 @@ input[type="date"]{
 			           name: 'prodCode',
 			           value : '${rt.prodCode}'
 			         },
+			         {
+				           header: '출고량',
+				           name: 'salesOutAmt',
+			        	   editor : 'text'
+				         },
 		         {
 		           header: '반품량',
 		           name: 'salesRtAmt',
 	        	   editor : 'text'
 		         },
 		         {
-		           header: '빈품일',
+		           header: '반품일',
 		           name: 'salesRtDate',
 		           editor: {
 		    		      type: 'datePicker',
@@ -368,14 +375,17 @@ input[type="date"]{
  	        	let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
  	        	let prodLot = Grid.getValue(rowKey2, 'prodLot');
  	        	let prodCode = Grid.getValue(rowKey2, 'prodCode');
+ 	        	let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
  	        	console.log(salesOutCode);
  	        	console.log(prodLot);
  	        	console.log(prodCode);
+ 	        	console.log(salesOutAmt);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
  	    		rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
  	    		rtGrid.setValue(rowKey, 'prodLot', prodLot);
  	    		rtGrid.setValue(rowKey, 'prodCode', prodCode);
+ 	    		rtGrid.setValue(rowKey, 'salesRtAmt', salesOutAmt);
  	    		//선택시 모달창 닫기
  	    		if(rowKey != null){
  	    			$(".modal").fadeOut();
