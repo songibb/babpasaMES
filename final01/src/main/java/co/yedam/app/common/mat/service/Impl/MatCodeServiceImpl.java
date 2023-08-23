@@ -1,6 +1,9 @@
 package co.yedam.app.common.mat.service.Impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,34 +33,65 @@ public class MatCodeServiceImpl implements MatCodeService {
 	}
 	
 	
+	/*
+	 * @Override public int updateMatCode(GridVO<MatCodeVO> data) {
+	 * 
+	 * int result = 0; if(data.getDeletedRows()!= null &&
+	 * data.getDeletedRows().size()>0) {
+	 * 
+	 * for(MatCodeVO vo : data.getDeletedRows()) { result +=
+	 * matCodeMapper.matCodeDelete(vo); }
+	 * 
+	 * }
+	 * 
+	 * if(data.getUpdatedRows()!=null && data.getUpdatedRows().size()>0) {
+	 * for(MatCodeVO vo : data.getUpdatedRows()) { result +=
+	 * matCodeMapper.matCodeUpdate(vo); } }
+	 * 
+	 * if(data.getCreatedRows()!= null && data.getCreatedRows().size()>0) {
+	 * for(MatCodeVO vo : data.getCreatedRows()) { result +=
+	 * matCodeMapper.matCodeInsert(vo); } }
+	 * 
+	 * return result; }
+	 */
 	@Override
-	public int updateMatCode(GridVO<MatCodeVO> data) {
+	public Map<String, Object> updateMatCode(GridVO<MatCodeVO> data) {
 		
-		int result = 0;
+		Map<String, Object> map = new HashMap<>();
+		
+		int success = 0;
+		
+		int fail =0;
+		
 		if(data.getDeletedRows()!= null && data.getDeletedRows().size()>0) {
 			
 			for(MatCodeVO vo : data.getDeletedRows()) {
-				result += matCodeMapper.matCodeDelete(vo);
+				matCodeMapper.matCodeDelete(vo);
+				
+				Integer error = vo.getResult();
+				System.out.println(error);
+				if(error == null) {
+					fail=0;
+				}else if(error == -1){
+					fail++;
 			}
-			
+			}
 		}
 		
 		if(data.getUpdatedRows()!=null && data.getUpdatedRows().size()>0) {
 			for(MatCodeVO vo : data.getUpdatedRows()) {
-				result += matCodeMapper.matCodeUpdate(vo);
+				success += matCodeMapper.matCodeUpdate(vo);
 			}
 		}
 		
 		if(data.getCreatedRows()!= null && data.getCreatedRows().size()>0) {
 			for(MatCodeVO vo : data.getCreatedRows()) {
-				result += matCodeMapper.matCodeInsert(vo);
+				success += matCodeMapper.matCodeInsert(vo);
 			}
 		}
 		
-		return result;
+	map.put("fail", fail);
+	map.put("success", success);
+	return map;
 	}
-
-
-	
-
 }

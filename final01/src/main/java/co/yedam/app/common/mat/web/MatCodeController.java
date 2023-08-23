@@ -1,6 +1,7 @@
 package co.yedam.app.common.mat.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class MatCodeController {
 	
 	@PostMapping("/updateMatCode")
 	@ResponseBody
-	public int updateMatCode(@RequestBody GridVO<MatCodeVO> data) {
+	public Map<String, Object> updateMatCode(@RequestBody GridVO<MatCodeVO> data) {
 		return matCodeService.updateMatCode(data);
 	}
 }

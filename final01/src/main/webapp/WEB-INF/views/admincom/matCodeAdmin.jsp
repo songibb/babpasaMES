@@ -144,11 +144,19 @@
 					data : JSON.stringify(grid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data+"건이 처리되었습니다","success");
+						let errCount = data.fail;
+						console.log(errCount);
+						let success = grid.getModifiedRows().deletedRows.length;
+						console.log(success);
+						let total = data.success;
+						let message = success-errCount+total +"건 수정진행완료" + errCount +"건이 실패되었습니다"
+						swal(message, "","success");
+						
+						
 						$.ajax({
 							url : "ajaxMatCodeList",
 							 method :"GET",
-						       success : function(result){
+						       success : function(result){   
 						           grid.resetData(result);
 						       },
 						       error : function(reject){
