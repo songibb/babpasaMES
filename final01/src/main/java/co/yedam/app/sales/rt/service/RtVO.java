@@ -35,4 +35,15 @@ public class RtVO {
 	private String prodLot;
 	
 	private String salesOrdDeCode;
+	
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date endDate;
+	
+	private String devYn;
+	private String actCode;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date salesOutDate;
+	private String empName;
 }

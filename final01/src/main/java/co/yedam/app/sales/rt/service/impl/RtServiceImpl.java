@@ -29,8 +29,9 @@ public class RtServiceImpl implements RtService {
 	}
 
 	@Override
-	public List<RtVO> searchRtList(String prodCode) {
-		return rtMapper.selectAllRt(prodCode);
+	public List<RtVO> searchRtList(String prodCode, String startDate,
+			String outDate) {
+		return rtMapper.selectAllRt(prodCode, startDate, outDate);
 	}
 
 	@Override

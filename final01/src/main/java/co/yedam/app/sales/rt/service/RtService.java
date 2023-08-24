@@ -11,7 +11,7 @@ public interface RtService {
 	// 제품목록
 	public List<RtVO> prodAllList();
 	// 검색
-	public List<RtVO> searchRtList(String prodCode);
+	public List<RtVO> searchRtList(String prodCode, String startDate, String outDate);
 	//반품 등록
 	public int insertRtList(List<RtVO> rtList);
 	//출고 완료된 목록

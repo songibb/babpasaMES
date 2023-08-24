@@ -41,4 +41,10 @@ public class InVO {
 	private String prcsDirCode;
 	private String prcsDirDeCode;
 	private String prcsDirIngSts;
+	
+	private Date testDate;
+	private int testAmt;
+	private String totalTestYn;
+	private String testSemiYn;
+	private String empName;
 }

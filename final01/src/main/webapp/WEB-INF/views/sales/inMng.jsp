@@ -139,6 +139,7 @@
 	           	prodSaveAmt : "${in.prodSaveAmt}",
 	           	salesInExd : `<fmt:formatDate value="${in.salesInExd}" pattern="yyyy-MM-dd"/>`,
 	           	empCode : "${in.empCode}",
+	           	empName : "${in.empName}",
 	           	testNum : "${in.testNum}"
 	           	},
 	           </c:forEach>
@@ -193,6 +194,11 @@
                       name: 'empCode',				  // [필수] 컬럼 매핑 이름 값
                       editor : 'text'            
                   },
+                  {
+                      header: '직원이름',            // [필수] 컬럼 이름
+                      name: 'empName',				  // [필수] 컬럼 매핑 이름 값
+                      editor : 'text'            
+                  },
 	 		 	  	{
                       header: '검사번호',            // [필수] 컬럼 이름
                       name: 'testNum',                 // [필수] 컬럼 매핑 이름 값
@@ -221,10 +227,11 @@
 		       data: [
 		           <c:forEach items="${CProdList}" var="test">
 		           	{
-		         	salesOrdDecode : "${test.salesOrdDecode}",
-		         	inputAmt : "${test.inputAmt}",
-		         	errAmt : "${test.errAmt}",
-		         	prcsAmt : "${test.prcsAmt}"
+		           		testNum : "${test.testNum}",
+		           		prodCode : "${test.prodCode}",
+		           		prodName : "${test.prodName}",
+		           		testDate : "${test.testDate}",
+		           		testAmt : "${test.testAmt}"
 		           	},
 		           </c:forEach>
 		          ],
@@ -240,52 +247,50 @@
 		       },
 		       columns: [
 		    	  {
-		    		  header: '자재발주상세코드',
-			 	      name: 'salesOrdDecode'
+		    		  header: '검사코드',
+			 	      name: 'testNum'
 		    	  },
+		          {
+			           header: '제품코드',
+			           name: 'prodCode'
+		          },
 			 	  {
-			 	        header: '자재명',
-			 	        name: 'inputAmt'
+			 	        header: '제품명',
+			 	        name: 'prodName'
 			 	  },
 			 	  {
-	            	  	header: '단위',
-			 		 	name: 'errAmt' 
+	            	  	header: '검사일자',
+			 		 	name: 'testDate' 
 	              },
 	              {
-	            	  	header: '규격',
-			 		 	name: 'prcsAmt'
+	            	  	header: '검사량',
+			 		 	name: 'testAmt'
 	              },
 	              {
-			           header: '제품LOT',
-			           name: 'prodLot',
-			           hidden : true
-		         },
-		         {
-			           header: '입고날짜',
-			           name: 'salesInDate',
-			           hidden : true
-		         },
-		         {
-			           header: '입고량',
-			           name: 'salesInAmt',
-			           hidden : true
-		         },
-		         {
-			           header: '재고량',
-			           name: 'prodSaveAmt',
-			           hidden : true
-		         },
-		         {
-			           header: '유통기한',
-			           name: 'salesInExd',
-			           hidden : true
-		         },
-		         {
-			           header: '직원코드',
-			           name: 'empCode',
-			           hidden : true
-		         }
-	              
+                      header: '제품LOT',            // [필수] 컬럼 이름
+                      name: 'prodLot',                 // [필수] 컬럼 매핑 이름 값
+                      hidden : true                   // [선택] 숨김 여부   
+                  },
+				  {
+                      header: '입고일자',       
+                      name: 'salesIndate',    
+                      hidden : true
+                  },
+                  {
+                      header: '입고량',       
+                      name: 'salesInAmt',    
+                      hidden : true
+                  },
+                  {
+                      header: '재고량',       
+                      name: 'prodSaveAmt',    
+                      hidden : true
+                  },
+                  {
+                      header: '유통기한',       
+                      name: 'salesInExd',    
+                      hidden : true
+                  }
 		 	    ]
 		      
 		     });
@@ -598,30 +603,48 @@
     	//let columnName = orderGrid.getFocusedCell().columnName;
     	//let value = orderGrid.getFocusedCell().value;	
     	
+     	let testNum = testGrid.getValue(rowKey, 'testNum');
+    	let prodCode = testGrid.getValue(rowKey, 'prodCode');
+//     	let prodName = testGrid.getValue(rowKey, 'prodName');
+//     	let testDate = testGrid.getValue(rowKey, 'testDate');
+    	let testAmt = testGrid.getValue(rowKey, 'testAmt');
+    	
     	let prodLot = testGrid.getValue(rowKey, 'prodLot');
-    	let salesIndate = testGrid.getValue(rowKey, 'salesIndate');
+    	let salesInDate = testGrid.getValue(rowKey, 'salesInDate');
     	let salesInAmt = testGrid.getValue(rowKey, 'salesInAmt');
     	let prodSaveAmt = testGrid.getValue(rowKey, 'prodSaveAmt');
     	let salesInExd = testGrid.getValue(rowKey, 'salesInExd');
-     	let empCode = testGrid.getValue(rowKey, 'empCode');
 		
-    	
+    	console.log(testNum);
+    	console.log(prodCode);
+    	console.log(testAmt);
+    	console.log(prodLot);
+    	console.log(salesInDate);
+    	console.log(salesInAmt);
+    	console.log(prodSaveAmt);
+    	console.log(salesInExd);
     	
     	testGrid.removeRow(rowKey);
     	
     	testGrid.blur();
-    	inGrid.appendRow({'prodLot' : prodLot,
-    					   'salesIndate' : salesIndate,
-    					   'salesInAmt' : salesInAmt,
-    					   'prodSaveAmt' : prodSaveAmt,
+    	inGrid.appendRow({
+    					   'testNum' : testNum,
+    					   'prodCode' : prodCode,
+//     					   'prodName' : prodName,
+//     					   'testDate' : testDate,
+//     					   'testAmt' : testAmt,
+    					   
+    					   'prodLot' : prodLot,
+    					   'salesIndate' : salesInDate,
+    					   'salesInAmt': testAmt,
+    					   'prodSaveAmt' : testAmt,
     					   'salesInExd' : salesInExd,
-    					   'empCode' : ${user.id},
+    					   'empCode' : `${user.id}`,
     					   'empName' : `${user.empName}`},
     					   { at: 0 }
     	);
 	
-  	});
-    
+        });
     //이전 날짜 선택불가
     $( '#startDate' ).on( 'change', function() {
       $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );

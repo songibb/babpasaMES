@@ -24,7 +24,7 @@ public class OrderController {
 	// 조회
 	@GetMapping("/orderList")
 	public String orderList(Model model) {
-		model.addAttribute("orderList", orderService.getOrderList());
+		model.addAttribute("orderNList", orderService.getNoPlan());
 		model.addAttribute("actList", orderService.actAllList());
 		model.addAttribute("prodList", orderService.prodAllList());
 		return "sales/orderList";

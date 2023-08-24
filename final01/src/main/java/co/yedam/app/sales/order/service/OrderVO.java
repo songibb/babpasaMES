@@ -40,6 +40,10 @@ public class OrderVO {
 	private String prodUnit;
 	private String prodStd;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
+	
+	private String empName;
 }
