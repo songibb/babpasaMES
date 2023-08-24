@@ -12,7 +12,8 @@
 			   prcs_start_date,
 			   prcs_end_date,
 			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
-			   find_emp_name(emp_code) AS emp_code
+			   emp_code,
+			   find_emp_name(emp_code) AS emp_Name
 		  FROM prcs_dir
 		 <where>
 		 		prcs_dir_sts IN ('P1','P2')
@@ -36,7 +37,8 @@
 			   prcs_start_de_date,
 			   prcs_end_de_date,
 			   find_cdnm('0S', prcs_ing_sts) AS prcs_ing_sts,
-			   find_emp_name(emp_code) AS emp_code
+			   emp_code,
+			   find_emp_name(emp_code) AS emp_Name
 		  FROM prcs_dir_de
 		 WHERE prcs_dir_code = #{prcsDirCode}
 		 ORDER BY prcs_dir_de_code

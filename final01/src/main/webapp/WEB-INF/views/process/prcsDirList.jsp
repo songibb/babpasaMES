@@ -170,10 +170,10 @@
             header: '생산시작일자',
             name: 'prcsStartDeDate'
           },
-          {
-            header: '생산마감일자',
-            name: 'prcsEndDeDate'
-          },
+//           {
+//             header: '생산마감일자',
+//             name: 'prcsEndDeDate'
+//           },
           {
             header: '공정진행상태',
             name: 'prcsIngSts'
@@ -322,27 +322,6 @@
 	}
 
 	updateDirPrcsStsAjax();
-   
-	//상세생산지시 -> 생산지시완료 update
-// 	let dirList = dirGrid.getData();
-// 	console.log(dirList);
-	
-// 	function updateDirPrcsStsAjax(){
-// 		$.ajax({
-// 			url : 'updateDirPrcsSts',
-// 			method : 'POST',
-// 			data : JSON.stringify(dirList),
-// 			contentType : "application/json",
-// 			success : function(data){
-// 				console.log(data);
-// 			},
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}
-// 		})
-// 	}
-
-// 	updateDirPrcsStsAjax();
    
  
     

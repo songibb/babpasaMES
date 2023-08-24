@@ -81,7 +81,7 @@
 		let modifyGrid = grid.getModifiedRows();
 
 		if(!grid.isModified()){
-			swal("변경사항이 없습니다", "", "warning");
+			swal("변경사항이 없습니다.", "", "warning");
 			return false;
 		}
 		
@@ -126,7 +126,7 @@
 				}
 			})
 		} else {
-			swal("", "값이 입력되지 않았습니다", "warning");
+			swal("", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 	
 	}
