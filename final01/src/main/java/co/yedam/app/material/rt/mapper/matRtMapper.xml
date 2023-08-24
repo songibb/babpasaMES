@@ -5,7 +5,7 @@
 <mapper namespace="co.yedam.app.material.rt.mapper.MatRtMapper">
 <!-- 전체조회 -->
 	<select id="selectMatRtList" resultType="MatRtVO">
-		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std, d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code, b.mat_namt mat_rt_total_amt, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std, d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c
@@ -21,7 +21,7 @@
 	
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatRtSearch" resultType="MatRtVO">
-		SELECT a.mat_rt_code, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std,d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code, b.mat_namt mat_rt_total_amt, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std,d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c

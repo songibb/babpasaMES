@@ -6,21 +6,35 @@
 
 	<!-- 전체조회 -->
 	<select id="selectMatDisList" resultType="MatDisVO">
-		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info
+		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info,
+        	CASE WHEN mat_rt_amt IS NULL THEN mat_stock
+            	 WHEN mat_stock IS NULL THEN mat_rt_amt
+        		 END AS dp_max_amt
 		FROM mat_dispose a LEFT JOIN com_mat b
 		ON(a.mat_code = b.mat_code)
 		LEFT JOIN com_emp c
 		ON(a.emp_code = c.emp_code)
+        LEFT JOIN mat_rt d
+        ON(a.mat_identi_code = d.mat_rt_code)
+        LEFT JOIN mat_in e
+        ON(a.mat_identi_code = e.mat_lot)
 		ORDER BY mat_dp_date DESC
 	</select>
 	
 	<!-- 검색 -->
 	<select id="selectMatDisSearch" resultType="MatDisVO">
-		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info
+		SELECT a.mat_dp_code, a.mat_identi_code, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.mat_dp_amt, a.mat_dp_date, a.emp_code, c.emp_name, a.mat_dp_info,
+        	CASE WHEN mat_rt_amt IS NULL THEN mat_stock
+            	 WHEN mat_stock IS NULL THEN mat_rt_amt
+        		 END AS dp_max_amt
 		FROM mat_dispose a LEFT JOIN com_mat b
 		ON(a.mat_code = b.mat_code)
 		LEFT JOIN com_emp c
 		ON(a.emp_code = c.emp_code)
+        LEFT JOIN mat_rt d
+        ON(a.mat_identi_code = d.mat_rt_code)
+        LEFT JOIN mat_in e
+        ON(a.mat_identi_code = e.mat_lot)
 		<where>
 			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
@@ -40,14 +54,14 @@
 		SELECT a.mat_lot,a.mat_code, mat_name, mat_std, mat_unit, mat_stock, mat_exd
 		FROM mat_in a LEFT JOIN com_mat b
 		ON(a.mat_code = b.mat_code)
-		WHERE mat_exd BETWEEN SYSDATE <![CDATA[-]]> 15 AND SYSDATE 
+		WHERE TO_CHAR(mat_exd, 'YYYY-MM-DD') <![CDATA[<=]]> SYSDATE 
 		AND mat_stock <![CDATA[>]]> 0
 		ORDER BY mat_exd
 	</select>
 	
 	<!-- 반품 실패 -->
 	<select id="selectRtFailList" resultType="MatRtVO">
-		SELECT a.mat_code, d.mat_name, d.mat_std, d.mat_unit, mat_rt_amt, e.commde_info err_info, mat_rt_date, mat_od_de_cd
+		SELECT a.mat_code, d.mat_name, d.mat_std, d.mat_unit, mat_namt <![CDATA[-]]> mat_rt_amt, e.commde_info err_info, mat_rt_date, mat_od_de_cd
 		FROM mat_rt a LEFT JOIN mat_test b
 		ON(a.mat_test_code = b.mat_test_code)
 		LEFT JOIN mat_dispose c
@@ -89,22 +103,15 @@
 	<!-- matLot일 때 등록 후 재고 변경 -->
 	<update id="updateMatStockAtMatDisIn" parameterType="MatDisVO">
 		UPDATE mat_in
-		SET mat_stock = mat_stock <![CDATA[-]]> #{matDpAmt}
+		SET mat_stock = 0
 		WHERE mat_lot = #{matIdentiCode}
 	</update>
 	
 	<!-- 수정 -->
 	<update id="updateMatDis" parameterType="MatDisVO">
 		UPDATE mat_dispose
-		SET mat_dp_amt = #{matDpAmt}
+		SET mat_dp_info = #{matDpInfo}
 		WHERE mat_dp_code = #{matDpCode}
-	</update>
-	
-	<!-- matLot일 때 수정 후 재고 변경 -->
-	<update id="updateMatStockAtMatDisUp" parameterType="MatDisVO">
-		UPDATE mat_in
-		SET mat_stock = mat_stock <![CDATA[-]]> #{matChangeAmt}
-		WHERE mat_lot = #{matIdentiCode}
 	</update>
 	
 	<!-- 삭제 -->

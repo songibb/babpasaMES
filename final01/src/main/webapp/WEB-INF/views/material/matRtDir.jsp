@@ -146,6 +146,7 @@
 	           	empName : "${mat.empName}",
 	           	empCode : "${mat.empCode}",
 	           	matRtDate : `<fmt:formatDate value="${mat.matRtDate}" pattern="yyyy-MM-dd"/>`,
+	           	matRtTotalAmt : "${mat.matRtTotalAmt}",
 	           	matRtSts : "${mat.matRtSts}"
 	           	},
 	           </c:forEach>
@@ -212,7 +213,13 @@
 		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	 	           		return val;
 	 	        	}
-	 	        }
+	 	        },
+	 	        editor : 'text'
+		 	  },
+		 	  {
+		 		header: '총수량',
+		 		name : 'matRtTotalAmt'
+		 		
 		 	  },
 			  {
 		 	    header: '검사일자',
@@ -665,6 +672,27 @@
 		});
 	});
 	
+	//계산
+	rtGrid.on('afterChange', (ev) => {
+		
+		let change = ev.changes[0];
+		let rowData = rtGrid.getRow(change.rowKey);
+		
+		
+		
+		if(change.columnName == 'matRtAmt'){
+			
+			
+			if(Number(rowData.matRtAmt) > Number(rowData.matRtTotalAmt)){
+				swal("", "기존수량을 넘을 수 없습니다", "warning");
+				rtGrid.setValue(change.rowKey, 'matRtAmt', rowData.matRtTotalAmt);
+			}
+			
+		}
+	});
+	
+	
+	
 	//자재 모달창 내용 그리드
 	function createMatGrid(){
 	   var matGrid = new tui.Grid({
@@ -835,6 +863,7 @@
     					   'errInfo' : errInfo,
     					   'matRtAmt' : matNamt,
     					   'matTestDate' : matTestDate,
+    					   'matRtTotalAmt' : matNamt,
     					   'empCode' : ${user.id},
     					   'matRtDate' : matRtDate,
     					   'empName' : `${user.empName}`}, { at: 0 });

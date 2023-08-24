@@ -27,9 +27,7 @@ public interface MatDisMapper {
 	
 	//수정
 	public int updateMatDis(MatDisVO vo);
-	//자재 재고 수정
-	public int updateMatStockAtMatDisUp(MatDisVO vo);
-	
+
 	//삭제
 	public int deleteMatDis(MatDisVO vo);
 	//자재 재고 +

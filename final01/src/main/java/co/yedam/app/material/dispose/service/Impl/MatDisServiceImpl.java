@@ -58,7 +58,6 @@ public class MatDisServiceImpl implements MatDisService {
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
 			for(MatDisVO vo : data.getUpdatedRows()) {
 				result += mdm.updateMatDis(vo);
-				mdm.updateMatStockAtMatDisUp(vo);
 			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
