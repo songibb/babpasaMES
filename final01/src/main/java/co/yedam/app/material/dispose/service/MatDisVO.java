@@ -25,4 +25,5 @@ public class MatDisVO {
 	
 	//계산용
 	private Integer matChangeAmt;
+	private Integer dpMaxAmt;
 }

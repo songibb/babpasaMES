@@ -180,6 +180,9 @@ body {
 input[type="date"]{
 	width : 221px;
 }
+.yellow-background {
+        background-color: rgb(255,253,235);
+}
 </style>    
        
 </head>
@@ -256,23 +259,30 @@ input[type="date"]{
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
-		outGrid.appendRow({}, { at: 0 });
+		let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let salesOutDate = year + "-" + month + "-" + day;
+		outGrid.appendRow({'salesOutDate' : salesOutDate, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });
 	}
 
 	
-	//주문 form
+	//출고 form
 	var outGrid = new tui.Grid({
 	        el: document.getElementById('grid'),
 	        data: [
-	        	<c:forEach items="${outList}" var="out">
+	        	<c:forEach items="${outNList}" var="out">
 	              {
 		           		salesOutCode : "${out.salesOutCode}",
 		           		prodLot : "${out.prodLot}",
+			           	salesOrdDeCode : "${out.salesOrdDeCode}",
 			           	actName : "${out.actName}",
 			           	salesOutAmt : "${out.salesOutAmt}",
-			           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
-			           	salesOutAmt : "${out.empCode}",
-			           	salesOutAmt : "${out.salesOrdDeCode}",
+			           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
+			           	empCode : "${out.empCode}",
+			           	empName : "${out.empName}",
+			           	prodSaveAmt : "${out.prodSaveAmt}"
 	              }<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -295,17 +305,24 @@ input[type="date"]{
 		         {
 		           header: '제품Lot',
 		           name: 'prodLot',
-		           editor : 'text'
+		           editor : 'text',
+		           value : '${out.prodLot}'
 		         },
 		         {
 		           header: '상세주문코드',
 		           name: 'salesOrdDeCode',
-		           editor: 'text'
+		           editor: 'text',
+		           value : '${out.salesOrdDeCode}'
 		         },
 		         {
 		           header: '거래처명',
 		           name: 'actName',
 		           value : '${out.actName}'
+		         },
+		         {
+		           header: '재고량',
+		           name: 'prodSaveAmt',
+		           editor : 'text'
 		         },
 		         {
 		           header: '출고량',
@@ -320,12 +337,18 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
+		         },
+		         {
+		           header: '직원이름',
+		           name: 'empName'
 		         },
 		         {
 		           header: '직원코드',
 		           name: 'empCode',
-		           editor: 'text'
+		           editor: 'text',
+		           hidden : true
 		         },
 	         	{
 		           header: '출고여부',
@@ -396,12 +419,15 @@ input[type="date"]{
     	       		let rowKey2 = Grid.getFocusedCell().rowKey;
     	        	let prodLot = Grid.getValue(rowKey2, 'prodLot');
     	        	let prodCode = Grid.getValue(rowKey2, 'prodCode');
+    	        	let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
     	        	console.log(prodLot);
+    	        	console.log(prodCode);
     	        	console.log(prodCode);
     	    		//$("#actCodeInput").val(actCode);
     	    		//$("#actNameFix").val(actName);
     	    		outGrid.setValue(rowKey, 'prodLot', prodLot);
     	    		outGrid.setValue(rowKey, 'prodCode', prodCode);
+    	    		outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
     	    		//선택시 모달창 닫기
     	    		if(rowKey != null){
     	    			$(".modal").fadeOut();
@@ -418,14 +444,17 @@ input[type="date"]{
  	        	let salesOrdDeCode = Grid.getValue(rowKey2, 'salesOrdDeCode');
  	        	let actName = Grid.getValue(rowKey2, 'actName');
  	        	let actCode = Grid.getValue(rowKey2, 'actCode');
+ 	        	let prcsRqAmt = Grid.getValue(rowKey2, 'prcsRqAmt');
  	        	console.log(salesOrdDeCode);
  	        	console.log(actName);
  	        	console.log(actCode);
+ 	        	console.log(prcsRqAmt);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
  	    		outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
  	    		outGrid.setValue(rowKey, 'actName', actName);
  	    		outGrid.setValue(rowKey, 'actCode', actCode);
+ 	    		outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
  	    		//선택시 모달창 닫기
  	    		if(rowKey != null){
  	    			$(".modal").fadeOut();
@@ -480,7 +509,8 @@ input[type="date"]{
   	             },
   	             {
   	               header: '입고날짜',
-  	               name: 'salesInDate'
+  	               name: 'salesInDate',
+  	             className: 'yellow-background'
   	             },
   	             {
   	               header: '입고량',
@@ -492,7 +522,8 @@ input[type="date"]{
    	             },
 	             {
  	  	            header: '유통기한',
- 	  	            name: 'salesInExd'
+ 	  	            name: 'salesInExd',
+ 	  	         className: 'yellow-background'
  	  	          },
  	  	          {
   	    	        header: '직원코드',
@@ -548,13 +579,13 @@ input[type="date"]{
 		         {
 		           header: '주문날짜',
 		           name: 'ordDate',
-		           value : '${order.ordDate}',
 		           editor: {
 		    		      type: 'datePicker',
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '거래처명',
@@ -588,7 +619,8 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '출고여부',
@@ -737,17 +769,17 @@ input[type="date"]{
         
       let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'orderListFilter',
+         url : 'outListFilter',
          method : 'GET',
          data : search ,
          success : function(data2){
         	 
 				$.each(data2, function(idx, obj){
-					let date = new Date(obj['ordDate']);
+					let date = new Date(obj['salesOutDate']);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-					obj['ordDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					obj['salesOutDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
 				})
            outGrid.resetData(data2);
@@ -784,34 +816,35 @@ input[type="date"]{
 		// 수정된게 없으면 바로 빠져나감
 		
 		if(!outGrid.isModified()){
-			alert("변경사항이 없습니다.");
+			swal("", "변경사항이 없습니다", "warning");
 			return false;
 		}
 		
 		//flag가 true = 입력폼이나 수정폼에 빠뜨린 데이터가 없다
 		var flag = true;
 		//create, modify, delete 포함하는 전체 배열을 도는 each문			
-			
+		
 		if(outGrid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(outGrid.getModifiedRows().createdRows, function(idx2, obj2){
 					if(obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['salesOutDate'] == "" || obj2['salesOutAmt']=="" || obj2['empCode'] == "" || obj2['salesOrdDeCode'] == "" || obj2['prodLot'] == ""){
+						
 						flag = false;
 						return false;
 					}
 				})
 		}
 		
-		if(outGrid.getModifiedRows().updatedRows.length > 0 ){
+// 		if(outGrid.getModifiedRows().updatedRows.length > 0 ){
 
-				$.each(outGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == "" ){
-						flag = false;
-						return false;
-					}
-				})
+// 				$.each(outGrid.getModifiedRows().updatedRows, function(idx2, obj2){
+// 					if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == "" ){
+// 						flag = false;
+// 						return false;
+// 					}
+// 				})
 				
-		}
+// 		}
 		
 		if(flag){
 				$.ajax({
@@ -820,10 +853,13 @@ input[type="date"]{
 					data : JSON.stringify(outGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
+						swal("성공", data +"건이 처리되었습니다.", "success");
 						console.log(data);
 					},
 					error : function(reject){
+						swal("실패", "", "error");
 						console.log(reject);
+						
 					}
 				})
 		} else {
@@ -832,6 +868,53 @@ input[type="date"]{
 
 	}
 
+  //수량체크하는 함수
+    function qtyCheck() {
+//         let ordersQty = parseInt(document.getElementsByName("ordersQty")[0].value); // 입력수량 150
+//         let productQty = parseInt(document.getElementById("productQty")); //재고수량 95
+		let modifyGridInfo = outGrid.getModifiedRows();
+		$.each(outGrid.getModifiedRows().createdRows, function(idx2, obj2){
+			if(obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['salesOutDate'] == "" || obj2['salesOutAmt']=="" || obj2['empCode'] == "" || obj2['salesOrdDeCode'] == "" || obj2['prodLot'] == ""){
+				
+			}
+		})
+
+        // 반복 코드 줄이기 위해 return false; 를 변수화
+        let ret = false;
+
+        console.log("orderQty : " + ordersQty);
+        console.log("productQty : " + productQty);
+
+        // 입력 수량이 undefined인지 여부
+        if (ordersQty) {
+            // 입력수량이 존재함
+            // 입력수량 > 재고
+            if (ordersQty > productQty) {
+                alert("재고 수량을 초과하여 입력할 수 없습니다.");
+            }
+            // 입력수량 = 0 or 입력수량 < 0
+            else if (ordersQty === 0 || ordersQty < 0) {
+                alert("1개 이상 입력할 수 있습니다.");
+            }
+            // 그게 아니라면 true로 반환 !ret 이니까 true임
+            else {
+                ret = !ret;
+            }
+        } else {
+            // 입력수량이 undefined임
+            alert("수량을 입력해 주세요.");
+        }
+        return ret;
+    }
+  
+    //엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+    
+    document.addEventListener('DOMContentLoaded', ()=>{
+       excelDownload.addEventListener('click', function(e){
+    	   outGrid.export('xlsx');
+       })
+    })
     </script>
 </body>
 </html>

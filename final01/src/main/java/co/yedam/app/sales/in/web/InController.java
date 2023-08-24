@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatInVO;
+import co.yedam.app.material.in.service.MatModalVO;
 import co.yedam.app.sales.in.service.InService;
 import co.yedam.app.sales.in.service.InVO;
 import co.yedam.app.sales.order.service.OrderVO;
@@ -40,10 +41,14 @@ public class InController {
 	}
 	
 	//관리페이지
-		@GetMapping("inProductList")
+		@GetMapping("inMng")
 		public String inProductList(Model model) {
-			model.addAttribute("prodAllList", inService.prodAllList());
+			//제품목록검색 모달창
 			model.addAttribute("prodList", inService.prodAllList());
+			//검수완료된 완제품 목록
+			model.addAttribute("CProdList", inService.CProdList());
+			//입고관리페이지 입고그리드
+			model.addAttribute("inMngList", inService.inMngList());
 			return "sales/inMng";
 		}
 		
@@ -53,4 +58,11 @@ public class InController {
 		public int modifyProdIn(@RequestBody GridVO<InVO> data) {
 			return inService.modifyProdIn(data);
 		}
+		
+//		//자재모달창 검색 ajax
+//		@GetMapping("getModalSearch")
+//		@ResponseBody
+//		public List<MatModalVO> getMatModalSearch(String matName){
+//			return mms.selectModalSearch(matName);
+//		}
 }

@@ -1,6 +1,7 @@
 package co.yedam.app.common.mat.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,14 +30,13 @@ public class MatCodeController {
 	@Autowired
 	EmpInfoService empInfoService;
 	
-	//자재 관리페이지
+	//자재 조회페이지
 	@GetMapping("/matCodeList")
 	public String matCodeList(Model model) {
 		model.addAttribute("matList", matCodeService.selectMatCodeList());
 		model.addAttribute("unitList", commCodeService.searchCommCodeUse("0Y"));
-		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		
-		return "admincom/matCodeAdmin";
+		return "common/matCodeList";
 	}
 	
 	//ajax 조회
@@ -58,10 +58,20 @@ public class MatCodeController {
 	}
 	
 	
-	
+	//자재 등록,수정,삭제 동시 진행
 	@PostMapping("/updateMatCode")
 	@ResponseBody
-	public int updateMatCode(@RequestBody GridVO<MatCodeVO> data) {
+	public Map<String, Object> updateMatCode(@RequestBody GridVO<MatCodeVO> data) {
 		return matCodeService.updateMatCode(data);
+	}
+	
+	
+	//자재 관리페이지
+	@GetMapping("/matCodeAdmin")
+	public String matCodeAdmin(Model model) {
+		model.addAttribute("matList", matCodeService.selectMatCodeList());
+		model.addAttribute("unitList", commCodeService.searchCommCodeUse("0Y"));
+		
+		return "admincom/matCodeAdmin";
 	}
 }

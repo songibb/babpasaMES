@@ -2,6 +2,8 @@ package co.yedam.app.sales.rt.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -19,6 +21,7 @@ public class RtVO {
 	private String prodCode;
 	private String salesOutCode;
 	private int salesRtAmt;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date salesRtDate;
 	private String salesRtWhy;
 	private String empCode;
@@ -30,4 +33,17 @@ public class RtVO {
 	private String prodUnit;
 	private String prodStd;
 	private String prodLot;
+	
+	private String salesOrdDeCode;
+	
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date endDate;
+	
+	private String devYn;
+	private String actCode;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date salesOutDate;
+	private String empName;
 }

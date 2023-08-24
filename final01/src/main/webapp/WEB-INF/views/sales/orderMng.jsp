@@ -180,6 +180,9 @@ body {
 input[type="date"]{
 	width : 221px;
 }
+.yellow-background {
+        background-color: rgb(255,253,235);
+}
 </style>    
        
 </head>
@@ -214,6 +217,7 @@ input[type="date"]{
                   <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
+                  
 		            	</div>
 	            
 	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
@@ -256,7 +260,12 @@ input[type="date"]{
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
-		orderGrid.appendRow({}, { at: 0 });
+		let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let ordDate = year + "-" + month + "-" + day;
+		orderGrid.appendRow({'ordDate' : ordDate, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });
 	}
 
 	
@@ -267,14 +276,15 @@ input[type="date"]{
 	        	<c:forEach items="${orderNList}" var="order" varStatus="status">
 	           	{
 	           		salesOrdDeCode : "${order.salesOrdDeCode}",
-               	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
+               	 ordDate : "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
    	           	 actName : "${order.actName}",
    	           	 ordSts : "${order.ordSts}",
    	           	 prodName : "${order.prodName}",
    	           	 prcsRqAmt : "${order.prcsRqAmt}",
-   	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
+   	           	 devDate : "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
    	           	 devYn : "${order.devYn}",
-   	           	 empCode : "${order.empCode}"
+   	           	 empCode : "${order.empCode}",
+   	           	 empName : "${order.empName}"
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -303,7 +313,8 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '거래처명',
@@ -333,7 +344,8 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '출고여부',
@@ -351,9 +363,8 @@ input[type="date"]{
 		           hidden : true
 		         },
 		         {
-		           header: '직원코드',
-		           name: 'empCode',
-		           editor : 'text'
+		           header: '직원이름',
+		           name: 'empName',
 		         },
 	         	{
 		           header: '생산계획코드',
@@ -364,7 +375,12 @@ input[type="date"]{
 		           header: '제품코드',
 		           name: 'prodCode',
 		           hidden : true
-		         }
+		         },
+		         {
+			           header: '직원코드',
+			           name: 'empCode',
+			           hidden : true
+			         }
 	        ]
 	      });
 		
@@ -431,7 +447,7 @@ input[type="date"]{
     	    		orderGrid.setValue(rowKey, 'actCode', actCode);
     	    		orderGrid.setValue(rowKey, 'actName', actName);
     	    		//선택시 모달창 닫기
-    	    		if(rowKey != null){
+    	    		if(rowKey2 != null){
     	    			$(".modal").fadeOut();
     	        		Grid.destroy();
     	    		}
@@ -452,7 +468,7 @@ input[type="date"]{
  	    		orderGrid.setValue(rowKey, 'prodCode', prodCode);
  	    		orderGrid.setValue(rowKey, 'prodName', prodName);
  	    		//선택시 모달창 닫기
- 	    		if(rowKey != null){
+ 	    		if(rowKey2 != null){
  	    			$(".modal").fadeOut();
  	        		Grid.destroy();
  	    		}
@@ -677,7 +693,31 @@ input[type="date"]{
 
 	}
   	
+	//스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
 
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
+  
+  //엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+    
+    document.addEventListener('DOMContentLoaded', ()=>{
+       excelDownload.addEventListener('click', function(e){
+    	   orderGrid.export('xlsx');
+       })
+    })
     </script>
 </body>
 </html>

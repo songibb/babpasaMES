@@ -17,7 +17,7 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>완제품 품질 검사</h3>
+	<h2>완제품 품질 검사</h2>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -60,7 +60,7 @@
 	
 		//공통코드 조회 ajax
 		$.ajax({
-			url : 'ajaxPrcsIngChkList',
+			url : 'ajaxLastPrcsList',
 			method : 'GET',
 			success : function(result){
 				console.log(result);
@@ -89,8 +89,8 @@
 					name: 'testNum'
 				},
 				{
-					header: '상세지시코드',
-					name: 'prcsDirDeCode'
+					header: '공정진행코드',
+					name: 'prcsIngCode'
 				},
 				{
 					header: '생산코드',
@@ -98,19 +98,7 @@
 				},
 				{
 					header: '생산량',
-					name: 'inputAmt'
-				},
-				{
-					header: '합격량',
-					name: 'passAmt'
-				},
-				{
-					header: '불합격량',
-					name: 'nonPassAmt'
-				},
-				{
-					hedaer : '검사날짜',
-					name : 'testDate'
+					name: 'prcsAmt'
 				}
 				
 			]
@@ -145,7 +133,8 @@
 				},
 				{
 					header: '검사코드',
-					name: 'testCode'
+					name: 'testCode',
+					hidden: true
 				},
 				{
 					header: '검사명',
@@ -162,36 +151,47 @@
 				},
 				{
 					header: '적합여부',
-					name :'passYn',
-					 formatter: function(props) {
-		                   const rowData = props.row;
-		                   const passValue = parseInt(rowData.passValue)
-		                   const testResult = parseInt(rowData.testResult);
-		                   
-		                   if (passValue > testResult) {
-		                       
-		                       return 'Y';
-		                   }else{
-		                	   return 'N';
-		                   }
-
-		               }
+					name :'passYn'
 				},
 				{
-					hedaer: '담당자',
-					name : 'empCode'
+					header: '담당자',
+					name : 'empCode',
+					editor: 'text'
 					
 				}
 			]
 			
 		})
 		
+		
+		 //자동 계산
+	      grid2.on('afterChange', (ev) => {
+	      
+	      let change = ev.changes[0];
+	      let rowData = grid2.getRow(change.rowKey);
+	      
+	      
+	      
+	      if(change.columnName == 'testResult'){
+	         if(rowData.testResult != null && rowData.testResult != ""){
+	            let passYn;
+	            if(rowData.testResult < rowData.passValue){
+	               passYn = 'Y';
+	            } else if(rowData.testResult >= rowData.passValue){
+	               passYn = 'N';
+	            }
+	            grid2.setValue(change.rowKey, 'passYn', passYn);
+	         }
+	      }
+	      });
+	      //끝
+	      
 		grid.on('click', () => {
 			let rowKey = grid.getFocusedCell().rowKey;
 	    	let testNum = grid.getValue(rowKey, 'testNum');
 	    	console.log(testNum);
 	    	$.ajax({
-	    		url : 'ajaxSemiChkList',
+	    		url : 'ajaxOneChkList',
 				method : 'GET',
 				data : { testNum : testNum },
 				success : function(data){
@@ -217,48 +217,49 @@
 			}
 			
 			
-			//입력 빠뜨린곳 없으면 true
-			let flag = true;
-			
-			if(grid2.getModifiedRows().createdRows.length > 0 ){
-							
-							$.each(grid2.getModifiedRows().createdRows, function(idx2, obj2){
-								if(obj2['testResult'] == null ){
-									flag = false;
-									return false;
-								}
-								
-							})
-							
-							
-					}
-			
-			
-			if(grid2.getModifiedRows().updatedRows.length > 0 ){
+		//입력 빠뜨린곳 없으면 true
+		let flag = true;
+		
+		if(grid2.getModifiedRows().updatedRows.length > 0 ){
 
-				$.each(grid2.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['commdeCode'] == "" ||obj2['commdeName'] =="" || obj2['commdeInfo'] == "" || obj2['commdeUse'] == ""){
-						flag = false;
-						return false;
-					}
-				})
-				
+			$.each(grid2.getModifiedRows().updatedRows, function(idx2, obj2){
+				if(obj2['commdeCode'] == "" ||obj2['commdeName'] =="" || obj2['commdeInfo'] == "" || obj2['commdeUse'] == ""){
+					flag = false;
+					return false;
+				}
+			})		
 		}
 			
-			
-			if(flag){
-				$.ajax({
-					url : 'updateSemiChk',
-					method : 'POST',
-					data : JSON.stringify(grid2.getModifiedRows()),
-					contentType : 'application/json',
-					success : function(data){
-						swal("성공", data+"건이 처리되었습니다","success");
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				})
+		let rowKey = grid.getFocusedCell().rowKey;
+		let testNum = grid.getValue(rowKey, 'testNum');
+		let prcsIngCode = grid.getValue(rowKey, 'prcsIngCode');
+		let oneVO = {};
+		oneVO['testNum'] = testNum;
+		oneVO['prcsIngCode'] = prcsIngCode;
+		
+		let oneAllList = {
+			oneList : grid2.getModifiedRows().updatedRows,
+			oneChkVO : oneVO
+				
+		};
+		
+		console.log(oneAllList);
+		console.log(grid2.getData());
+		
+
+		if(flag){
+			$.ajax({
+				url : 'updateOneChk',
+				method : 'POST',
+				data : JSON.stringify(oneAllList),
+				contentType : 'application/json',
+				success : function(data){
+					swal("성공", data+"건이 처리되었습니다","success");
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
 		} else {
 			alert("값이 입력되지 않았습니다.");
 		}

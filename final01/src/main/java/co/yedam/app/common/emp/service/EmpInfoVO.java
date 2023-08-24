@@ -17,5 +17,8 @@ public class EmpInfoVO {
 	//조인(공통코드:부서코드와)
 	private String commdeName;
 	
+	private String deptcodeName;
+	private String empRoleName;
+	
 
 }

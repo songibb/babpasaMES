@@ -128,9 +128,16 @@
 		WHERE bom_code = #{bomCode}
   	</update>
   	
+  	<!-- BOM 헤더 삭제 -->
+  	<delete id="deleteBom" parameterType="BomCodeVO">
+  		DELETE FROM bom_header
+  		WHERE bom_no = #{bomNo}	
+  	</delete>
+  	
+  	<!-- BOM 상세 삭제 -->
   	<delete id="deleteDeBom" parameterType="BomCodeVO">
   		DELETE FROM bom_detail
-  		WHERE bom_code = #{bomCode}
+  		WHERE bom_no = #{bomNo}	
   	</delete>
   	
   	

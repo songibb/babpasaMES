@@ -479,7 +479,9 @@
 	    			$(".modal").fadeOut();
 	    			activeScroll();
 	    			let inputContent = $('#modalSearch').val('');
-	        		Grid.destroy();
+	    			if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	    		}
 
 	    		});
@@ -489,7 +491,9 @@
 	        	$(".modal").fadeOut();
 	         	activeScroll();
 	         	let inputContent = $('#modalSearch').val('');
-	  			Grid.destroy();
+	         	if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 	     });
 	     
 	   //반제품 모달 그리드
@@ -538,7 +542,7 @@
 			let inputContent = $('#modalSearch').val();
 			
 			if(title == '반제품 목록'){
-				let modalSearchData = {matName : inputContent}
+				let modalSearchData = {prodName : inputContent}
 				$.ajax({
 					url : 'getSemiModalSearch',
 					method : 'GET',

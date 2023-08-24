@@ -11,6 +11,15 @@
 			, o.sales_out_amt sales_out_amt
 			, r.sales_rt_amt sales_rt_amt
 			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+			, r.sales_rt_code sales_rt_code
+			, r.prod_lot prod_lot
+			, r.sales_out_code sales_out_code
+			, r.sales_rt_amt sales_rt_amt
+			, r.sales_rt_date sales_rt_date
+			, r.sales_rt_why sales_rt_why
+			, r.emp_code emp_code
+			, r.prod_code prod_code
+			, o.sales_out_amt sales_out_amt
 	FROM sales_rt r JOIN com_prod p
 					ON (r.prod_code = p.prod_code)
 					JOIN sales_out o
@@ -30,37 +39,46 @@
   	
   	<!-- 검색 -->
   <select id="selectAllRt" resultType="RtVO">
- SELECT r.sales_rt_date sales_rt_date
-			, p.prod_name prod_name
-			, a.act_name act_name
-			, o.sales_out_amt sales_out_amt
-			, r.sales_rt_amt sales_rt_amt
+ SELECT r.sales_rt_code
+			, r.prod_lot
+			, r.prod_code
+			, r.sales_out_code
+			, r.sales_rt_amt
+			, o.sales_out_amt
 			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
-	FROM sales_rt r JOIN com_prod p
-					ON (r.prod_code = p.prod_code)
-					JOIN sales_out o
-					ON (r.sales_out_code = o.sales_out_code)
-					JOIN com_act a
-					ON ( o.act_code = a.act_code)
+			, r.sales_rt_date
+			, r.sales_rt_why
+			, r.emp_code
+	FROM sales_rt r JOIN sales_out o
+                    ON (r.prod_lot = o.prod_lot)
 	<where>
 			<if test="prodCode != null and prodCode != ''">
-				AND p.prod_code LIKE '%' || #{prodCode} || '%'
+				AND r.prod_code LIKE '%' || #{prodCode} || '%'
 			</if>
+			<if test="startDate != null and startDate != ''">
+            	AND TO_CHAR(r.sales_rt_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+         	</if>
+         	<if test="endDate != null and endDate != ''">
+           		AND TO_CHAR(r.sales_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+         	</if>
 	</where>					
 	ORDER BY sales_rt_code
 	</select>
 	
 	<!-- 반품 등록 페이지 리스트 -->
 	<select id="selectRtList" resultType="RtVO">
-	SELECT sales_rt_code
-			, prod_lot
-			, prod_code
-			, sales_out_code
-			, sales_rt_amt
-			, sales_rt_date
-			, sales_rt_why
-			, emp_code
-	FROM sales_rt
+		SELECT r.sales_rt_code
+			, r.prod_lot
+			, r.prod_code
+			, r.sales_out_code
+			, r.sales_rt_amt
+			, o.sales_out_amt
+			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+			, r.sales_rt_date
+			, r.sales_rt_why
+			, r.emp_code
+	FROM sales_rt r JOIN sales_out o
+                    ON (r.prod_lot = o.prod_lot)
 	ORDER BY sales_rt_code
 	</select>
 	
@@ -77,6 +95,7 @@
 				, #{salesRtWhy}
 				, #{empCode}
 				, #{prodLot}
+				, #{salesOrdDeCode}
 			)
 	</insert>
 	
@@ -90,14 +109,21 @@
 	<!-- 삭제 -->
 	<delete id="deleteRt" parameterType="RtVO">
 			CALL delete_sales_rt
-			(#{salesRtCode)
+			(
+			#{salesRtCode}
+			, #{salesRtAmt}
+			, #{prodLot}
+			, #{salesOrdDeCode}
+			)
 		
 	</delete>
 	
 	<!-- 출고목록조회 모달 -->
-	<select id="selectOutList" resultType="OutVO">
-	SELECT *
-	FROM sales_out
+	<select id="selectOutList" resultType="RtVO">
+	SELECT o.*, d.dev_yn
+	FROM sales_out o JOIN sales_ord_de d
+	                    ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	WHERE d.dev_yn = 'N'
 	ORDER BY sales_out_code
 	</select>
   </mapper>

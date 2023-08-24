@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.common.main.mapper.MainMapper">
+  	
+  	<select id="selectProdAmtList" resultType="MainVO">
+  		<![CDATA[
+	  		SELECT b.* FROM(
+							SELECT ROWNUM rn, a.*
+							FROM(
+								SELECT  SUM(prod_save_amt) as prod_save_amt,
+										prod_code,
+										find_prod_name(prod_code) as prod_code_name
+								FROM sales_in
+	                    		GROUP BY prod_code
+								ORDER BY prod_save_amt DESC)a) b
+			WHERE rn <=5
+		]]>
+  	</select>
+  	
+  	
+  </mapper>

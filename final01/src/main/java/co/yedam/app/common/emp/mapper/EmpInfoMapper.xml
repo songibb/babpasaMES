@@ -6,23 +6,22 @@
   	
   	<!-- 사원 전체조회 -->
   	<select id="selectEmpInfoList" resultType="EmpInfoVO">
-  		  		SELECT  e.emp_code,
-					e.emp_name,
-					e.emp_date,
-					e.emp_pw,
-					e.emp_role,
-					c.commde_name,
-					e.emp_tel
-			FROM com_emp e left join com_commde c
-                            on(e.dept_code = c.commde_code)
+  		  		SELECT  emp_code,
+						emp_name,
+						emp_date
+						emp_role,
+						find_cdnm('0B', emp_role) AS emp_role_name,
+						dept_code,
+						find_cdnm('DEPT-TYPE', dept_code) AS dept_code_name,
+						emp_tel
+			FROM com_emp
 		ORDER BY emp_code
   	</select>
   	
   	  	<select id="searchSelectEmp" resultType="EmpInfoVO">
 			SELECT  e.emp_code,
 					e.emp_name,
-					e.emp_date,
-					e.emp_pw,
+					e.emp_date
 					e.emp_role,
 					c.commde_name,
 					e.emp_tel
@@ -37,5 +36,66 @@
   		select *
   		from com_emp
   		where emp_code = #{empCode}
+  	</select>
+  	
+  	<!-- 사원등록(+) -->
+  	<insert id="insertNewEmp" parameterType="EmpInfoVO">
+  		INSERT INTO com_emp(
+  			emp_code
+			, emp_name
+			, emp_date
+			, emp_tel
+			, emp_pw
+			, emp_role
+			<if test="deptCode != null and !deptCode.equals('')">
+			, dept_code
+			</if>
+  		) VALUES (
+  			get_primarycode('empCode')
+  			, #{empName}
+  			, SYSDATE
+  			, #{empTel}
+  			, #{empPw}
+  			, #{empRole}
+  			<if test="deptCode != null and !deptCode.equals('')">
+			, #{deptCode}
+			</if>
+  		)
+  	
+  	</insert>
+  	
+  	
+  	
+  	<update id="updateEmpInfo" parameterType="EmpInfoVO">
+  		UPDATE com_emp SET
+		  				  emp_name = #{empName}
+						, emp_tel = #{empTel}
+						<if test="empPw != null and !empPw.equals('')">
+						, emp_pw = #{empPw}
+						</if>
+						, emp_role = #{empRole}
+						<if test="deptCode != null and !deptCode.equals('')">
+						, dept_code = #{deptCode}
+						</if>
+		WHERE	emp_code = #{empCode}	
+  	</update>
+  	
+  	
+  	<select id="empSelect" resultType="EmpInfoVO">
+  		SELECT  emp_code,
+						emp_name,
+						emp_date,
+						emp_role,
+						dept_code,
+						find_cdnm('0B', emp_role) AS emp_role_name,
+						find_cdnm('DEPT-TYPE', dept_code) AS dept_code_name,
+						emp_tel
+			FROM com_emp
+			<where>
+				<if test="empName != null and empName != ''">
+					emp_name LIKE '%' ||  #{empName} || '%'
+				</if> 
+			</where>
+		ORDER BY emp_code
   	</select>
   </mapper>

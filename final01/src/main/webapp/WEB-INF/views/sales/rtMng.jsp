@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,30 +9,44 @@
 <title>반품 관리</title>
 
 <!-- 토스트 페이지 네이션 -->
-<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script type="text/javascript"
+	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script
+	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <!-- 페이지 네이션 끝 -->
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script
+	src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
+<script
+	src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
+<script
+	src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
 <script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
-<script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+<script
+	src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 
 <style>
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-family: 'Noto Sans KR', sans-serif;
 }
+
 .search-container {
 	display: flex;
 	align-items: center;
@@ -55,84 +69,94 @@ body {
 	padding: 5px;
 }
 
-.col-lg-12 stretch-card{
-	margin-top : 30px;
+.col-lg-12 stretch-card {
+	margin-top: 30px;
 }
-   
-#customtemplateSearchAndButton{
-	margin-bottom : 80px;
-	float : left;   
+
+#customtemplateSearchAndButton {
+	margin-bottom: 80px;
+	float: left;
 }
-   
-#customtemplateSearchAndButton input, #modalTitle input{
-	border : 1px solid black; 
-	display : inline-block;
+
+#customtemplateSearchAndButton input, #modalTitle input {
+	border: 1px solid black;
+	display: inline-block;
 }
-   
-#customtemplateSearchAndButton p, #modalTitle p{
-	display : inline-block;
+
+#customtemplateSearchAndButton p, #modalTitle p {
+	display: inline-block;
 	padding-bottom: 10px;
-	padding-right : 10px;
-}
-   
-#customtemplateSearchAndButton .blackcolorInputBox{
-	background-color : #868e96;
+	padding-right: 10px;
 }
 
-.btn-icon-text{
-	margin : 5px;
-	padding : 7px;
-	border-radius : 9px;
-	height : 33px;
+#customtemplateSearchAndButton .blackcolorInputBox {
+	background-color: #868e96;
 }
 
-.excelDownload{
-	margin-top : 120px;
-	float : right;
+.btn-icon-text {
+	margin: 5px;
+	padding: 7px;
+	border-radius: 9px;
+	height: 33px;
 }
-   
- 
+
+.excelDownload {
+	margin-top: 120px;
+	float: right;
+}
+
 /*모달시작*/
- #prodModal, #delete{ 
-   cursor:pointer;
- }
-  
-.modal{ 
-	position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
-}
-  
-.modal_content{
-	  /*모달창 크기 조절*/
-	  width:600px; height:600px;
-	  background:#fff; border-radius:10px;
-	  /*모달창 위치 조절*/
-	  position:relative; top:33%; left:45%;
-	  margin-top:-100px; margin-left:-200px;
-	  text-align:center;
-	  box-sizing:border-box;
-	  line-height:23px;
+#prodModal, #delete {
+	cursor: pointer;
 }
 
-.m_head{
+.modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.8);
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+.modal_content {
+	/*모달창 크기 조절*/
+	width: 600px;
+	height: 600px;
+	background: #fff;
+	border-radius: 10px;
+	/*모달창 위치 조절*/
+	position: relative;
+	top: 33%;
+	left: 45%;
+	margin-top: -100px;
+	margin-left: -200px;
+	text-align: center;
+	box-sizing: border-box;
+	line-height: 23px;
+}
+
+.m_head {
 	height: 10%;
-	margin : 0;
+	margin: 0;
 	/*제목 높낮이 조절*/
 	padding: 17px;
 	display: flex;
 	justify-content: space-between;
-	background-color:rgb(232, 143, 33);
+	background-color: rgb(232, 143, 33);
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 }
-     
-.close_btn{
+
+.close_btn {
 	font-size: 20px;
 	color: black;
 	font-weight: 900;
 	cursor: pointer;
 }
 
-.modal_btn{
+.modal_btn {
 	width: 80px;
 	height: 30px;
 	border-radius: 5px;
@@ -143,7 +167,8 @@ body {
 	margin-left: 5px;
 	font-family: sans-serif;
 }
-.m_head{
+
+.m_head {
 	height: 10%;
 	padding: 20px;
 	display: flex;
@@ -153,12 +178,12 @@ body {
 	font-family: sans-serif;
 }
 
-.m_body{
+.m_body {
 	height: 80%;
 	padding: 20px;
 }
 
-.m_footer{
+.m_footer {
 	height: 10%;
 	padding: 15px;
 	border-bottom-left-radius: 10px;
@@ -166,75 +191,88 @@ body {
 	display: flex;
 	justify-content: end;
 }
-.cancle{
+
+.cancle {
 	background-color: black;
 	color: white;
 }
-.save{
+
+.save {
 	background-color: black;
 	color: white;
 }
 /*모달끝*/
 
 /*날짜 input 크기*/
-input[type="date"]{
-	width : 221px;
+input[type="date"] {
+	width: 221px;
 }
-</style>    
-       
+
+.yellow-background {
+	background-color: rgb(255, 253, 235);
+}
+</style>
+
 </head>
 <body>
-<div class="black_bg"></div>
+	<div class="black_bg"></div>
 	<h2>반품 관리</h2>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
+					<button type="button"
+						class="btn btn-info btn-icon-text excelDownload">
+						Excel <i class="bi bi-printer"></i>
 					</button>
-					
-						<div id="customtemplateSearchAndButton">		
-							<p>제품</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
-                  <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-                     <i class="fas fa-search"></i>
-                     검색
-                  </button>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
-                     초기화
-                  </button>
-		            	</div>
-	            
-	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
-	           		<div id="grid"></div>
+
+					<div id="customtemplateSearchAndButton">
+						<p>제품</p>
+						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<i class="bi bi-search" id="prodModal"></i>
+						<!-- 돋보기 아이콘 -->
+						<input type="text" class="blackcolorInputBox" id="prodNameFix"
+							readonly>
+						<br>
+						<p>반품일자</p>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input
+							id="endDate" type="date">
+						<button type="button" class="btn btn-info btn-icon-text"
+							id="searchBtn">
+							<i class="fas fa-search"></i> 검색
+						</button>
+						<button type="button" class="btn btn-info btn-icon-text"
+							id="searchResetBtn">초기화</button>
+					</div>
+
+					<button class="btn btn-info btn-icon-text" id="save">저장</button>
+					<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+					<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
+					<div id="grid"></div>
 				</div>
-	   		</div>
+			</div>
 		</div>
 	</div>
 	<div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
+
+		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
+			<div class="m_head">
+				<div class="modal_title">
+					<h3>목록</h3>
+				</div>
+				<div class="close_btn" id="close_btn">X</div>
+			</div>
+			<div class="m_body">
+				<div id="modal_label"></div>
+			</div>
+			<div class="m_footer">
+				<div class="modal_btn cancle" id="close_btn">CANCLE</div>
+				<div class="modal_btn save" id="save_btn">SAVE</div>
+			</div>
+		</div>
 	</div>
 
-    
+
 	<script>
 	document.getElementById('save').addEventListener('click', saveServer);
 	document.getElementById('dirAdd').addEventListener('click', addDirRow);
@@ -248,7 +286,12 @@ input[type="date"]{
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
-		rtGrid.appendRow({}, { at: 0 });
+		let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let salesRtDate = year + "-" + month + "-" + day;
+		rtGrid.appendRow({'salesRtDate' : salesRtDate, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });
 	}
 
 	
@@ -264,7 +307,10 @@ input[type="date"]{
 	           		salesRtAmt : "${rt.salesRtAmt}",
 	           		salesRtDate : `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
 	           		salesRtWhy : "${rt.salesRtWhy}",
-	           		empCode : "${rt.empCode}"
+	           		empCode : "${rt.empCode}",
+	           		empName : "${rt.empName}",
+	           		prodCode : "${rt.prodCode}",
+	           		salesOutAmt : "${rt.salesOutAmt}"
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -298,25 +344,31 @@ input[type="date"]{
 		           editor : 'text',
 		           value : '${rt.prodLot}'
 		         },
-		         	{
-			           header: '제품코드',
-			           name: 'prodCode',
-			           value : '${rt.prodCode}'
-			         },
+	         	 {
+		           header: '제품코드',
+		           name: 'prodCode',
+		           value : '${rt.prodCode}'
+		         },
+		         {
+		           header: '출고량',
+		           name: 'salesOutAmt',
+	        	   editor : 'text'
+		         },
 		         {
 		           header: '반품량',
 		           name: 'salesRtAmt',
 	        	   editor : 'text'
 		         },
 		         {
-		           header: '빈품일',
+		           header: '반품일',
 		           name: 'salesRtDate',
 		           editor: {
 		    		      type: 'datePicker',
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '반품사유',
@@ -328,7 +380,11 @@ input[type="date"]{
 		           header: '직원코드',
 		           name: 'empCode',
 		           editor : 'text',
-		           value : '${rt.empCode}'
+		           hidden : true
+		         },
+		         {
+		           header: '직원이름',
+		           name: 'empName'
 		         }
 	        ]
 	      });
@@ -368,14 +424,17 @@ input[type="date"]{
  	        	let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
  	        	let prodLot = Grid.getValue(rowKey2, 'prodLot');
  	        	let prodCode = Grid.getValue(rowKey2, 'prodCode');
+ 	        	let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
  	        	console.log(salesOutCode);
  	        	console.log(prodLot);
  	        	console.log(prodCode);
+ 	        	console.log(salesOutAmt);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
  	    		rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
  	    		rtGrid.setValue(rowKey, 'prodLot', prodLot);
  	    		rtGrid.setValue(rowKey, 'prodCode', prodCode);
+ 	    		rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
  	    		//선택시 모달창 닫기
  	    		if(rowKey != null){
  	    			$(".modal").fadeOut();
@@ -400,7 +459,7 @@ input[type="date"]{
                 	  salesOutCode : "${out.salesOutCode}",
                 	  prodCode : "${out.prodCode}",
                 	  actCode : "${out.actCode}",
-                	  salesOutDate : "${out.salesOutDate}",
+                	  salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
                 	  salesOutAmt : "${out.salesOutAmt}",
                 	  empCode : "${out.empCode}",
                 	  salesOrdDeCode : "${out.salesOrdDeCode}",
@@ -434,7 +493,8 @@ input[type="date"]{
                   },
                   {
                     header: '출고날짜',
-                    name: 'salesOutDate'
+                    name: 'salesOutDate',
+                    className: 'yellow-background'
                   },
                   {
                       header: '출고량',
@@ -522,14 +582,25 @@ input[type="date"]{
    $('#searchBtn').on('click', searchOrderList);
    function searchOrderList(e){
 	  let prodInsert = $('#prodCodeInput').val();
+	  let sd = $('#startDate').val();
+      let ed = $('#endDate').val();  
         
-      let search = { prodCode : prodInsert };
+      let search = { prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'inListFilter',
+         url : 'rtListFilter',
          method : 'GET',
          data : search ,
          success : function(data2){
         	 
+        	 $.each(data2, function(idx, obj){
+					let date = new Date(obj['salesRtDate']);
+					let year = date.getFullYear();    //0000년 가져오기
+					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					let day = date.getDate();        //일자 가져오기
+					obj['salesRtDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					obj['salesOutAmt'] = obj['salesOutAmt'];
+				})
            rtGrid.resetData(data2);
          },
          error : function(reject){
@@ -614,7 +685,14 @@ input[type="date"]{
 
 	}
   	
-
+	//엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+    
+    document.addEventListener('DOMContentLoaded', ()=>{
+       excelDownload.addEventListener('click', function(e){
+    	   rtGrid.export('xlsx');
+       })
+    })
     </script>
 </body>
 </html>

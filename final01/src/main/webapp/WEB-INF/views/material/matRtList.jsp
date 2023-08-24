@@ -143,7 +143,9 @@
 		    			$(".modal").fadeOut();
 		    			activeScroll();
 		    			let inputContent = $('#modalSearch').val('');
-		        		Grid.destroy();
+		    			if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 		    		}
 		
 		    	});
@@ -168,7 +170,9 @@
 	     		if(rowKey != null){
 		  			$(".modal").fadeOut();
 		  			activeScroll();
-		      		Grid.destroy();
+		  			if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	
 	     		}
 	       	 })
@@ -178,7 +182,9 @@
 		      	$(".modal").fadeOut();
 		      	activeScroll();
 		      	let inputContent = $('#modalSearch').val('');
-				Grid.destroy();
+		      	if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		 });
   
 		//거래처 모달 그리드
@@ -344,13 +350,13 @@
 							let year = date.getFullYear();    //0000년 가져오기
 							let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 							let day = date.getDate();        //일자 가져오기
-					   		i.matTestDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					   		i.matTestDate = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 							
 							date = new Date(i.matRtDate);
 							year = date.getFullYear();    //0000년 가져오기
 							month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 							day = date.getDate();        //일자 가져오기
-					   		i.matRtDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					   		i.matRtDate = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					  }
 					   grid.resetData(data);
 				   },

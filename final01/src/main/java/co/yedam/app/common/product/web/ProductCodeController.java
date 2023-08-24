@@ -80,12 +80,9 @@ public class ProductCodeController {
 	//제품 삭제
 	@PostMapping("/prodCheckedDelete")
 	@ResponseBody
-	public int prodCheckedDelete(@RequestBody List<ProductCodeVO> checkedProd){
-		int result = 0;
-		for(ProductCodeVO vo : checkedProd) {
-			result += productCodeService.deleteProdInfo(vo);
-		}
-	return result;
+	public List<String> prodCheckedDelete(@RequestBody List<ProductCodeVO> checkedProd){
+		
+	return productCodeService.deleteProdInfo(checkedProd);
 	}
 	
 	@GetMapping("/ajaxNoBOMList")
@@ -93,6 +90,14 @@ public class ProductCodeController {
 	public List<ProductCodeVO> ajaxNoBOMList(){
 		List<ProductCodeVO> prodNoBomList = productCodeService.bomNoProdList();
 		return prodNoBomList;
+	}
+	
+	@GetMapping("/prodCheck")
+	@ResponseBody
+	public int prodCheck(@RequestParam String prodNameUse) {
+		
+		return productCodeService.prodNameUseCheck(prodNameUse);
+		
 	}
 	
 }

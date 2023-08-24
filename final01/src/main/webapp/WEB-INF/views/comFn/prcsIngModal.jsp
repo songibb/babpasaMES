@@ -75,9 +75,11 @@
 							<input type="text" name="inputAmt" id="inputAmt" readonly>	
 						</div>	
 						<div>
-							<label for="empCode">담당자</label>
-							<input type="text" name="empCode" id="empCode">	
-						
+							<input type="hidden" id="empCode" name="empCode">
+							
+							<label for="empName">담당자</label>
+							<input type="text" name="empName" id="empName">	
+
 							<label for="errAmt">불량량</label>
 							<input type="number" name="errAmt" id="errAmt">		
 						</div>	
@@ -300,8 +302,8 @@
 		//모달창에 공정명, 투입량 정보 가져오기
 	  	let rowKey = ingGrid.getFocusedCell().rowKey;
     	let prcsName = ingGrid.getValue(rowKey, 'prcsName');
-    	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  	
-		$('#prcsName').val(prcsName);
+    	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  
+    	$('#prcsName').val(prcsName);
 		$('#inputAmt').val(inputAmt);
 		
 		//prcsDirDeCode 가져오기
@@ -401,10 +403,17 @@
     
 
     //작업 시작 버튼
-   	$('#prcsStartBtn').click(function(){			
-
-   		//설비명 체크 안할 시 작동X
+   	$('#prcsStartBtn').click(function(){	
    		
+   		//모달창에 담당자 정보 가져오기
+    	let empCode = ${user.id};
+    	let empName = `${user.empName}`;
+		$('#empCode').val(empCode);
+		$('#empName').val(empName);
+		
+   		//설비명 체크 안할 시 작동X
+
+  
    		//담당자 미입력시 작동X 
    		if($('#empCode').val() == '' || $('#empCode').val() == null){
    			alert('담당자를 입력하세요.');
@@ -456,6 +465,11 @@
     	
    	//작업 종료 버튼
    	$('#prcsEndBtn').click(function(){
+   		//모달창에 담당자 정보 가져오기
+    	let empCode = ${user.id};
+    	let empName = `${user.empName}`;
+		$('#empCode').val(empCode);
+		$('#empName').val(empName);
 		
    		//불량량 미입력시 작동X
    		if($('#errAmt').val() == '' || $('#errAmt').val() == null){

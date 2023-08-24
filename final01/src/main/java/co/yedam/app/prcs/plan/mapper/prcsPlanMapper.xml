@@ -8,7 +8,8 @@
 		SELECT prcs_plan_code,
 			   prcs_plan_name,
 			   prcs_plan_date,
-			   find_emp_name(emp_code) AS emp_code,
+			   emp_code,
+			   find_emp_name(emp_code) AS emp_Name,
 			   find_cdnm('0V', prcs_dir_yn) AS prcs_dir_yn,
 			   prcs_start_date,
 			   prcs_end_date
@@ -187,5 +188,12 @@
 	</update>
 	
 
-
+	<!-- 상세생산계획 모두 지시완료시 생산계획 수정 -->
+	<update id="updatePlanDirSts" parameterType="String">
+		{
+			CALL PR_UPDATE_PLAN_STS(
+				#{prcsPlanCode}
+			)
+		}
+	</update>
 </mapper>

@@ -15,4 +15,7 @@ public class ActCodeVO {
 	
 	private String kind;
 	private String sts;
+	
+	
+	private String result;
 }

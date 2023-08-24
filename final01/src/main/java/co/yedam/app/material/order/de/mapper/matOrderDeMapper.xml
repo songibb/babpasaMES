@@ -14,7 +14,7 @@
             ON (b.emp_code = d.emp_code)
             LEFT JOIN com_mat e
             ON (a.mat_code = e.mat_code)
-		ORDER BY b.mat_od_rq DESC
+		ORDER BY b.mat_od_rq
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
@@ -47,7 +47,7 @@
 					AND a.mat_test_yn != 'Y'
 				</if>
 			</where>
-			ORDER BY b.mat_od_rq DESC
+			ORDER BY b.mat_od_rq
 	</select>
 	
 	<!-- 등록 -->
@@ -121,6 +121,7 @@
 		LEFT JOIN com_prod c
 		ON(a.prod_code = c.prod_code)
 		WHERE prcs_dir_yn = 'N'
+		ORDER BY b.prcs_plan_date
 	</select>
 	
 	<!-- 해당 계획 자재 소모량 -->

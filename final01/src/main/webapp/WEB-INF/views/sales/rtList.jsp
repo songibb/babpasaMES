@@ -176,7 +176,9 @@
    input[type="date"]{
       width : 221px;
    }
-
+.yellow-background {
+	background-color: rgb(255, 253, 235);
+}
 </style>
 </head>
 <body>
@@ -196,12 +198,7 @@
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
                   <br>
-                  <p>거래처</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-                    <i class="bi bi-search" id="actModal"></i>
-                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
-                  <br>
-                  <p>주문일자</p>
+                  <p>반품일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
@@ -398,16 +395,19 @@
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
-        	  <c:forEach items="${rtList}" var="rt">
-              {
-          	 	 salesRtDate : "${rt.salesRtDate}",
-         		 prodName : "${rt.prodName}",
-         		 actName : "${rt.actName}",
-         		 salesOutAmt : "${rt.salesOutAmt}",
-         		 salesRtAmt : "${rt.salesRtAmt}",
-         		 total : "${rt.total}"
-              }<c:if test="${not status.last}">,</c:if>
-           </c:forEach>
+        	  <c:forEach items="${rtList}" var="rt" varStatus="status">
+	           	{
+	           		salesRtCode : "${rt.salesRtCode}",
+	           		prodLot : "${rt.prodLot}",
+	           		salesOutCode : "${rt.salesOutCode}",
+	           		salesRtAmt : "${rt.salesRtAmt}",
+	           		salesRtDate : `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
+	           		salesRtWhy : "${rt.salesRtWhy}",
+	           		empCode : "${rt.empCode}",
+	           		prodCode : "${rt.prodCode}",
+	           		salesOutAmt : "${rt.salesOutAmt}"
+	           	}<c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
              ],
          scrollX: false,
           scrollY: false,
@@ -422,16 +422,25 @@
           },
           columns: [
         	  {
-		           header: '반품일자',
-		           name: 'salesRtDate',
+		           header: '반품코드',
+		           name: 'salesRtCode',
+	        	   value : '${rt.salesRtCode}'
 		         },
 		         {
-		           header: '제품명',
-		           name: 'prodName'
+		           header: '출고코드',
+		           name: 'salesOutCode',
+		           value : '${rt.salesOutCode}'
+		        	  	
 		         },
 		         {
-		           header: '거래처명',
-		           name: 'actName'
+		           header: '제품LOT',
+		           name: 'prodLot',
+		           value : '${rt.prodLot}'
+		         },
+	         	 {
+		           header: '제품코드',
+		           name: 'prodCode',
+		           value : '${rt.prodCode}'
 		         },
 		         {
 		           header: '출고량',
@@ -442,8 +451,19 @@
 		           name: 'salesRtAmt'
 		         },
 		         {
-		           header: '최종출고량',
-		           name: 'total'
+		           header: '반품일',
+		           name: 'salesRtDate',
+		    		    className: 'yellow-background'
+		         },
+		         {
+		           header: '반품사유',
+		           name: 'salesRtWhy',
+		           value : '${rt.salesRtWhy}'
+		         },
+		         {
+		           header: '직원코드',
+		           name: 'empCode',
+		           value : '${rt.empCode}'
 		         }
            ]
          
@@ -452,25 +472,27 @@
  	//검색 버튼
    $('#searchBtn').on('click', searchOrderList);
    function searchOrderList(e){
-	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
       let ed = $('#endDate').val();      
         
-      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      let search = { prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'orderListFilter',
+         url : 'rtListFilter',
          method : 'GET',
          data : search ,
-         success : function(data){
-        	  for(let i of data){
-					let date = new Date(i.ordDate);
+         success : function(data2){
+
+        	 $.each(data2, function(idx, obj){
+					let date = new Date(obj['salesRtDate']);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-			  }
-            grid.resetData(data);
+					obj['salesRtDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					obj['salesOutAmt'] = obj['salesOutAmt'];
+				})
+            grid.resetData(data2);
          },
          error : function(reject){
             console.log(reject);

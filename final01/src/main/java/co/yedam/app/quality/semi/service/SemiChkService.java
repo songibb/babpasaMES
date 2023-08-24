@@ -13,6 +13,10 @@ public interface SemiChkService {
 	public List<SemiChkVO> selectSemiChkList(String testNum);
 	
 	//상세 품질 검사 수정
-	public int SemiChkUpdate(GridVO<SemiChkVO> data);
+	public int SemiChkUpdate(SemiChkReqVO semiChkReqVO);
 	
+	
+	//조회 페이지
+	//모든 공정 진행 조회
+	public List<SemiChkVO> selectAllPrcsIng();
 }

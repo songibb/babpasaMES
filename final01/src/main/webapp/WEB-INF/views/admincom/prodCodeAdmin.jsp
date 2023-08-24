@@ -25,67 +25,86 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
+<style>
+	label {
+	  display: block;
+	  margin-bottom: 10px;
+	  margin-top: 3px;
+	  font-weight: bold;
+	}
+	
+	input[type="text"],
+	select {
+	  width: 100%;
+	  padding: 10px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	
+</style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>제품관리</h3>
-	<div>
-		<form>
-			<div>
-				<p>등록/수정</p>
-			</div>
-			<table>
-				<tr>
-					<th>제품코드</th>
-					<td><input type="text" name="prodCode" id="prodCode" readonly="readonly" style="background-color: skyblue;">
-				</tr>
-				<tr>
-					<th>제품명</th>
-					<td><input type="text" name="prodName" id="prodName">
-				</tr>
-				<tr>
-					<th>반/완제품구분</th>
-					<td>
-						<select id="prodTypeList" name="prodKind">
-							<c:forEach items="${prodTypeList}" var="p">
-								<option value="${p.commdeCode }">${p.commdeName }</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>단위</th>
-					<td><input type="text" name="prodUnit" id="prodUnit">
-				</tr>
-				<tr>
-					<th>규격</th>
-					<td><input type="text" name="prodStd" id="prodStd">
-				</tr>
-			</table>
-			<button type="submit" class="btn btn-info btn-icon-text">저장</button>
-			<button type="reset" class="btn btn-info btn-icon-text">취소</button>
-		</form>
-	</div>
-	<div class="col-lg-12 stretch-card">
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">
-					<form>
-						<div id="">		
-							제품명: <input type="text" placeholder="검색어를 입력하세요" id="prodSearch">
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-								<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
-		            	</div>
-	            	</form>
-	           		<div id="grid"></div>
+	<h1>제품관리</h1>
+	<div style="display: flex;">
+		<div style="width: 75%">
+			<div class="col-lg-12 stretch-card" >
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive pt-3">
+							<form>
+								<div>		
+									제품명 <input type="text" placeholder="검색어를 입력하세요" id="prodSearch" style="width: 20%">
+									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+										<i class="fas fa-search"></i>검색
+									</button>
+									<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+										<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
+				            	</div>
+			            	</form>
+			           		<div id="grid"></div>
+						</div>
+			   		</div>
 				</div>
-	   		</div>
+			</div> 
 		</div>
-	</div> 
-
+			<div style="width: 25%">
+				<div class="col-lg-12 stretch-card">
+					<div class="card">
+						<div class="card-body">
+							<div class="table-responsive pt-3">
+								<form>
+									<h3 style="margin-bottom: 10px">등록/수정</h3>
+										<label>제품코드</label>
+										<input type="text" name="prodCode" id="prodCode" readonly="readonly" style="background-color: skyblue;">
+										<label>제품명</label>
+										<input type="text" name="prodName" id="prodName">
+										<input type="text" name="prodBeforeName" id="prodBeforeName" style="display: none">
+										<label>반/완제품구분</label>
+										<select id="prodTypeList" name="prodKind">
+											<c:forEach items="${prodTypeList}" var="p">
+												<option value="${p.commdeCode }">${p.commdeName }</option>
+											</c:forEach>
+										</select>
+										<label>단위</label>
+										<input type="text" name="prodUnit" id="prodUnit">
+										<label>규격</label>
+										<input type="text" name="prodStd" id="prodStd" style="margin-bottom: 55px">
+										
+									<button type="submit" class="btn btn-info btn-icon-text" >저장</button>
+									<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
     <div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
@@ -141,7 +160,7 @@
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 10,
 		},
         columns: [
           {
@@ -183,18 +202,58 @@
     		 e.preventDefault();
     		 
     		 if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-    			 alert('필수 입력 정보를 모두 입력해 주세요.');
+    			 swal("필요한 정보를 모두 입력해 주세요.","","warning");
     		 }else{
-    			 //수정 ajax
-    			 prodUpdate(prodInfo);
+    			 if(prodInfo.prodName == prodInfo.prodBeforeName){
+    				 //수정 ajax
+        			 prodUpdate(prodInfo);
+    			 }else{
+    				 let prodNameCheck = {prodNameUse : prodInfo.prodName};
+    				 $.ajax({
+    		   			   url : 'prodCheck',
+    		   			   method : 'GET',
+    		   			   data : prodNameCheck,
+    		   			   success : function(data){
+    		   				   console.log(data);
+    		   				   if(data== 1){
+    		   					//동록 ajax
+    		   					 prodUpdate(prodInfo);
+    		   				   }else{
+    		   					swal("이미 존재하는 제품명입니다.","","warning");
+    		   				   }
+    		   			   },
+    		   			   error : function(reject){
+    		   				   console.log(reject);
+    		   			   }
+    		   		   })
+    			 }
+    			
     		 }
     	}else{
     		e.preventDefault();
     		if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-   			 alert('필수 입력 정보를 모두 입력해 주세요.');
+    			swal("필요한 정보를 모두 입력해 주세요.","","warning");
    		 }else{
-   			 //동록 ajax
-   			 prodInsert(prodInfo);
+   			 	let prodNameCheck = {prodNameUse : prodInfo.prodName};
+   			 	
+	   			 $.ajax({
+	   			   url : 'prodCheck',
+	   			   method : 'GET',
+	   			   data : prodNameCheck,
+	   			   success : function(data){
+	   				   console.log(data);
+	   				   if(data== 1){
+	   					//동록 ajax
+	   		   			 prodInsert(prodInfo);
+	   				   }else{
+	   					swal("이미 존재하는 제품명입니다.","","warning");
+	   				   }
+	   			   },
+	   			   error : function(reject){
+	   				   console.log(reject);
+	   			   }
+	   		   })
+   			 
    		 }
     	}
     })
@@ -222,7 +281,7 @@
 		})
 		.done(data => {
 			if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-				alert( '제품 등록이 정상적으로 처리되었습니다.');
+				swal("제품 등록이 정상적으로 처리되었습니다","","success");
 			
 				//밑에 조회 ajax 새로 처리 필요
 				$.ajax({
@@ -239,7 +298,7 @@
 				//form 비우기
 				 $('form')[0].reset();
 			} else{
-				alert('제품 등록처리가 실패되었습니다.');
+				swal("제품 등록처리가 실패되었습니다","","error");
 			}
 		})
 		.fail(reject => console.log(reject));
@@ -255,8 +314,9 @@
 				data :  JSON.stringify(prodInfo)
 			})
 			.done(data => { 
+				console.log(data);
 				if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-					alert( '제품 정보수정이 정상적으로 처리되었습니다.');
+					swal("제품 정보수정이 정상적으로 처리되었습니다","","success");
 				
 					//밑에 조회 ajax 새로 처리 필요
 					$.ajax({
@@ -273,7 +333,7 @@
 					//form 비우기
 					 $('form')[0].reset();
 				} else{
-					alert('거래처 정보 수정이 실패되었습니다.');
+					swal("제품 정보 수정이 실패되었습니다","","error");
 				}   	
 			})
 			.fail(reject => console.log(reject));
@@ -290,6 +350,7 @@
 			
 			$("#prodCode").val(prodCode);
 			$("#prodName").val(prodName);
+			$("#prodBeforeName").val(prodName);
 			$("#prodTypeList option[value='" + prodKind + "']").prop("selected", true);
 			$("#prodUnit").val(prodUnit);
 			$("#prodStd").val(prodStd);
@@ -307,33 +368,66 @@
 		            	let prodCode = grid.getValue(row.rowKey, 'prodCode');
 		            	let obj = {prodCode :prodCode};
 		            	checkedProd.push(obj);   
+		            	
+		            	swal({
+			      			  title: "정말삭제하시겠습니까?",
+			      			  text: "",
+			      			  icon: "warning",
+			      			  buttons: true,
+			      			  dangerMode: true,
+			      			})
+			      			.then((willDelete) => {
+			      				if(willDelete){
+			      					$.ajax({
+					    		    	url : 'prodCheckedDelete',
+					                    type : 'POST',
+					                    contentType : 'application/json',
+					                    data : JSON.stringify(checkedProd),
+					                    success : function(result){
+					                    	console.log(result.length);
+					                    	  let errCount = result.length;
+					                    	  let checkCount = checkedProd.length;
+					                    	  let successCount = checkCount-errCount;
+					                    	  
+					                    	  if(errCount==0){
+						                		  swal("삭제 완료되었습니다","", {icon: "success",});
+						                		
+						                	  }else if(successCount==0){
+						                		  swal("모두 이미 사용중인 제품으로 삭제가 실패되었습니다","", {icon: "error",});
+						                	  }else{
+						                	  swal(successCount +"개 제품 삭제 성공!\n "
+						                			  + errCount +"개 제품 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
+						                	  }
+           	 
+					                    	$.ajax({
+					     					   url : "ajaxProdCodeList",
+					     				       method :"GET",
+					     				       success : function(result){
+					     				           grid.resetData(result);
+					     				       },
+					     				       error : function(reject){
+					     							console.log(reject);
+					     						}
+					     					});
+					                     
+					                    },
+					                    error : function(reject){
+					                        console.log(reject);
+					                    }
+					    		    })
+			      					
+			      				}else{
+			      					 swal("삭제가 취소되었습니다","",{icon: "warning",});
+			      				}
+		      				});
+		            	
 		            }); 
-		            console.log(checkedProd);
+		            
+				}else{
+					swal("선택된 체크박스가 없습니다","","warning");
 				}
 		        
-		    $.ajax({
-		    	url : 'prodCheckedDelete',
-                type : 'POST',
-                contentType : 'application/json',
-                data : JSON.stringify(checkedProd),
-                success : function(result){
-                	alert(result + '개의 제품이 삭제되었습니다.');
-                	$.ajax({
- 					   url : "ajaxProdCodeList",
- 				       method :"GET",
- 				       success : function(result){
- 				           grid.resetData(result);
- 				       },
- 				       error : function(reject){
- 							console.log(reject);
- 						}
- 					});
-                 
-                },
-                error : function(reject){
-                    console.log(reject);
-                }
-		    })
+		    
 		}
 	</script>
 </body>

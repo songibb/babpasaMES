@@ -1,5 +1,6 @@
 package co.yedam.app.common.product.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,11 +59,21 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 	}
 
 	@Override
-	public int deleteProdInfo(ProductCodeVO productCodeVO) {
+	public List<String> deleteProdInfo(List<ProductCodeVO> checkedProd) {
+		List<String> list = new ArrayList<>();
 		
-		int result = productCodeMapper.deleteProdInfo(productCodeVO);
-		
-		 return result;
+		for( ProductCodeVO vo: checkedProd) {
+			productCodeMapper.deleteProdInfo(vo);
+			
+			
+			String error = vo.getResult();
+			if(error != null) {
+			System.out.println(error);
+			list.add(error);
+			}
+		}
+			
+		 return list;
 	}
 
 	@Override
@@ -75,6 +86,17 @@ public class ProductCodeServiceImpl implements ProductCodeService {
 	public List<ProductCodeVO> bomNoProdList() {
 		
 		return productCodeMapper.bomNoProdList();
+	}
+
+	@Override
+	public int prodNameUseCheck(String prodNameUse) {
+		List<ProductCodeVO> list = productCodeMapper.prodNameUseCheck(prodNameUse);
+		System.out.println(list);
+		if(list.isEmpty()) {
+			return 1;
+		}else {
+			return 0;
+		}
 	}
 
 }

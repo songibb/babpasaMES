@@ -30,7 +30,7 @@ public class MatDisController {
 		
 	//전체조회
 	@GetMapping("matDisList")
-	public String getMatRtList(Model model){
+	public String getMatDisList(Model model){
 		model.addAttribute("disList", mds.getMatDisList());
 		model.addAttribute("matList", mms.getMetList());
 			
@@ -40,22 +40,16 @@ public class MatDisController {
 	//검색 ajax
 	@GetMapping("getMatDisFilter")
 	@ResponseBody
-	public List<MatDisVO> getMatRtFilter(SearchVO vo) {
+	public List<MatDisVO> getMatDisFilter(SearchVO vo) {
 		List<MatDisVO> findVO = mds.getMatDisSearch(vo);
 		return findVO;
 	}
 		
-	//삭제한 행 1번 그리드로 가는 ajax
-//	@PostMapping("getDeletedRtInfo")
-//	@ResponseBody
-//	public List<MatTestVO> getDeletedMatInfo(@RequestBody List<MatRtVO> list) {
-//				
-//		return mrs.getDeletedRowsInfo(list);
-//	}
+	
 		
 	//관리페이지
 	@GetMapping("matDisDir")
-	public String getMatRtDir(Model model) {
+	public String getMatDisDir(Model model) {
 		model.addAttribute("disList", mds.getMatDisList());
 		model.addAttribute("rtList", mds.getRtFailList());
 		model.addAttribute("exdList", mds.getOverDateList());
@@ -66,7 +60,7 @@ public class MatDisController {
 	//test목록 ajax
 	@GetMapping("getRtFailFilter")
 	@ResponseBody
-	public List<MatRtVO> getRtFailFilter(){
+	public List<MatRtVO> getDisFailFilter(){
 		List<MatRtVO> vo = mds.getRtFailList();
 		return vo;
 	}
@@ -79,11 +73,25 @@ public class MatDisController {
 	}
 	
 		
-	//등록
+	//등록, 수정, 삭제
 	@PostMapping("matDisDirSave")
 	@ResponseBody
-	public int matInDirSave(@RequestBody GridVO<MatDisVO> data) {
+	public int matDisDirSave(@RequestBody GridVO<MatDisVO> data) {
 		return mds.modifyMatDis(data);
+	}
+	
+	//삭제한 rt행 정보
+	@PostMapping("getDeletedRtDisInfo")
+	@ResponseBody
+	public List<MatRtVO> getDeletedRtDisInfo(@RequestBody List<MatDisVO> list){
+		return mds.getDeletedRtInfo(list);
+	}
+	
+	//삭제한 exd행 정보
+	@PostMapping("getDeletedExdDisInfo")
+	@ResponseBody
+	public List<MatInVO> getDeletedExdDisInfo(@RequestBody List<MatDisVO> list){
+		return mds.getDeletedExdInfo(list);
 	}
 
 }

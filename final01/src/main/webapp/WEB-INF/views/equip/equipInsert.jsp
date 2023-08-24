@@ -68,7 +68,7 @@
         button {
             margin-right: 10px;
             padding: 8px 16px;
-            background-color: #4CAF50;
+            background-color: #267bdb;
             border: none;
             border-radius: 4px;
             color: white;
@@ -115,14 +115,15 @@
       <tr>
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
-         <th>제작일자</th>
-         <td><input type="date" name="makeDate" id="makeDate"></td>
+         <th>점검주기</th>
+         <td><input type="text" name="chkCycle" id="chkCycle">일</td>
+         
       </tr>
       <tr>
          <th>구매일자</th>
          <td><input type="date" name="buyDate" id="buyDate"></td>
-         <th>점검주기</th>
-         <td><input type="text" name="chkCycle" id="chkCycle">일</td>
+         <th>제작일자</th>
+         <td><input type="date" name="makeDate" id="makeDate"></td>
       </tr>
       <tr>
          <th>가동여부</th>
@@ -379,10 +380,12 @@
 		})
 		.done(data => {
 			console.log(data);
-			alert("수정완료");
+			$('input').val("");
+			swal('수정 성공!', '설비 정보가 수정되었습니다.', 'success' )
 		})
 		.fail(reject =>console.log(reject));
 		}; 
+		
 		
 		
 		

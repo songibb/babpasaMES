@@ -16,7 +16,7 @@ public interface PrcsManageMapper {
 	public int updatePrcsManage(PrcsManageVO prcsManageVO);
 	
 	//공정관리 삭제
-	
+	public int deletePrcsManage(PrcsManageVO prcsManageVO);
 	
 	
 	

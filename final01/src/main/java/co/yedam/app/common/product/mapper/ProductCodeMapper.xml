@@ -78,10 +78,22 @@
 		WHERE prod_code = #{prodCode}
 	  </update>
 	  
-	  <delete id="deleteProdInfo"  parameterType="ProductCodeVO">
+<!-- 	  <delete id="deleteProdInfo"  parameterType="ProductCodeVO">
 	  		DELETE FROM com_prod
 	  		WHERE prod_code = #{prodCode}
-	  </delete>
+	  </delete> -->
+	  
+	  
+	  <delete id="deleteProdInfo" statementType="CALLABLE" parameterType="ProductCodeVO">
+
+		    {call prod_Delete(
+		
+		        #{prodCode}
+		        , #{result, mode=OUT, jdbcType=VARCHAR}
+		
+		    )}
+
+		</delete>
 	  
 	  
 	  <!-- BOM 등록안된제품가져오기 -->
@@ -98,5 +110,18 @@
 	                                    FROM bom_header
 	                                   )
 				ORDER BY prod_code
+		</select>
+		
+		
+		
+		<!-- 제품명 중복 확인 -->
+		<select id="prodNameUseCheck" resultType="ProductCodeVO">
+			SELECT  prod_code,
+					prod_kind,
+					prod_name,
+					prod_unit,
+					prod_std
+			FROM com_prod
+			WHERE prod_name = #{prodNameUse}
 		</select>
   </mapper>

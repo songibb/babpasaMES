@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.prcs.manage.mapper.PrcsManageMapper;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
@@ -21,20 +22,33 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 		return prcsManageMapper.selectPrcsManageList();
 	}
 
+	//공정관리 등록, 수정, 삭제
+	@Override
+	public int updatePrcsManage(GridVO<PrcsManageVO> data) {
+		int result = 0;
 
-	//공정관리 등록
-	@Override
-	public int insertPrcsManage() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(data.getCreatedRows() != null && data.getCreatedRows().size()>0) {
+			for(PrcsManageVO vo : data.getCreatedRows()) {
+				result += prcsManageMapper.insertPrcsManage(vo);
+			}
+		}	
+			
+		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() >0) {
+			for(PrcsManageVO vo : data.getUpdatedRows()) {			
+				result += prcsManageMapper.updatePrcsManage(vo);
+			}
+		}	
+		
+		if(data.getDeletedRows()!= null && data.getDeletedRows().size()>0) {
+			for(PrcsManageVO vo : data.getDeletedRows()){		
+				System.out.println(vo);
+				result += prcsManageMapper.deletePrcsManage(vo);
+			}
+		}
+
+		return result;
 	}
-	
-	//공정관리 삭제
-	@Override
-	public int updatePrcsManage() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 	
 
 	

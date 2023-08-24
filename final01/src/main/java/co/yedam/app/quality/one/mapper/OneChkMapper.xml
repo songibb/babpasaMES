@@ -6,40 +6,63 @@
   	<!-- 마지막 공정 조회  -->
   	<select id="selectLastPrcs" resultType="OneChkVO">
   		SELECT
-		    A.TEST_NUM,
-		    A.PASS_AMT,
-		    A.NON_PASS_AMT,
-		    B.PRCS_DIR_DE_CODE,
-		    B.PRCS_CODE,
-		    B.INPUT_AMT
-		FROM
-		    PROD_QUALITY A JOIN PRCS_ING B 
-		    ON A.PRCS_ING_CODE = B.PRCS_CODE
+		    A.TEST_NUM
+		    ,A.PASS_AMT
+		    ,A.NON_PASS_AMT
+		    ,B.PRCS_ING_CODE
+		    ,B.PRCS_CODE
+		    ,B.PRCS_AMT
+		    ,A.TEST_SEMI_YN
+		FROM PROD_QUALITY A 
+		
+		LEFT JOIN PRCS_ING B 
+		    ON (A.PRCS_ING_CODE = B.PRCS_ING_CODE)  	 	
 		WHERE
-		    B.PRCS_CODE = (
-		        SELECT MAX(PRCS_CODE)
-		        FROM PRCS_ING
-		    )
+		    B.PRCS_CODE = (SELECT MAX(PRCS_CODE)
+		       				 FROM PRCS_ING)
+		AND A.TEST_SEMI_YN = 'C'
+        AND  b.prcs_dir_ing_sts = 'S3'
+        
+        ORDER BY B.PRCS_ING_CODE
   	</select>
   	
+  	<!-- 조회 페이지 : 모든 마지막 공정 조회  -->
+  	<select id="selectAllLastPrcs" resultType="OneChkVO">
+  		SELECT
+		    A.TEST_NUM
+		    ,B.PRCS_ING_CODE
+		    ,B.PRCS_CODE
+		    ,B.PRCS_AMT
+		    ,A.PASS_AMT
+		    ,A.NON_PASS_AMT
+		    ,A.TEST_DATE
+		FROM PROD_QUALITY A 
+		
+		LEFT JOIN PRCS_ING B 
+		    ON (A.PRCS_ING_CODE = B.PRCS_ING_CODE)  	 	
+		WHERE
+		    B.PRCS_CODE = (SELECT MAX(PRCS_CODE)
+		       				 FROM PRCS_ING)
+		AND A.TEST_SEMI_YN = 'C'
+        
+        ORDER BY B.PRCS_ING_CODE
+  	</select>
   	<!-- 검사 실시 리스트(클릭 상세)  -->
   	<select id="selectOneChkList" resultType="OneChkVO">
   		SELECT A.TEST_NUM
   			   ,A.PRCS_ING_CODE
+  			   ,A.TEST_NUM
   			   ,B.TEST_NUM_INFO
   			   ,B.TEST_CODE
-  			   ,A.TEST_NUM
-  			   ,C.TEST_NAME
-  			   ,C.PASS_VALUE
+  			   ,B.PASS_VALUE
   			   ,B.TEST_RESULT
   			   ,B.PASS_YN
-  		FROM prod_quality a 
-  		JOIN prod_quality_info b
+  			   ,B.EMP_CODE
+  			   ,FIND_CDNM('TEST-TYPE', TEST_CODE) AS TEST_NAME
+  		FROM prod_quality A
+  		JOIN prod_quality_info B
   			ON(a.test_num = b.test_num)
-  			RIGHT JOIN com_test c
-  			ON(b.test_code = c.test_code)
   		WHERE a.test_num =#{testNum}
-  	
   	</select>
   	
   	<!-- 완제품 품질 등록(수정) -->
@@ -47,6 +70,17 @@
   		UPDATE prod_quality_info SET
   				TEST_RESULT = #{testResult}
   				,PASS_YN = #{passYn}
+  				,EMP_CODE =#{empCode}
   		WHERE test_num_info =#{testNumInfo}
+  	</update>
+  	
+  	<!-- 완제품 등록(수정) 프로시저 호출  -->
+  	<update id="OneChkUpdatePr" parameterType="OneChkVO">
+  		{
+  		CALL UPDATE_ONE_TEST_INFO(
+  			#{testNum}
+  			,#{prcsIngCode}
+  			)
+  		}
   	</update>
   </mapper>

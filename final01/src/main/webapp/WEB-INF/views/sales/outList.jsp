@@ -176,7 +176,9 @@
    input[type="date"]{
       width : 221px;
    }
-
+.yellow-background {
+        background-color: rgb(255,253,235);
+}
 </style>
 </head>
 <body>
@@ -394,18 +396,20 @@
       return prodGrid;
    }
    
-   //전체 주문 목록 조회 그리드
+   //전체 출고 목록 조회 그리드
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
-        	  <c:forEach items="${outList}" var="out">
+        	  <c:forEach items="${outNList}" var="out">
               {
 	           		salesOutCode : "${out.salesOutCode}",
-		           	prodName : "${out.prodName}",
+	           		prodLot : "${out.prodLot}",
+		           	salesOrdDeCode : "${out.salesOrdDeCode}",
 		           	actName : "${out.actName}",
 		           	salesOutAmt : "${out.salesOutAmt}",
-		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy년 MM월 dd일"/>`,
-		           	salesInExd : `<fmt:formatDate value="${out.salesInExd}" pattern="yyyy년 MM월 dd일"/>`
+		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
+		           	empCode : "${out.empCode}",
+		           	prodSaveAmt : "${out.prodSaveAmt}"
               }<c:if test="${not status.last}">,</c:if>
            </c:forEach>
              ],
@@ -426,12 +430,23 @@
 		           name: 'salesOutCode',
 		         },
 		         {
-		           header: '제품명',
-		           name: 'prodName'
+		           header: '제품Lot',
+		           name: 'prodLot',
+		           value : '${out.prodLot}'
+		         },
+		         {
+		           header: '상세주문코드',
+		           name: 'salesOrdDeCode',
+		           value : '${out.salesOrdDeCode}'
 		         },
 		         {
 		           header: '거래처명',
-		           name: 'actName'
+		           name: 'actName',
+		           value : '${out.actName}'
+		         },
+		         {
+		           header: '재고량',
+		           name: 'prodSaveAmt'
 		         },
 		         {
 		           header: '출고량',
@@ -439,26 +454,13 @@
 		         },
 		         {
 		           header: '출고날짜',
-		           name: 'salesOutDate'
+		           name: 'salesOutDate',
+		    		    className: 'yellow-background'
 		         },
 		         {
-		           header: '유통기한',
-		           name: 'salesInExd'
-		         },
-	         	{
-		           header: '출고여부',
-		           name: 'prodCode',
-		           hidden : true
-		         },
-	         	{
-		           header: '출고여부',
-		           name: 'salesOrdDeCode',
-		           hidden : true
-		         },
-		         {
-		           header: '출고여부',
-		           name: 'prodLot',
-		           hidden : true
+		           header: '직원코드',
+		           name: 'empCode',
+		           value : '${out.empCode}'
 		         },
 	         	{
 		           header: '출고여부',
@@ -467,12 +469,23 @@
 		         },
 	         	{
 		           header: '출고여부',
-		           name: 'empCode',
+		           name: 'prodCode',
 		           hidden : true
 		         }
            ]
          
         });
+//    setDisabled();
+	
+// 	//비활성화
+// 	function setDisabled(){
+// 		$.each(grid.getData(), function(idx, obj){
+			
+// 			if(obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)){
+// 				inGrid.disableRow(obj['rowKey']);
+// 			}
+// 		})
+// 	}
    
  	//검색 버튼
    $('#searchBtn').on('click', searchOrderList);
@@ -484,18 +497,19 @@
         
       let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'orderListFilter',
+         url : 'outListFilter',
          method : 'GET',
          data : search ,
-         success : function(data){
-        	  for(let i of data){
-					let date = new Date(i.ordDate);
+         success : function(data2){
+        	 $.each(data2, function(idx, obj){
+					let date = new Date(obj['salesOutDate']);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-			  }
-            grid.resetData(data);
+					obj['salesOutDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+				})
+            grid.resetData(data2);
          },
          error : function(reject){
             console.log(reject);

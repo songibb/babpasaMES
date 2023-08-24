@@ -146,6 +146,7 @@
 	           	empName : "${mat.empName}",
 	           	empCode : "${mat.empCode}",
 	           	matRtDate : `<fmt:formatDate value="${mat.matRtDate}" pattern="yyyy-MM-dd"/>`,
+	           	matRtTotalAmt : "${mat.matRtTotalAmt}",
 	           	matRtSts : "${mat.matRtSts}"
 	           	},
 	           </c:forEach>
@@ -212,7 +213,13 @@
 		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	 	           		return val;
 	 	        	}
-	 	        }
+	 	        },
+	 	        editor : 'text'
+		 	  },
+		 	  {
+		 		header: '총수량',
+		 		name : 'matRtTotalAmt'
+		 		
 		 	  },
 			  {
 		 	    header: '검사일자',
@@ -398,6 +405,15 @@
 				contentType : 'application/json',
 				data : JSON.stringify(deleteList),
 				success : function(data){
+					
+					$.each(data, function(idx, obj){
+						let date = new Date(obj['matTestDate']);
+						let year = date.getFullYear();    //0000년 가져오기
+						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+						let day = date.getDate();        //일자 가져오기
+						obj['matTestDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					})
+					
 					testGrid.appendRows(data);
 					
 				},
@@ -573,7 +589,9 @@
 		    	$(".modal").fadeOut();
 		    	activeScroll();
 		    	let inputContent = $('#modalSearch').val('');
-		        Grid.destroy();
+		    	if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		    }
 
 		});
@@ -647,10 +665,33 @@
 				$(".modal").fadeOut();
 				activeScroll();
 				let inputContent = $('#modalSearch').val('');
-		    	Grid.destroy();
+				if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		   	}
 		});
 	});
+	
+	//계산
+	rtGrid.on('afterChange', (ev) => {
+		
+		let change = ev.changes[0];
+		let rowData = rtGrid.getRow(change.rowKey);
+		
+		
+		
+		if(change.columnName == 'matRtAmt'){
+			
+			
+			if(Number(rowData.matRtAmt) > Number(rowData.matRtTotalAmt)){
+				swal("", "기존수량을 넘을 수 없습니다", "warning");
+				rtGrid.setValue(change.rowKey, 'matRtAmt', rowData.matRtTotalAmt);
+			}
+			
+		}
+	});
+	
+	
 	
 	//자재 모달창 내용 그리드
 	function createMatGrid(){
@@ -743,7 +784,9 @@
     	$(".modal").fadeOut();
     	activeScroll();
     	let inputContent = $('#modalSearch').val('');
-  		Grid.destroy();
+    	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
   	});
 	
 	//검색버튼
@@ -802,6 +845,12 @@
     	testGrid.removeRow(rowKey);
     	//마우스 커서 없앰
     	testGrid.blur();
+    	
+    	let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let matRtDate = year + "-" + month + "-" + day;
     	rtGrid.appendRow( {'matTestCode' : matTestCode,
     					   'matOdDeCd' : matOdDeCd,
     					   'matCode' : matCode,
@@ -814,12 +863,11 @@
     					   'errInfo' : errInfo,
     					   'matRtAmt' : matNamt,
     					   'matTestDate' : matTestDate,
+    					   'matRtTotalAmt' : matNamt,
     					   'empCode' : ${user.id},
+    					   'matRtDate' : matRtDate,
     					   'empName' : `${user.empName}`}, { at: 0 });
-    	
-    	
-    	
-  	});
+  		});
     
  	//스크롤 막기
   	function preventScroll(){

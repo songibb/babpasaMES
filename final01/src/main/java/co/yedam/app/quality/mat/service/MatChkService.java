@@ -18,4 +18,7 @@ public interface MatChkService {
 	
 	// 모달 : 사원 조회
 	public List<MatChkVO> selectEmpList();
+	
+	//자재 검색
+	public List<MatChkVO> searchMatChk(String matName);
 }

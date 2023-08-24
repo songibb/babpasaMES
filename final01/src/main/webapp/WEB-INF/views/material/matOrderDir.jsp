@@ -235,7 +235,7 @@
 	
 	
 
-	//행추가 버튼 클릭시 상세생산지시 행 추가
+	//행추가 버튼
 	
 	function addDirRow(){
 		//등록 거래처명
@@ -253,7 +253,7 @@
 			let month = ('0' + (now.getMonth() + 1)).substr(-2);
 			let day = ('0' + now.getDate()).substr(-2);
 			let matOdRq = year + "-" + month + "-" + day;
-		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq, 'empCode' : ${user.id}, 'empName' : `${user.empName}`}, { at: 0 });	
+		    orderGrid.appendRow( {'actName' : actName, 'actCode' : actCode, 'matOdRq' : matOdRq, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });	
 			
 		}
 	}
@@ -327,7 +327,11 @@
 				 	           	return val +"원";	
 			 	 	        	}
 				 	        },
-				 	        width: 120
+				 	        width: 120,
+				 	 	  	validation: {
+					 	         dataType: 'number',
+					 	         required: true
+					 	    }
 			 	 	  },
 			 	 	  {
 			 	 	        header: '발주량',
@@ -338,7 +342,11 @@
 					 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 				 	           	return val;
 				 	        	}
-				 	 	    }
+				 	 	    },
+				 	 	  	validation: {
+				 	         dataType: 'number',
+				 	         required: true
+				 	       }
 			 	 	  },
 			 	 	  {
 			 	 	        header: '총액',
@@ -567,7 +575,9 @@
 		    			$("#modal").fadeOut();
 		    			activeScroll();
 		    			let inputContent = $('#modalSearch').val('');
-		        		Grid.destroy();
+		    			if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 		    		}
 
 		    	});
@@ -594,7 +604,9 @@
 					$("#modal").fadeOut();
 					activeScroll();
 					let inputContent = $('#modalSearch').val('');
-		    		Grid.destroy();
+					if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 
 		   		}
 		     })
@@ -651,7 +663,9 @@
 	 	    			$("#modal").fadeOut();
 	 	    			activeScroll();
 	 	    			let inputContent = $('#modalSearch').val('');
-	 	        		Grid.destroy();
+	 	    			if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 	 	    		}
 	
 	 	       });
@@ -714,7 +728,9 @@
         $("#modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
-  		Grid.destroy();
+        if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
      });
 	
 	//거래처 모달 그리드
@@ -926,7 +942,7 @@
 	  	          		prodName :"${plan.prodName}",
 	  	          		prcsPlanAmt :"${plan.prcsPlanAmt}",
 	  	          		prodCode : "${plan.prodCode}",
-	  	          		prcsPlanDate : "${plan.prcsPlanDate}"
+	  	          		prcsPlanDate : `<fmt:formatDate value="${plan.prcsPlanDate}" pattern="yyyy-MM-dd"/>`
 	  	          	} <c:if test="${not status.last}">,</c:if>
 	  	          </c:forEach>
 	  	          ],
@@ -1018,7 +1034,9 @@
 		$(".close_btn2").click(function(){
 	        $("#modal2").fadeOut();
 	        activeScroll();
-	  		Grid2.destroy();
+	        if(Grid2 != null && Grid2.el != null){
+	    			Grid2.destroy();	
+	    		}
 	  		if(Grid3 != null && Grid3.el != null){
 				
 				Grid3.destroy();

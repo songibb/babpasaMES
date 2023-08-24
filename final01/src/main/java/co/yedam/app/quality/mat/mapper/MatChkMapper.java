@@ -26,4 +26,7 @@ public interface MatChkMapper {
 	
 	//점검 담당자 모달 전체 리스트
 	public List<MatChkVO> selectEmpList();
+	
+	//자재명 검색
+	public List<MatChkVO> searchMatChk(String matName);
 }

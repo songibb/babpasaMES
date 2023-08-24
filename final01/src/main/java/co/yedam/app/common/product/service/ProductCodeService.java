@@ -21,7 +21,7 @@ public interface ProductCodeService {
 	public Map<String, String> updateProdInfo(ProductCodeVO productCodeVO);
 	
 	//제품 삭제
-	public int deleteProdInfo(ProductCodeVO productCodeVO);
+	public List<String> deleteProdInfo(List<ProductCodeVO> checkedProd);
 	
 	
 	//반제품만 보이기 
@@ -29,5 +29,8 @@ public interface ProductCodeService {
 	
 	// BOM 등록안된제품가져오기
 	public List<ProductCodeVO> bomNoProdList();
+	
+	//동일제품명 중복 확인용
+	public int prodNameUseCheck(String prodNameUse);
 
 }

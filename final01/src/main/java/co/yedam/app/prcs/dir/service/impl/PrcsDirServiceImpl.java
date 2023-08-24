@@ -90,6 +90,17 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	public List<BomCodeVO> selectBomList(String prodCode, Integer prcsDirAmt) {
 		return prcsDirMapper.selectBomList(prodCode, prcsDirAmt);
 	}
+
+	//진행공정 모두 공정완료시 생산지시 수정
+	@Override
+	public int updateDirPrcsSts(List<PrcsDirVO> dirList) {
+		int result = 0;
+		for(PrcsDirVO vo : dirList) {
+			prcsDirMapper.updateDirPrcsSts(vo.getPrcsDirCode());
+			result++;
+		}
+		return result;
+	}
 	
 
 }

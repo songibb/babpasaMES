@@ -1,7 +1,6 @@
 package co.yedam.app.prcs.dir.service;
 
 import java.util.List;
-
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.prcs.plan.service.PrcsSearchVO;
@@ -32,5 +31,7 @@ public interface PrcsDirService {
 	public List<BomCodeVO> selectBomList(String prodCode, Integer prcsDirAmt);
 		
 	
+	//진행공정 모두 공정완료시 생산지시 수정
+	public int updateDirPrcsSts(List<PrcsDirVO> dirList);
 
 }

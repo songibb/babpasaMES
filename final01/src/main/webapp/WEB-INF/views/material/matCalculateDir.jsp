@@ -48,11 +48,11 @@
 	  line-height:23px;
 	}
 	
-	.m_body > p{
+	#m_body_s > p{
 		display : inline-block;
 	}
 	
-	.m_body > input{
+	#m_body_s > input{
 		border : 1px solid black;
 	}
 </style>    
@@ -108,12 +108,17 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<div id="m_body_s">
        			<p>이름</p>
                 <input type="text" id="modalSearch">
                 <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+                </div>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
+       			<div id="reset_btn">
+            	<div class="modal_btn cancle" id="resetModal">RESET</div>
+            	</div>
             	<div class="modal_btn cancle close_btn">CANCLE</div>
     		</div>
   		</div>
@@ -124,7 +129,8 @@
    //모달 시작
   
 	 var Grid;
-     $("#matModal").click(function(){
+     $("#matModal").click(function(e){
+    	$("#reset_btn").css("display","none");
        $(".modal").fadeIn();
        preventScroll();
        Grid = createMatGrid();
@@ -141,16 +147,26 @@
    		if(rowKey != null){
 			$(".modal").fadeOut();
 			activeScroll();
-    		Grid.destroy();
+			let inputContent = $('#modalSearch').val('');
+			$("#reset_btn").css("display","block");
+			if(Grid != null && Grid.el != null){
+	    			Grid.destroy();	
+	    		}
 
-   		}
-     })
+   			}
+     	})
      });
+     
      
      $(".close_btn").click(function(){
        	$(".modal").fadeOut();
        	activeScroll();
-		Grid.destroy();
+       	let inputContent = $('#modalSearch').val('');
+       	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
+       	$("#reset_btn").css("display","block");
+       	$("#m_body_s").css("display", "block");
      });
      
 
@@ -175,6 +191,10 @@
 				})
 			}
 		})
+		
+		
+		
+		
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -343,7 +363,11 @@
 		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	 	           		return val;
 	 	        	}
-	 	        }
+	 	        },
+	 	 	  	validation: {
+		 	         dataType: 'number',
+		 	         required: true
+		 	       }
 		 	  },
 		 	  {
 			 	header: '정산일자',
@@ -367,7 +391,7 @@
 		 	  {
 		 		header: '담당자코드',
 		 		name : 'empCode',
-		 		hidden : true
+		 		hidden: true
 		 	  }
 	 	    ]
 	      
@@ -436,12 +460,34 @@
 		 	    		
 		 	    		$(".modal").fadeOut();
 		 	    		activeScroll();
-		        		Grid.destroy();
+		 	    		let inputContent = $('#modalSearch').val('');
+		 	    		if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
 		 	    		
 		       		}
 
 		       });
+			   
+			   $('#resetModal').on('click', e => {
+				   grid.setValue(mainRowKey, 'matCode', '');
+	 	    		grid.setValue(mainRowKey, 'matName', '');
+	 	    		grid.setValue(mainRowKey, 'matUnit', '');
+	 	    		grid.setValue(mainRowKey, 'matStd', '');
+
+				   
+				   
+				   $(".modal").fadeOut();
+	 	    		activeScroll();
+	 	    		let inputContent = $('#modalSearch').val('');
+	 	    		if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
+	 	    		$("#m_body_s").css("display", "block");
+			   })
 		   } else if(ev.columnName == 'matLot' || ev.columnName == 'matBamt'){
+			   
+			   $("#m_body_s").css("display", "none");
 			   var selectMatCode = grid.getValue(mainRowKey, 'matCode');
 			   
 			   
@@ -451,32 +497,73 @@
 			   preventScroll();
 			   $('.modal_title h3').text('LOT 목록');
 			   
-			   Grid.on('dblclick', () => {
-		       		let modalRowKey = Grid.getFocusedCell().rowKey;
-		       		if(modalRowKey != null){
-		       			let matLot = Grid.getValue(modalRowKey, 'matLot');
-		       			let matStock = Grid.getValue(modalRowKey, 'matStock');
-		 	       		let matCode = Grid.getValue(modalRowKey, 'matCode');
-		 	        	let matName = Grid.getValue(modalRowKey, 'matName');
-		 	        	let matUnit = Grid.getValue(modalRowKey, 'matUnit');
-		 	        	let matStd = Grid.getValue(modalRowKey, 'matStd');
-		 	        	grid.blur();
+			   Grid.on('dblclick', ev => {
+				   let modalRowKey = Grid.getFocusedCell().rowKey;
+				 //이미 해당 LOT로 등록된 행이 있으면 등록 할 수 없게 함
+						let matLot = Grid.getValue(modalRowKey, 'matLot');
+				   
+						let modifyGridInfo = grid.getModifiedRows();
+						let isNotExist = true;
 						
-		 	        	
-		 	    		grid.setValue(mainRowKey, 'matLot', matLot);
-		 	    		grid.setValue(mainRowKey, 'calBamt', matStock);
-		 	    		grid.setValue(mainRowKey, 'matCode', matCode);
-		 	    		grid.setValue(mainRowKey, 'matName', matName);
-		 	    		grid.setValue(mainRowKey, 'matUnit', matUnit);
-		 	    		grid.setValue(mainRowKey, 'matStd', matStd);
+						$.each(grid.getModifiedRows().createdRows, function(idx, obj){
+								
+							if(obj['matLot'] == matLot){
+								isNotExist = false;
+								swal("", "이미 해당 LOT로 등록된 행이 존재합니다", "warning");
+								return false;
+							}
+						})
+
+					
+				 //------------------------------------------------------
+				   if(isNotExist){
+					   if(modalRowKey != null){
+			       			let matLot = Grid.getValue(modalRowKey, 'matLot');
+			       			let matStock = Grid.getValue(modalRowKey, 'matStock');
+			 	       		let matCode = Grid.getValue(modalRowKey, 'matCode');
+			 	        	let matName = Grid.getValue(modalRowKey, 'matName');
+			 	        	let matUnit = Grid.getValue(modalRowKey, 'matUnit');
+			 	        	let matStd = Grid.getValue(modalRowKey, 'matStd');
+			 	        	grid.blur();
+							
+			 	        	
+			 	    		grid.setValue(mainRowKey, 'matLot', matLot);
+			 	    		grid.setValue(mainRowKey, 'calBamt', matStock);
+			 	    		grid.setValue(mainRowKey, 'matCode', matCode);
+			 	    		grid.setValue(mainRowKey, 'matName', matName);
+			 	    		grid.setValue(mainRowKey, 'matUnit', matUnit);
+			 	    		grid.setValue(mainRowKey, 'matStd', matStd);
+				   }
+		       		
+		       		
 		 	    		
 		 	    		$(".modal").fadeOut();
 		 	    		activeScroll();
-		 	    		Grid.destroy();
+		 	    		let inputContent = $('#modalSearch').val('');
+		 	    		if(Grid != null && Grid.el != null){
+		 	    			Grid.destroy();	
+		 	    		}
+		 	    		$("#m_body_s").css("display", "block");
 		 	    		
 		       		}
+		       		
 
 		       });
+			   
+			   $('#resetModal').on('click', e => {
+				   grid.setValue(mainRowKey, 'matLot', '');
+	 	    	   grid.setValue(mainRowKey, 'calBamt', '');
+
+				   
+				   
+				   $(".modal").fadeOut();
+	 	    		activeScroll();
+	 	    		let inputContent = $('#modalSearch').val('');
+	 	    		if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
+	 	    		$("#m_body_s").css("display", "block");
+			   })
 		   }
 		   
 		   
@@ -568,13 +655,27 @@
 				let finalAmt;
 				if(rowData.calCategory == 'I'){
 					finalAmt = Number(rowData.calBamt) + Number(rowData.calAmt);
+					grid.setValue(change.rowKey, 'finalAmt', finalAmt);
 				} else if(rowData.calCategory == 'O'){
+					
 					finalAmt = Number(rowData.calBamt) - Number(rowData.calAmt);
+					if(finalAmt < 0){
+						swal("", "기존수량을 넘을 수 없습니다", "warning");
+						grid.setValue(change.rowKey, 'calAmt', rowData.calBamt);
+						grid.setValue(change.rowKey, 'finalAmt', 0);
+					} else {
+						grid.setValue(change.rowKey, 'finalAmt', finalAmt);
+					}
 				}
-				grid.setValue(change.rowKey, 'finalAmt', finalAmt);
+				
 			}
 		}
 	});
+   
+   
+   	
+   	
+   	
    
  	//저장버튼
 	document.getElementById('save').addEventListener('click', saveServer);
@@ -598,7 +699,8 @@
 		if(grid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(grid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['calCategory'] == '' || obj2['matName'] == '' || obj2['matUnit'] == '' || obj2['matStd']== '' || obj2['matLot'] == '' || obj2['calBamt'] == '' || obj2['calAmt'] == ''){
+						console.log(obj2['calCategory'], obj2['matName'], obj2['matUnit'], obj2['matStd'], obj2['matLot'], obj2['calBamt'], obj2['calAmt']);
+					if(obj2['calCategory'] == '' || obj2['matName'] == '' || obj2['matUnit'] == '' || obj2['matStd']== '' || obj2['matLot'] == '' ||  obj2['calAmt'] == ''){
 						flag = false;
 						return false;
 					}

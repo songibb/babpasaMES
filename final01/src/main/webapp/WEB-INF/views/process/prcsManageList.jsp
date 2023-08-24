@@ -23,48 +23,122 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>검색</p>
-							<input type="text" placeholder="검색어를 입력하세요" name="prcsSearch" value="">
-							
-							<button type="button" class="btn btn-info btn-icon-text" >
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
 		            	</div>
 	            	</form>
-	           		<div id="grid"></div>
-				</div>
+	            </div>	
+	            
+            	<div>
+	           		<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
+	           		<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>
+	           		<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
+           		</div>
+           	
+           		<div id="grid"></div>
+				
 	   		</div>
 		</div>
 	</div> 
 
 	<script>
 	
+	//추가
+	document.getElementById('addBtn').addEventListener('click', addRow);
+	//저장
+	document.getElementById('saveBtn').addEventListener('click', saveServer);
+	//삭제
+	document.getElementById('removeBtn').addEventListener('click', removeRow);
+	
+	
 	//공정관리 조회
-	$.ajax({
-        url : "selectPrcsManageList",
-        method :"GET",
-        success : function(result){
-            grid.resetData(result);
-        },
-        error : function(reject){
- 			console.log(reject);
- 		}
-	});
+	function selectListAjax(){
+		$.ajax({
+	        url : "selectPrcsManageList",
+	        method :"GET",
+	        success : function(result){
+	            grid.resetData(result);
+	        },
+	        error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+	}
+	
+	selectListAjax();
+	
+	
+	function addRow(){	
+		grid.appendRow({}, {at:0});
+	};
+	
+	function removeRow(){
+		grid.removeCheckedRows(false);
+	}
+	
+	function saveServer(){
+		grid.blur();
+		let modifyGrid = grid.getModifiedRows();
 
+		if(!grid.isModified()){
+			swal("변경사항이 없습니다", "", "warning");
+			return false;
+		}
+		
+		//빈 데이터가 있는지 확인할 변수
+		let flag = true;
+		
+		//등록
+		if(modifyGrid.createdRows.length > 0){
+			$.each(modifyGrid.createdRows, function(idx, obj){
+				if(obj['prcsType'] == '' || obj['prcsName'] == '' || obj['semiYn'] == ''){
+					flag = false;
+					return false;
+				}
+			})
+		}
+		
+		//수정
+		if(modifyGrid.updatedRows.length > 0){
+			$.each(modifyGrid.updatedRows, function(idx, obj){
+				if(obj['prcsType'] == '' || obj['prcsName'] == '' || obj['semiYn'] == ''){
+					flag = false;
+					return false;
+				}
+			})
+		}
+		
+		console.log(modifyGrid);
+		if(flag){
+			$.ajax({
+				url : 'updatePrcsManage',
+				method : 'POST',
+				data : JSON.stringify(modifyGrid),
+				contentType : 'application/json',
+				success : function(data){
+					console.log(data);
+					swal("성공", data +"건이 처리되었습니다.", "success");
+					selectListAjax();
+				},
+				error : function(reject){		
+					console.log(reject);
+					swal("실패", "", "error");
+				}
+			})
+		} else {
+			swal("", "값이 입력되지 않았습니다", "warning");
+		}
 	
+	}
 	
+
+
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
+		rowHeaders: ['rowNum', 'checkbox'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
@@ -78,14 +152,44 @@
           {
             header: '공정구분',
             name: 'prcsType',
+            formatter: 'listItemText',
+            editor: {
+                type: 'select',
+                options: {
+                	listItems: [
+                    	<c:forEach items="${prcsTypeList}" var="pt">
+                    	 {
+                             text: '${pt.commdeName}',
+                             value: '${pt.commdeCode}'
+                           }, 
+    					</c:forEach>
+                    ]
+                }
+            } 
           },
+  
           {
             header: '공정이름',
-            name: 'prcsName'
+            name: 'prcsName',
+            editor: 'text'
           },
           {
-            header: '반제품',
-            name: 'semiYn'
+            header: '반제품생산공정여부',
+            name: 'semiYn',
+            formatter: 'listItemText',
+            editor: {
+                type: 'select',
+                options: {
+                	listItems: [
+                    	<c:forEach items="${semiYnList}" var="syn">
+                    	 {
+                             text: '${syn.commdeName}',
+                             value: '${syn.commdeCode}'
+                           }, 
+    					</c:forEach>
+                    ]
+                }
+            } 
           }		          
         ]
       })  

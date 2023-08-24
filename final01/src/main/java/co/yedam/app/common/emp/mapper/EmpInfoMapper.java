@@ -15,6 +15,15 @@ public interface EmpInfoMapper {
 	//사원코드 단건조회
 	public EmpInfoVO getEmpInfoOne(EmpInfoVO empInfoVO);
 	
+	//사원등록(+)
+	public int insertNewEmp(EmpInfoVO empInfoVO);
+	
+	//사원수정
+	public int updateEmpInfo(EmpInfoVO empInfoVO);
+	
+	//사원정보 ajax 조회,검색
+	public List<EmpInfoVO> empSelect(String empName);
+	
 	
 	
 

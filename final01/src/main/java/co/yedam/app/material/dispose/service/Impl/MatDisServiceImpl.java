@@ -1,5 +1,6 @@
 package co.yedam.app.material.dispose.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,6 @@ public class MatDisServiceImpl implements MatDisService {
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
 			for(MatDisVO vo : data.getUpdatedRows()) {
 				result += mdm.updateMatDis(vo);
-				mdm.updateMatStockAtMatDisUp(vo);
 			}
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
@@ -68,6 +68,32 @@ public class MatDisServiceImpl implements MatDisService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<MatRtVO> getDeletedRtInfo(List<MatDisVO> list) {
+		List<MatRtVO> rtList = new ArrayList<>();
+		if(list != null && list.size() > 0) {
+			for(MatDisVO vo : list) {
+				MatRtVO rtVO = mdm.deletedRtInfo(vo);
+				rtList.add(rtVO);
+			}
+		}
+
+		return rtList;
+	}
+
+	@Override
+	public List<MatInVO> getDeletedExdInfo(List<MatDisVO> list) {
+		List<MatInVO> inList = new ArrayList<>();
+		if(list != null && list.size() > 0) {
+			for(MatDisVO vo : list) {
+				MatInVO inVO = mdm.deletedExdInfo(vo);
+				inList.add(inVO);
+			}
+		}
+
+		return inList;
 	}
 
 

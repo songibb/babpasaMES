@@ -39,15 +39,15 @@
     		this.reset();
     	})
     	 
+    	
 		planGrid.clear();
-		planGrid.appendRow();
+    	planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
 		planDeGrid.clear();
 		planDeGrid.appendRow();
 		
 		
 		//체크박스 체크한 주문서 데이터
 		let checkList = Grid.getCheckedRows();
-		console.log(checkList);
 
 		let deList = [];
 		$.each(checkList, function(i, obj){
@@ -62,14 +62,12 @@
             $(".modal").fadeOut();
             Grid.destroy();   
 			
-            console.log(deList);
     		$.ajax({
     			url : 'notPlanOrderDeList',
     			method : 'POST',
     			data : JSON.stringify(deList),
     			contentType : 'application/json',
     			success : function(data){
-    				console.log(data);
     	          	//체크박스 체크한 주문서의 상세 내역(제품코드, 주문수량) 그리드에 가져오기
     	          	planDeGrid.resetData(data);
 

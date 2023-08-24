@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자재 폐기 목록</title>
+<title>자재 폐기 조회</title>
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -134,7 +134,9 @@
 	     		if(rowKey != null){
 		  			$(".modal").fadeOut();
 		  			activeScroll();
-		      		Grid.destroy();
+		  			if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	
 	     		}
 	       	 })
@@ -144,7 +146,9 @@
 		      	$(".modal").fadeOut();
 		      	activeScroll();
 		      	let inputContent = $('#modalSearch').val('');
-				Grid.destroy();
+		      	if(Grid != null && Grid.el != null){
+ 	    			Grid.destroy();	
+ 	    		}
 		 });
   
 		
@@ -229,12 +233,7 @@
 			   let sd = $('#startDate').val();
 			   let ed = $('#endDate').val();
 			   
-			   var checkboxList = [];
-			   let checkedList = $('input[type="checkbox"]:checked');
-			   $.each(checkedList, function(idx, obj){
-				   checkboxList.push(obj.value);
-			   })
-				  
+			 
 			   let search = { materialCode : mat , startDate : sd , endDate : ed };
 			   $.ajax({
 				   url : 'getMatDisFilter',

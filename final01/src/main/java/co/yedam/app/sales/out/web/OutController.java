@@ -24,7 +24,7 @@ public class OutController {
 
 	@GetMapping("/outList")
 	public String outList(Model model) {
-		model.addAttribute("outList", outService.getOutList());
+		model.addAttribute("outNList", outService.getOutNList());
 		model.addAttribute("actList", outService.actAllList());
 		model.addAttribute("prodList", outService.prodAllList());
 		return "sales/outList";
@@ -46,6 +46,8 @@ public class OutController {
 	public String outMngList(Model model) {
 		// 출고완료된 품목만 보여주는 출고 리스트
 		model.addAttribute("outNList", outService.getOutNList());
+		
+//		model.addAttribute("outList", outService.getOutList());
 		// 거래처 목록 -> 모달
 		model.addAttribute("actList", outService.actAllList());
 		// 제품 목록 -> 모달

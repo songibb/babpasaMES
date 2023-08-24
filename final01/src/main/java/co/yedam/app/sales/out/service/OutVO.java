@@ -35,17 +35,22 @@ public class OutVO {
 	
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date endDate;
 	
 	private String prodLot;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date salesInDate;
 	private int salesInAmt;
 	private int prodSaveAmt;
 	private String testNum;
 	
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date ordDate;
 	private String ordSts;
 	private int prcsRqAmt;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date devDate;
 	private String devYn;
+	private String empName;
 }

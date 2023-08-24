@@ -19,7 +19,16 @@
 	 <link rel="preconnect" href="https://fonts.googleapis.com">
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
-
+<style>
+	.yellow-background {
+	        background-color: rgb(255,253,235);
+		}
+		
+	#save{
+		margin-bottom : 20px;
+		radius : 5px;
+	}
+</style>
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -57,9 +66,9 @@
 						</div>	
 					</form>
 					
-					<div style="display: flex; justify-content: flex-end;" style="">
+					<div style="display: flex; justify-content: flex-end;">
 
-							<button id="save">저장</button>          	
+							<button id="save" class="btn btn-info btn-icon-text">저장</button>          	
 	            	</div>
 	            	
 					<div id="grid"></div>	
@@ -119,6 +128,7 @@
 	 		grid.finishEditing(rowKey, columnName);
 
 	 		let list = grid.getData();
+	 		console.log(list);
 
 	 		$.ajax({
 	 			url : 'updateChkEquip',
@@ -144,6 +154,8 @@
 			}
 	     }
 	     
+	     
+	     
 	   //점검 설비 grid
 	     var grid = new tui.Grid({
 	         el: document.getElementById('grid'),
@@ -155,7 +167,7 @@
 		           		eqType : "${chk.eqType}",
 		           		chkCycle : "${chk.chkCycle}",
 		           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
-		           		chkNextDate : "${chk.chkNextDate + chk.chkCycle}",
+		           		chkNextDate : "<fmt:formatDate value='${chk.chkNextDate}' pattern='yyyy-MM-dd'/>",
 		           		eqChkYn : "${chk.eqChkYn}",
 		           		empCode : "${chk.empCode}",
 		           		chkNote : "${chk.chkNote}"		   	        
@@ -165,7 +177,7 @@
 	         scrollX: false,
 	         scrollY: false,
 	         minBodyHeight: 30,
-	         rowHeaders: ['rowNum', 'checkbox'],
+	         rowHeaders: ['rowNum'],
 	         pagination: true,
 				pageOptions: {
 				useClient: true,
@@ -191,7 +203,8 @@
 	           {
 	             header: '점검일자',
 	             name: 'chkDate',
-	           	 editor : 'text'
+	           	 editor : 'text',
+	           	 className: 'yellow-background'
 	           },
 	           {
 	               header: '차기점검일자',
@@ -214,7 +227,20 @@
 	           {
 	 			header: '점검판정',
 	             name: 'eqChkYn',
-	             editor : 'text'
+	             formatter: 'listItemText',
+					editor: {
+		                type: 'select',
+		                options: {
+		                  listItems: [
+		                	<c:forEach items="${equipPassType}" var="u">
+		                	 {
+		                         text: '${u.commdeName }',
+		                         value: '${u.commdeCode }'
+		                       }, 
+							</c:forEach>
+		                  ]
+		                }
+		              }
 	           },
 	           {
 	        	  header: '담당자코드',
@@ -268,24 +294,6 @@
 	  		Grid.destroy();
 	     });
 		
-		
-		 //emp 리스트 모달 시작
-// 	     $("#empModal").click(function(){
-// 	       $(".modal").fadeIn();
-// 	       Grid = createProdGrid();
-// 	       Grid.on('click', () => {
-// 	        let rowKey = Grid.getFocusedCell().rowKey;
-// 	        let empCode = Grid.getValue(rowKey, 'empCode');
-// 	       	let empName = Grid.getValue(rowKey, 'empName');
-// 	      $("empCode").val(empCode);
-// 	      $("empName").val(empName);
-// 	         //모달창 닫기
-// 	         if(rowKey != null){
-// 	         $(".modal").fadeOut();
-// 	          Grid.destroy();
-// 	         }
-// 	         });
-// 	     });
 		 
 	     //사원 목록모달 그리드
 	     function createProdGrid(){
@@ -333,7 +341,7 @@
 	     
 	     grid.on('afterChange', (ev) => {
 	         let change = ev.changes[0];
-	         let rowData = orderGrid.getRow(change.rowKey);
+	         let rowData = grid.getRow(change.rowKey);
 
 	         // Convert chkDate string to a Date object
 	         let chkDate = new Date(rowData.chkDate);
@@ -354,7 +362,7 @@
 	             if (rowData.chkDate != null) {
 	                 // Convert chkNextDate to a string in the desired format (YYYY-MM-DD)
 	                 let formattedChkNextDate = chkNextDate.toISOString().split('T')[0];
-	                 orderGrid.setValue(change.rowKey, 'chkNextDate', formattedChkNextDate);
+	                 grid.setValue(change.rowKey, 'chkNextDate', formattedChkNextDate);
 	             }
 	         }
 	     });
