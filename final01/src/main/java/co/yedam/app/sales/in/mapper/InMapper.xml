@@ -31,10 +31,10 @@
 				AND p.prod_code LIKE '%' || #{prodCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-            	AND i.sales_in_date <![CDATA[>=]]> TO_DATE(#{startDate}, 'YYYY-MM-DD')
+            	AND TO_CHAR(i.sales_in_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
          	</if>
          	<if test="endDate != null and endDate != ''">
-           		AND i.sales_in_date <![CDATA[<=]]> TO_DATE(#{endDate}, 'YYYY-MM-DD')
+           		AND TO_CHAR(#i.sales_in_date, 'YYYY-MM-DD') <![CDATA[<=]]> {endDate}
          	</if>
 	</where>					
 	ORDER BY prod_lot DESC
