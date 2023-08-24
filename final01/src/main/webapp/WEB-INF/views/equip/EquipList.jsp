@@ -118,14 +118,14 @@
 			 	        name: 'eqType2'
 			 	      },
 			 	      {
-			 	    	  header :'최고온도',
-			 	    	  name : 'highTemp'
-			 	      },
-			 	      {
 			 	    	 header : '최저온도',
 			 	    	 name : 'lowTemp'
+			 	      },
+			 	      {
+			 	    	  header :'최고온도',
+			 	    	  name : 'highTemp'
 			 	      }
-			 	      
+			 	     
 			 	    ]
 		      })  
 			
@@ -139,6 +139,16 @@
 		 		   method : 'GET',
 		 		   data : search ,
 		 		   success : function(data){
+		 			   
+	 			  $.each(data, function(i, objDe){
+	 					let td = data[i]['makeDate'];
+	 					let td2 = data[i]['buyDate'];
+	 					
+	 					data[i]['makeDate'] = getDate(td);
+	 					data[i]['buyDate'] = getDate(td2);
+
+	 				})
+		 				
 		 			   grid.resetData(data);
 		 		   },
 		 		   error : function(reject){
@@ -150,5 +160,8 @@
 		
 
 	</script>
+	    <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 </body>
 </html>	

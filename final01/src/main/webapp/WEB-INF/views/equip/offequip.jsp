@@ -30,6 +30,9 @@
 	        background-color: rgb(255,253,235);
 		}
 		
+		#insertForm{
+			align : center;
+		}
     </style>
     
 </head>

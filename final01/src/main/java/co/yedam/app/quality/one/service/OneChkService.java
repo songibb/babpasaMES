@@ -13,5 +13,9 @@ public interface OneChkService {
 	public List<OneChkVO> selectOneChkList(String testNum);
 	
 	//상세 품질 검사 수정
-	public int OneChkUpdate(GridVO<OneChkVO> data);
+	public int OneChkUpdate(OneChkReqVO oneChkReqVO);
+	
+	//조회페이지
+	//모든 마지막 공정 조회
+	public List<OneChkVO> selectAllLastPrcs();
 }

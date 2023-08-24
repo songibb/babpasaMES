@@ -22,14 +22,11 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
-   #save, #delete, #dirAdd{
+
+   #matDeModal{
 		margin-top : 120px;
+		margin-bottom : 10px;
 		float : right;
-	}
-	
-	#matDeModal {
-		margin-top : 120px;
-		float : left;
 	}
 
 	h1{
@@ -45,6 +42,9 @@
         background-color: rgb(255,253,235);
 	}
 	
+	#save, #delete{
+		float : right;
+	}
 </style>    
        
 </head>
@@ -59,37 +59,28 @@
                 	<!--추가 누르면 검사 예정 자재 항목들 뜨고 그걸 기반으로 코드 가져와서 행에 추가되게 해야됨  -->
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
-            				<div style="flex: 1;">
+            				<div style="flex: 1; margin-left: 10px; margin-top : 20px;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
-                				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-                				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
-                				<br>
-                				
-                				<p>검사일자</p>
-                				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                				
-                				
-                				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-                    				<i class="fas fa-search"></i>
-                    					검색
-                				</button>
-                				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+	  							<input type="text" placeholder="검색어를 입력하세요" id="matSearch">
+								<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+									<i class="fas fa-search"></i>검색
+								</button>
+								<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                     				초기화
                 				</button>
                 				<br>
-                			
             				</div>
         				</div>
 	    			</div>
 		            <div>
             		
-            		
             		<button id="matDeModal" class="btn btn-info btn-icon-text">주문서조회</button>
-            		<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+                	
             		</div>
 		            <div id="matgrid"></div>
+            		<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+            		<button class="btn btn-info btn-icon-text" id="save">저장</button>
+            		
 				</div>
 			</div>
 		</div>
@@ -132,7 +123,7 @@
 	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
-		        perPage: 5
+		        perPage: 10
 		      },
 	        columns: [
 	        	  {
@@ -205,6 +196,8 @@
 		 	 	  
 	        ]
 	      });
+	
+	setDisabled();
 	
 	
 
@@ -294,9 +287,16 @@
 	
 	//사원코드 - 행 클릭 모달
     var Grid;
-    matgrid.on('click', () => {
+    matgrid.on('click', ev => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
+   	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
+   	
+   	if(errRtStsName != null){
+			   ev.stop();
+			   return false;
+	   	}
+   	
    	if(columnName == "empCode"){
    		$(".modal").fadeIn();
    	       Grid = createProdGrid();
@@ -379,6 +379,13 @@
     matgrid.on('click', () => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
+	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
+   	
+   	if(errRtStsName != null){
+			   ev.stop();
+			   return false;
+	   	}
+   	
    	if(columnName == "errCodeName"){
    		$(".modal").fadeIn();
    	       Grid = createProdGrid2();
@@ -457,6 +464,12 @@
     matgrid.on('click', () => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
+	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
+   	
+   	if(errRtStsName != null){
+			   ev.stop();
+			   return false;
+	   	}
    	if(columnName == "errRtStsName"){
    		$(".modal").fadeIn();
    	       Grid = createProdGrid3();
@@ -528,6 +541,46 @@
 		})		 
        return prodGrid;
     }
+	
+  //비활성화
+	function setDisabled(){
+		$.each(matgrid.getData(), function(idx, obj){
+			
+			if(obj['errRtStsName'] != null){
+				matgrid.disableRow(obj['rowKey']);
+
+			}
+		})
+	}
+  
+	//검색
+    $('#searchBtn').on('click', searchProdIn);
+    function searchProdIn(e){
+ 	   let content = $('#matSearch').val();
+ 	   let search = { matName : content };
+ 	   $.ajax({
+ 		   url : 'searchMatChk',
+ 		   method : 'GET',
+ 		   data : search ,
+ 		   success : function(data){
+ 			   
+			  $.each(data, function(i, objDe){
+					let td = data[i]['makeDate'];
+					let td2 = data[i]['buyDate'];
+					
+					data[i]['makeDate'] = getDate(td);
+					data[i]['buyDate'] = getDate(td2);
+
+				})
+ 				
+ 			   matgrid.resetData(data);
+ 		   },
+ 		   error : function(reject){
+ 			   console.log(reject);
+ 		   }
+ 	   })
+    }
+    
     </script>
     
     <div>

@@ -114,7 +114,19 @@
   
    <!-- 설비검색 -->
    <select id="searchEquip" resultType="EquipVO">
-  	  	SELECT  *
+  	  	SELECT  EQ_CODE
+	  			,ACT_CODE
+	  			,EQ_NAME
+	  			,MODEL_NAME
+	  			,MAKE_DATE
+	  			,BUY_DATE
+	  			,CHK_CYCLE
+	  			,EQ_STS AS EQ_STS
+	  			,FIND_CDNM('0L', EQ_STS) AS EQ_STS2
+	  			,EQ_TYPE AS EQ_TYPE
+	  			,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
+	  			,HIGH_TEMP
+	  			,LOW_TEMP
 		FROM EQ_EQUIP
 		WHERE EQ_NAME LIKE '%' || #{eqName} || '%'
 	ORDER BY EQ_NAME

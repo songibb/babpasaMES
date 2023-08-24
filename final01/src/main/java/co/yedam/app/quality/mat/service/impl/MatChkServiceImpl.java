@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.grid.service.GridVO;
-import co.yedam.app.equip.service.EquipChkVO;
-import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.quality.mat.mapper.MatChkMapper;
 import co.yedam.app.quality.mat.service.MatChkService;
 import co.yedam.app.quality.mat.service.MatChkVO;
@@ -64,6 +62,12 @@ public class MatChkServiceImpl implements MatChkService {
 		public List<MatChkVO> selectEmpList(){
 			return matchkMapper.selectEmpList();
 					
+		}
+		
+		//자재 검색
+		@Override
+		public List<MatChkVO> searchMatChk(String matName){
+			return matchkMapper.searchMatChk(matName);
 		}
 
 }

@@ -205,7 +205,7 @@
                 		<li class="nav-item"> <a class="nav-link" href="semiQualChk">반제품 품질 검사</a></li>
                   </security:authorize>
                   <security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="oneQualChkList">완제품 품질 조회</a></li>
                   </security:authorize>
                   <security:authorize access="hasAnyAuthority('A','Q')">
                 		<li class="nav-item"> <a class="nav-link" href="onequalChk">완제품 품질 검사</a></li>
