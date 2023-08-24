@@ -324,25 +324,25 @@
 	updateDirPrcsStsAjax();
    
 	//상세생산지시 -> 생산지시완료 update
-	let dirList = dirGrid.getData();
-	console.log(dirList);
+// 	let dirList = dirGrid.getData();
+// 	console.log(dirList);
 	
-	function updateDirPrcsStsAjax(){
-		$.ajax({
-			url : 'updateDirPrcsSts',
-			method : 'POST',
-			data : JSON.stringify(dirList),
-			contentType : "application/json",
-			success : function(data){
-				console.log(data);
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-	}
+// 	function updateDirPrcsStsAjax(){
+// 		$.ajax({
+// 			url : 'updateDirPrcsSts',
+// 			method : 'POST',
+// 			data : JSON.stringify(dirList),
+// 			contentType : "application/json",
+// 			success : function(data){
+// 				console.log(data);
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})
+// 	}
 
-	updateDirPrcsStsAjax();
+// 	updateDirPrcsStsAjax();
    
  
     
