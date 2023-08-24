@@ -1,4 +1,4 @@
-package co.yedam.app.common.main;
+package co.yedam.app.common.main.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

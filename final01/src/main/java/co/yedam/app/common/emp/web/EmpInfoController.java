@@ -41,20 +41,11 @@ public class EmpInfoController {
 	BCryptPasswordEncoder passwordEncoder;
 	
 	//사원전체조회
-	@GetMapping("/empinfo")
-	public String getEmpInfoAllLIst(Model model) {
-		model.addAttribute("empList", empInfoService.selectEmpInfoList());
-		return "common/empInfo";
-	}
-	
-	//사원명 검색조회
-	@GetMapping("/getempFilter")
-	@ResponseBody
-	public List<EmpInfoVO> getempFilter(@RequestParam String empName){
-		List<EmpInfoVO> vo = empInfoService.searchSelectEmp(empName);
-		return vo;
-	}
-	
+		@GetMapping("/empinfo")
+		public String getEmpInfoAllLIst(Model model) {
+			model.addAttribute("empList", empInfoService.selectEmpInfoList());
+			return "common/empInfo";
+		}
 	
 	//사원코드 단건조회
 	@GetMapping("/getComEmpCode")
@@ -99,11 +90,16 @@ public class EmpInfoController {
 	@PostMapping("/empInfoUpdate")
 	@ResponseBody
 	public int empInfoUpdate(@RequestBody EmpInfoVO vo) {
-		BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
-		String pw = vo.getEmpPw();
-		vo.setEmpPw(enco.encode(pw));
+		if(vo.getEmpPw()==null || vo.getEmpPw().equals("")) {
+			return empInfoService.updateEmpInfo(vo);
+		}else {
+			BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+			String pw = vo.getEmpPw();
+			vo.setEmpPw(enco.encode(pw));
+			
+			return empInfoService.updateEmpInfo(vo);
+		}
 		
-		return empInfoService.updateEmpInfo(vo);
 	}
 
 	

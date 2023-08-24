@@ -24,90 +24,97 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
+<style>
+	label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	
+	input[type="text"],
+	select {
+	  width: 100%;
+	  padding: 8px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	
+</style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>거래처관리</h3>
-	<div>
-		<form id="id">
-		<div>
-		<p>등록/수정</p>
-		</div>
-			<table>
-				<tr>
-					<th>거래처코드</th>
-					<td><input type="text" name="actCode" id="actCode" readonly="readonly" style="background-color: skyblue;"></td>
-				</tr>
-				<tr>
-					<th>거래처명</th>
-					<td><input type="text" name="actName" id="actName"></td>
-				</tr>
-				<tr>
-					<th>사업자번호</th>
-					<td><input type="text" name="actNum" id="actNum"></td>
-				</tr>
-				<tr>
-					<th>연락처</th>
-					<td><input type="text" name="actTel" id="actTel"></td>
-				</tr>
-				<tr>
-					<th>거래상태</th>
-					<td>
-						<select id="inputActList" name="actSts">
-							<c:forEach items="${actStsList}" var="s">
-								<option value="${s.commdeCode }">${s.commdeName }</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>거래처구분</th>
-					<td>
-						<select id="actTypeList" name="actKind">
-							<c:forEach items="${actTypeList}" var="a">
-								<option value="${a.commdeCode }">${a.commdeName }</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>
-			</table>
-			<button type="submit" class="btn btn-info btn-icon-text">저장</button>
-			<button type="reset" class="btn btn-info btn-icon-text">취소</button>
-		</form>
-	</div>
-	<div class="col-lg-12 stretch-card">
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">
-					<form>
-						거래처명: <input type="text" placeholder="검색어를 입력하세요" id="actSearch">
-						<button type="button" class="btn btn-info btn-icon-text"
-							id="searchBtn">
-							<i class="fas fa-search"></i>검색
-						</button>
-						<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-						<button type="reset" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
-					</form>
+	<h1>거래처관리</h1>
+	<div style="display: flex;">
+	<div  style="width: 75%">
+		<div class="col-lg-12 stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive pt-3">
+						<form>
+							거래처명 <input type="text" placeholder="검색어를 입력하세요" id="actSearch" style="width: 20%">
+							<button type="button" class="btn btn-info btn-icon-text"
+								id="searchBtn">
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
+						</form>
+					</div>
+					<div id="grid"></div>
 				</div>
-				<div id="grid"></div>
 			</div>
 		</div>
 	</div>
-
-	<div class="modal">
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
-			<div class="m_head">
-				<div class="modal_title">
-					<h3>목록</h3>
+	<div  style="width: 25%;">
+		<div class="col-lg-12 stretch-card">
+			<div class="card" >
+				<div class="card-body">
+					<div class="table-responsive pt-3">
+						<form id="id">
+						
+						<h3 style="margin-bottom: 10px">등록/수정 창</h3>
+						
+						<div>					
+							<label>거래처코드</label>
+							<input type="text" name="actCode" id="actCode" readonly="readonly" style="background-color: skyblue;">
+							
+							<label>거래처명</label>
+							<input type="text" name="actName" id="actName">
+							<label>사업자번호</label>
+							<input type="text" name="actNum" id="actNum">
+							<label>연락처</label>
+							<input type="text" name="actTel" id="actTel">
+						
+							<label>거래상태</label>
+							<select id="inputActList" name="actSts">
+								<c:forEach items="${actStsList}" var="s">
+									<option value="${s.commdeCode }">${s.commdeName }</option>
+								</c:forEach>
+							</select>
+							<label>거래처구분</label>
+							<select id="actTypeList" name="actKind">
+								<c:forEach items="${actTypeList}" var="a">
+									<option value="${a.commdeCode }">${a.commdeName }</option>
+								</c:forEach>
+							</select>
+									
+							<button type="submit" class="btn btn-info btn-icon-text">저장</button>
+							<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+							</div>
+						</form>
+					</div>
 				</div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<div id="modal_label"></div>
 			</div>
 		</div>
 	</div>
-
+	
+</div>
 
 	<script>
    					
@@ -152,7 +159,7 @@
 				pagination: true,
 				pageOptions: {
 					useClient: true,
-					perPage: 5,
+					perPage: 10,
 				},
 		        columns: [
 		          {

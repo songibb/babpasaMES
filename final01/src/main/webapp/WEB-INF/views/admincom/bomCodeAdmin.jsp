@@ -141,7 +141,7 @@
 		           		<div>
 		           			<div style="display: flex; flex; justify-content: space-between;">
 			           		<h5> bom상세등록 </h5>
-			           		<button id = "deAdd" class="btn btn-info btn-icon-text" style="float: right">상세추가</button>
+			           		<button id = "deAdd" class="btn btn-info btn-icon-text" style="float: right; display: none;">상세추가</button>
 			           		</div>
 			           		<div id="deBomgrid"></div>
 						</div>
@@ -197,7 +197,9 @@
 	//저장 버튼 클릭시 insert 진행
 	document.getElementById('deSave').addEventListener('click', saveServer);
 	
-	/* const target = document.getElementById('deleteBom'); */
+	/* 삭제,버튼은 등록시에 안보이게 상세 추가 버튼은 등록시에만 보이게 하기 */
+	  var deleteBom = document.getElementById('deleteBom');
+	  var deAdd = document.getElementById('deAdd');
 	
 	
 	function saveServer(){
@@ -325,8 +327,6 @@
 		            }
 		        });
 			}else{
-
-				alert("오류");
 				 swal("오류","모든값이 입력되지 않았거나 정보 타입을 확인해 주세요","warning"); 
 
 				
@@ -429,7 +429,7 @@
 			if(data>1){
 				swal("수정이 완료되었습니다.","","success");
 			}
-			deBomgrid.clear();
+			//deBomgrid.clear();
 			stopEdit();
 		},
 		error : function(reject){
@@ -753,6 +753,9 @@
  	        		
  	        		$(".modal").fadeOut();
 	        		Grid.destroy();
+	        		deleteBom.style.display = 'none';
+	        		deAdd.style.display = 'inline-block';
+	        		 
 
  	        	}
   	    	 }
@@ -1109,6 +1112,8 @@
 			   bomgrid.resetData(data);
 			   deBomgrid.clear();
 			   stopEdit();
+			   deleteBom.style.display = 'inline-block';
+			   deAdd.style.display = 'none';
 		   },
 		   error : function(reject){
 			   console.log(reject);

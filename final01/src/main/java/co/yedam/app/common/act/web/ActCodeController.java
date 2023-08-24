@@ -51,7 +51,6 @@ public class ActCodeController {
 	//거래처 관리페이지
 	@GetMapping("/actCodeAdmin")
 	public String actCodeAdmin(Model model) {
-		model.addAttribute("empList", empInfoService.selectEmpInfoList());
 		model.addAttribute("actTypeList", commCodeService.searchCommCodeUse("ACT-TYPE"));
 		model.addAttribute("actStsList", commCodeService.searchCommCodeUse("0J"));
 		return "admincom/actCodeAdmin";
@@ -82,17 +81,6 @@ public class ActCodeController {
 	}
 	
 	
-	
-	//거래처 삭제 check
-	/*
-	 * @PostMapping("/actCheckedDelete")
-	 * 
-	 * @ResponseBody public Map<String, String> delete(@RequestBody List<ActCodeVO>
-	 * checkedAct) {
-	 * 
-	 * 
-	 * return actCodeService.deleteActInfo(checkedAct); }
-	 */
 	@PostMapping("/actCheckedDelete")
 	@ResponseBody 
 	public List<String> actCheckedDelete(@RequestBody List<ActCodeVO> checkedAct) {

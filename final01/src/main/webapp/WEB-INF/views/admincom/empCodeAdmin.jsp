@@ -24,75 +24,96 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
+<style>
+	label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	
+	input[type="text"],
+	input[type="password"],
+	select {
+	  width: 100%;
+	  padding: 6px;
+	  margin-bottom: 4px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	
+</style>
 </head>
 <body>
 <div class="black_bg"></div>
    	<h3>사원관리</h3>
-	<div>
-		<!-- 수정함 -->
-		<form id="userInsertForm" method="post">
-		<div>
-		<p>등록/수정</p>
+   	<div style="display: flex;">
+		<div style="width: 75%;">
+		   <div class="col-lg-12 stretch-card">
+		       <div class="card">
+		           <div class="card-body">
+		               <div class="table-responsive pt-3">
+		                   <form action="" method="get" name="formInfo" >
+									사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" style="width: 20%; margin-bottom: 20px;">
+									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+										<i class="fas fa-search"></i>검색
+									</button>
+									<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+				           
+		               		</form>
+		               <div id="grid"></div>
+		                </div>
+		         </div>
+		      </div>
+		   </div> 
+	   </div>
+	   <div style="width: 25%;">
+			<div class="col-lg-12 stretch-card">
+			<div class="card" >
+				<div class="card-body">
+					<div class="table-responsive pt-3">
+						<form id="userInsertForm" method="post">
+						<div>
+						<p>등록/수정</p>
+						</div>
+							<label>사원코드</label>
+							<input type="text" name="empCode" id="empCode" readonly="readonly" style="background-color: skyblue;">
+							<label>사원명</label>
+							<input type="text" name="empName" id="empName">
+							<label>비밀번호</label>
+							<input type="password" name="empBeforePw" id="empBeforePw">
+							<label>비밀번호 확인</label>
+							<input type="password" name="empPw" id="empPw">
+							<label>부서명</label>
+							<select id="inputDeptList" name="deptCode">
+								<c:forEach items="${inputDeptList}" var="d">
+									<option value="${d.commdeCode }">${d.commdeName }</option>
+								</c:forEach>
+							</select>
+							<label>연락처</label>
+							<input type="text" name="empTel" id="empTel">
+							<label>직급</label>
+							<select id="inputRoleList" name="empRole">
+								<c:forEach items="${inputRoleList}" var="i">
+									<option value="${i.commdeCode }">${i.commdeName }</option>
+								</c:forEach>
+							</select>
+							<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
+							<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-			<table>
-				<tr>
-					<th>사원코드</th>
-					<td><input type="text" name="empCode" id="empCode" readonly="readonly" style="background-color: skyblue;"></td>
-				</tr>
-				<tr>
-					<th>사원명</th>
-					<td><input type="text" name="empName" id="empName"></td>
-				</tr>
-				<tr>
-					<th>비밀번호</th>
-					<td><input type="password" name="empPw" id="empPw"></td>
-				</tr>
-				<tr>
-					<th>부서명</th>
-					<td>
-						<select id="inputDeptList" name="deptCode">
-							<c:forEach items="${inputDeptList}" var="d">
-								<option value="${d.commdeCode }">${d.commdeName }</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>연락처</th>
-					<td><input type="text" name="empTel" id="empTel"></td>
-				</tr>
-				<tr>
-					<th>직급</th>
-					<td>
-						<select id="inputRoleList" name="empRole">
-							<c:forEach items="${inputRoleList}" var="i">
-								<option value="${i.commdeCode }">${i.commdeName }</option>
-							</c:forEach>
-						</select>
-					</td>
-				</tr>
-			</table>
-			<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
-			<button type="reset" class="btn btn-info btn-icon-text">취소</button>
-		</form>
+   </div>
+   <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
 	</div>
-   <div class="col-lg-12 stretch-card">
-       <div class="card">
-           <div class="card-body">
-               <div class="table-responsive pt-3">
-                   <form action="" method="get" name="formInfo">
-							사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch">
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-		           
-               </form>
-               <div id="grid"></div>
-                </div>
-         </div>
-      </div>
-   </div> 
 <script>
 
 //사원명검색조회
@@ -105,7 +126,12 @@
 			   method : 'GET',
 			   data : search,
 			   success : function(data){
+				   $.each(data, function(i, objDe){
+						let empDate = data[i]['empDate'];
+						data[i]['empDate'] = getDate(empDate);
+					})
 				   grid.resetData(data);
+				   $('#userInsertForm')[0].reset();
 			   },
 			   error : function(reject){
 				   console.log(reject);
@@ -120,6 +146,10 @@
 		   method : 'GET',
 		   data : search,
 		   success : function(data){
+			   $.each(data, function(i, objDe){
+					let empDate = data[i]['empDate'];
+					data[i]['empDate'] = getDate(empDate);
+				})
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -137,7 +167,7 @@
 	       pagination: true,
 	       pageOptions: {
 	         useClient: true,
-	         perPage: 5,
+	         perPage: 10,
 	       },
 	       columns: [
 	         {
@@ -154,7 +184,8 @@
 	         },
 	         {
 	           header: '직급정보',
-	           name: 'empRole'
+	           name: 'empRole',
+	           hidden: true
 		      },
 	         {
 	           header: '직급정보',
@@ -162,7 +193,8 @@
 	         },
 	         {
 	           header: '부서명',
-	           name: 'deptCode'
+	           name: 'deptCode',
+	           hidden: true
 	         },
 	         {
 	           header: '부서명',
@@ -194,17 +226,31 @@
 		
 		if(userObj.empCode != ''){
 			e.preventDefault();
-			if(userObj.empName == '' || userObj.empPw == '' || userObj.empTel == '' || userObj.empRole == ''){
+			if(userObj.empName == '' || userObj.empTel == ''){
 				swal("정보입력필요", "필요정보를 모두 입력해 주세요", "warning")
 			}else{
-				requestUpdateUser(userObj);
+				if(userObj.empPw !='' || userObj.empBeforePw !=''){
+					if(userObj.empPw == userObj.empBeforePw){
+						requestUpdateUser(userObj);
+					}else{
+						swal("비밀번호확인필요", "비밀번호를 동일하게 입력해 주세요", "warning")
+					}
+				}else{
+					requestUpdateUser(userObj);
+				}
+				
 			}
 		}else{
 			e.preventDefault();
-			if(userObj.empName == '' || userObj.empTel == '' || userObj.empRole == ''){
+			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == ''){
 				swal("정보입력필요", "필요정보를 모두 입력해 주세요", "warning")
 			}else{
-			requestInsertUser(userObj);
+				if(userObj.empPw == userObj.empBeforePw){
+					requestInsertUser(userObj);
+				}else{
+					swal("비밀번호확인필요", "비밀번호를 동일하게 입력해 주세요", "warning")
+				}
+			
 			}
 		}
 	})
@@ -220,7 +266,7 @@
 			data : userObj,
 			success : function(result){
 				swal("등록성공", "등록되었습니다", "success")
-				$('form')[0].reset();
+				$('#userInsertForm')[0].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
 				 $.ajax({
@@ -229,6 +275,7 @@
 				   data : search,
 				   success : function(data){
 					   grid.resetData(data);
+					   
 				   },
 				   error : function(reject){
 					   console.log(reject);
@@ -244,7 +291,7 @@
 	/* //버튼에 이벤트 걺(+)
 	$('#userInsertBtn').on('click', requestInsertUser); */
 
-	
+	//사원 정보 수정
 	function requestUpdateUser(userObj){
 		
 		$.ajax({
@@ -256,7 +303,7 @@
 		.done(data => {
 			if(data > 0){
 				swal("수정성공", "수정되었습니다", "success");
-				$('form')[0].reset();
+				$('#userInsertForm')[0].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
 				 $.ajax({
