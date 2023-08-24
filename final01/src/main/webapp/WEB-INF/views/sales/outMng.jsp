@@ -180,6 +180,9 @@ body {
 input[type="date"]{
 	width : 221px;
 }
+.yellow-background {
+        background-color: rgb(255,253,235);
+}
 </style>    
        
 </head>
@@ -256,7 +259,12 @@ input[type="date"]{
 	
 	//행추가 버튼 클릭시 주문등록 행 추가
 	function addDirRow(){
-		outGrid.appendRow({}, { at: 0 });
+		let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let salesOutDate = year + "-" + month + "-" + day;
+		outGrid.appendRow({'salesOutDate' : salesOutDate, 'empCode' : `${user.id}`, 'empName' : `${user.empName}`}, { at: 0 });
 	}
 
 	
@@ -273,6 +281,7 @@ input[type="date"]{
 			           	salesOutAmt : "${out.salesOutAmt}",
 			           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
 			           	empCode : "${out.empCode}",
+			           	empName : "${out.empName}",
 			           	prodSaveAmt : "${out.prodSaveAmt}"
 	              }<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
@@ -328,13 +337,18 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
+		         },
+		         {
+		           header: '직원이름',
+		           name: 'empName'
 		         },
 		         {
 		           header: '직원코드',
 		           name: 'empCode',
 		           editor: 'text',
-		           value : '${out.empCode}'
+		           hidden : true
 		         },
 	         	{
 		           header: '출고여부',
@@ -495,7 +509,8 @@ input[type="date"]{
   	             },
   	             {
   	               header: '입고날짜',
-  	               name: 'salesInDate'
+  	               name: 'salesInDate',
+  	             className: 'yellow-background'
   	             },
   	             {
   	               header: '입고량',
@@ -507,7 +522,8 @@ input[type="date"]{
    	             },
 	             {
  	  	            header: '유통기한',
- 	  	            name: 'salesInExd'
+ 	  	            name: 'salesInExd',
+ 	  	         className: 'yellow-background'
  	  	          },
  	  	          {
   	    	        header: '직원코드',
@@ -568,7 +584,8 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '거래처명',
@@ -602,7 +619,8 @@ input[type="date"]{
 		    		      options: {
 		    		    	  language: 'ko'
 		    		      }
-		    		    }
+		    		    },
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '출고여부',
@@ -751,17 +769,17 @@ input[type="date"]{
         
       let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
       $.ajax({
-         url : 'orderListFilter',
+         url : 'outListFilter',
          method : 'GET',
          data : search ,
          success : function(data2){
         	 
 				$.each(data2, function(idx, obj){
-					let date = new Date(obj['ordDate']);
+					let date = new Date(obj['salesOutDate']);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-					obj['ordDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					obj['salesOutDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
 				})
            outGrid.resetData(data2);
@@ -888,6 +906,15 @@ input[type="date"]{
         }
         return ret;
     }
+  
+    //엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+    
+    document.addEventListener('DOMContentLoaded', ()=>{
+       excelDownload.addEventListener('click', function(e){
+    	   outGrid.export('xlsx');
+       })
+    })
     </script>
 </body>
 </html>

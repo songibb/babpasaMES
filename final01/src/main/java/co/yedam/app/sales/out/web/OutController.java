@@ -24,7 +24,7 @@ public class OutController {
 
 	@GetMapping("/outList")
 	public String outList(Model model) {
-		model.addAttribute("outList", outService.getOutList());
+		model.addAttribute("outNList", outService.getOutNList());
 		model.addAttribute("actList", outService.actAllList());
 		model.addAttribute("prodList", outService.prodAllList());
 		return "sales/outList";

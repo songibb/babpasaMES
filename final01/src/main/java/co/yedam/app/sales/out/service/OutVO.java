@@ -52,4 +52,5 @@ public class OutVO {
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date devDate;
 	private String devYn;
+	private String empName;
 }

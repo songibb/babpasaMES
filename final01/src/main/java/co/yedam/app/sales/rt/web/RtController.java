@@ -23,15 +23,17 @@ public class RtController {
 	
 	@GetMapping("/rtList")
 	public String rtList(Model model) {
-		model.addAttribute("rtList", rtService.getRtList());
+		model.addAttribute("rtList", rtService.getAlreadyOutList());
 		model.addAttribute("prodList", rtService.prodAllList());
 		return "sales/rtList";
 	}
 	// 검색 ajax
 		@GetMapping("/rtListFilter")
 		@ResponseBody
-	public List<RtVO> RtListFilter(@RequestParam(value = "prodCode", required = false) String prodCode){
-		List<RtVO> vo = rtService.searchRtList(prodCode);
+	public List<RtVO> RtListFilter(@RequestParam(value = "prodCode", required = false) String prodCode,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate){
+		List<RtVO> vo = rtService.searchRtList(prodCode, startDate, endDate);
 		return vo;
 		
 	}
@@ -40,7 +42,7 @@ public class RtController {
 	@GetMapping("/rtMng")
 	public String rtMng(Model model) {
 		model.addAttribute("rtList", rtService.getAlreadyOutList());
-		
+		model.addAttribute("prodList", rtService.prodAllList());
 		model.addAttribute("outList", rtService.getOutList());
 		return "sales/rtMng";
 	}

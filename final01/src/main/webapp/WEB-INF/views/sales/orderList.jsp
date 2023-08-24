@@ -176,7 +176,9 @@
    input[type="date"]{
       width : 221px;
    }
-
+.yellow-background {
+        background-color: rgb(255,253,235);
+}
 </style>
 </head>
 <body>
@@ -398,18 +400,20 @@
    var grid = new tui.Grid({
           el: document.getElementById('grid'),
           data: [
-              <c:forEach items="${orderList}" var="order">
-                 {
-                	 salesOrdDeCode : "${order.salesOrdDeCode}",
-                	 ordDate : `<fmt:formatDate value="${order.ordDate}" pattern="yyyy-MM-dd"/>`,
-    	           	 actName : "${order.actName}",
-    	           	 ordSts : "${order.ordSts}",
-    	           	 prodName : "${order.prodName}",
-    	           	 prcsRqAmt : "${order.prcsRqAmt}",
-    	           	 devDate : `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
-    	           	 devYn : "${order.devYn}"
-                 },
-              </c:forEach>
+        	  <c:forEach items="${orderNList}" var="order" varStatus="status">
+	           	{
+	           		salesOrdDeCode : "${order.salesOrdDeCode}",
+             	 ordDate : "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
+ 	           	 actName : "${order.actName}",
+ 	           	 ordSts : "${order.ordSts}",
+ 	           	 prodName : "${order.prodName}",
+ 	           	 prcsRqAmt : "${order.prcsRqAmt}",
+ 	           	 devDate : "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
+ 	           	 devYn : "${order.devYn}",
+ 	           	 empCode : "${order.empCode}",
+ 	           	 empName : "${order.empName}"
+	           	}<c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
              ],
          scrollX: false,
           scrollY: false,
@@ -429,11 +433,14 @@
 		         },
 		         {
 		           header: '주문날짜',
-		           name: 'ordDate'
+		           name: 'ordDate',
+		           value : '${order.ordDate}',
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '거래처명',
-		           name: 'actName'
+		           name: 'actName',
+		           value : '${order.actName}'
 		         },
 		         {
 		           header: '생산계획상태',
@@ -449,12 +456,43 @@
 		         },
 		         {
 		           header: '납기일자',
-		           name: 'devDate'
+		           name: 'devDate',
+		    		    className: 'yellow-background'
 		         },
 		         {
 		           header: '출고여부',
-		           name: 'devYn'
-		         }
+		           name: 'devYn',
+		           value : '${order.devYn}'
+		         },
+		         {
+		           header: '주문코드',
+		           name: 'ordCode',
+		           hidden : true
+		         },
+		         {
+		           header: '거래처코드',
+		           name: 'actCode',
+		           hidden : true
+		         },
+		         {
+		           header: '직원이름',
+		           name: 'empName',
+		         },
+	         	{
+		           header: '생산계획코드',
+		           name: 'prcsPlanCode',
+		           hidden : true
+		         },
+	         	{
+		           header: '제품코드',
+		           name: 'prodCode',
+		           hidden : true
+		         },
+		         {
+			           header: '직원코드',
+			           name: 'empCode',
+			           hidden : true
+			         }
            ]
          
         });
@@ -473,12 +511,21 @@
          method : 'GET',
          data : search ,
          success : function(data){
-        	  for(let i of data){
+        	 for(let i of data){
+        		 
 					let date = new Date(i.ordDate);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
-			   		i.ordDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+			   		i.ordDate = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					
+			   		date = new Date(i.devDate);
+			   		year = date.getFullYear(); 
+			   		month = date.getMonth() + 1;
+			   		day = date.getDate();
+			   		i.devDate = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+			   		
 			  }
             grid.resetData(data);
          },
