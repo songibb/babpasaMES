@@ -16,7 +16,7 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
 	
-	#save, #delete{
+	#save, #delete, #dirAdd{
 		margin-top : 120px;
 		float : right;
 	}
@@ -46,11 +46,11 @@
 	  line-height:23px;
 	}
 	
-	.m_body > p{
+	#m_body_s > p{
 		display : inline-block;
 	}
 	
-	.m_body > input{
+	#m_body_s > input{
 		border : 1px solid black;
 	}
 	
@@ -93,7 +93,7 @@
 	    			</div>
 				</div>
 	    			<div id="container" style="display: flex;">
-		           		<div style="flex: 1;"><h2>유통기한 임박 자재 목록</h2>
+		           		<div style="flex: 1;"><h2>유통기한 지난 자재 목록</h2>
 			            <br>
 			            <div id="grid3" style="width: 730px;"></div></div>
 		           		<div style="flex: 1;"><h2>반품 실패 자재 목록</h2>
@@ -114,12 +114,17 @@
             	<div class="close_btn" id="close_btn">X</div>
        		</div>
        		<div class="m_body">
+       			<div id="m_body_s">
        			<p>이름</p>
                 <input type="text" id="modalSearch">
                 <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+                </div>
             	<div id="modal_label"></div>
        		</div>
        		<div class="m_footer">
+       			<div id="reset_btn">
+            	<div class="modal_btn cancle" id="resetModal">RESET</div>
+            	</div>
             	<div class="modal_btn cancle close_btn">CANCLE</div>
     		</div>
   		</div>
@@ -142,7 +147,6 @@
 		           		empCode : "${mat.empCode}",
 		           		empName : "${mat.empName}",
 		           		matDpInfo : "${mat.matDpInfo}",
-		           		beforeMatDpAmt : "${mat.matDpAmt}",
 		           		matChangeAmt : 0
 		           	},
 		           </c:forEach>
@@ -190,16 +194,14 @@
 			 	    header: '폐기수량',
 			 	    name: 'matDpAmt',
 		 	       	formatter(e) { 
-		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		 	           	return val;
-		 	        },
-		 	        editor : 'text' 
+			 	    	if(e['value'] != null){
+			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+			 	           	return val;
+			 	    	} else{
+			 	    		return 0;
+			 	    	}
+		 	        }
 		 	        	
-			 	  },
-			 	  {
-			 		header: '본래폐기수량',
-			 		name: 'beforeMatDpAmt',
-			 		hidden: true
 			 	  },
 				  {
 			 	    header: '폐기일자',
@@ -230,6 +232,8 @@
 		 	    ]
 		      
 	});
+	
+
 	
 	 //rt 목록 그리드
 	   var rtGrid = new tui.Grid({
@@ -434,20 +438,6 @@
 	//저장버튼
 	document.getElementById('save').addEventListener('click', saveServer);
 	
-	//변화량 구하기
-	 grid.on('afterChange', (ev) => {
-		
-		let change = ev.changes[0];
-		let rowData = grid.getRow(change.rowKey);
-		
-		if(rowData.matIdentiCode != null){
-			if(change.columnName == 'matDpAmt'){
-				finalAmt = Number(rowData.matDpAmt) - Number(rowData.beforeMatDpAmt);
-				grid.setValue(change.rowKey, 'matChangeAmt', finalAmt);
-			}
-		}
-	});
-	
 	
 	//저장 함수
 	function saveServer() {	
@@ -533,7 +523,7 @@
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
 					obj['matDpDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-										
+					
 				})
 				grid.resetData(data2);
 				
@@ -547,7 +537,7 @@
 			url: 'getRtFailFilter',
 			method: 'GET',
 			success: function(result){
-				$.each(data2, function(idx, obj){
+				$.each(result, function(idx, obj){
 					
 					let date = new Date(obj['matRtDate']);
 					let year = date.getFullYear();    //0000년 가져오기
@@ -570,7 +560,7 @@
 			url: 'getOverDateFilter',
 			method : 'GET',
 			success: function(result){
-				$.each(data2, function(idx, obj){
+				$.each(result, function(idx, obj){
 					
 					let date = new Date(obj['matExd']);
 					let year = date.getFullYear();    //0000년 가져오기
@@ -593,6 +583,7 @@
 	//자재 모달창
 	$("#matModal").click(function(){
 		$(".modal").fadeIn();
+		$("#reset_btn").css("display","none");
 		preventScroll();
 		Grid = createMatGrid();
 		$('.modal_title h3').text('자재 목록');
@@ -697,6 +688,8 @@
     	if(Grid != null && Grid.el != null){
  			Grid.destroy();	
  		}
+    	$("#reset_btn").css("display","block");
+       	$("#m_body_s").css("display", "block");
   	});
 	
 	//검색버튼
@@ -711,8 +704,7 @@
  		   obj.value = '';
  	   })
     }
-    
-    
+  
     
   	//엑셀 다운로드
     const excelDownload = document.querySelector('.excelDownload');
@@ -757,13 +749,7 @@
     					   'empCode' : `${user.id}`,
     					   'empName' :`${user.empName}`,
     					   }, { at: 0 });
-    	
-    	
-		
-		
-    	
-    	
-    	
+
   	});
     
     exdGrid.on('dblclick', () => {

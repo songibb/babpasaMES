@@ -28,5 +28,7 @@ public class MatRtVO {
 	
 	private String matUnit;
 	private String matStd;
+	
+	private String matRtTotalAmt;
 
 }

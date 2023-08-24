@@ -235,7 +235,7 @@
 	
 	
 
-	//행추가 버튼 클릭시 상세생산지시 행 추가
+	//행추가 버튼
 	
 	function addDirRow(){
 		//등록 거래처명
@@ -327,7 +327,11 @@
 				 	           	return val +"원";	
 			 	 	        	}
 				 	        },
-				 	        width: 120
+				 	        width: 120,
+				 	 	  	validation: {
+					 	         dataType: 'number',
+					 	         required: true
+					 	    }
 			 	 	  },
 			 	 	  {
 			 	 	        header: '발주량',
@@ -338,7 +342,11 @@
 					 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 				 	           	return val;
 				 	        	}
-				 	 	    }
+				 	 	    },
+				 	 	  	validation: {
+				 	         dataType: 'number',
+				 	         required: true
+				 	       }
 			 	 	  },
 			 	 	  {
 			 	 	        header: '총액',
