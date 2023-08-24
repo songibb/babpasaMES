@@ -70,7 +70,6 @@
     			success : function(data){
     	          	//체크박스 체크한 주문서의 상세 내역(제품코드, 주문수량) 그리드에 가져오기
     	          	planDeGrid.resetData(data);
-    	          	
 
     			},
     			error : function(reject){

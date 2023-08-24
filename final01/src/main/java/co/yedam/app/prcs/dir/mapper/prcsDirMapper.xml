@@ -152,4 +152,13 @@
 	</select>
 
 
+	<!-- 진행공정 모두 공정완료시 생산지시 수정 -->
+	<update id="updateDirPrcsSts" parameterType="String">
+		{
+			CALL PR_UPDATE_DIR_STS(
+				#{prcsDirCode}
+			)
+		}
+	</update>
+	
 </mapper>

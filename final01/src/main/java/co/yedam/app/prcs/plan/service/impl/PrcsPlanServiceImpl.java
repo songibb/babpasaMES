@@ -25,6 +25,7 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 //		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
 //	}
 	public List<PrcsPlanVO> selectPrcsPlanList(PrcsSearchVO prcsSearchVO) {
+		
 		return prcsPlanMapper.selectPrcsPlanList(prcsSearchVO);
 	}
 	
@@ -131,6 +132,17 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 
 		return deList;
 	}
+
+	//상세생산계획 모두 지시완료시 생산계획 수정
+	@Override
+	public int updatePlanDirSts(List<PrcsPlanVO> planList) {
+		int result = 0;
+		for(PrcsPlanVO vo : planList) {
+			prcsPlanMapper.updatePlanDirSts(vo.getPrcsPlanCode());
+			result++;
+		}
+		return result;
+	}
 	
 	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
 //	@Override
@@ -138,7 +150,7 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 //		return prcsPlanMapper.updateNotPlanOrderList(prcsPlanVO);
 //	}
 
-
+	
 	
 
 }

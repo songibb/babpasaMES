@@ -48,33 +48,36 @@
 	<h2>생산 계획 관리</h2>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">	
+			<div class="card-body">				
+				<div style="display: flex; justify-content: space-between;">
 					<form>
 						<div id="customtemplateSearchAndButton">		
 							<p>계획일자</p>
-                  			<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+	                 		<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
 							<br>
 							
 							<p>계획명</p>
 							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
-							
-							<br>
+
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
-		            	</div>
+		            	</div>	            	
 	            	</form>		
-				</div>
+	            	<div>
+	            		<button id="orderModal" class="btn btn-info btn-icon-text">미계획 주문서 가져오기</button>
+	            	</div>	
+            	</div>
+
 				
 				<div id="planContainer">
 					<div id="leftGrid">
 						<div id="leftGridHeader">
 							<span>생산 계획</span>	
 							<div>
-								<button id="save" class="btn btn-info btn-icon-text">저장</button>
-			            		<button id="remove" class="btn btn-info btn-icon-text">삭제</button>
+								<button id="remove" class="btn btn-info btn-icon-text">삭제</button>
+								<button id="save" class="btn btn-info btn-icon-text">저장</button>		            		
 							</div>
 						</div>
 							            	
@@ -83,10 +86,7 @@
 					<div id="rightGrid">
 						<div id="rightGridHeader">
 							<span>상세 생산 계획</span>
-							<div>
-			            		<button id="orderModal" class="btn btn-info btn-icon-text">주문서조회</button>
-
-			            	</div>
+							
 						</div>		
 	           			<div id="planDeGrid"></div>
 					</div>
@@ -112,9 +112,12 @@
 	document.getElementById('remove').addEventListener('click', removeRow);
 	
 	
+	
 	//검색 -> 상세생산계획에 주문서 조회 적용 후에는 생산계획 그리드 클릭 적용안되게 할 변수
 	//상세계획 클릭시 'Y' / 주문서조회 -> 상세계획 클릭시 'N'
 	var gridClick = null;
+	
+	searchPlanList();
 	
 	//검색 -> 조건별 생산계획 조회
 	function searchPlanList(){
@@ -139,6 +142,8 @@
 				
 				planGrid.resetData(data);
 				planDeGrid.clear();	
+				stopEdit();
+				
 				
 				gridClick = 'Y';
 			},
@@ -147,6 +152,7 @@
 			}
 		});
 	}
+	
 
 
 	//저장 - 등록, 수정, 삭제 전부 가능
@@ -351,8 +357,8 @@
 		//빈 데이터 있는지 체크
 		$.each(deList, function(i, objDe){
 			for(let field in objDe){
-				console.log(field+'-'+objDe[field]);			
-				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null){
+				//console.log(field+'-'+objDe[field]);			
+				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null || objDe['ordCode']){
 					flag = false;
 				}
 			}					
@@ -369,11 +375,11 @@
 				async : false, 
 				success : function(data){									
 					//등록 후 그리드 내용 지우고, 행추가
-					planGrid.clear();
-					planGrid.appendRow();
-					planDeGrid.clear()
-					planDeGrid.appendRow();
-
+// 					planGrid.clear();
+// 					planGrid.appendRow();
+// 					planDeGrid.clear()
+// 					planDeGrid.appendRow();
+					searchPlanList();
 					swal("등록이 완료되었습니다.", "", "success");
 			
 				},
@@ -405,8 +411,7 @@
 			async : false,  //data 모두 수신 후 변수 updateOk에 담기 위해 동기방식으로 처리
 			success : function(data){	
 				updateOk = updateOk + data;
-				planDeGrid.clear();
-				planDeGrid.appendRow();
+				searchPlanList();
 			},
 			error : function(reject){
 	 			console.log(reject);
@@ -435,8 +440,9 @@
 			async : false,
 			success : function(data){
 				updateOk = updateOk + data;
-				planDeGrid.clear();
-				planDeGrid.appendRow();
+// 				planDeGrid.clear();
+// 				planDeGrid.appendRow();
+				searchPlanList();
 			},
 			error : function(reject){
 	 			console.log(reject);
@@ -500,15 +506,15 @@
 
 	
 	//페이지 호출시 생산계획 등록하는 행 자동 생성
-	window.onload = function addRow(){
-		planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
-		planDeGrid.appendRow();
-	} 
+// 	window.onload = function addRow(){
+// 		planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
+// 		planDeGrid.appendRow();
+// 	} 
 
 	//행추가 버튼 클릭시 상세생산계획 행 추가
-	function addDeRow(){
-		planDeGrid.appendRow();
-	}
+// 	function addDeRow(){
+// 		planDeGrid.appendRow();
+// 	}
 		
 	//생산계획 grid
     var planGrid = new tui.Grid({
@@ -548,11 +554,11 @@
             name: 'empName',
             editor: 'text'
           },
-//           {
-// 			header: '생산지시여부',
-//             name: 'prcsDirYn',
-//             hidden: true
-//           },
+          {
+			header: '생산지시여부',
+            name: 'prcsDirYn',
+            hidden: true
+          },
           {
             header: '예상생산시작일',
             name: 'prcsStartDate',
@@ -602,14 +608,15 @@
 				hidden: true
 			},
 			{
-				header: '제품명',
+				header: '제품코드',
 				name: 'prodCode',
+				hidden:true
 			},
-// 			{
-// 				header: '제품명',
-// 				name: 'prodName',
-// 				editor: 'text'
-// 			},
+			{
+				header: '제품명',
+				name: 'prodName',
+				editor: 'text'
+			},
 			{
 				header: '주문수량',
 				name: 'prcsRqAmt',
@@ -656,13 +663,20 @@
 	    	//클릭한 계획의 계획코드 가져오기
 	    	let rowKey = planGrid.getFocusedCell().rowKey;
 	    	let planCode = planGrid.getValue(rowKey, 'prcsPlanCode');
-	
+			let getRow = planGrid.getRow(rowKey);
 	    	$.ajax({
 				url : 'prcsPlanDeList',
 				method : 'GET',
 				data : { prcsPlanCode : planCode },
 				success : function(data){
 					planDeGrid.resetData(data);
+					
+					//지시완료는 수정, 삭제 불가
+					if(getRow['prcsDirYn'] == '지시완료'){		
+						$.each(planDeGrid.getData(), function(idx, obj){
+							planDeGrid.disableRow(obj['rowKey']);
+						});
+					}
 	 		    },
 				error : function(reject){
 		 			console.log(reject);
@@ -671,8 +685,15 @@
 		}
   	});
 	
-
 	
+	//지시완료는 수정, 삭제 불가
+	function stopEdit(){
+		$.each(planGrid.getData(), function(idx, obj){
+			if(obj['prcsDirYn'] == '지시완료'){	
+				planGrid.disableRow(obj['rowKey']);
+			}
+		})
+	}
 	
 
     </script>

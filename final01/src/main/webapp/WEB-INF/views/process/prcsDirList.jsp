@@ -125,9 +125,14 @@
             name: 'prcsDirSts'
           },
           {
+            header: '담당자코드',
+            name: 'empCode',
+            hidden: true
+          },
+          {
             header: '담당자',
-            name: 'empCode'
-          }
+            name: 'empName'
+          },
         ]
       })  
 
@@ -172,6 +177,11 @@
           {
             header: '공정진행상태',
             name: 'prcsIngSts'
+          },
+          {
+            header: '담당자코드',
+            name: 'empCode',
+            hidden: true
           },
           {
             header: '담당자',
@@ -292,6 +302,47 @@
   	});
   	
   	
+  	//생산지시 -> 생산완료 update
+	let dirList = dirGrid.getData();
+	console.log(dirList);
+	
+	function updateDirPrcsStsAjax(){
+		$.ajax({
+			url : 'updateDirPrcsSts',
+			method : 'POST',
+			data : JSON.stringify(dirList),
+			contentType : "application/json",
+			success : function(data){
+				console.log(data);
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+	}
+
+	updateDirPrcsStsAjax();
+   
+	//상세생산지시 -> 생산지시완료 update
+	let dirList = dirGrid.getData();
+	console.log(dirList);
+	
+	function updateDirPrcsStsAjax(){
+		$.ajax({
+			url : 'updateDirPrcsSts',
+			method : 'POST',
+			data : JSON.stringify(dirList),
+			contentType : "application/json",
+			success : function(data){
+				console.log(data);
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+	}
+
+	updateDirPrcsStsAjax();
    
  
     

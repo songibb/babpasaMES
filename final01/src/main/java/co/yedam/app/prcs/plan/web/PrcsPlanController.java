@@ -131,5 +131,12 @@ public class PrcsPlanController {
 		return empInfoService.selectEmpInfoList();
 	}
 	
+	
+	//조회할때마다 생산지시여부 수정
+	@PostMapping("updatePlanDirSts")
+	@ResponseBody
+	public int updatePlanDirSts(@RequestBody List<PrcsPlanVO> planList) {
+		return prcsPlanService.updatePlanDirSts(planList);
+	}
 
 }

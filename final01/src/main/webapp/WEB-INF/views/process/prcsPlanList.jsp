@@ -76,10 +76,12 @@
     
 	<script>
 	
-
+	
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
 
+
+	
 	function searchPlanList(){
 		   let planName = $('#searchPlanName').val();
 		   let sd = $('#startDate').val();
@@ -116,9 +118,10 @@
 	           <c:forEach items="${planList}" var="p" varStatus="status">
 	           	{
 	           		prcsPlanCode : "${p.prcsPlanCode}",
-	           		prcsPlanName :"${p.prcsPlanName}",
-	           		prcsPlanDate :"<fmt:formatDate value='${p.prcsPlanDate}' pattern='yyyy-MM-dd'/>",
-	           		empCode :"${p.empCode}",
+	           		prcsPlanName : "${p.prcsPlanName}",
+	           		prcsPlanDate : "<fmt:formatDate value='${p.prcsPlanDate}' pattern='yyyy-MM-dd'/>",
+	           		empCode : "${p.empCode}",
+	           		empName : "${p.empName}",
 	           		prcsDirYn : "${p.prcsDirYn}",
 	           		prcsStartDate : "<fmt:formatDate value='${p.prcsStartDate}' pattern='yyyy-MM-dd'/>",
 	           		prcsEndDate : "<fmt:formatDate value='${p.prcsEndDate}' pattern='yyyy-MM-dd'/>"
@@ -148,9 +151,13 @@
             header: '계획일자',
             name: 'prcsPlanDate'
           },
+//           {
+//             header: '담당자코드',
+//             name: 'empCode'
+//           },
           {
             header: '담당자',
-            name: 'empCode'
+            name: 'empName'
           },
           {
             header: '예상생산시작일',
@@ -159,6 +166,10 @@
           {
             header: '예상생산종료일',
             name: 'prcsEndDate'
+          },
+          {
+       	    header: '생산지시여부',
+            name: 'prcsDirYn'
           }
         ]
       })  
@@ -214,11 +225,11 @@
             header: '지시상태',
             name: 'prcsDirSts'
           }
-          ,
-          {
-            header: '생산량',
-            name: 'prcsAmt'
-          }
+//           ,
+//           {
+//             header: '생산량',
+//             name: 'prcsAmt'
+//           }
         ]
       })  
 	
@@ -243,7 +254,29 @@
   	});
 		
 	
+	//생산계획 -> 지시완료 update
+	let planList = planGrid.getData();
+	console.log(planList);
+	
+	function updatePlanDirStsAjax(){
+		$.ajax({
+			url : 'updatePlanDirSts',
+			method : 'POST',
+			data : JSON.stringify(planList),
+			contentType : "application/json",
+			success : function(data){
+				console.log(data);
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+	}
 
+	updatePlanDirStsAjax();
+
+	
+	
  	
  	
 	//이전 날짜 선택불가
