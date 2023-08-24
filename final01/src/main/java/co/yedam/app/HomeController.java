@@ -47,6 +47,7 @@ public class HomeController {
 		 */
 		model.addAttribute("amtList", bomCodeService.chartTest());
 		model.addAttribute("prodAmtList", mainService.selectProdAmtList());
+		model.addAttribute("salesList", mainService.selectSaleAmtList());
 		
 		return "home";
 	}

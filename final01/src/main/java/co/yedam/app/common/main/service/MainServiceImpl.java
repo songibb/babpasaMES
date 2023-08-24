@@ -20,4 +20,10 @@ public class MainServiceImpl implements MainService{
 		return mainMapper.selectProdAmtList();
 	}
 
+	@Override
+	public List<MainVO> selectSaleAmtList() {
+		
+		return mainMapper.selectSaleAmtList();
+	}
+
 }

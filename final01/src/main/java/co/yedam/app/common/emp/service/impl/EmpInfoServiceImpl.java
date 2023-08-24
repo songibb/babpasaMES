@@ -43,9 +43,9 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 	}
 
 	@Override
-	public List<EmpInfoVO> empSelect(String empName) {
+	public List<EmpInfoVO> empSelect(EmpInfoVO empInfoVO) {
 		
-		return empInfoMapper.empSelect(empName);
+		return empInfoMapper.empSelect(empInfoVO);
 	}
 
 	@Override
@@ -53,6 +53,8 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 		
 		return empInfoMapper.updateEmpInfo(empInfoVO);
 	}
+
+
 
 	
 }
