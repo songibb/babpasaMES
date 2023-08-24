@@ -37,18 +37,22 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 
 	//생산계획 등록
 	@Override
-	public int insertPrcsPlan(PrcsPlanReqVO prcsPlanReqVO) {	
+	public int insertPrcsPlan(PrcsPlanReqVO prcsPlanReqVO) {
+		//생산계획 등록
 		int result = prcsPlanMapper.insertPrcsPlan(prcsPlanReqVO.getPrcsPlanVO());
 		
 		//selectKey 값 가져오기
 		String prcsPlanCode = String.valueOf(prcsPlanReqVO.getPrcsPlanVO().getPrcsPlanCode());		
-
-		//상세생산계획 등록
+				
 		int resultDe = 0;
 		for(PrcsPlanVO vo : prcsPlanReqVO.getInsertList()) {
 			vo.setPrcsPlanCode(prcsPlanCode);
-			
+
+			//상세생산계획 등록
 			prcsPlanMapper.insertPrcsPlanDe(vo);
+			
+			//생산계획 등록시 주문서 (미계획 -> 계획 / 계획코드 등록) 수정
+			prcsPlanMapper.updateNotPlanOrderList(vo);
 			resultDe++;
 		}
 		
@@ -102,8 +106,11 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	@Override
 	public int deletePrcsPlan(List<String> list) {
 		int result = 0;
-		for(String code : list) {
-			prcsPlanMapper.deletePrcsPlan(code);
+		for(String planCode : list) {
+			prcsPlanMapper.deletePrcsPlan(planCode);
+			
+			//생산계획 삭제시 주문서 (계획 -> 미계획 / 계획코드 삭제) 수정
+			prcsPlanMapper.UpdatePlanOrderList(planCode);
 			result++;
 		}
 		return result;

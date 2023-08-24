@@ -109,7 +109,7 @@
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
 	//삭제
-	document.getElementById('remove').addEventListener('click', removeRow);
+	document.getElementById('remove').addEventListener('click', removeData);
 	
 	
 	
@@ -155,187 +155,36 @@
 	
 
 
-	//저장 - 등록, 수정, 삭제 전부 가능
+	//저장 - 등록, 수정 가능
     function saveServer() {	
-		//편집종료
-    	planGrid.blur();
-    	planDeGrid.blur();
-
+		
     	//생산계획 편집종료
  		let rowKey = planGrid.getFocusedCell().rowKey;
-// 		let columnName = planGrid.getFocusedCell().columnName;
-// 		planGrid.finishEditing(rowKey, columnName);
+		let columnName = planGrid.getFocusedCell().columnName;
+		planGrid.finishEditing(rowKey, columnName);
 		
 		//상세생산계획 편집종료
 		let rowKeyDe = planDeGrid.getFocusedCell().rowKey;
-// 		let columnNameDe = planDeGrid.getFocusedCell().columnName;
-// 		planDeGrid.finishEditing(rowKeyDe, columnNameDe);
-    	
+		let columnNameDe = planDeGrid.getFocusedCell().columnName;
+		planDeGrid.finishEditing(rowKeyDe, columnNameDe);
 
-		//만약 상세생산계획의 수정한 부분이 이미 지시가 내려졌다면 수정, 삭제 불가
+		if(!planGrid.isModified() && !planDeGrid.isModified()){
+			swal("변경사항이 없습니다.", "", "warning");
+			return false;
+		}
 
     	let codeValue = planGrid.getValue(rowKey, 'prcsPlanCode');	
-    	
 		if(codeValue == null){
 			//insert
-			planInsert();	
-			
-			
+			planInsert();		
 		} else{
 			//update
-			planUpdate();
-			
-			//alert 표시를 위한 변수
-			let updateOk = false;
-			let updateDeOk = false;
-			
-			planUpdate();
-			planDeUpdate();
-			
-			if(updateOk == true && updateDeOk == true){
-				alert('수정완료');
-			}
-
-
-
+			planUpdate();		
 		}
 		
-		
-		
-		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
-		//let flag = true; 
-		
-		//update시 데이터 없는 경우 경고창 중복 방지할 변수
-		let noDataAlert = false;
-		
-		//insert, update, delete 전부 가져오기
-// 		$.each(gridInfo, function(field, array){				
-// 			if(field == 'createdRows' && array.length != 0){				
-// 				//insert
-// 				$.each(array, function(i, obj){
-// 					for(let field in obj){
-// 						//console.log(field+'-'+obj[field]);
-// 						if(obj[field] == null){
-// 							flag = false;
-// 						}
-// 					}
-// 				})
+	}	
 
-// 				$.each(deGridInfo, function(deField, deArray){					
-// 					if(deField == 'createdRows' && deArray.length != 0){
-// 						$.each(deArray, function(i, obj2){
-// 							for(let field in obj2){
-// 								//console.log('2'+field+'-'+obj2[field]);
-// 								if(field != 'prcsPrio' && obj2[field] == null){
-// 									flag = false;
-// 								}
-// 							}
-// 						})
-// 					}
-// 				})
-	
-// 				if(flag){	
-// 					planInsert();
-// 				} else {
-// 					alert('추가할 값이 입력되지 않았습니다.');
-// 				}
-				
-// 			} else if(field == 'updatedRows' && array.length != 0){
-// 			if(field == 'updatedRows' && array.length != 0){
-// 				//update(planGrid)	
-// 				$.each(array, function(i, obj){
-// 					for(let field in obj){
-// 						if(field == 'prcsPlanName' && obj['prcsPlanName'] == ''){
-// 							flag = false;
-// 							console.log('계획명:' + flag);
-// 						} else if(field == 'empCode' && obj['empCode'] == ''){
-// 							flag = false;
-// 							console.log('담당자:' + flag);
-// 						} else if(field == 'prcsStartDate' && obj['prcsStartDate'] == ''){
-// 							flag = false;
-// 							console.log('시작:' + flag);
-// 						} else if(field == 'prcsEndDate' && obj['prcsEndDate'] == ''){
-// 							flag = false;
-// 							console.log('종료:' + flag);
-// 						}
-// 					}
-// 				})
-
-// 				if(flag){	
-// 					planUpdate();
-// 				} else {
-// 					if(noDataAlert == false){
-// 						alert('수정할 값이 입력되지 않았습니다.');
-// 						noDataAlert = true;
-// 					}
-// 				}
-				
-// 			} else if(field == 'deletedRows' && array.length != 0){
-// 				//delete
-// 				let planCodeList = [];			
-// 				$.each(array, function(i, obj){
-// 					let planCode = array[i]['prcsPlanCode'];
-// 					planCodeList.push(planCode);
-// 				})
-// 				console.log(planCodeList);
-				
-// 				$.ajax({
-// 					url : 'prcsPlanDelete',
-// 					method : 'POST',
-// 					data : JSON.stringify(planCodeList),
-// 					contentType : 'application/json',
-// 					success : function(data){	
-// 						//상세생산계획 그리드 지우기
-// 						planDeGrid.clear();
-// 						alert(data + "건 삭제가 완료되었습니다.");
-// 					},
-// 					error : function(reject){
-// 			 			console.log(reject);
-// 			 		}		
-// 				})					
-// 			}	
-// 		})
-		
-// 		$.each(deGridInfo, function(deField, deArray){
-// 			//update(planDeGrid)
-// 			if(codeValue != null && deField == 'updatedRows' && deArray.length != 0){
-// 				$.each(deArray, function(i, obj2){
-// 					for(let field in obj2){
-// 						if(field == 'prodCode' && obj2['prodCode'] == ''){
-// 							flag = false;
-// 							console.log('제품코드:' + flag);
-// 						} else if(field == 'prcsRqAmt' && obj2['prcsRqAmt'] == ''){
-// 							flag = false;
-// 							console.log('주문수량:' + flag);
-// 						} else if(field == 'prcsPlanAmt' && obj2['prcsPlanAmt'] == ''){
-// 							flag = false;
-// 							console.log('생산계획량:' + flag);
-// 						}
-// 					}
-// 				})
-				
-// 				if(flag){	
-// 					planDeUpdate();
-// 				} else {
-// 					//update에서 경고창이 떴다면 다시 뜨지 않게 조건 걸기 
-// 					if (noDataAlert == false){		
-// 						alert('수정할 값이 입력되지 않았습니다.');
-// 						flag = false;
-// 					}
-// 				}
-// 			}			
-// 		})
-		
-
-  
-
- 	};
-
-
-	
-	
-	
-	
+	//등록
 	function planInsert(){
 		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
 		let flag = true; 
@@ -345,8 +194,8 @@
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
-				//console.log(field+'-'+obj[field]);
-				if(field != 'prcsPlanCode' && obj[field] == null){
+				console.log(field+'-'+obj[field]);
+				if(field != 'prcsPlanCode' && field != 'prcsDirYn' && obj[field] == null){
 					flag = false;
 				}
 			}
@@ -357,8 +206,8 @@
 		//빈 데이터 있는지 체크
 		$.each(deList, function(i, objDe){
 			for(let field in objDe){
-				//console.log(field+'-'+objDe[field]);			
-				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null || objDe['ordCode']){
+				console.log(field+'-'+objDe[field]);			
+				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null || objDe['ordCode'] == null){
 					flag = false;
 				}
 			}					
@@ -374,11 +223,6 @@
 				contentType : 'application/json',
 				async : false, 
 				success : function(data){									
-					//등록 후 그리드 내용 지우고, 행추가
-// 					planGrid.clear();
-// 					planGrid.appendRow();
-// 					planDeGrid.clear()
-// 					planDeGrid.appendRow();
 					searchPlanList();
 					swal("등록이 완료되었습니다.", "", "success");
 			
@@ -393,114 +237,91 @@
 	}
 	
 
-	
-	
-	//update(planGrid) ajax
+	//수정
 	function planUpdate(){		
-		//alert 표시를 위한 변수
-		let updateOk = 0;
-		
-		//생산계획 update
+		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
+		let flag = true; 
+	
 		let list = planGrid.getData();
-
-		$.ajax({
-			url : 'prcsPlanUpdate',
-			method : 'POST',
-			data : JSON.stringify(list),
-			contentType : 'application/json',
-			async : false,  //data 모두 수신 후 변수 updateOk에 담기 위해 동기방식으로 처리
-			success : function(data){	
-				updateOk = updateOk + data;
-				searchPlanList();
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}		
+		//빈 데이터 있는지 체크
+		$.each(list, function(i, obj){
+			for(let field in obj){
+				//console.log(field+'-'+obj[field]);
+				if(obj['prcsPlanName'] == null || obj['empCode'] == null || obj['prcsStartDate'] == null || obj['prcsEndDate'] == null){
+					flag = false;
+				}
+			}
 		})
 
-		if(updateOk > 0){
-			alert('ff :수정이 완료되었습니다.');
-		}		
+		let deList = planDeGrid.getData();
+		//빈 데이터 있는지 체크
+		$.each(deList, function(i, objDe){
+			for(let field in objDe){
+				//console.log(field+'-'+objDe[field]);			
+				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null){
+					flag = false;
+				}
+			}					
+		})			
+		
+		let planUpdateList = { updateList: list, updateDeList: deList };		
+		
+		if(flag){
+			$.ajax({
+				url : 'prcsPlanUpdate',
+				method : 'POST',
+				data : JSON.stringify(planUpdateList),
+				contentType : 'application/json',
+				success : function(data){	
+					searchPlanList();
+					swal("수정이 완료되었습니다.", "", "success");
+			
+				},
+				error : function(reject){
+		 			console.log(reject);
+		 		}		
+			})
+		} else{
+			swal("모든 값이 입력되지 않았습니다.", "", "warning");
+		}
+		
+	
 	}
 	 
-	
-	//수정(planDeGrid) ajax
-	function planDeUpdate(){
-		//alert 표시를 위한 변수
-		let updateOk = 0;
-			
-		//상세생산계획 update
-		let deList = planDeGrid.getData();
-	
-		$.ajax({
-			url : 'prcsPlanDeUpdate',
-			method : 'POST',
-			data : JSON.stringify(deList),
-			contentType : 'application/json',
-			async : false,
-			success : function(data){
-				updateOk = updateOk + data;
-// 				planDeGrid.clear();
-// 				planDeGrid.appendRow();
-				searchPlanList();
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}			
-		})
-				
-		if(updateOk > 0){
-			alert('수정이 완료되었습니다.');
-		}
-	}
-	
-	
-	
+
 	//삭제
-	function removeRow(){
+	function removeData(){
 		let message = confirm("정말 삭제하시겠습니까?");
 		if(message) {		
-			planGrid.removeCheckedRows(false);
-		}
+			//생산계획 -> delete (상세생산계획은 CASCADE로 삭제)
+			
+			//체크한 행들의 prcsPlanCode와 ordCode가 담긴 list 만들기
+			let checkList = planGrid.getCheckedRows();
+
+			let planCodeList = [];			
+			$.each(checkList, function(i, obj){
+				planCode = checkList[i]['prcsPlanCode'];
+				planCodeList.push(planCode);
+			})
+			
+			$.ajax({
+				url : 'prcsPlanDelete',
+				method : 'POST',
+				data : JSON.stringify(planCodeList),
+				contentType : 'application/json',
+				success : function(data){	
+					//체크된 행 부분 삭제
+					planGrid.removeCheckedRows(false);
+					//planDeGrid.clear();
+					searchPlanList();
+					swal(" 삭제가 완료되었습니다.", "", "success");
+				},
+				error : function(reject){
+		 			console.log(reject);
+		 		}		
+			})	
+		} 
 	}
-	
-	
-	
-	
-	//삭제
-// 	function removeRow(){
-// 		let message = confirm("정말 삭제하시겠습니까?");
-// 		if(message) {		
-// 			//생산계획 -> delete (상세생산계획은 CASCADE로 삭제)
-			
-// 			//체크한 행들의 prcsPlanCode가 담긴 list 만들기
-// 			let checkList = planGrid.getCheckedRows();
-// 			let planCodeList = [];			
-// 			$.each(checkList, function(i, obj){
-// 				//let planCodeObj = {};
-// 				//planCodeObj['prcsPlanCode'] = checkList[i]['prcsPlanCode'];
-// 				planCode = checkList[i]['prcsPlanCode'];
-// 				planCodeList.push(planCode);
-// 				//planCodeList.push(planCodeObj);
-// 			})
-			
-// 			$.ajax({
-// 				url : 'prcsPlanDelete',
-// 				method : 'POST',
-// 				data : JSON.stringify(planCodeList),
-// 				contentType : 'application/json',
-// 				success : function(data){	
-// 					//체크된 행 부분 삭제, 상세생산계획 그리드 지우기
-// 					planGrid.removeCheckedRows(false);
-// 					planDeGrid.clear();
-// 					alert(data + "건 삭제하였습니다")
-// 				},
-// 				error : function(reject){
-// 		 			console.log(reject);
-// 		 		}		
-// 			})	
-// 		} 
-// 	}
 	
 
 
@@ -515,7 +336,18 @@
 // 	function addDeRow(){
 // 		planDeGrid.appendRow();
 // 	}
+	
+	//행삭제
+// 	function removeRow(){
+// 		let message = confirm("정말 삭제하시겠습니까?");
+// 		if(message) {		
+// 			planGrid.removeCheckedRows(false);
+// 		}
+// 	}
 		
+	
+	
+	
 	//생산계획 grid
     var planGrid = new tui.Grid({
         el: document.getElementById('planGrid'),

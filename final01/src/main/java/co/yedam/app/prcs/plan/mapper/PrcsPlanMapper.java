@@ -29,7 +29,7 @@ public interface PrcsPlanMapper {
 	public int updatePrcsPlanDe(PrcsPlanVO prcsPlanVO);
 	
 	//생산계획 삭제
-	public int deletePrcsPlan(@Param("prcsPlanCode") String prcsPlanCode);
+	public int deletePrcsPlan(String planCode);
 	
 	
 	
@@ -39,9 +39,12 @@ public interface PrcsPlanMapper {
 	//미계획 상세 주문서 조회 
 	public List<OrderVO> selectNotPlanOrderDeList(@Param("ordCode") String ordCode);
 	
-	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+	//생산계획 등록시 주문서 (미계획 -> 계획 / 계획코드 등록) 수정
 	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO);
-
+	
+	//생산계획 삭제시 주문서 (계획 -> 미계획 / 계획코드 삭제) 수정
+	public int UpdatePlanOrderList(String planCode);
+	
 	
 	//상세생산계획 모두 지시완료시 생산계획 수정
 	public int updatePlanDirSts(@Param("prcsPlanCode") String prcsPlanCode);

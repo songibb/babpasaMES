@@ -33,7 +33,7 @@
 	    Grid.on('click', () => {
 
 			dirGrid.clear();
-			dirGrid.appendRow();
+			dirGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
 			dirDeGrid.clear();
 			dirDeGrid.appendRow();
 			
@@ -55,6 +55,8 @@
 	    	          	dirGrid.setColumnValues('prcsPlanCode', planCode);
 	    	          	dirGrid.setColumnValues('prcsStartDate', prcsStartDate);
 	    	          	dirDeGrid.resetData(data);
+	    	          	dirDeGrid.setColumnValues('empCode', ${user.id});
+	    	          	dirDeGrid.setColumnValues('empName', `${user.empName}`);
 	    			},
 	    			error : function(reject){
 	    	 			console.log(reject);

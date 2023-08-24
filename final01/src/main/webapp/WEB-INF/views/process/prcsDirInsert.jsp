@@ -15,6 +15,10 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
     
 <style type="text/css">
+#dirContainer{
+	display: flex;
+	justify-content: space-between;
+}
 #matContainer{
 	display: flex;
 	justify-content: space-between;
@@ -35,24 +39,27 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
-				<div class="table-responsive pt-3">
-	            </div>
-	            	
-	            <div>	            	
-	            	<div>
-	            		<p>생산 지시</p>
-	            		<button id="planModal" class="btn btn-info btn-icon-text">생산계획조회</button>
-	            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
-	            		<div id="dirGrid"></div>
-	            	</div>
-
-	           		<div>
-	           			<p>상세 생산 지시</p>
-	           			<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
-	            		<button id="deRemove" class="btn btn-info btn-icon-text">행삭제</button>
-	            		<div id="dirDeGrid"></div>
-	           		</div>
-	           		
+				<div id="customtemplateSearchAndButton">		
+					
+		        </div>
+	            <div>
+	            	<div>          
+	            		<div>  	
+		            		<div id="dirContainer">
+			            		<button id="planModal" class="btn btn-info btn-icon-text">생산 계획 가져오기</button>	  		
+			            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
+			            	</div>  
+						</div>	
+						<div style="height: 130px; margin-top: 50px;">
+			            	<p>생산 지시</p>	
+							<div id="dirGrid"></div>
+						</div>
+		           		<div style="height: 150px;">
+		           			<p>상세 생산 지시</p>
+		           			<div id="dirDeGrid"></div>
+		           		</div>
+	           		</div>	  
+	           		<hr>
 	           		<div id="matContainer">
 	           			<div>
 	           				<p>공정 자재 소모량</p>
@@ -79,31 +86,31 @@
 	
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
-	//행추가
-	document.getElementById('deAdd').addEventListener('click', addDeRow);
-	//행삭제
-	document.getElementById('deRemove').addEventListener('click', removeDeRow);
+// 	//행추가
+// 	document.getElementById('deAdd').addEventListener('click', addDeRow);
+// 	//행삭제
+// 	document.getElementById('deRemove').addEventListener('click', removeDeRow);
 	
 	//생산계획조회 모달
-	$("#planListModal").click(function(){
-		$(".modal").fadeIn();
-		Grid = createProdGrid();
-		Grid.on('click', () => {
-			let rowKey = Grid.getFocusedCell().rowKey;
-	        let planCode = Grid.getValue(rowKey, 'planCode');
-// 	       	let prodName = Grid.getValue(rowKey, 'prodName');
-// 			$("#prodCodeInput").val(prodCode);
-// 			$("#prodNameFix").val(prodName);
+// 	$("#planListModal").click(function(){
+// 		$(".modal").fadeIn();
+// 		Grid = createProdGrid();
+// 		Grid.on('click', () => {
+// 			let rowKey = Grid.getFocusedCell().rowKey;
+// 	        let planCode = Grid.getValue(rowKey, 'planCode');
+// // 	       	let prodName = Grid.getValue(rowKey, 'prodName');
+// // 			$("#prodCodeInput").val(prodCode);
+// // 			$("#prodNameFix").val(prodName);
 			
-// 			$("#prodCodeInput").val(prodCode);
+// // 			$("#prodCodeInput").val(prodCode);
 			
-			//모달창 닫기
-			if(rowKey != null){
-				$(".modal").fadeOut();
-				Grid.destroy();
-			}
-		});
-	});
+// 			//모달창 닫기
+// 			if(rowKey != null){
+// 				$(".modal").fadeOut();
+// 				Grid.destroy();
+// 			}
+// 		});
+// 	});
 	
 	
 	//페이지 호출시 생산지시 등록하는 행 자동 생성
@@ -112,32 +119,37 @@
 		dirDeGrid.appendRow();
 	} 
 
-	//행추가 버튼 클릭시 상세생산지시 행 추가
-	function addDeRow(){
-		dirDeGrid.appendRow();
-	}
+// 	//행추가 버튼 클릭시 상세생산지시 행 추가
+// 	function addDeRow(){
+// 		dirDeGrid.appendRow();
+// 	}
 	
-	//행삭제 버튼 클릭시 상세생산지시 행 삭제
-	function removeDeRow(){
-		let message = confirm("정말 삭제하시겠습니까?");
-		if(message) {		
-			dirDeGrid.removeCheckedRows(false);
-		}
-	}
+// 	//행삭제 버튼 클릭시 상세생산지시 행 삭제
+// 	function removeDeRow(){
+// 		let message = confirm("정말 삭제하시겠습니까?");
+// 		if(message) {		
+// 			dirDeGrid.removeCheckedRows(false);
+// 		}
+// 	}
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
-		let modi1 = dirGrid.getModifiedRows();
-		let modi2 = dirDeGrid.getModifiedRows();
 		
-		console.log(modi1);
-		console.log(modi2);
-		
-		//생산지시 -> insert
-		let rowKey = dirGrid.getFocusedCell().rowKey;
-		let columnName = dirGrid.getFocusedCell().columnName;
 		//편집종료
+		let rowKey = dirGrid.getFocusedCell().rowKey;
+		let columnName = dirGrid.getFocusedCell().columnName;		
 		dirGrid.finishEditing(rowKey, columnName);
+		
+		let rowKeyDe = dirDeGrid.getFocusedCell().rowKey;
+		let columnNameDe = dirDeGrid.getFocusedCell().columnName;
+		dirDeGrid.finishEditing(rowKeyDe, columnNameDe);
+		
+// 		console.log(dirDeGrid.isModified());
+// 		if(!dirGrid.isModified() && !dirDeGrid.isModified()){
+// 			swal("변경사항이 없습니다.", "", "warning");
+// 			return false;
+// 		}
+		
 
 		let list = dirGrid.getData();
 		let obj = list[0];
@@ -179,7 +191,7 @@
 						dirDeGrid.clear();
 						dirDeGrid.appendRow();
 						
-						alert('등록이 완료되었습니다.');
+						swal("등록이 완료되었습니다.", "", "success");
 					},
 					error : function(reject){
 			 			console.log(reject);
@@ -192,64 +204,6 @@
 		})
 	};
 
-
-
-// 		$.ajax({
-// 			url : 'prcsDirInsert',
-// 			method : 'POST',
-// 			data : JSON.stringify(obj),
-// 			contentType : 'application/json',
-// 			success : function(data){					
-				
-				
-// 				//분할지시
-// 				//상세지시코드 for문돌려서 상세계획코드 구하기
-// 				// 상세계획코드 개수가 1이상일때  
-// 				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
-// 				// 아래 ajax 동작
-// 				//if()
-// 			},
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}		
-// 		})
-			
-
-		
-// 		//상세생산지시 insert
-// 		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
-// 		let deColumnName = dirDeGrid.getFocusedCell().columnName;
-// 		//편집종료
-// 		dirDeGrid.finishEditing(deRowKey, deColumnName);
-		
-// 		let deList = dirDeGrid.getData();
-
-// 		$.ajax({
-// 			url : 'prcsDirDeInsert',
-// 			method : 'POST',
-// 			data : JSON.stringify(deList),
-// 			contentType : 'application/json',
-// 			success : function(data){
-// 				//등록 후 그리드 내용 지우고, 행추가
-// 				dirGrid.clear();
-// 				dirGrid.appendRow();
-// 				dirDeGrid.clear();
-// 				dirDeGrid.appendRow();
-				
-// 				alert('등록이 완료되었습니다.');
-// 			},
-// 			error : function(reject){
-// 	 			console.log(reject);
-// 	 		}
-// 		})				
-		
-		
-		
-// 	};
-
-
-	
-	
 	
 	//생산지시 grid
     var dirGrid = new tui.Grid({
@@ -293,9 +247,14 @@
 //             header: '전체공정진행상태',
 //             name: 'prcsDirSts'
 //           },
+		  {
+            header: '담당자코드',
+            name: 'empCode',
+            hidden: true
+          },
           {
             header: '담당자',
-            name: 'empCode',
+            name: 'empName',
             editor: 'text'
           }
         ]
@@ -361,10 +320,15 @@
 //             name: 'prcsIngSts'
 //           },
           {
-            header: '담당자',
+            header: '담당자코드',
             name: 'empCode',
+            hidden: true
+          },
+          {
+            header: '담당자',
+            name: 'empName',
             editor: 'text'
-          }
+          },
         ]
       });
 	
