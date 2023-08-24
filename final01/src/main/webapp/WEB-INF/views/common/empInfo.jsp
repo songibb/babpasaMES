@@ -51,6 +51,9 @@
          </div>
       </div>
    </div> 
+    <div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 <script>
 
 //사원명검색조회
@@ -59,70 +62,93 @@
 		   let content = $('#empSearch').val();
 		   let search = { empName : content};
 		   $.ajax({
-			   url : 'getempFilter',
+			   url : 'ajaxEmpList',
 			   method : 'GET',
 			   data : search,
 			   success : function(data){
+				   $.each(data, function(i, objDe){
+						let empDate = data[i]['empDate'];
+						data[i]['empDate'] = getDate(empDate);
+					})
 				   grid.resetData(data);
+				   $('#userInsertForm')[0].reset();
 			   },
 			   error : function(reject){
 				   console.log(reject);
 			   }
 		   })
 	}
-	var grid = new tui.Grid({
-		      
-		       el: document.getElementById('grid'),
-		       data: [
-		           <c:forEach items="${empList}" var="e" varStatus="status">
-		           	{
-		           		empCode : "${e.empCode}",
-		           		empName : "${e.empName}",
-		           		empDate : "<fmt:formatDate value='${e.empDate}' pattern='yyyy-MM-dd'/>",
-		           		empRoleName : "${e.empRoleName}",
-		           		deptcodeName : "${e.deptcodeName}",
-		           		empTel : "${e.empTel}"
-		           	} <c:if test="${not status.last}">,</c:if>
-		           </c:forEach>
-		          ],
-			   scrollX: false,
-		       scrollY: false,
-		       minBodyHeight: 30,
-		       rowHeaders: ['rowNum'],
-		       pagination: true,
-		       pageOptions: {
-		         useClient: true,
-		         perPage: 10,
-		       },
-		       columns: [
-		         {
-		           header: '사원번호',
-		           name: 'empCode'
-		         },
-		         {
-		           header: '사원명',
-		           name: 'empName'
-		         },
-		         {
-		           header: '입사일',
-		           name: 'empDate'
-		         },
-		         {
-		           header: '직급정보',
-		           name: 'empRoleName'
-		         },
-		         {
-		           header: '부서명',
-		           name: 'deptcodeName',
-		           filter: 'select'
-		         },
-		         {
-		           header: '연락처',
-		           name: 'empTel'
-		         }
-		       ]
-		      
-		     });
+	//ajax 전체조회
+	 let content = $('#empSearch').val();
+	   let search = { empName : content};
+	   $.ajax({
+		   url : 'ajaxEmpList',
+		   method : 'GET',
+		   data : search,
+		   success : function(data){
+			   $.each(data, function(i, objDe){
+					let empDate = data[i]['empDate'];
+					data[i]['empDate'] = getDate(empDate);
+				})
+			   grid.resetData(data);
+		   },
+		   error : function(reject){
+			   console.log(reject);
+		   }
+	   })
+	   
+var grid = new tui.Grid({
+	      
+	       el: document.getElementById('grid'),
+		   scrollX: false,
+	       scrollY: false,
+	       minBodyHeight: 30,
+	       rowHeaders: ['rowNum'],
+	       pagination: true,
+	       pageOptions: {
+	         useClient: true,
+	         perPage: 10,
+	       },
+	       columns: [
+	         {
+	           header: '사원번호',
+	           name: 'empCode'
+	         },
+	         {
+	           header: '사원명',
+	           name: 'empName'
+	         },
+	         {
+	           header: '입사일',
+	           name: 'empDate'
+	         },
+	         {
+	           header: '직급정보',
+	           name: 'empRole',
+	           hidden: true
+		      },
+	         {
+	           header: '직급정보',
+	           name: 'empRoleName'
+	         },
+	         {
+	           header: '부서명',
+	           name: 'deptCode',
+	           hidden: true
+	         },
+	         {
+	           header: '부서명',
+	           name: 'deptcodeName'
+	         },
+	         {
+	           header: '연락처',
+	           name: 'empTel'
+	         }
+	       ]
+	      
+	     });
+	
+	
 	
 
 </script>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.yedam.app.common.bom.service.BomCodeService;
+import co.yedam.app.common.main.service.MainService;
 
 /**
  * Handles requests for the application home page.
@@ -25,6 +26,9 @@ public class HomeController {
 	
 	@Autowired
 	BomCodeService bomCodeService;
+	
+	@Autowired
+	MainService mainService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -42,6 +46,7 @@ public class HomeController {
 		 * model.addAttribute("serverTime", formattedDate );
 		 */
 		model.addAttribute("amtList", bomCodeService.chartTest());
+		model.addAttribute("prodAmtList", mainService.selectProdAmtList());
 		
 		return "home";
 	}
