@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.quality.one.service.OneChkReqVO;
 import co.yedam.app.quality.one.service.OneChkService;
 import co.yedam.app.quality.one.service.OneChkVO;
 
@@ -23,19 +23,34 @@ public class OneChkController {
 	@Autowired
 	OneChkService oneChkService;
 	
-	//마지막 공정 조회
+	//검사 페이지 - 마지막 공정 조회
 	@GetMapping("/onequalChk")
 	public String selectListPrcs(Model model) {
 		model.addAttribute("onequalChk", oneChkService.selectLastPrcs());
 		return "quality/onequalChk";
 	}
 	
-	//ajax 조회
+	//검사 페이지 - ajax 조회
 	@GetMapping("/ajaxLastPrcsList")
 	@ResponseBody
 	public List<OneChkVO> ajaxLastPrcsList(){
 		List<OneChkVO> LastPrcsList = oneChkService.selectLastPrcs();
 		return LastPrcsList;
+	}
+	
+	//조회 페이지 - 마지막 공정 조회
+	@GetMapping("/oneQualChkList")
+	public String selectAllLastPrcs(Model model) {
+		model.addAttribute("oneQualChkList", oneChkService.selectAllLastPrcs());
+		return "quality/oneQualChkList";
+	}
+
+	//조회 페이지 - ajax 조회
+	@GetMapping("/ajaxAllLastPrcsList")
+	@ResponseBody
+	public List<OneChkVO> ajaxAllLastPrcsList(){
+		List<OneChkVO> AllLastPrcsList = oneChkService.selectAllLastPrcs();
+		return AllLastPrcsList;
 	}
 	
 	//완제품 품질 검사 (상세)
@@ -49,8 +64,8 @@ public class OneChkController {
 	//상세 품질 검사(저장버튼)
 	@PostMapping("/updateOneChk")
 	@ResponseBody
-	public int OneChkUpdate(@RequestBody GridVO<OneChkVO> data) {
-		return oneChkService.OneChkUpdate(data);
+	public int OneChkUpdate(@RequestBody OneChkReqVO oneChkReqVO) {
+		return oneChkService.OneChkUpdate(oneChkReqVO);
 	}
 	
 }

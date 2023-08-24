@@ -9,9 +9,9 @@
 		    A.TEST_NUM
 		    ,A.PASS_AMT
 		    ,A.NON_PASS_AMT
-		    ,B.PRCS_DIR_DE_CODE
+		    ,B.PRCS_ING_CODE
 		    ,B.PRCS_CODE
-		    ,B.INPUT_AMT
+		    ,B.PRCS_AMT
 		    ,A.TEST_SEMI_YN
 		FROM PROD_QUALITY A 
 		
@@ -21,8 +21,32 @@
 		    B.PRCS_CODE = (SELECT MAX(PRCS_CODE)
 		       				 FROM PRCS_ING)
 		AND A.TEST_SEMI_YN = 'C'
+        AND  b.prcs_dir_ing_sts = 'S3'
+        
+        ORDER BY B.PRCS_ING_CODE
   	</select>
   	
+  	<!-- 조회 페이지 : 모든 마지막 공정 조회  -->
+  	<select id="selectAllLastPrcs" resultType="OneChkVO">
+  		SELECT
+		    A.TEST_NUM
+		    ,B.PRCS_ING_CODE
+		    ,B.PRCS_CODE
+		    ,B.PRCS_AMT
+		    ,A.PASS_AMT
+		    ,A.NON_PASS_AMT
+		    ,A.TEST_DATE
+		FROM PROD_QUALITY A 
+		
+		LEFT JOIN PRCS_ING B 
+		    ON (A.PRCS_ING_CODE = B.PRCS_ING_CODE)  	 	
+		WHERE
+		    B.PRCS_CODE = (SELECT MAX(PRCS_CODE)
+		       				 FROM PRCS_ING)
+		AND A.TEST_SEMI_YN = 'C'
+        
+        ORDER BY B.PRCS_ING_CODE
+  	</select>
   	<!-- 검사 실시 리스트(클릭 상세)  -->
   	<select id="selectOneChkList" resultType="OneChkVO">
   		SELECT A.TEST_NUM
@@ -48,5 +72,15 @@
   				,PASS_YN = #{passYn}
   				,EMP_CODE =#{empCode}
   		WHERE test_num_info =#{testNumInfo}
+  	</update>
+  	
+  	<!-- 완제품 등록(수정) 프로시저 호출  -->
+  	<update id="OneChkUpdatePr" parameterType="OneChkVO">
+  		{
+  		CALL UPDATE_ONE_TEST_INFO(
+  			#{testNum}
+  			,#{prcsIngCode}
+  			)
+  		}
   	</update>
   </mapper>

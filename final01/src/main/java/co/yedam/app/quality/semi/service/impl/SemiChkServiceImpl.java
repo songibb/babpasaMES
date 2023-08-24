@@ -37,18 +37,12 @@ public class SemiChkServiceImpl implements SemiChkService {
 		return semiChkMapper.selectSemiChkList(testNum);
 	}
 	
+	//검사페이지 - 등록(수정)
 	@Override
 	public int SemiChkUpdate(SemiChkReqVO semiChkReqVO) {
 		int result = 0;
 		System.out.println(semiChkReqVO);
-//		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() >0) {
-//			for(SemiChkVO vo : data.getUpdatedRows()) {
-//				
-//				result += semiChkMapper.SemiChkUpdate(vo);
-//				}
-//			semiChkMapper.SemiChkUpdatePr(vo);
-//			}
-		
+
 		for(SemiChkVO vo : semiChkReqVO.getSemiList()) {
 			result += semiChkMapper.SemiChkUpdate(vo);
 		}

@@ -14,4 +14,11 @@ public interface OneChkMapper {
 	
 	//품질 검사 등록(수정)
 	public int OneChkUpdate(OneChkVO vo);
+	
+	//완제품 품질 검사 등록(수정) - 프로시저
+	public int OneChkUpdatePr (OneChkVO vo);
+	
+	//조회페이지
+	//모든 마지막 공정 조회 (품질검사 처리 완료된 것들도 포함)
+	public List<OneChkVO> selectAllLastPrcs();
 }

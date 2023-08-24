@@ -17,7 +17,7 @@
 </head>
 <body>
    <div class="black_bg"></div>
-   <h3>반제품 품질 검사</h3>
+   <h2>반제품 품질 검사</h2>
    <div class="col-lg-12 stretch-card">
       <div class="card">
          <div class="card-body">
@@ -249,6 +249,7 @@
          
          console.log(semiAllList);
          console.log(grid2.getData());
+         
          if(flag){
   
             $.ajax({
