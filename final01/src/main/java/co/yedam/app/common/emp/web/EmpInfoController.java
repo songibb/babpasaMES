@@ -43,7 +43,8 @@ public class EmpInfoController {
 	//사원전체조회
 		@GetMapping("/empinfo")
 		public String getEmpInfoAllLIst(Model model) {
-			model.addAttribute("empList", empInfoService.selectEmpInfoList());
+			
+			model.addAttribute("inputDeptList", commCodeService.searchCommCodeUse("DEPT-TYPE"));
 			return "common/empInfo";
 		}
 	
@@ -80,8 +81,8 @@ public class EmpInfoController {
 	//사원 ajax 조회
 	@GetMapping("/ajaxEmpList")
 	@ResponseBody
-	public List<EmpInfoVO> ajaxEmpList(@RequestParam String empName ){
-		List<EmpInfoVO> vo = empInfoService.empSelect(empName);
+	public List<EmpInfoVO> ajaxEmpList(EmpInfoVO empInfoVO){
+		List<EmpInfoVO>  vo= empInfoService.empSelect(empInfoVO);
 		return vo;
 	}
 	

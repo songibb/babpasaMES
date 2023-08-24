@@ -22,7 +22,7 @@ public interface EmpInfoMapper {
 	public int updateEmpInfo(EmpInfoVO empInfoVO);
 	
 	//사원정보 ajax 조회,검색
-	public List<EmpInfoVO> empSelect(String empName);
+	public List<EmpInfoVO> empSelect(EmpInfoVO empInfoVO);
 	
 	
 	

@@ -19,5 +19,24 @@
 		]]>
   	</select>
   	
+  	<select id="selectSaleAmtList" resultType="MainVO">
+  		<![CDATA[
+			SELECT b.*
+			FROM (
+			   		SELECT ROWNUM rn, a.*
+			   	 	FROM (
+			        		SELECT SUM(sales_out_amt) as sales_out_amt,
+			        			   prod_code,
+			        			   find_prod_name(prod_code) as prod_code_name
+			        FROM sales_out
+			        WHERE TRUNC(sales_out_date) = TRUNC(sysdate)
+			        GROUP BY prod_code, find_prod_name(prod_code) 
+			        ORDER BY sales_out_amt DESC
+			    ) a
+			) b
+			WHERE rn <= 5
+		]]>
+  	</select>
+  	
   	
   </mapper>

@@ -93,8 +93,17 @@
 			FROM com_emp
 			<where>
 				<if test="empName != null and empName != ''">
-					emp_name LIKE '%' ||  #{empName} || '%'
+					AND emp_name LIKE '%' ||  #{empName} || '%'
 				</if> 
+				<if test="inputDeptList != null and inputDeptList != ''">
+					AND dept_code = #{inputDeptList}
+				</if> 
+				<if test="startDate != null and startDate != ''">
+					AND TO_CHAR(emp_date, 'YYYY-MM-DD') <![CDATA[>=]]>#{startDate}
+				</if>
+				<if test="endDate != null and endDate != ''">
+					AND TO_CHAR(emp_date, 'YYYY-MM-DD') <![CDATA[<=]]>#{endDate}
+				</if>
 			</where>
 		ORDER BY emp_code
   	</select>

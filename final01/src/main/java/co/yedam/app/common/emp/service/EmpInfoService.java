@@ -21,6 +21,6 @@ public interface EmpInfoService {
 	
 	
 	//조회+검색
-	public List<EmpInfoVO> empSelect(String empName);
+	public List<EmpInfoVO> empSelect(EmpInfoVO empInfoVO);
 
 }

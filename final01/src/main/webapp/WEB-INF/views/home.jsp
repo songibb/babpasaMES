@@ -11,26 +11,27 @@
 
 </head>
 <body>
-
-     <div id="chart-area" style="width: 50%; height: 40%; min-width: 20%; min-height: 20%;"></div>
-	<div id="chart-prodList" style="width: 50%; height: 40%; min-width: 20%; min-height: 20%;"></div>
-
+	<div style="height: 100%; display: flex; justify-content: space-between;">
+     <div id="chart-area" style="width: 33%; height: 60%; min-width: 20%; min-height: 20%;"></div>
+     <div id="chart-prodList" style="width: 33%; height: 60%; min-width: 20%; min-height: 20%;"></div>
+	<div id="chart-prcs" style="width: 33%; height: 60%; min-width: 20%; min-height: 20%;"></div>
+	</div>
 
 <script>
 	function chart1(){
  	const el = document.getElementById('chart-area');
 	const data = {
 	  categories: [
-		  			<c:forEach items="${amtList}" var="n">
-		  			'${n.bomCode}',
+		  			<c:forEach items="${salesList}" var="p">
+		  			'${p.prodCodeName}',
 		  			</c:forEach>
 		  			],
 	  series: [
 	    {
-	      name: '삽입량',
+	      name: '판매량',
 	      data: [
-	    	  <c:forEach items="${amtList}" var="l">
-	    	  	${l.bomAmt},
+	    	  <c:forEach items="${salesList}" var="a">
+	    	  	${a.salesOutAmt},
 	    	  	</c:forEach>
 	    	  ],
 	    	  colorByCategories: true
@@ -38,14 +39,11 @@
 	  ],
 	};
 	const options = {
-	   chart: { title: 'BOMCode에 따른 삽입량', width:'auto',height: 'auto' }, 
+	   chart: { title: '재품별 판매량', width:'auto',height: 'auto' }, 
 
 	  legend: {
 		    visible: false,
 		  },
- 	   plot: {
-			    visible: false
-			  }, 
 	  theme: {
 		    series: {
 		    	barWidth: 30
@@ -59,33 +57,30 @@
 
 	function chart2(){
  	const el = document.getElementById('chart-prodList');
- 	const data2 = {
+ 	const data = {
  			  categories: [
- 				  			<c:forEach items="${amtList}" var="n">
- 				  			'${n.bomCode}',
+ 				  			<c:forEach items="${prodAmtList}" var="p">
+ 				  			'${p.prodCodeName}',
  				  			</c:forEach>
  				  			],
  			  series: [
  			    {
- 			      name: '삽입량',
+ 			      name: '재고량',
  			      data: [
- 			    	  <c:forEach items="${amtList}" var="l">
- 			    	  	${l.bomAmt},
+ 			    	  <c:forEach items="${prodAmtList}" var="a">
+ 			    	  	${a.prodSaveAmt},
  			    	  	</c:forEach>
  			    	  ],
  			    	  colorByCategories: true
  			    }
  			  ],
  			};
-	const options2 = {
-	   chart: { title: 'BOMCode에 따른 삽입량', width:'auto',height: 'auto' }, 
+	const options = {
+	   chart: { title: '제품별 재고량', width:'auto',height: 'auto' }, 
 
 	  legend: {
 		    visible: false,
 		  },
- 	   plot: {
-			    visible: false
-			  }, 
 	  theme: {
 		    series: {
 		    	barWidth: 30
@@ -94,12 +89,13 @@
 	};
 		 
 
-	const chart2 = toastui.Chart.columnChart({ el, data2, options2 });
+	const chart = toastui.Chart.columnChart({ el, data, options });
 	
 	
 	}
 	
 	chart1();
+	chart2();
 	
 	
 </script>

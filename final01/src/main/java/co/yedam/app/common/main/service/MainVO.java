@@ -7,4 +7,8 @@ public class MainVO {
 	private String prodCode;
 	private String prodCodeName;
 	private int prodSaveAmt;
+	
+	
+	private int salesOutAmt;
+	
 }

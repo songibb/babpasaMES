@@ -14,6 +14,20 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+	<style>
+		input[type="text"],
+		select {
+		  width: 20%;
+		  padding: 4px;
+		  margin-bottom: 10px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		select {
+		  background-color: white; 
+		}
+	</style>
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -21,7 +35,7 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
-				<div class="table-responsive pt-3">
+				<div class="table-responsive pt-3" >
 					<form>
 						공통코드 <input type="text" placeholder="검색어를 입력하세요" id="commSearch" ">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">

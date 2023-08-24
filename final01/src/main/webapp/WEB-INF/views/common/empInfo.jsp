@@ -24,6 +24,28 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
+<style>
+	input[type="text"],
+	select {
+	  width: 20%;
+	  padding: 4px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 20%;
+	  padding: 5px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+</style>
 </head>
 <body>
 <div class="black_bg"></div>
@@ -32,19 +54,25 @@
        <div class="card">
            <div class="card-body">
                <div class="table-responsive pt-3">
-                   <button type="button" class="btn btn-info btn-icon-text excelDownload">
-                       Excel
-                      <i class="bi bi-printer"></i>                                                                              
-                   </button>
                    <form action="" method="get" name="formInfo">
-                  <div id="customtemplateSearchAndButton">		
-							<p>사원명</p>
-							<input type="text" placeholder="검색어를 입력하세요" id="empSearch">
+                  			
+                  		부서명 <select id="inputDeptList" name="deptCode">
+								<option value="">선택</option>
+								<c:forEach items="${inputDeptList}" var="d">
+									<option value="${d.commdeCode }">${d.commdeName }</option>
+								</c:forEach>
+							</select>
+							<br>	
+							
+						사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch">
+							<br>
+							
+						입사일자 <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
+							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
                </form>
                <div id="grid"></div>
                 </div>
@@ -56,11 +84,14 @@
 	</div>
 <script>
 
-//사원명검색조회
+//사원명/부서명/입사일자검색조회
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
-		   let content = $('#empSearch').val();
-		   let search = { empName : content};
+		   let inputDeptList = $('#inputDeptList').val();
+		   let empName = $('#empSearch').val();
+		   let startDate = $('#startDate').val();
+		   let endDate = $('#endDate').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
 		   $.ajax({
 			   url : 'ajaxEmpList',
 			   method : 'GET',
@@ -79,8 +110,11 @@
 		   })
 	}
 	//ajax 전체조회
-	 let content = $('#empSearch').val();
-	   let search = { empName : content};
+	  let inputDeptList = $('#inputDeptList').val();
+		   let empName = $('#empSearch').val();
+		   let startDate = $('#startDate').val();
+		   let endDate = $('#endDate').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
 	   $.ajax({
 		   url : 'ajaxEmpList',
 		   method : 'GET',
