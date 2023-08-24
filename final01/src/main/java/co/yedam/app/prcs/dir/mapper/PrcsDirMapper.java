@@ -42,4 +42,6 @@ public interface PrcsDirMapper {
 	public List<BomCodeVO> selectBomList(@Param("prodCode") String prodCode, @Param("prcsDirAmt") Integer prcsDirAmt);
 	
 	
+	//진행공정 모두 공정완료시 생산지시 수정
+	public int updateDirPrcsSts(@Param("prcsDirCode") String prcsDirCode);
 }

@@ -2,7 +2,6 @@ package co.yedam.app.prcs.plan.service;
 
 import java.util.List;
 
-
 import co.yedam.app.sales.order.service.OrderVO;
 
 public interface PrcsPlanService {
@@ -41,5 +40,8 @@ public interface PrcsPlanService {
 	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
 	//public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO);
 	
+	
+	//상세생산계획 모두 지시완료시 생산계획 수정
+	public int updatePlanDirSts(List<PrcsPlanVO> planList);
 	
 }
