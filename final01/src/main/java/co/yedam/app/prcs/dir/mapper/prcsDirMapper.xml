@@ -139,17 +139,13 @@
 	
 	<!-- 제품별 총 자재 BOM 조회 -->
 	<select id="selectBomList" resultType="BomCodeVO">
-		SELECT find_prod_name(prod_code) AS prod_name,
-        	   find_prcs_name(prcs_code) AS prcs_name,
-        	   mp_code,
-      		   find_mat_name(mp_code) AS mat_name,
-      		   bom_unit,
-      		   bom_amt * #{prcsDirAmt} AS bom_amt,
-      		   prcs_seq
-		  FROM v_prod_bom
-		 WHERE prod_code= #{prodCode}
-		   	   AND bom_yn='O'
-		       AND mp_kind='M'
+		SELECT DISTINCT find_prod_name(v.prod_code) AS prod_name,
+			   find_prcs_name(v.prcs_code) AS prcs_name,
+			   find_mat_name(v.mp_code) AS mat_name, 
+			   v.bom_amt * #{prcsDirAmt} AS bom_amt, 
+			   p.prcs_seq
+		  FROM v_mat_bom v RIGHT JOIN prcs_prod p ON v.prcs_code = p.prcs_code
+		 WHERE v.prod_code = #{prodCode}
 		 ORDER BY prcs_seq
 	</select>
 

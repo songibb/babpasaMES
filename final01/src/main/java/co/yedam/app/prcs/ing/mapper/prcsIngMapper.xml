@@ -65,11 +65,9 @@
         	   mp_code,
       		   find_mat_name(mp_code) AS mat_name,
       		   bom_amt * #{prcsDirAmt} AS bom_amt
-		  FROM v_prod_bom
+		  FROM v_mat_bom
 		 WHERE prod_code= #{prodCode}
                AND prcs_code = #{prcsCode}
-		   	   AND bom_yn='O'
-		       AND mp_kind='M'
 	</select>	   
 
 	<!-- 작업시작 => 공정상태&설비 수정, 공정실적관리 등록 (진행공정 모달) -->

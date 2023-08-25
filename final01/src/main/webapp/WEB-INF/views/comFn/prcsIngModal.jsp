@@ -20,7 +20,7 @@
 }
 #inputContainer{
 	display: flex; 
-	justify-content: space-between;
+	justify-content: space-around;
 	margin-bottom: 20px;
 }
 #gridContainer{
@@ -70,7 +70,7 @@
 						<div>
 							<label for="prcName">공정명</label>
 							<input type="text" name="prcsName" id="prcsName" readonly>	
-						
+							<br>
 							<label for="inputAmt">투입량</label>
 							<input type="text" name="inputAmt" id="inputAmt" readonly>	
 						</div>	
@@ -79,7 +79,7 @@
 							
 							<label for="empName">담당자</label>
 							<input type="text" name="empName" id="empName">	
-
+							<br>
 							<label for="errAmt">불량량</label>
 							<input type="number" name="errAmt" id="errAmt">		
 						</div>	
