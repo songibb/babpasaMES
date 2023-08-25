@@ -21,9 +21,6 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
 							<p>거래처명</p>

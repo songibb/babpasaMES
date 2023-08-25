@@ -27,6 +27,7 @@
 						b.bom_wdate,
 						b.bom_udate,
 						b.bom_yn,
+						find_cdnm('0A', bom_yn) as bom_yn_name,
 						b.bom_prcs_yn,
 						find_cdnm('0W', bom_prcs_yn) AS bom_prcs_yn_name,
 						c.prod_name

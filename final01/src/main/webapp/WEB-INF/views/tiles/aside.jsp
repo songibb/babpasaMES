@@ -11,7 +11,7 @@
 <security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">  
 	<ul class="nav">
     	<li class="nav-item">
-            <a class="nav-link" href="mainPage">
+            <a class="nav-link" href="">
             	<i class="mdi mdi-view-grid icon-grid menu-icon"></i>
               	<span class="menu-title">메인</span>
             </a>

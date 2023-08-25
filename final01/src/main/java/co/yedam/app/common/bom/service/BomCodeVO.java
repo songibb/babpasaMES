@@ -2,6 +2,8 @@ package co.yedam.app.common.bom.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -10,7 +12,9 @@ public class BomCodeVO {
 	//bom관리 기능
 	private String bomNo;
 	private String prodCode;
+	
 	private Date bomWdate;
+	
 	private Date bomUdate;
 	private String bomYn;
 	private String bomPrcsYn;
@@ -37,6 +41,10 @@ public class BomCodeVO {
 	
 	//BOM상세
 	private String mpName;
+	
+	
+	private String bomYnName;
+	private String kindName;
 	
 	
 

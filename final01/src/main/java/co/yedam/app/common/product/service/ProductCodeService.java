@@ -11,7 +11,7 @@ public interface ProductCodeService {
 	public List<ProductCodeVO> getProductCodeAll();
 	
 	//검색 조회
-	public List<ProductCodeVO> searchSelectProdCode(String prodName);
+	public List<ProductCodeVO> searchSelectProdCode(ProductCodeVO productCodeVO);
 	
 	//제품 등록 
 	public Map<String, String> insertProdInfo(ProductCodeVO productCodeVO);

@@ -32,6 +32,7 @@
 				<div class="table-responsive pt-3">
 					<div id="">		
 	                  자재명 <input type="text"  id="matSearch">
+	                  
 	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 	                     <i class="fas fa-search"></i>
 	                     검색

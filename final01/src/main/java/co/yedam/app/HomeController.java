@@ -45,10 +45,13 @@ public class HomeController {
 		 * 
 		 * model.addAttribute("serverTime", formattedDate );
 		 */
-		model.addAttribute("amtList", bomCodeService.chartTest());
+		
 		model.addAttribute("prodAmtList", mainService.selectProdAmtList());
 		model.addAttribute("salesList", mainService.selectSaleAmtList());
-		
+		model.addAttribute("prcsAmtList", mainService.selectPrcsAmtList());
+		model.addAttribute("totalpassAmt", mainService.selectTotalPrcs().getPassAmt());
+		model.addAttribute("totalNonPassAmt", mainService.selectTotalErr().getNonPassAmt());
+		model.addAttribute("totalSaleAmt", mainService.selectTotalSale().getSalesOutTotalAmt());
 		return "home";
 	}
 	

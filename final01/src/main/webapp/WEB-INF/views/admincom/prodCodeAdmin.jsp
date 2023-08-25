@@ -60,9 +60,18 @@
 							<form>
 								<div>		
 									제품명 <input type="text" placeholder="검색어를 입력하세요" id="prodSearch" style="width: 20%">
+									<br>
+									제품구분
+									<select id="prodTypeList" name="prodKind" style="width: 20%">
+											<option value="">선택</option>
+											<c:forEach items="${prodTypeList}" var="p">
+												<option value="${p.commdeCode }">${p.commdeName }</option>
+											</c:forEach>
+									</select>
 									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 										<i class="fas fa-search"></i>검색
 									</button>
+									
 									<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 										<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
 				            	</div>
@@ -122,6 +131,9 @@
 	
 	
 	//전체조회 ajax
+	   let prodName = $('#prodSearch').val();
+	   let prodKind = $('#prodTypeList').val();
+	   let search = { prodName : prodName, prodKind:prodKind };
 	$.ajax({
 		   url : "ajaxProdCodeList",
 	       method :"GET",
@@ -136,8 +148,9 @@
 	//제품검색조회
 	$('#searchBtn').on('click', searchProdIn);
    function searchProdIn(e){
-	   let content = $('#prodSearch').val();
-	   let search = { prodName : content };
+	   let prodName = $('#prodSearch').val();
+	   let prodKind = $('#prodTypeList').val();
+	   let search = { prodName : prodName, prodKind:prodKind };
 	   $.ajax({
 		   url : 'getProdCodeFilter',
 		   method : 'GET',
@@ -296,7 +309,7 @@
 				});
 				
 				//form 비우기
-				 $('form')[0].reset();
+				 $('form')[1].reset();
 			} else{
 				swal("제품 등록처리가 실패되었습니다","","error");
 			}
@@ -331,7 +344,7 @@
 					});
 					
 					//form 비우기
-					 $('form')[0].reset();
+					 $('form')[1].reset();
 				} else{
 					swal("제품 정보 수정이 실패되었습니다","","error");
 				}   	
