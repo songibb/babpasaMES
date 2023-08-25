@@ -231,7 +231,8 @@
                 		<li class="nav-item"> <a class="nav-link" href="offequip">비가동 설비 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','E')">
-                		<li class="nav-item"> <a class="nav-link" href="equipchkList">설비 점검 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="equipchkList">설비 점검 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="equipchkInsert">설비 점검 관리</a></li>
                 	</security:authorize>
               	</ul>
             </div>

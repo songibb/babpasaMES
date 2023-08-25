@@ -26,4 +26,8 @@ public class EquipVO {
 	
 	private String eqType2;
 	private String eqSts2;
+	
+	private String empCode;
+	private String chkType;
+	private String chkNote;
 }
