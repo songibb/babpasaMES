@@ -42,9 +42,26 @@
 	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 
 <style>
+h1{
+	font-weight : 700;
+}
+
+h2{
+	clear : both;
+	font-weight : 700;
+}
+	
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.m_body > p{
+	display : inline-block;
+}
+
+.m_body > input{
+	border : 1px solid black;
 }
 
 .search-container {
@@ -110,19 +127,9 @@ body {
 	cursor: pointer;
 }
 
-.modal {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
-	top: 0;
-	left: 0;
-	display: none;
-}
-
 .modal_content {
 	/*모달창 크기 조절*/
-	width: 600px;
+	width: 900px;
 	height: 600px;
 	background: #fff;
 	border-radius: 10px;
@@ -131,7 +138,7 @@ body {
 	top: 33%;
 	left: 45%;
 	margin-top: -100px;
-	margin-left: -200px;
+	margin-left: -300px;
 	text-align: center;
 	box-sizing: border-box;
 	line-height: 23px;
@@ -211,6 +218,10 @@ input[type="date"] {
 .yellow-background {
 	background-color: rgb(255, 253, 235);
 }
+#save, #delete, #dirAdd{
+	margin-top : 120px;
+	float : right;
+}
 </style>
 
 </head>
@@ -225,9 +236,14 @@ input[type="date"] {
 						class="btn btn-info btn-icon-text excelDownload">
 						Excel <i class="bi bi-printer"></i>
 					</button>
+					<button class="btn btn-info btn-icon-text" id="save">저장</button>
+					<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+					<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 
 					<div id="customtemplateSearchAndButton">
-						<p>제품</p>
+					<div style="display: flex; justify-content: flex-end;">
+            				<div style="flex: 1;">
+						<p>제품명</p>
 						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
@@ -243,33 +259,33 @@ input[type="date"] {
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text"
 							id="searchResetBtn">초기화</button>
+							</div>
+							</div>
 					</div>
-
-					<button class="btn btn-info btn-icon-text" id="save">저장</button>
-					<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-					<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
-					<div id="grid"></div>
+					
 				</div>
+					<h2>반품 목록</h2>
+		            <br>
+					<div id="grid"></div>
 			</div>
 		</div>
 	</div>
 	<div class="modal">
-
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
-			<div class="m_head">
-				<div class="modal_title">
-					<h3>목록</h3>
-				</div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<div id="modal_label"></div>
-			</div>
-			<div class="m_footer">
-				<div class="modal_btn cancle" id="close_btn">CANCLE</div>
-				<div class="modal_btn save" id="save_btn">SAVE</div>
-			</div>
-		</div>
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
 	</div>
 
 
@@ -436,7 +452,7 @@ input[type="date"] {
  	    		rtGrid.setValue(rowKey, 'prodCode', prodCode);
  	    		rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
  	    		//선택시 모달창 닫기
- 	    		if(rowKey != null){
+ 	    		if(rowKey2 != null){
  	    			$(".modal").fadeOut();
  	        		Grid.destroy();
  	    		}
@@ -519,13 +535,49 @@ input[type="date"] {
         return prodGrid;
      }
 		
-		
+		//모달 검색
+		$('#modalSearchBtn').on('click', function(e){
+				let title = $('.modal_title h3').text();
+				let inputContent = $('#modalSearch').val();
+				
+				if(title == '제품 목록'){
+					let modalSearchData = {prodName : inputContent}
+					$.ajax({
+						url : 'getProdModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				} else if(title == '출고 목록'){
+					let modalSearchData = {prodName : inputContent}
+					$.ajax({
+						url : 'getOutModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}
+			})	
 	
 	//모달창 닫기
 	$("#close_btn").click(function(){
         $(".modal").fadeOut();
-         
-  		Grid.destroy();
+        activeScroll();
+    	let inputContent = $('#modalSearch').val('');
+    	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
      });
 	
 	
@@ -671,7 +723,7 @@ input[type="date"] {
 					data : JSON.stringify(rtGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data +"건이 처리되었습니다.", "success");
+						swal("성공", "반품내역이 등록되었습니다.", "success");
 // 						rtGrid.resetData(data);
 					},
 					error : function(reject){
@@ -693,6 +745,22 @@ input[type="date"] {
     	   rtGrid.export('xlsx');
        })
     })
+    
+    //스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
     </script>
 </body>
 </html>

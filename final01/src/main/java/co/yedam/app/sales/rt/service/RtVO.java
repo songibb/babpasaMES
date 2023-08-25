@@ -46,4 +46,7 @@ public class RtVO {
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date salesOutDate;
 	private String empName;
+	
+	private String salesInDate;
+	private int prodSaveAmt;
 }

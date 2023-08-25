@@ -12,7 +12,9 @@ public interface InMapper {
 	//검색
 	public List<InVO> selectAllIn( @Param("prodCode")String prodCode
 			, @Param("startDate")String startDate
-			, @Param("endDate")String endDate);
+			, @Param("endDate")String endDate
+			, @Param("before") String before
+			, @Param("comple") String comple);
 	//제품목록
 	public List<InVO> selectProdAllList();
 	//등록

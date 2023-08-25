@@ -44,12 +44,14 @@
 			, o.prod_lot prod_lot
 			, o.act_code act_code
 			, o.emp_code emp_code
+			, e.emp_name emp_name
 			, a.act_name act_name
 			, o.sales_out_amt sales_out_amt
 			, o.sales_out_date sales_out_date
 			, i.sales_in_exd sales_in_exd
 			, o.sales_ord_de_code sales_ord_de_code
 			, i.prod_save_amt prod_save_amt
+			, d.dev_yn dev_yn
 	FROM sales_out o JOIN com_prod p
 						ON (o.prod_code = p.prod_code)
 						JOIN com_act a
@@ -58,6 +60,8 @@
 						ON (o.prod_code = i.prod_code)
 						JOIN sales_ord_de d
 						ON (o.sales_ord_de_code = d.sales_ord_de_code)
+						JOIN com_emp e
+						ON (o.emp_code = e.emp_code)
 	<where>
 			<if test="actCode != null and actCode != ''">
 				AND a.act_code LIKE '%' || #{actCode} || '%'
@@ -71,6 +75,12 @@
          	<if test="endDate != null and endDate != ''">
            		AND TO_CHAR(o.sales_out_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
          	</if>
+         	<if test="before==2">
+				AND d.dev_yn != 'N'
+			</if>
+			<if test="comple==2">
+				AND d.dev_yn != 'Y'
+			</if>
 	</where>					
 	ORDER BY sales_out_code DESC
 	</select>
@@ -83,6 +93,7 @@
 			, o.prod_lot prod_lot
 			, o.act_code act_code
 			, o.emp_code emp_code
+			, e.emp_name emp_name
 			, a.act_name act_name
 			, o.sales_out_amt sales_out_amt
 			, o.sales_out_date sales_out_date
@@ -97,6 +108,8 @@
 						ON (o.prod_code = i.prod_code)
 						JOIN sales_ord_de d
 						ON (o.sales_ord_de_code = d.sales_ord_de_code)
+						JOIN com_emp e
+						ON (o.emp_code = e.emp_code)
 	ORDER BY sales_out_code DESC
   	</select>
 	
@@ -155,8 +168,9 @@
   	
   	<!-- lot list -->
   	<select id="selectLotList" resultType="OutVO">
-  	SELECT *
-  	FROM sales_in
+ 	SELECT *
+  	FROM sales_in 
+    WHERE prod_save_amt <![CDATA[>]]> 0
   	ORDER BY prod_lot
   	</select>
   	<!-- orderde list -->
@@ -177,6 +191,7 @@
 		JOIN com_act a
 		ON (o.act_code = a.act_code)
 		WHERE d.dev_yn = 'N'
+		AND o.ord_sts = 'P2'
 		ORDER BY o.ord_code DESC
   	</select>
   </mapper>

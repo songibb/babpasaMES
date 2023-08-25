@@ -183,6 +183,10 @@ input[type="date"]{
 .yellow-background {
         background-color: rgb(255,253,235);
 }
+#save, #delete, #dirAdd{
+	margin-top : 120px;
+	float : right;
+}
 </style>    
        
 </head>
@@ -196,9 +200,13 @@ input[type="date"]{
 					<button type="button" class="btn btn-info btn-icon-text excelDownload">
 		                Excel <i class="bi bi-printer"></i>                                                                              
 					</button>
-					
-						<div id="customtemplateSearchAndButton">		
-							<p>제품</p>
+					<button class="btn btn-info btn-icon-text" id="save">저장</button>
+	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
+				  <div id="customtemplateSearchAndButton">		
+				  <div style="display: flex; justify-content: flex-end;">
+            				<div style="flex: 1;">
+				  <p>제품명</p>
                   <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
@@ -210,6 +218,10 @@ input[type="date"]{
                   <br>
                   <p>주문일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  <br>
+      				<p>배송상태</p>
+      				<label for="before"><input type="checkbox" id="before" value="before">배송전</label>
+      				<label for="comple"><input type="checkbox" id="comple" value="comple">배송완료</label>
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
@@ -217,12 +229,10 @@ input[type="date"]{
                   <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
-                  
+                  </div>
+                  </div>
 		            	</div>
 	            
-	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -284,7 +294,8 @@ input[type="date"]{
    	           	 devDate : "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
    	           	 devYn : "${order.devYn}",
    	           	 empCode : "${order.empCode}",
-   	           	 empName : "${order.empName}"
+   	           	 empName : "${order.empName}",
+   	          	 prodCode : "${order.prodCode}"
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 		          ],
@@ -384,6 +395,7 @@ input[type="date"]{
 	        ]
 	      });
 		
+	
 	 //거래처 리스트 모달 시작
     var Grid;
      $("#actModal").click(function(){
@@ -592,9 +604,19 @@ input[type="date"]{
 	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
-      let ed = $('#endDate').val();      
+      let ed = $('#endDate').val();   
+      
+      let before = '1';
+	  let comple = '1';
+	  let beforeCheck = document.getElementById('before');
+	  let compleCheck = document.getElementById('comple');
+	  if(beforeCheck.checked && !compleCheck.checked){
+		  comple = '2';
+	  } else if(!beforeCheck.checked && compleCheck.checked){
+		  before = '2';
+	  }
         
-      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed, before : before, comple : comple };
       $.ajax({
          url : 'orderListFilter',
          method : 'GET',
@@ -607,6 +629,12 @@ input[type="date"]{
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
 					obj['ordDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					date = new Date(obj['devDate']);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+					obj['devDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
 				})
            orderGrid.resetData(data2);
@@ -679,7 +707,7 @@ input[type="date"]{
 					data : JSON.stringify(orderGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data +"건이 처리되었습니다.", "success");
+						swal("성공", "주문이 등록되었습니다.", "success");
 // 						orderGrid.resetData(data);
 					},
 					error : function(reject){

@@ -404,6 +404,7 @@
 	           		salesRtDate : `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
 	           		salesRtWhy : "${rt.salesRtWhy}",
 	           		empCode : "${rt.empCode}",
+	           		empName : "${rt.empName}",
 	           		prodCode : "${rt.prodCode}",
 	           		salesOutAmt : "${rt.salesOutAmt}"
 	           	}<c:if test="${not status.last}">,</c:if>
@@ -463,7 +464,11 @@
 		         {
 		           header: '직원코드',
 		           name: 'empCode',
-		           value : '${rt.empCode}'
+		           hidden : true
+		         },
+		         {
+		           header: '직원이름',
+		           name: 'empName'
 		         }
            ]
          

@@ -36,8 +36,10 @@ public class OutController {
 	public List<OutVO> outListFilter(@RequestParam(value = "actCode", required = false) String actCode,
 			@RequestParam(value = "prodCode", required = false) String prodCode,
 			@RequestParam(value = "startDate", required = false) String startDate,
-			@RequestParam(value = "endDate", required = false) String endDate) {
-		List<OutVO> vo = outService.searchOutList(prodCode, actCode, startDate, endDate);
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value="before", required=false) String before, 
+			@RequestParam(value="comple", required=false) String comple) {
+		List<OutVO> vo = outService.searchOutList(prodCode, actCode, startDate, endDate, before, comple);
 		return vo;
 	}
 

@@ -26,7 +26,7 @@ public class InController {
 	
 	@GetMapping("/inList")
 	public String inList(Model model) {
-		model.addAttribute("inList", inService.getInList());
+		model.addAttribute("inMngList", inService.inMngList());
 		model.addAttribute("prodList", inService.prodAllList());
 		return "sales/inList";
 	}
@@ -35,8 +35,10 @@ public class InController {
 	@ResponseBody
 	public List<InVO> inListFilter(@RequestParam(value = "prodCode", required = false) String prodCode,
 			@RequestParam(value="startDate", required=false) String startDate, 
-			@RequestParam(value="endDate", required=false) String endDate){
-		List<InVO> vo = inService.searchInList(prodCode, startDate, endDate);
+			@RequestParam(value="endDate", required=false) String endDate,
+			@RequestParam(value="before", required=false) String before, 
+			@RequestParam(value="comple", required=false) String comple){
+		List<InVO> vo = inService.searchInList(prodCode, startDate, endDate, before, comple);
 		return vo;
 	}
 	

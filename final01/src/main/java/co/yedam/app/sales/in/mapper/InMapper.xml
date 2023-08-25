@@ -13,57 +13,65 @@
 				, i.sales_in_exd sales_in_exd
 		FROM sales_in i JOIN com_prod p
 						ON (i.prod_code = p.prod_code)
-		ORDER BY prod_lot DESC
+		ORDER BY prod_lot
 	</select>
 
 <!-- 검색 -->
   <select id="selectAllIn" resultType="InVO">
- 		SELECT i.prod_lot prod_lot
-				, p.prod_name prod_name
-				, i.sales_in_date sales_in_date
-				, i.sales_in_amt sales_in_amt
-				, i.prod_save_amt prod_save_amt
-				, i.sales_in_exd sales_in_exd
-		FROM sales_in i JOIN com_prod p
-						ON (i.prod_code = p.prod_code)
+ 		SELECT i.prod_lot
+			, i.prod_code
+			, i.sales_in_date
+			, i.sales_in_amt
+			, i.prod_save_amt
+			, i.sales_in_exd
+			, i.emp_code 
+			, e.emp_name
+			, o.sales_out_code
+		FROM sales_in i JOIN com_emp e
+						ON (i.emp_code = e.emp_code)
+						JOIN sales_out o
+						ON (i.prod_lot = o.prod_lot)
 	<where>
 			<if test="prodCode != null and prodCode != ''">
-				AND p.prod_code LIKE '%' || #{prodCode} || '%'
+				AND prod_code LIKE '%' || #{prodCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-            	AND TO_CHAR(i.sales_in_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+            	AND TO_CHAR(sales_in_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
          	</if>
          	<if test="endDate != null and endDate != ''">
-           		AND TO_CHAR(#i.sales_in_date, 'YYYY-MM-DD') <![CDATA[<=]]> {endDate}
+           		AND TO_CHAR(sales_in_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
          	</if>
+         	<if test="before==2">
+				AND o.sales_out_code = null
+			</if>
+			<if test="comple==2">
+				AND o.sales_out_code != null
+			</if>
 	</where>					
-	ORDER BY prod_lot DESC
+	ORDER BY prod_lot
 	</select>
 	
 	<!-- 제품목록 -->
 	<select id="selectProdAllList" resultType="InVO">
-	SELECT prod_lot
-			, prod_code
-			, sales_in_date
-			, sales_in_amt
-			, prod_save_amt
-			, sales_in_exd
-			, emp_code 
-	FROM sales_in
-	ORDER BY prod_lot 
+	SELECT prod_code, prod_name, prod_unit, prod_std
+	FROM com_prod
+	WHERE prod_kind = 'C'
+	ORDER BY prod_code
 	</select>
 	
 	<!-- 입고관리 그리드 -->
 	<select id="inMngList" resultType="InVO">
-	SELECT prod_lot
-			, prod_code
-			, sales_in_date
-			, sales_in_amt
-			, prod_save_amt
-			, sales_in_exd
-			, emp_code
-			, test_num
-	FROM sales_in
+	SELECT i.prod_lot
+			, i.prod_code
+			, i.sales_in_date
+			, i.sales_in_amt
+			, i.prod_save_amt
+			, i.sales_in_exd
+			, i.emp_code
+			, e.emp_name
+			, i.test_num
+	FROM sales_in i JOIN com_emp e
+					ON (i.emp_code = e.emp_code) 
 	ORDER BY prod_lot
 	</select>
 	

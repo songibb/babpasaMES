@@ -8,7 +8,7 @@ public interface OrderService {
 	//전체 조회
 	public List<OrderVO> getOrderList();
 	//검색
-	public List<OrderVO> searchOrderList(String actCode, String prodCode, String startDate, String endDate);
+	public List<OrderVO> searchOrderList(String actCode, String prodCode, String startDate, String endDate, String before, String comple);
 	//거래처목록
 	public List<OrderVO> actAllList();
 	//거래처목록 검색

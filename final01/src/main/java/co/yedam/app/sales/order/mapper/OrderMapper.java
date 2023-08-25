@@ -14,7 +14,9 @@ public interface OrderMapper {
 	public List<OrderVO> selectAllOrder(@Param("actCode")String actCode
 			, @Param("prodCode")String prodCode
 			, @Param("startDate")String startDate
-			, @Param("endDate")String endDate);
+			, @Param("endDate")String endDate
+			, @Param("before") String before
+			, @Param("comple") String comple);
 	//거래처 목록
 	public List<OrderVO> selectActAllList();
 	//거래처 목록 검색

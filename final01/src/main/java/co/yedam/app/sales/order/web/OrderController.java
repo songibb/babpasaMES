@@ -37,8 +37,10 @@ public class OrderController {
 			@RequestParam(value = "prodCode", required = false) String prodCode,
 			@RequestParam(value = "ordDate", required = false) String ordDate,
 			@RequestParam(value="startDate", required=false) String startDate, 
-			@RequestParam(value="endDate", required=false) String endDate){
-		List<OrderVO> vo = orderService.searchOrderList(actCode, prodCode, startDate, endDate);
+			@RequestParam(value="endDate", required=false) String endDate,
+			@RequestParam(value="before", required=false) String before, 
+			@RequestParam(value="comple", required=false) String comple){
+		List<OrderVO> vo = orderService.searchOrderList(actCode, prodCode, startDate, endDate, before, comple);
 		return vo;
 	}
 	
