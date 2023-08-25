@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.comm.service.CommCodeVO;
 import co.yedam.app.common.grid.service.GridVO;
+//2023/08/21/김상희
+//공통코드관리
 
 @Controller
 public class CommCodeController {

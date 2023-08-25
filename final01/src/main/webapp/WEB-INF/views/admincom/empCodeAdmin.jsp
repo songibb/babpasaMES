@@ -27,8 +27,8 @@
 <style>
 	label {
 	  display: block;
-	  margin-bottom: 7px;
-	  margin-top: 2px;
+	  margin-bottom: 5px;
+	  margin-top: 7.5px;
 	  font-weight: bold;
 	}
 	
@@ -36,8 +36,16 @@
 	input[type="password"],
 	select {
 	  width: 100%;
-	  padding: 6px;
-	  margin-bottom: 4px;
+	  padding: 5px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 25%;
+	  padding: 5px;
+	  margin-bottom: 10px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -51,25 +59,38 @@
 <body>
 <div class="black_bg"></div>
    	<h3>사원관리</h3>
-   	<div style="display: flex;">
+   	<div style="display: flex; ">
 		<div style="width: 75%;">
-		   <div class="col-lg-12 stretch-card">
-		       <div class="card">
-		           <div class="card-body">
-		               <div class="table-responsive pt-3">
-		                   <form action="" method="get" name="formInfo" >
-									사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" style="width: 20%; margin-bottom: 20px;">
-									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-										<i class="fas fa-search"></i>검색
-									</button>
-									<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-				           
-		               		</form>
-		               <div id="grid"></div>
-		                </div>
-		         </div>
-		      </div>
-		   </div> 
+		     <div class="col-lg-12 stretch-card">
+       <div class="card">
+           <div class="card-body">
+               <div class="table-responsive pt-3">
+                   <form action="" method="get" name="formInfo">
+                  			
+                  		부서명
+                  			<select id="inputDeptList" name="deptCode">
+								<option value="">선택</option>
+								<c:forEach items="${inputDeptList}" var="d">
+									<option value="${d.commdeCode }">${d.commdeName }</option>
+								</c:forEach>
+							</select>
+							<br>	
+							
+						사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" style="width: 25%">
+							<br>
+							
+						입사일자 <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+               </form>
+               <div id="grid"></div>
+                </div>
+         </div>
+      </div>
+   </div>  
 	   </div>
 	   <div style="width: 25%;">
 			<div class="col-lg-12 stretch-card">
@@ -78,18 +99,19 @@
 					<div class="table-responsive pt-3">
 						<form id="userInsertForm" method="post">
 						<div>
-						<p>등록/수정</p>
+						<h3 style="border: 1px">등록/수정</h3>
+						<br>
 						</div>
 							<label>사원코드</label>
 							<input type="text" name="empCode" id="empCode" readonly="readonly" style="background-color: skyblue;">
 							<label>사원명</label>
-							<input type="text" name="empName" id="empName">
+							<input type="text" name="empName" id="empName" >
 							<label>비밀번호</label>
 							<input type="password" name="empBeforePw" id="empBeforePw">
 							<label>비밀번호 확인</label>
 							<input type="password" name="empPw" id="empPw">
 							<label>부서명</label>
-							<select id="inputDeptList" name="deptCode">
+							<select id="inputDeptList" name="deptCode" style="width: 100%">
 								<c:forEach items="${inputDeptList}" var="d">
 									<option value="${d.commdeCode }">${d.commdeName }</option>
 								</c:forEach>
@@ -97,7 +119,7 @@
 							<label>연락처</label>
 							<input type="text" name="empTel" id="empTel">
 							<label>직급</label>
-							<select id="inputRoleList" name="empRole">
+							<select id="inputRoleList" name="empRole" style="width: 100%">
 								<c:forEach items="${inputRoleList}" var="i">
 									<option value="${i.commdeCode }">${i.commdeName }</option>
 								</c:forEach>
@@ -119,8 +141,11 @@
 //사원명검색조회
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
-		   let content = $('#empSearch').val();
-		   let search = { empName : content};
+		let inputDeptList = $('#inputDeptList').val();
+		   let empName = $('#empSearch').val();
+		   let startDate = $('#startDate').val();
+		   let endDate = $('#endDate').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
 		   $.ajax({
 			   url : 'ajaxEmpList',
 			   method : 'GET',
@@ -139,8 +164,11 @@
 		   })
 	}
 	//ajax 전체조회
-	 let content = $('#empSearch').val();
-	   let search = { empName : content};
+		   let inputDeptList = $('#inputDeptList').val();
+		   let empName = $('#empSearch').val();
+		   let startDate = $('#startDate').val();
+		   let endDate = $('#endDate').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
 	   $.ajax({
 		   url : 'ajaxEmpList',
 		   method : 'GET',

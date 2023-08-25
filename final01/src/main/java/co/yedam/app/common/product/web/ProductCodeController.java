@@ -19,8 +19,8 @@ import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.product.service.ProductCodeService;
 import co.yedam.app.common.product.service.ProductCodeVO;
 
-
-
+//2023/08/21/김상희
+//제품관리
 @Controller
 public class ProductCodeController {
 	@Autowired
@@ -32,7 +32,7 @@ public class ProductCodeController {
 	//전체조회
 	@GetMapping("/prodCodeList")
 	public String getProdAllList(Model model) {
-		model.addAttribute("prodList", productCodeService.getProductCodeAll());
+		model.addAttribute("prodTypeList", commCodeService.searchCommCodeUse("0E"));
 		return "common/prodCodeList";
 	}
 	
@@ -40,8 +40,8 @@ public class ProductCodeController {
 	//검색조회
 	@GetMapping("/getProdCodeFilter")
 	@ResponseBody
-	public List<ProductCodeVO> getProdCodeFilter(@RequestParam String prodName) {
-		List<ProductCodeVO> vo = productCodeService.searchSelectProdCode(prodName);
+	public List<ProductCodeVO> getProdCodeFilter(ProductCodeVO productCodeVO) {
+		List<ProductCodeVO> vo = productCodeService.searchSelectProdCode(productCodeVO);
 		return vo;
 				
 	}

@@ -22,9 +22,6 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
 					<form>
 						<div id="customtemplateSearchAndButton">		
 							<p>제품명</p>
@@ -58,6 +55,7 @@
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
+			  
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -65,23 +63,28 @@
 		   }
 	   })
    }
+   
+   
+   
+   //전체조회
+   let content = $('#bomSearch').val();
+   let search = { prodName : content };
+   $.ajax({
+	   url : 'bomSearch',
+	   method : 'GET',
+	   data : search ,
+	   success : function(data){
+		  
+		   grid.resetData(data);
+	   },
+	   error : function(reject){
+		   console.log(reject);
+	   }
+   })
 
    //bmo 조회
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [
-	           <c:forEach items="${bomList}" var="b" varStatus="status">
-	           	{
-	           		bomNo : "${b.bomNo}",
-	           		prodCode :"${b.prodCode}",
-	           		bomWdate :"<fmt:formatDate value='${b.bomWdate}' pattern='yyyy-MM-dd'/>",
-	           		bomUdate :"<fmt:formatDate value='${b.bomUdate}' pattern='yyyy-MM-dd'/>",
-	           		bomYn : "${b.bomYn}",
-	           		bomPrcsYn : "${b.bomPrcsYn}",
-	           		prodName : "${b.prodName}"
-	           	} <c:if test="${not status.last}">,</c:if>
-	           </c:forEach>
-	          ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -117,11 +120,11 @@
           },
           {
             header: '사용여부',
-            name: 'bomYn'
+            name: 'bomYnName'
           },
           {
             header: '공정사용여부',
-            name: 'bomPrcsYn'
+            name: 'bomPrcsYnName'
           }
         ]
       })  
@@ -151,15 +154,15 @@
             },
           {
                 header: '공정코드',
-                name: 'prcsCode',
+                name: 'prcsName',
             },
           {
             header: '자재/반제품구분',
-            name: 'mpKind',
+            name: 'kindName',
           },
           {
             header: '자재/반제품코드',
-            name: 'mpCode'
+            name: 'mpName'
           },
           {
             header: '단위',

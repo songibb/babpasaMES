@@ -18,11 +18,19 @@
 	  <select id="searchSelectProdCode" resultType="ProductCodeVO">
 	  	  	SELECT  prod_code,
 					prod_kind,
+					find_cdnm('0E', prod_kind) AS kindName,
 					prod_name,
 					prod_unit,
 					prod_std
 			FROM com_prod
-			WHERE prod_name LIKE '%' || #{prodName} || '%'
+			<where>
+				<if test="prodName != null and prodName != ''">
+					AND prod_name LIKE '%' || #{prodName} || '%'
+				</if>
+				<if test="prodKind != null and prodKind != ''">
+					AND prod_kind = #{prodKind}
+				</if>
+			</where>
 		ORDER BY prod_code
 	  </select>
 	  
