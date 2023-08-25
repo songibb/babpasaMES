@@ -65,6 +65,7 @@
 .yellow-background {
 	background-color: rgb(255, 253, 235);
 }
+
 </style>    
        
 </head>
@@ -164,12 +165,13 @@
 	 	 	      {
 	 	 	        header: '입고날짜',
 	 	 	        name: 'salesInDate',
-	 	 	      editor: {
+	 	 	      	editor: {
 	    		      type: 'datePicker',
 	    		      options: {
 	    		    	  language: 'ko'
 	    		      }
-	    		    }
+	    		    },
+	    		    className: 'yellow-background'
 	 	 	      },
 	 	 	      {
 	 	          	header: '입고량',
@@ -184,22 +186,22 @@
 	 	 	      {
 	 	 	        header: '유통기한',
 	 	 	        name: 'salesInExd',
-	 	 	      editor: {
+	 	 	      	editor: {
 	    		      type: 'datePicker',
 	    		      options: {
 	    		    	  language: 'ko'
 	    		      }
-	    		    }
+	    		    },
+	    		    className: 'yellow-background'
 	 	 	      },
 	 	 	      {
                       header: '직원코드',            // [필수] 컬럼 이름
                       name: 'empCode',				  // [필수] 컬럼 매핑 이름 값
-                      editor : 'text'            
+                      hidden : true            
                   },
                   {
                       header: '직원이름',            // [필수] 컬럼 이름
-                      name: 'empName',				  // [필수] 컬럼 매핑 이름 값
-                      editor : 'text'            
+                      name: 'empName'			  // [필수] 컬럼 매핑 이름 값
                   },
 	 		 	  	{
                       header: '검사번호',            // [필수] 컬럼 이름
@@ -210,19 +212,6 @@
 	        ]
 	      });  
 	
-	setDisabled();
-	
-	//비활성화
-	function setDisabled(){
-		$.each(inGrid.getData(), function(idx, obj){
-			
-			if(obj['prodLot'] != null && (obj['prodSaveAmt'] < 1 )){
-				inGrid.disableRow(obj['rowKey']);
-			}
-		})
-	}
-	
-	
 	//test완료 목록 그리드
 	   var testGrid = new tui.Grid({
 		       el: document.getElementById('grid2'),
@@ -232,7 +221,7 @@
 		           		testNum : "${test.testNum}",
 		           		prodCode : "${test.prodCode}",
 		           		prodName : "${test.prodName}",
-		           		testDate : "${test.testDate}",
+		           		testDate : `<fmt:formatDate value="${test.testDate}" pattern="yyyy-MM-dd"/>`,
 		           		testAmt : "${test.testAmt}"
 		           	},
 		           </c:forEach>
@@ -262,7 +251,8 @@
 			 	  },
 			 	  {
 	            	  	header: '검사일자',
-			 		 	name: 'testDate' 
+			 		 	name: 'testDate',
+			 		 	className: 'yellow-background'
 	              },
 	              {
 	            	  	header: '검사량',
@@ -376,7 +366,7 @@
 					data : JSON.stringify(inGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data +"건이 처리되었습니다.", "success");
+						swal("성공", "입고내역이 등록 되었습니다.", "success");
 						selectAjax();
 					},
 					error : function(reject){
@@ -394,11 +384,11 @@
 	function selectAjax(){
 		let prod = $('#prodCodeInput').val();
 		   
-		var checkboxList = [];
-		let checkedList = $('input[type="checkbox"]:checked');
-		$.each(checkedList, function(idx, obj){
-			checkboxList.push(obj.value);
-		})
+// 		var checkboxList = [];
+// 		let checkedList = $('input[type="checkbox"]:checked');
+// 		$.each(checkedList, function(idx, obj){
+// 			checkboxList.push(obj.value);
+// 		})
 		   
 
 		let sd = $('#startDate').val();
@@ -419,6 +409,12 @@
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					let day = date.getDate();        //일자 가져오기
 					obj['salesInDate'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
+					
+					date = new Date(obj['salesInExd']);
+					year = date.getFullYear();    //0000년 가져오기
+					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+					day = date.getDate();        //일자 가져오기
+					obj['salesInExd'] = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
 					
 				})
 				inGrid.resetData(data2);
@@ -612,7 +608,13 @@
     	let testAmt = testGrid.getValue(rowKey, 'testAmt');
     	
     	let prodLot = testGrid.getValue(rowKey, 'prodLot');
-    	let salesInDate = testGrid.getValue(rowKey, 'salesInDate');
+
+    	let now = new Date();	// 현재 날짜 및 시간
+		let year = now.getFullYear();
+		let month = ('0' + (now.getMonth() + 1)).substr(-2);
+		let day = ('0' + now.getDate()).substr(-2);
+		let salesInDate = year + "-" + month + "-" + day;
+
     	let salesInAmt = testGrid.getValue(rowKey, 'salesInAmt');
     	let prodSaveAmt = testGrid.getValue(rowKey, 'prodSaveAmt');
     	let salesInExd = testGrid.getValue(rowKey, 'salesInExd');

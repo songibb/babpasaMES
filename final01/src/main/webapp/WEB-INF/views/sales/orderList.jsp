@@ -205,6 +205,10 @@
                   <br>
                   <p>주문일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  <br>
+      				<p>배송상태</p>
+      				<label for="before"><input type="checkbox" id="before" value="before">배송전</label>
+      				<label for="comple"><input type="checkbox" id="comple" value="comple">배송완료</label>
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
@@ -496,16 +500,36 @@
            ]
          
         });
-   
+	setDisabled();
+	
+	//비활성화
+	function setDisabled(){
+		$.each(grid.getData(), function(idx, obj){
+			
+			if(obj['salesOrdDeCode'] != null && (obj['devYn'] == 'Y')){
+				grid.disableRow(obj['rowKey']);
+			}
+		})
+	}
  	//검색 버튼
    $('#searchBtn').on('click', searchOrderList);
    function searchOrderList(e){
 	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
-      let ed = $('#endDate').val();      
+      let ed = $('#endDate').val();    
+      
+      let before = '1';
+	  let comple = '1';
+	  let beforeCheck = document.getElementById('before');
+	  let compleCheck = document.getElementById('comple');
+	  if(beforeCheck.checked && !compleCheck.checked){
+		  comple = '2';
+	  } else if(!beforeCheck.checked && compleCheck.checked){
+		  before = '2';
+	  }
         
-      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed, before : before, comple : comple };
       $.ajax({
          url : 'orderListFilter',
          method : 'GET',
@@ -528,6 +552,7 @@
 			   		
 			  }
             grid.resetData(data);
+            setDisabled();
          },
          error : function(reject){
             console.log(reject);

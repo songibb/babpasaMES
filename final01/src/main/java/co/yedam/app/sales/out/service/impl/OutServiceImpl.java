@@ -32,9 +32,8 @@ public class OutServiceImpl implements OutService {
 	}
 
 	@Override
-	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate,
-			String outDate) {
-		return outMapper.selectAllOut(actCode, prodCode, startDate, outDate);
+	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate, String outDate, String before, String comple) {
+		return outMapper.selectAllOut(actCode, prodCode, startDate, outDate, before, comple);
 	}
 
 	@Override

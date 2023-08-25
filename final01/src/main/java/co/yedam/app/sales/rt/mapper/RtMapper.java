@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.yedam.app.sales.order.service.OrderVO;
 import co.yedam.app.sales.out.service.OutVO;
 import co.yedam.app.sales.rt.service.RtVO;
 
@@ -31,4 +32,10 @@ public interface RtMapper {
 	
 	//출고목록조회 모달
 	public List<OutVO> selectOutList();
+	
+	//모달 검색 - 제품
+	public List<OrderVO> selectprodSearchList(String prodName);
+	
+	//모달 검색 - 제품
+	public List<RtVO> selectOutSearchList(String prodName);
 }

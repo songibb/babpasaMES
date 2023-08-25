@@ -71,6 +71,16 @@ public class RtServiceImpl implements RtService {
 		return rtMapper.selectOutList();
 	}
 
+	@Override
+	public List<OrderVO> prodSearchList(String prodName) {
+		return rtMapper.selectprodSearchList(prodName);
+	}
+
+	@Override
+	public List<RtVO> outSearchList(String prodName) {
+		return rtMapper.selectOutSearchList(prodName);
+	}
+
 
 
 }

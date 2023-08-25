@@ -3,6 +3,7 @@ package co.yedam.app.sales.rt.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.sales.order.service.OrderVO;
 import co.yedam.app.sales.out.service.OutVO;
 
 public interface RtService {
@@ -20,5 +21,9 @@ public interface RtService {
 	public int modifyRt(GridVO<RtVO> data);
 	//출고목록조회 모달
 	public List<OutVO> getOutList();
+	//모달 검색 - 제품
+	public List<OrderVO> prodSearchList(String prodName);
+	//모달 검색 - 제품
+	public List<RtVO> outSearchList(String prodName);
 
 }

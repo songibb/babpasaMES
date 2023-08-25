@@ -37,6 +37,7 @@
 		, d.dev_date
 		, o.ord_sts
 		, e.emp_code
+		, e.emp_name
 		, d.dev_yn
 		, o.ord_date
 		, a.act_name
@@ -68,8 +69,14 @@
 				AND TO_CHAR(o.ord_date, 'YYYY-MM-DD') <![CDATA[<=]]>
 				#{endDate}
 			</if>
+			<if test="before==2">
+				AND d.dev_yn != 'N'
+			</if>
+			<if test="comple==2">
+				AND d.dev_yn != 'Y'
+			</if>
 		</where>
-		ORDER BY o.ord_code DESC
+		ORDER BY d.dev_date, o.ord_code
 	</select>
 
 	<!-- 거래처 목록 -->
@@ -110,6 +117,7 @@
 		, d.dev_date
 		, o.ord_sts
 		, e.emp_code
+		, e.emp_name
 		, d.dev_yn
 		, o.ord_date
 		, a.act_name
@@ -123,7 +131,7 @@
 		ON (o.emp_code = e.emp_code)
 		JOIN com_act a
 		ON (o.act_code = a.act_code)
-		ORDER BY d.dev_date
+		ORDER BY d.dev_date, o.ord_code
 	</select>
 
 	<!-- 주문서 등록 -->

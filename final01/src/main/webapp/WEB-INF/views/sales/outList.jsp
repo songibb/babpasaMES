@@ -205,6 +205,10 @@
                   <br>
                   <p>주문일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  <br>
+      				<p>배송상태</p>
+      				<label for="before"><input type="checkbox" id="before" value="before">출고전</label>
+      				<label for="comple"><input type="checkbox" id="comple" value="comple">출고완료</label>
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
@@ -409,6 +413,7 @@
 		           	salesOutAmt : "${out.salesOutAmt}",
 		           	salesOutDate : `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
 		           	empCode : "${out.empCode}",
+		           	empName : "${out.empName}",
 		           	prodSaveAmt : "${out.prodSaveAmt}"
               }<c:if test="${not status.last}">,</c:if>
            </c:forEach>
@@ -457,10 +462,14 @@
 		           name: 'salesOutDate',
 		    		    className: 'yellow-background'
 		         },
+	         	{
+		           header: '직원이름',
+		           name: 'empName'
+		         },
 		         {
 		           header: '직원코드',
 		           name: 'empCode',
-		           value : '${out.empCode}'
+		           hidden : true
 		         },
 	         	{
 		           header: '출고여부',
@@ -475,17 +484,17 @@
            ]
          
         });
-//    setDisabled();
+   setDisabled();
 	
-// 	//비활성화
-// 	function setDisabled(){
-// 		$.each(grid.getData(), function(idx, obj){
+	//비활성화
+	function setDisabled(){
+		$.each(grid.getData(), function(idx, obj){
 			
-// 			if(obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)){
-// 				inGrid.disableRow(obj['rowKey']);
-// 			}
-// 		})
-// 	}
+			if(obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)){
+				grid.disableRow(obj['rowKey']);
+			}
+		})
+	}
    
  	//검색 버튼
    $('#searchBtn').on('click', searchOrderList);
@@ -494,8 +503,18 @@
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
       let ed = $('#endDate').val();      
-        
-      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      
+      let before = '1';
+	  let comple = '1';
+	  let beforeCheck = document.getElementById('before');
+	  let compleCheck = document.getElementById('comple');
+	  if(beforeCheck.checked && !compleCheck.checked){
+		  comple = '2';
+	  } else if(!beforeCheck.checked && compleCheck.checked){
+		  before = '2';
+	  }
+      
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed, before : before, comple : comple };
       $.ajax({
          url : 'outListFilter',
          method : 'GET',
@@ -510,6 +529,7 @@
 					
 				})
             grid.resetData(data2);
+        	setDisabled();
          },
          error : function(reject){
             console.log(reject);
