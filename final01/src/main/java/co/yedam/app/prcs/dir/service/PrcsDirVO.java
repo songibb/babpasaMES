@@ -40,6 +40,7 @@ public class PrcsDirVO {
 	//프로시저 결과 담는용
 	private int ingResult;
 	
-	
+	//출력용
+	private String empName;
 	
 }

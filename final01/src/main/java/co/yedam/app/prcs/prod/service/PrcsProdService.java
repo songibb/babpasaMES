@@ -10,7 +10,6 @@ public interface PrcsProdService {
 	//제품 목록 조회
 	public List<PrcsProdVO> selectProdList();
 	
-	//제품별공정 등록
-	//제품별공정 수정
-	//제품별공정 삭제
+	//제품별공정 등록, 수정, 삭제
+	public int updatePrcsProd(PrcsProdReqVO prcsProdReqVO);
 }

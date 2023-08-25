@@ -41,7 +41,6 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 		
 		if(data.getDeletedRows()!= null && data.getDeletedRows().size()>0) {
 			for(PrcsManageVO vo : data.getDeletedRows()){		
-				System.out.println(vo);
 				result += prcsManageMapper.deletePrcsManage(vo);
 			}
 		}

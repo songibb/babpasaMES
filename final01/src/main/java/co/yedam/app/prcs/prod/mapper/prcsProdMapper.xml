@@ -28,4 +28,46 @@
 		  FROM com_prod
 		 WHERE prod_kind = 'C'
 	</select>
+	
+	<!-- 제품별공정 등록 -->
+	<insert id="insertPrcsProd" parameterType="PrcsProdVO">
+		<selectKey keyProperty="prcsProdCode" resultType="String" order="BEFORE">
+			SELECT 'PRPR-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_prod_code, -3)),0) + 1, 3, '0')
+			FROM prcs_prod
+			WHERE SUBSTR(prcs_prod_code, 6, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		INSERT INTO prcs_prod (
+									prcs_prod_code
+									,prod_code
+									, prcs_code
+									, prcs_seq
+							 	)
+			 VALUES (
+						#{prcsProdCode}
+						, #{prodCode}
+						, #{prcsCode}
+						, #{prcsSeq}
+					 )
+	</insert>
+	
+	<!-- 제품별공정 수정 -->
+	<update id="updatePrcsProd" parameterType="PrcsProdVO">
+		UPDATE prcs_prod 
+		<set>
+			<if test="prcsName != null and !prcsName.equals('')">
+				prcs_Name = #{prcsCode},
+			</if>
+			<if test="semiYn != null and !semiYn.equals('')">
+				prcsSeq = #{prcsSeq}
+			</if>
+		</set> 
+	  	 WHERE prcs_prod_code = #{prcsProdCode}
+	</update>
+
+	<!-- 제품별공정 삭제 -->
+	<delete id="deletePrcsProd" parameterType="PrcsProdVO">
+		DELETE FROM prcs_prod
+		 WHERE prcs_prod_code = #{prcsProdCode}
+	</delete>
+	
 </mapper>

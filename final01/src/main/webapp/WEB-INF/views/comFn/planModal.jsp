@@ -28,7 +28,7 @@
 	//미지시 생산계획 모달
 	$("#planModal").click(function(){
 	    $(".modal").fadeIn();
-	    Grid = createActGrid();
+	    Grid = createPlanGrid();
 	    
 	    Grid.on('click', () => {
 
@@ -70,7 +70,7 @@
 	
 
 	
-	function createActGrid(){
+	function createPlanGrid(){
 	    var planGrid = new tui.Grid({
 	        el: document.getElementById('modal_label'),
 	        scrollX: false,
@@ -103,7 +103,8 @@
 	            },
 	            {
 	                header: '생산계획량',
-	                name: 'prcsPlanAmt'
+	                name: 'prcsPlanAmt',
+	                hidden: true
 	            },
 	            {
 	            	header: '생산예정일',

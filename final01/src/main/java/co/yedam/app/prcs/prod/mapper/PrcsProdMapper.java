@@ -15,6 +15,11 @@ public interface PrcsProdMapper {
 	public List<PrcsProdVO> selectProdList();
 	
 	//제품별공정 등록
+	public int insertPrcsProd(PrcsProdVO prcsProdVO);
+	
 	//제품별공정 수정
+	public int updatePrcsProd(PrcsProdVO prcsProdVO);
+	
 	//제품별공정 삭제
+	public int deletePrcsProd(PrcsProdVO prcsProdVO);
 }
