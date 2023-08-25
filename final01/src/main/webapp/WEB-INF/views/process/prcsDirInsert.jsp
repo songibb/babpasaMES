@@ -145,10 +145,26 @@
 		dirDeGrid.finishEditing(rowKeyDe, columnNameDe);
 		
 // 		console.log(dirDeGrid.isModified());
+// 		console.log(dirDeGrid.getModifiedRows());
 // 		if(!dirGrid.isModified() && !dirDeGrid.isModified()){
 // 			swal("변경사항이 없습니다.", "", "warning");
 // 			return false;
 // 		}
+		
+		//생산계획량과 지시수량 비교 -> 생산계획량보다 지시수량이 적을시 경고창
+		let amtCklist = dirDeGrid.getData();
+		let amtCk = true;
+		$.each(amtCklist, function(i, obj){
+			for(let field in obj){
+				if(obj['prcsPlanAmt'] > obj['prcsDirAmt']){
+					amtCk = false;
+				}
+			}
+		})
+		if(amtCk == false){
+			swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
+			return false;
+		}
 		
 
 		let list = dirGrid.getData();

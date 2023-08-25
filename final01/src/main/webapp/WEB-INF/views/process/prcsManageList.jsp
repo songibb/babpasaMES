@@ -31,8 +31,8 @@
 	            
             	<div>
 	           		<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
-	           		<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>
 	           		<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
+	           		<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>
            		</div>
            	
            		<div id="grid"></div>
@@ -45,10 +45,10 @@
 	
 	//추가
 	document.getElementById('addBtn').addEventListener('click', addRow);
-	//저장
-	document.getElementById('saveBtn').addEventListener('click', saveServer);
 	//삭제
 	document.getElementById('removeBtn').addEventListener('click', removeRow);
+	//저장
+	document.getElementById('saveBtn').addEventListener('click', saveServer);
 	
 	
 	//공정관리 조회
