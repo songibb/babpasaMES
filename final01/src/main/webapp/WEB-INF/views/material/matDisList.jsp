@@ -54,6 +54,10 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
+	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 </style>    
        
 </head>
@@ -117,13 +121,13 @@
    
 		//모달 시작
 		var Grid;
-	     $("#matModal").click(function(){
-	         $(".modal").fadeIn();
-	         preventScroll();
-	         Grid = createMatGrid();
-	         $('.modal_title h3').text('자재 목록');
-	         Grid.on('dblclick', () => {
-	         	let rowKey = Grid.getFocusedCell().rowKey;
+	    $("#matModal").click(function(){
+	    	$(".modal").fadeIn();
+	        preventScroll();
+	        Grid = createMatGrid();
+	        $('.modal_title h3').text('자재 목록');
+	        Grid.on('dblclick', () => {
+	        	let rowKey = Grid.getFocusedCell().rowKey;
 	         	let matCode = Grid.getValue(rowKey, 'matCode');
 	      		let matName = Grid.getValue(rowKey, 'matName');
 	  			$("#matCodeInput").val(matCode);
@@ -139,67 +143,67 @@
 	 	    		}
 	
 	     		}
-	       	 })
-	     });
+	       	})
+	    });
   
-		 $(".close_btn").click(function(){
-		      	$(".modal").fadeOut();
-		      	activeScroll();
-		      	let inputContent = $('#modalSearch').val('');
-		      	if(Grid != null && Grid.el != null){
- 	    			Grid.destroy();	
- 	    		}
-		 });
+		$(".close_btn").click(function(){
+			$(".modal").fadeOut();
+		    activeScroll();
+		    let inputContent = $('#modalSearch').val('');
+		    if(Grid != null && Grid.el != null){
+ 	    		Grid.destroy();	
+ 	    	}
+		});
   
 		
 		//자재 모달 그리드
-		 function createMatGrid(){
-			   var matGrid = new tui.Grid({
-			       el: document.getElementById('modal_label'),
-			       data: [
-			    	   <c:forEach items="${matList}" var="m" varStatus="status">
-			          	{
+		function createMatGrid(){
+			var matGrid = new tui.Grid({
+				el: document.getElementById('modal_label'),
+			    data: [
+			   		<c:forEach items="${matList}" var="m" varStatus="status">
+						{
 			          		matCode : "${m.matCode}",
 			          		matName :"${m.matName}",
 			          		matUnit : "${m.matUnit}",
 			          		matStd :"${m.matStd}"
 			          	} <c:if test="${not status.last}">,</c:if>
-			          </c:forEach>
-			          ],
-				   scrollX: false,
-			       scrollY: false,
-			       minBodyHeight: 30,
-			       rowHeaders: ['rowNum'],
-			       selectionUnit: 'row',
-			       pagination: true,
-			       pageOptions: {
-			       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-			         useClient: true,
-			         perPage: 10
-			       },
-			       columns: [
-			    	     {
-			               header: '자재코드',
-			               name: 'matCode',
-			             },
-			             {
-			               header: '자재명',
-			               name: 'matName'
-			             },
-			             {
-				           header: '단위',
-				           name: 'matUnit'
-				         },
-			             {
-			               header: '규격',
-			               name: 'matStd'
-			             }
-			 	    ]
+					</c:forEach>
+				],
+				scrollX: false,
+			    scrollY: false,
+			    minBodyHeight: 30,
+			    rowHeaders: ['rowNum'],
+			    selectionUnit: 'row',
+			    pagination: true,
+			    pageOptions: {
+			    //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+			    	useClient: true,
+			        perPage: 10
+			    },
+			    columns: [
+			    	{
+			        	header: '자재코드',
+			            name: 'matCode',
+			        },
+			        {
+			            header: '자재명',
+			            name: 'matName'
+			        },
+			        {
+				        header: '단위',
+				        name: 'matUnit'
+				    },
+			        {
+			            header: '규격',
+			            name: 'matStd'
+			        }
+			 	]
 			      
-			     });
+			});
 			   
-			   return matGrid;
-		  }
+			return matGrid;
+		}
 		
 		
 		//모달 검색
@@ -222,38 +226,38 @@
 					}
 				})
 			} 
-		})
+		});
 		
 		
 
 		//검색
 		$('#searchBtn').on('click', searchMatRt);
 		function searchMatRt(e){
-			   let mat = $('#matCodeInput').val();
-			   let sd = $('#startDate').val();
-			   let ed = $('#endDate').val();
+			let mat = $('#matCodeInput').val();
+			let sd = $('#startDate').val();
+			let ed = $('#endDate').val();
 			   
 			 
-			   let search = { materialCode : mat , startDate : sd , endDate : ed };
-			   $.ajax({
-				   url : 'getMatDisFilter',
-				   method : 'GET',
-				   data : search ,
-				   success : function(data){
+			let search = { materialCode : mat , startDate : sd , endDate : ed };
+			$.ajax({
+				url : 'getMatDisFilter',
+				method : 'GET',
+				data : search ,
+				success : function(data){
 					   
-					  for(let i of data){
-							let date = new Date(i.matDpDate);
-							let year = date.getFullYear();    //0000년 가져오기
-							let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-							let day = date.getDate();        //일자 가져오기
-					   		i.matDpDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
-					  }
-					   grid.resetData(data);
-				   },
-				   error : function(reject){
-					   console.log(reject);
-				   }
-			   });
+					for(let i of data){
+						let date = new Date(i.matDpDate);
+						let year = date.getFullYear();    //0000년 가져오기
+						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
+						let day = date.getDate();        //일자 가져오기
+					   	i.matDpDate = year + "년 " + (("00"+month.toString()).slice(-2)) + "월 " + (("00"+day.toString()).slice(-2)) + "일";
+					}
+					grid.resetData(data);
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			});
 		}
 
 		//초기화
@@ -264,123 +268,122 @@
 			   })
 		}
    
-	   //엑셀 다운로드
-	   const excelDownload = document.querySelector('.excelDownload');
+	   	//엑셀 다운로드
+	   	const excelDownload = document.querySelector('.excelDownload');
 	   
-	   document.addEventListener('DOMContentLoaded', ()=>{
-	      excelDownload.addEventListener('click', function(e){
-	         grid.export('xlsx');
-	      })
-	   })
+	   	document.addEventListener('DOMContentLoaded', ()=>{
+	      	excelDownload.addEventListener('click', function(e){
+	         	grid.export('xlsx');
+	      	})
+	   	})
 
 	
-		   //전체조회 그리드
-		   var grid = new tui.Grid({
-			       el: document.getElementById('grid'),
-			       data: [
-			           <c:forEach items="${disList}" var="mat">
-			           	{
-			           		matDpCode : "${mat.matDpCode}",
-			           		matIdentiCode :"${mat.matIdentiCode}",
-			           		matCode : "${mat.matCode}",
-			           		matName : "${mat.matName}",
-			           		matStd :"${mat.matStd}",
-			           		matDpDate : `<fmt:formatDate value="${mat.matDpDate}" pattern="yyyy-MM-dd"/>`,
-			           		matUnit : "${mat.matUnit}",
-			           		matDpAmt :"${mat.matDpAmt}",
-			           		empCode : "${mat.empCode}",
-			           		empName : "${mat.empName}",
-			           		matDpInfo : "${mat.matDpInfo}"
-			           	},
-			           </c:forEach>
-			          ],
-				   scrollX: false,
-			       scrollY: false,
-			       minBodyHeight: 30,
-			       rowHeaders: ['rowNum'],
-			       pagination: true,
-			       pageOptions: {
-			       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-			         useClient: true,
-			         perPage: 10
-			       },
-			       columns: [
-			 	      {
-			 	        header: '자재폐기코드',
-			 	        name: 'matDpCode',
-			 	        hidden : true
-			 	      },
-			 	      {
-			 	        header: '자재 LOT / 발주상세코드',
-			 	        name: 'matIdentiCode',
-			 	        width : 200
-			 	      },
-			 	      {
-		          	  	header: '자재코드',
-				 		name: 'matCode',
-				 		hidden: true
-		              },
-		              {
-		          	  	header: '자재명',
-				 		name: 'matName'
-		              },
-			 	      {
-			 	        header: '단위',
-			 	        name: 'matUnit'
-			 	      },
-			 	      
-			 	      {
-				 	    header: '규격',
-				 	    name: 'matStd'
-				 	  },
-				 	  {
-				 	    header: '폐기수량',
-				 	    name: 'matDpAmt',
-			 	       	formatter(e) { 
-			 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		//전체조회 그리드
+		var grid = new tui.Grid({
+			el: document.getElementById('grid'),
+			data: [
+				<c:forEach items="${disList}" var="mat">
+			    	{
+			        	matDpCode : "${mat.matDpCode}",
+			           	matIdentiCode :"${mat.matIdentiCode}",
+			           	matCode : "${mat.matCode}",
+			           	matName : "${mat.matName}",
+			           	matStd :"${mat.matStd}",
+			           	matDpDate : `<fmt:formatDate value="${mat.matDpDate}" pattern="yyyy-MM-dd"/>`,
+			           	matUnit : "${mat.matUnit}",
+			           	matDpAmt :"${mat.matDpAmt}",
+			           	empCode : "${mat.empCode}",
+			           	empName : "${mat.empName}",
+			           	matDpInfo : "${mat.matDpInfo}"
+					},
+				</c:forEach>
+			],
+			scrollX: false,
+			scrollY: false,
+			minBodyHeight: 30,
+			rowHeaders: ['rowNum'],
+			pagination: true,
+			pageOptions: {
+			//백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+				useClient: true,
+			    perPage: 10
+			},
+			columns: [
+				{
+			 		header: '자재폐기코드',
+			 	    name: 'matDpCode',
+			 	    hidden : true
+			 	},
+			 	{
+			 	    header: '자재 LOT / 발주상세코드',
+			 	    name: 'matIdentiCode',
+			 	    width : 200
+			 	},
+			 	{
+		          	header: '자재코드',
+				 	name: 'matCode',
+				 	hidden: true
+		        },
+		        {
+		          	header: '자재명',
+				 	name: 'matName'
+		        },
+			 	{
+			 	    header: '단위',
+			 	    name: 'matUnit'
+			 	},
+				{
+				 	header: '규격',
+				 	name: 'matStd'
+				},
+				{
+				 	header: '폐기수량',
+				 	name: 'matDpAmt',
+			 	    formatter(e) { 
+			 	        val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 			 	           	return val;
-			 	        }
-				 	  },
-					  {
-				 	    header: '폐기일자',
-				 	    name: 'matDpDate',
-			 	  		className: 'yellow-background'
-				 	  },
-					  {
-						header: '담당자코드',
-						name: 'empCode',
-		 	  		 	hidden : true
-					  },
-					  {
-						header: '담당자명',
-						name: 'empName'
-					  },
-					  {
-						header: '비고',
-						name: 'matDpInfo',
-						width : 400
-					  }
+			 	    }
+				},
+				{
+				 	header: '폐기일자',
+				 	name: 'matDpDate',
+			 	  	className: 'yellow-background'
+				},
+				{
+					header: '담당자코드',
+					name: 'empCode',
+		 	  		hidden : true
+				},
+				{
+					header: '담당자명',
+					name: 'empName'
+				},
+				{
+					header: '비고',
+					name: 'matDpInfo',
+					width : 400
+				}
 					 
-			 	    ]
+			 ]
 			      
 		});
 		   
 		//스크롤 막기
 	 	function preventScroll(){
-		   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
-			   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
-				   event.preventDefault();
-				   event.stopPropagation();
+			$('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+			$('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+				event.preventDefault();
+				event.stopPropagation();
 				
-				   return false;
-		   });
+				return false;
+		   	});
 	 	}
 
 	 	//스크롤 활성화
 	  	function activeScroll(){
 	      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
 	  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
-	 	 }
+	 	}
    
    
    
@@ -388,14 +391,14 @@
      
    
    
-	 //이전 날짜 선택불가
-	   $( '#startDate' ).on( 'change', function() {
-	     $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
-	   } );
-	  //이후날짜 선택불가
-	   $( '#endDate' ).on( 'change', function() {
+	 	//이전 날짜 선택불가
+	   	$( '#startDate' ).on( 'change', function() {
+	     	$( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+	   	});
+	  	//이후날짜 선택불가
+	   	$( '#endDate' ).on( 'change', function() {
 	        $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
-	   } );
+	   	});
 
 </script>
 </body>

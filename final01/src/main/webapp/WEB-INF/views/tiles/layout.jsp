@@ -63,8 +63,12 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
   <!-- sweet alert -->
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <!-- 글씨체 -->
+  <link href="https://webfontworld.github.io/amore/AritaDotum.css" rel="stylesheet">
   <style>
-  
+  	*{
+	font-family: 'AritaDotum';
+	}
   </style>
 </head>
 <body>

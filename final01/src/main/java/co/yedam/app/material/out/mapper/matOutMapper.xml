@@ -5,7 +5,17 @@
 <mapper namespace="co.yedam.app.material.out.mapper.MatOutMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOutList" resultType="MatOutVO">
-		SELECT a.mat_lot mat_lot, a.mat_code mat_code, b.mat_name mat_name, b.mat_unit, b.mat_std, c.act_name act_name, a.mat_out_amt mat_out_amt, a.prcs_dir_de_code prcs_dir_de_code, d.emp_name emp_name, a.mat_outd mat_outd, a.mat_exd mat_exd 
+		SELECT a.mat_lot
+			 , a.mat_code
+			 , b.mat_name
+			 , b.mat_unit
+			 , b.mat_std
+			 , c.act_name
+			 , a.mat_out_amt
+			 , a.prcs_dir_de_code
+			 , d.emp_name
+			 , a.mat_outd
+			 , a.mat_exd 
 		FROM mat_out a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c

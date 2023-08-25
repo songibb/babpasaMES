@@ -5,9 +5,13 @@
 <mapper namespace="co.yedam.app.material.stock.mapper.MatStockMapper">
 	<!-- 전체조회 -->
 	<select id="selectMatStockList" resultType="MatStockVO">
-		SELECT a.mat_code, SUM(a.mat_stock) total_stock, b.mat_name, b.mat_std, b.mat_unit
+		SELECT a.mat_code
+			 , SUM(a.mat_stock) total_stock
+			 , b.mat_name
+			 , b.mat_std
+			 , b.mat_unit
 		FROM mat_in a LEFT JOIN com_mat b
-		ON(a.mat_code = b.mat_code)
+			ON(a.mat_code = b.mat_code)
 		<where>
 			<if test="materialCode != null and !materialCode.equals('')">
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
