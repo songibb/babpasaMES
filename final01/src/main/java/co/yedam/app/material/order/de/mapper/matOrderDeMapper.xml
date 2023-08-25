@@ -5,28 +5,56 @@
 <mapper namespace="co.yedam.app.material.order.de.mapper.MatOrderDeMapper">
 <!-- 전체조회 -->
 	<select id="selectMatOrderList" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, mat_test_yn, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd
+			 , mat_test_yn
+			 , a.mat_code
+			 , b.emp_code
+			 , b.act_code
+			 , a.mat_od_de_cd
+			 , e.mat_name
+			 , e.mat_unit
+			 , e.mat_std
+			 , a.mat_price
+			 , a.mat_amt 
+			 , c.act_name
+			 , d.emp_name
+			 , a.mat_od_acp
+			 , b.mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
-            LEFT JOIN com_act c
-            ON (b.act_code = c.act_code)
-            LEFT JOIN com_emp d 
-            ON (b.emp_code = d.emp_code)
-            LEFT JOIN com_mat e
-            ON (a.mat_code = e.mat_code)
+            	LEFT JOIN com_act c
+            		ON (b.act_code = c.act_code)
+            			LEFT JOIN com_emp d 
+            				ON (b.emp_code = d.emp_code)
+            					LEFT JOIN com_mat e
+            						ON (a.mat_code = e.mat_code)
 		ORDER BY b.mat_od_rq
 	</select>
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
-		SELECT a.mat_od_cd mat_od_cd, mat_test_yn, a.mat_code mat_code, b.emp_code emp_code, b.act_code act_code, a.mat_od_de_cd mat_od_de_cd, e.mat_name mat_name, e.mat_unit, e.mat_std, a.mat_price mat_price, a.mat_amt mat_amt, c.act_name act_name, d.emp_name emp_name, a.mat_od_acp mat_od_acp, b.mat_od_rq mat_od_rq
+		SELECT a.mat_od_cd
+			 , mat_test_yn
+			 , a.mat_code
+			 , b.emp_code
+			 , b.act_code
+			 , a.mat_od_de_cd
+			 , e.mat_name
+			 , e.mat_unit
+			 , e.mat_std
+			 , a.mat_price
+			 , a.mat_amt 
+			 , c.act_name
+			 , d.emp_name
+			 , a.mat_od_acp
+			 , b.mat_od_rq
 		FROM mat_order_de a LEFT JOIN mat_order b
 			ON (a.mat_od_cd = b.mat_od_cd)
-            LEFT JOIN com_act c
-            ON (b.act_code = c.act_code)
-            LEFT JOIN com_emp d 
-            ON (b.emp_code = d.emp_code)
-            LEFT JOIN com_mat e
-            ON (a.mat_code = e.mat_code)
+            	LEFT JOIN com_act c
+            		ON (b.act_code = c.act_code)
+            			LEFT JOIN com_emp d 
+            				ON (b.emp_code = d.emp_code)
+            					LEFT JOIN com_mat e
+            						ON (a.mat_code = e.mat_code)
             <where>
             	<if test="materialCode != null and !materialCode.equals('')">
 					AND a.mat_code LIKE '%' || #{materialCode} || '%'
@@ -93,7 +121,6 @@
 	
 	<update id="updateMatOrderList" parameterType="MatOrderDeVO">
 			UPDATE mat_order_de
-
 			SET mat_code = #{matCode}, mat_amt = #{matAmt}, mat_od_acp = #{matOdAcp}, mat_price = #{matPrice}
 			WHERE mat_od_de_cd = #{matOdDeCd}
 	</update>
@@ -103,7 +130,7 @@
 			WHERE mat_od_cd IN (
 								SELECT a.mat_od_cd
 								FROM mat_order a LEFT JOIN mat_order_de b
-								ON(a.mat_od_cd = b.mat_od_cd)
+									ON(a.mat_od_cd = b.mat_od_cd)
 								WHERE mat_od_de_cd IS NULL)
 	</delete>
 	
@@ -115,25 +142,33 @@
 	
 	<!-- 신규 생산 계획 조회 -->
 	<select id="selectNewPrcsPlan" resultType="PrcsPlanVO">
-		SELECT prcs_plan_name, a.prod_code, b.prcs_plan_date, c.prod_name, prcs_plan_amt
+		SELECT prcs_plan_name
+			 , a.prod_code
+			 , b.prcs_plan_date
+			 , c.prod_name
+			 , prcs_plan_amt
 		FROM prcs_plan_de a LEFT JOIN prcs_plan b 
-		ON(a.prcs_plan_code = b.prcs_plan_code)
-		LEFT JOIN com_prod c
-		ON(a.prod_code = c.prod_code)
+			ON(a.prcs_plan_code = b.prcs_plan_code)
+				LEFT JOIN com_prod c
+					ON(a.prod_code = c.prod_code)
 		WHERE prcs_dir_yn = 'N'
 		ORDER BY b.prcs_plan_date
 	</select>
 	
 	<!-- 해당 계획 자재 소모량 -->
 	<select id="selectNewPlanUseAmt" resultType="MatInVO">
-		SELECT mp_code mat_code, find_mat_name(mp_code) AS mat_name, SUM(bom_amt) AS bom_amt, NVL(mat_stock,0) AS mat_stock
+		SELECT mp_code mat_code
+			 , find_mat_name(mp_code) AS mat_name
+			 , SUM(bom_amt) AS bom_amt
+			 , NVL(mat_stock,0) AS mat_stock
 		FROM v_prod_bom a
-		LEFT JOIN (SELECT mat_code, SUM(mat_stock) AS mat_stock
+		LEFT JOIN (SELECT mat_code
+						, SUM(mat_stock) AS mat_stock
 		           FROM mat_in
 		           GROUP BY mat_code) b
-		ON (a.mp_code = b.mat_code)
+			ON (a.mp_code = b.mat_code)
 		WHERE prod_code= #{prodCode}
-		AND bom_yn='O'
-		AND mp_kind='M' group by find_mat_name(mp_code), mp_code, mat_stock
+			AND bom_yn='O'
+			AND mp_kind='M' group by find_mat_name(mp_code), mp_code, mat_stock
 	</select>
 </mapper>

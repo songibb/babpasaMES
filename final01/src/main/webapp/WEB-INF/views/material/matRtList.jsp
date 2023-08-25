@@ -54,6 +54,10 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
+	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 </style>    
        
 </head>
@@ -400,6 +404,7 @@
 			           	matRtAmt :"${mat.matRtAmt}",
 			           	empName : "${mat.empName}",
 			           	matRtDate : `<fmt:formatDate value="${mat.matRtDate}" pattern="yyyy-MM-dd"/>`,
+			           	matRtTotalAmt : "${mat.matRtTotalAmt}",
 			           	matRtSts : "${mat.matRtSts}"
 			           	},
 			           </c:forEach>
@@ -448,6 +453,11 @@
 			 	           	return val;
 			 	        }
 				 	  },
+				 	  {
+					 		header: '불량수량',
+					 		name : 'matRtTotalAmt'
+					 		
+					 },
 					  {
 				 	    header: '검사일자',
 				 	    name: 'matTestDate',

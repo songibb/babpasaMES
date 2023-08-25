@@ -53,6 +53,10 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
+	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 </style>    
        
 </head>
@@ -121,92 +125,90 @@
   		</div>
 	</div>
 
-<script>
-
-   
-   //모달 시작
+	<script>
+   		//모달 시작
   
-	 var Grid;
-     $("#actModal").click(function(){
-       $(".modal").fadeIn();
-       preventScroll();
-       Grid = createActGrid();
-       $('.modal_title h3').text('거래처 목록');
-       Grid.on('dblclick', () => {
-        	let rowKey = Grid.getFocusedCell().rowKey;
-        	let actCode = Grid.getValue(rowKey, 'actCode');
-        	let actName = Grid.getValue(rowKey, 'actName');
-    		$("#actCodeInput").val(actCode);
-    		$("#actNameFix").val(actName);
-    		//모달창 닫기
-    		console.log(rowKey);
-    		if(rowKey != null){
-    			$(".modal").fadeOut();
-    			activeScroll();
-    			let inputContent = $('#modalSearch').val('');
-    			if(Grid != null && Grid.el != null){
- 	    			Grid.destroy();	
- 	    		}
-    		}
-
-    		});
-      	});
-     
-     function preventScroll(){
-    	 $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
-         $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
-             event.preventDefault();
-             event.stopPropagation();
-
-             return false;
-         });
-     }
-     
-   //스크롤 활성화
-   	function activeScroll(){
-       	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
-   		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
-  	 }
-     
-     
-     
-     $("#matModal").click(function(){
-       $(".modal").fadeIn();
-       Grid = createMatGrid();
-       preventScroll();
-       $('.modal_title h3').text('자재 목록');
-       Grid.on('dblclick', () => {
-       	let rowKey = Grid.getFocusedCell().rowKey;
-       	let matCode = Grid.getValue(rowKey, 'matCode');
-    	let matName = Grid.getValue(rowKey, 'matName');
-		$("#matCodeInput").val(matCode);
-		$("#matNameFix").val(matName);
-       
-   		$("#matCodeInput").val(matCode);
-   		//모달창 닫기
-   		if(rowKey != null){
-			$(".modal").fadeOut();
-			activeScroll();
-			let inputContent = $('#modalSearch').val('');
-			if(Grid != null && Grid.el != null){
-	    			Grid.destroy();	
+	 	var Grid;
+     	$("#actModal").click(function(){
+       		$(".modal").fadeIn();
+       		preventScroll();
+       		Grid = createActGrid();
+       		$('.modal_title h3').text('거래처 목록');
+       		Grid.on('dblclick', () => {
+	        	let rowKey = Grid.getFocusedCell().rowKey;
+	        	let actCode = Grid.getValue(rowKey, 'actCode');
+	        	let actName = Grid.getValue(rowKey, 'actName');
+	    		$("#actCodeInput").val(actCode);
+	    		$("#actNameFix").val(actName);
+	    		//모달창 닫기
+	    		console.log(rowKey);
+	    		if(rowKey != null){
+	    			$(".modal").fadeOut();
+	    			activeScroll();
+	    			let inputContent = $('#modalSearch').val('');
+	    			if(Grid != null && Grid.el != null){
+	 	    			Grid.destroy();	
+	 	    		}
 	    		}
 
-   		}
-     })
-     });
+ 			})
+		});
      
-     $(".close_btn").click(function(){
-       	$(".modal").fadeOut();
-       	activeScroll();
-       	let inputContent = $('#modalSearch').val('');
-       	if(Grid != null && Grid.el != null){
- 			Grid.destroy();	
- 		}
-     });
+     	function preventScroll(){
+    	 	$('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+         	$('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+             	event.preventDefault();
+             	event.stopPropagation();
+
+             	return false;
+         	})
+     	}
+     
+   		//스크롤 활성화
+   		function activeScroll(){
+       		$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+   			$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+  	 	}
      
      
-     $('#modalSearchBtn').on('click', function(e){
+     
+     	$("#matModal").click(function(){
+	       	$(".modal").fadeIn();
+	       	Grid = createMatGrid();
+	       	preventScroll();
+	       	$('.modal_title h3').text('자재 목록');
+	       	Grid.on('dblclick', () => {
+	       		let rowKey = Grid.getFocusedCell().rowKey;
+	       		let matCode = Grid.getValue(rowKey, 'matCode');
+	    		let matName = Grid.getValue(rowKey, 'matName');
+				$("#matCodeInput").val(matCode);
+				$("#matNameFix").val(matName);
+	       
+	   			$("#matCodeInput").val(matCode);
+	   			//모달창 닫기
+	   			if(rowKey != null){
+					$(".modal").fadeOut();
+					activeScroll();
+					let inputContent = $('#modalSearch').val('');
+					if(Grid != null && Grid.el != null){
+		    			Grid.destroy();	
+		    		}
+	
+	   			}
+			})
+     	});
+     
+     	$(".close_btn").click(function(){
+       		$(".modal").fadeOut();
+       		activeScroll();
+       		let inputContent = $('#modalSearch').val('');
+       		if(Grid != null && Grid.el != null){
+ 				Grid.destroy();	
+ 			}
+     	});
+     
+     
+    	$('#modalSearchBtn').on('click', function(e){
 			let title = $('.modal_title h3').text();
 			let inputContent = $('#modalSearch').val();
 			
@@ -224,7 +226,7 @@
 						console.log(reject);
 					}
 				})
-			} else if(title == '거래처 목록'){
+			} else if(title == '거래처 목록') {
 				let modalSearchData = {actName : inputContent}
 				$.ajax({
 					url : 'getActModalSearch',
@@ -244,227 +246,226 @@
      
      
   
-   //모달 끝
+		//모달 끝
    
-   //엑셀 다운로드
-   const excelDownload = document.querySelector('.excelDownload');
+   		//엑셀 다운로드
+   		const excelDownload = document.querySelector('.excelDownload');
    
-   document.addEventListener('DOMContentLoaded', ()=>{
-      excelDownload.addEventListener('click', function(e){
-         grid.export('xlsx');
-      })
-   })
+   		document.addEventListener('DOMContentLoaded', ()=>{
+      		excelDownload.addEventListener('click', function(e){
+         	grid.export('xlsx');
+      		})
+   		})
    
-   //거래처 모달 그리드
-   function createActGrid(){
-	   var actGrid = new tui.Grid({
-	       el: document.getElementById('modal_label'),
-	       data: [
-	    	   <c:forEach items="${actList}" var="a" varStatus="status">
-	          	{
-	          		actCode : "${a.actCode}",
-	          		actName :"${a.actName}",
-	          		actSts :"${a.actSts}",
-	          		actKind :"${a.actKind}"
-	          	} <c:if test="${not status.last}">,</c:if>
-	          </c:forEach>
-	          ],
-		   scrollX: false,
-	       scrollY: false,
-	       minBodyHeight: 30,
-	       rowHeaders: ['rowNum'],
-	       selectionUnit: 'row',
-	       pagination: true,
-	       pageOptions: {
-	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	         useClient: true,
-	         perPage: 10
-	       },
-	       columns: [
-	    	   {
-	               header: '거래처코드',
-	               name: 'actCode',
-	             },
-	             {
-	               header: '거래처명',
-	               name: 'actName'
-	             },
-	             {
-	               header: '거래상태',
-	               name: 'actSts'
-	             },
-	             {
-	               header: '거래처구분',
-	               name: 'actKind'
-	             }
-	 	    ]
-	      
-	     });
-	   
-	   return actGrid;
-   }
+   		//거래처 모달 그리드
+   		function createActGrid(){
+		   	var actGrid = new tui.Grid({
+		    	el: document.getElementById('modal_label'),
+		       	data: [
+		    		<c:forEach items="${actList}" var="a" varStatus="status">
+		          		{
+		          			actCode : "${a.actCode}",
+		          			actName :"${a.actName}",
+		          			actSts :"${a.actSts}",
+		          			actKind :"${a.actKind}"
+		          		} <c:if test="${not status.last}">,</c:if>
+		          	</c:forEach>
+				],
+			   	scrollX: false,
+		       	scrollY: false,
+		       	minBodyHeight: 30,
+		       	rowHeaders: ['rowNum'],
+		       	selectionUnit: 'row',
+		       	pagination: true,
+		       	pageOptions: {
+		       	//백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		       		useClient: true,
+		         	perPage: 10
+		       	},
+		       	columns: [
+		    		{
+		            	header: '거래처코드',
+		               	name: 'actCode',
+		            },
+		            {
+		               	header: '거래처명',
+		               	name: 'actName'
+		            },
+		            {
+		               	header: '거래상태',
+		               	name: 'actSts'
+		            },
+		            {
+		               	header: '거래처구분',
+		              	name: 'actKind'
+		            }
+				]
+		      
+			});
+		   
+		   	return actGrid;
+		}
    
- //자재 모달 그리드
-   function createMatGrid(){
-	   var matGrid = new tui.Grid({
-	       el: document.getElementById('modal_label'),
-	       data: [
-	    	   <c:forEach items="${matList}" var="m" varStatus="status">
-	          	{
-	          		matCode : "${m.matCode}",
-	          		matName :"${m.matName}",
-	          		matUnit : "${m.matUnit}",
-	          		matStd :"${m.matStd}"
-	          	} <c:if test="${not status.last}">,</c:if>
-	          </c:forEach>
-	          ],
-		   scrollX: false,
-	       scrollY: false,
-	       minBodyHeight: 30,
-	       rowHeaders: ['rowNum'],
-	       selectionUnit: 'row',
-	       pagination: true,
-	       pageOptions: {
-	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	         useClient: true,
-	         perPage: 10
-	       },
-	       columns: [
-	    	     {
-	               header: '자재코드',
-	               name: 'matCode',
-	             },
-	             {
-	               header: '자재명',
-	               name: 'matName'
-	             },
-	             {
-		           header: '단위',
-		           name: 'matUnit'
-		         },
-	             {
-	               header: '규격',
-	               name: 'matStd'
-	             }
-	 	    ]
-	      
-	     });
-	   
-	   return matGrid;
-  }
+	 	//자재 모달 그리드
+	   	function createMatGrid(){
+		   	var matGrid = new tui.Grid({
+		       	el: document.getElementById('modal_label'),
+		       	data: [
+		    	   	<c:forEach items="${matList}" var="m" varStatus="status">
+		          		{
+		          			matCode : "${m.matCode}",
+		          			matName :"${m.matName}",
+		          			matUnit : "${m.matUnit}",
+		          			matStd :"${m.matStd}"
+		          		} <c:if test="${not status.last}">,</c:if>
+		          	</c:forEach>
+		        ],
+			   	scrollX: false,
+		       	scrollY: false,
+		       	minBodyHeight: 30,
+		       	rowHeaders: ['rowNum'],
+		       	selectionUnit: 'row',
+		       	pagination: true,
+		       	pageOptions: {
+		       	//백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		         	useClient: true,
+		         	perPage: 10
+		       	},
+		       	columns: [
+		    		{
+		               	header: '자재코드',
+		               	name: 'matCode',
+		            },
+		            {
+		               	header: '자재명',
+		              	name: 'matName'
+		            },
+		            {
+			           	header: '단위',
+			           	name: 'matUnit'
+			        },
+		            {
+		               	header: '규격',
+		               	name: 'matStd'
+		            }
+		 	    ]
+			});
+		   
+		   	return matGrid;
+		}
    
    
 
 	
-   //전체조회 그리드
-   var grid = new tui.Grid({
-	       el: document.getElementById('grid'),
-	       data: [
-	           <c:forEach items="${inList}" var="mat">
-	           	{
-	           	matLot : "${mat.matLot}",
-	           	matName :"${mat.matName}",
-	           	matUnit : "${mat.matUnit}",
-	           	matStd : "${mat.matStd}",
-	           	actName :"${mat.actName}",
-	           	matInAmt : "${mat.matInAmt}",
-	           	useYn : "${mat.useYn}",
-	           	empName : "${mat.empName}",
-	           	matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy-MM-dd"/>`,
-	           	matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy-MM-dd"/>`
-	           	},
-	           </c:forEach>
-	          ],
-		   scrollX: false,
-	       scrollY: false,
-	       minBodyHeight: 30,
-	       rowHeaders: ['rowNum'],
-	       selectionUnit: 'row',
-	       pagination: true,
-	       pageOptions: {
-	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	         useClient: true,
-	         perPage: 10
-	       },
-	       columns: [
+   		//전체조회 그리드
+   		var grid = new tui.Grid({
+	       	el: document.getElementById('grid'),
+	       	data: [
+	           	<c:forEach items="${inList}" var="mat">
+	           		{
+	           			matLot : "${mat.matLot}",
+	           			matName :"${mat.matName}",
+	           			matUnit : "${mat.matUnit}",
+	           			matStd : "${mat.matStd}",
+	           			actName :"${mat.actName}",
+	           			matInAmt : "${mat.matInAmt}",
+	           			useYn : "${mat.useYn}",
+	           			empName : "${mat.empName}",
+	           			matInd : `<fmt:formatDate value="${mat.matInd}" pattern="yyyy-MM-dd"/>`,
+	           			matExd : `<fmt:formatDate value="${mat.matExd}" pattern="yyyy-MM-dd"/>`
+	           		},
+	           	</c:forEach>
+			],
+		   	scrollX: false,
+	       	scrollY: false,
+	       	minBodyHeight: 30,
+	       	rowHeaders: ['rowNum'],
+	       	selectionUnit: 'row',
+	       	pagination: true,
+	       	pageOptions: {
+	       	//백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	         	useClient: true,
+	         	perPage: 10
+	       	},
+	       	columns: [
 	 	     
-	 	      {
-	 	        header: '자재명',
-	 	        name: 'matName'
-	 	      },
-	 	      {
-          	  	header: '단위',
-		 		name: 'matUnit' 
-              },
-              {
-          	  	header: '규격',
-		 		name: 'matStd'
-              },
-	 	      {
-	 	        header: '업체명',
-	 	        name: 'actName'
-	 	      },
-	 	      {
-	 	        header: '입고량',
-	 	        name: 'matInAmt',
-	 	       	formatter(e) { 
-	 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	 	           	return val;
-	 	        }
-	 	      },
-	 	      {
-	 	        header: '자재 LOT',
-	 	        name: 'matLot',
-		 	 	width: 150
-	 	      },
-		 	  {
-		 	    header: '입고일자',
-		 	    name: 'matInd',
- 	  		 	className: 'yellow-background'
-		 	  },
-		 	  {
-			 	header: '유통기한',
-			 	name: 'matExd',
- 	  		 	className: 'yellow-background'
-			  },
-		 	  {
-		 		header: '사용여부',
-		 		name: 'useYn'
-		 	  },
-	 	      {
-		 	    header: '담당자',
-		 	    name: 'empName'
-		 	  }
-	 	    ]
+	 	      	{
+	 	        	header: '자재명',
+	 	        	name: 'matName'
+	 	      	},
+	 	      	{
+          	  		header: '단위',
+		 			name: 'matUnit' 
+              	},
+              	{
+          	  		header: '규격',
+		 			name: 'matStd'
+              	},
+	 	      	{
+	 	        	header: '업체명',
+	 	        	name: 'actName'
+	 	      	},
+	 	      	{
+	 	        	header: '입고량',
+	 	        	name: 'matInAmt',
+	 	       		formatter(e) { 
+	 	        		val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	 	           		return val;
+	 	        	}
+	 	      	},
+	 	      	{
+	 	        	header: '자재 LOT',
+	 	        	name: 'matLot',
+		 	 		width: 150
+	 	      	},
+		 	  	{
+		 	   		header: '입고일자',
+		 	    	name: 'matInd',
+ 	  		 		className: 'yellow-background'
+		 	  	},
+		 	  	{
+			 		header: '유통기한',
+			 		name: 'matExd',
+ 	  		 		className: 'yellow-background'
+			  	},
+		 	  	{
+		 			header: '사용여부',
+		 			name: 'useYn'
+		 	  	},
+	 	      	{
+		 	    	header: '담당자',
+		 	   	 	name: 'empName'
+		 	  	}
+			]
 	      
-	     });
+		});
    
  	
-   //검색
-    $('#searchBtn').on('click', searchMatIn);
-    function searchMatIn(e){
-    	let mat = $('#matCodeInput').val();
-		let act = $('#actCodeInput').val();
+   		//검색
+    	$('#searchBtn').on('click', searchMatIn);
+    	function searchMatIn(e){
+    		let mat = $('#matCodeInput').val();
+			let act = $('#actCodeInput').val();
 		   
-		var checkboxList = [];
-		let checkedList = $('input[type="checkbox"]:checked');
-		$.each(checkedList, function(idx, obj){
-			checkboxList.push(obj.value);
-		})
+			var checkboxList = [];
+			let checkedList = $('input[type="checkbox"]:checked');
+			$.each(checkedList, function(idx, obj){
+				checkboxList.push(obj.value);
+			})
 		   
 
-		let sd = $('#startDate').val();
-		let ed = $('#endDate').val();	 
+			let sd = $('#startDate').val();
+			let ed = $('#endDate').val();	 
 	   
  
-	   let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, checkList : checkboxList };
-	   $.ajax({
-		   url : 'getMatInFilter',
-		   method : 'GET',
-		   data : search ,
-		   success : function(data){
+	   		let search = { materialCode : mat , accountCode : act , startDate : sd , endDate : ed, checkList : checkboxList };
+	   		$.ajax({
+		   		url : 'getMatInFilter',
+		   		method : 'GET',
+		   		data : search ,
+		   		success : function(data){
 			   
-			  for(let i of data){
+			  		for(let i of data){
 					let date = new Date(i.matInd);
 					let year = date.getFullYear();    //0000년 가져오기
 					let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
@@ -476,42 +477,35 @@
 					month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
 					day = date.getDate();        //일자 가져오기
 			   		i.matExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-			  }
-			   grid.resetData(data);
-		   },
-		   error : function(reject){
-			   console.log(reject);
-		   }
-	   });
-   }
+			  		}
+					grid.resetData(data);
+		   		},
+		   		error : function(reject){
+			   		console.log(reject);
+		   		}
+	   		});
+		}
    
    
-   //초기화 버튼
-   $('#searchResetBtn').on('click', resetInput);
-   function resetInput(e){
-	   $('input').each(function(idx, obj){
-		   obj.value = '';
-	   })
-   }
- 
-   
-
-   
-   
-  
-     
-   
-   
-   //이전 날짜 선택불가
-    $( '#startDate' ).on( 'change', function() {
-      $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
-    } );
-   //이후날짜 선택불가
-    $( '#endDate' ).on( 'change', function() {
-         $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
-       } );
+   		//초기화 버튼
+   		$('#searchResetBtn').on('click', resetInput);
+   		function resetInput(e){
+	   		$('input').each(function(idx, obj){
+		   		obj.value = '';
+	   		})
+   		}
+   		
+ 		//이전 날짜 선택불가
+    	$( '#startDate' ).on( 'change', function() {
+      		$( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
+    	});
+ 		
+   		//이후날짜 선택불가
+    	$( '#endDate' ).on( 'change', function() {
+         	$( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
+       	});
    
 
-</script>
+	</script>
 </body>
 </html>
