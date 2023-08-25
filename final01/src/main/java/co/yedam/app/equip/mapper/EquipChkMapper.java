@@ -14,4 +14,16 @@ public interface EquipChkMapper {
 	
 	//점검 담당자 모달 전체 리스트
 	public List<EquipChkVO> selectEmpList();
+	
+	
+	
+	//등록 페이지 
+	//왼쪽 그리드 : 오늘 점검 해야할 애들
+	public List<EquipChkVO> LetChkEquipList();
+	
+	//오른쪽 그리드 : 오늘 점검해야할 애들 클릭시 상세조회 (eqCode 기반)
+	public List<EquipChkVO> selectLetChkEquipInfo(String eqCode);
+	
+	//점검 설비 등록
+	public int insertChkEquip(EquipChkVO vo);
 }

@@ -66,11 +66,11 @@
 						</div>	
 					</form>
 					
-					<div style="display: flex; justify-content: flex-end;">
+					<!-- <div style="display: flex; justify-content: flex-end;">
 
 							<button id="save" class="btn btn-info btn-icon-text">저장</button>          	
 	            	</div>
-	            	
+	            	 -->
 					<div id="grid"></div>	
 
                 </div>
@@ -99,22 +99,20 @@
 	<script>
 	
 	//저장
-	document.getElementById('save').addEventListener('click', saveServer);
+	//document.getElementById('save').addEventListener('click', saveServer);
 
 	//저장
-    function saveServer() {	
+     function saveServer() {	
     	let rowKey = grid.getFocusedCell();
     	let codeValue = grid.getValue(rowKey, 'eqCode');
     	
 		if(eqCode =! null){
-			//inse
+
 			ChkequipUpdate();
-			
-			//if -> 상세생산계획칸 비어있으면 작동X
-			
+
 		}
 
-	};
+	}; 
 	
 			
 	     function ChkequipUpdate(){
@@ -164,7 +162,7 @@
 		           	{
 		           		eqCode : "${chk.eqCode}",
 		           		eqName : "${chk.eqName}",
-		           		eqType : "${chk.eqType}",
+		           		eqType2 : "${chk.eqType2}",
 		           		chkCycle : "${chk.chkCycle}",
 		           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
 		           		chkNextDate : "<fmt:formatDate value='${chk.chkNextDate}' pattern='yyyy-MM-dd'/>",
@@ -194,7 +192,7 @@
 		       },
 		       {
 			     header: '설비구분',
-			     name: 'eqType'
+			     name: 'eqType2'
 			   },
 	           {
 		         header: '점검주기(일)',
@@ -203,61 +201,30 @@
 	           {
 	             header: '점검일자',
 	             name: 'chkDate',
-	           	 editor : 'text',
 	           	 className: 'yellow-background'
 	           },
 	           {
 	               header: '차기점검일자',
-	               name: 'chkNextDate',
-	               formatter: function(props) {
-	                   const rowData = props.row;
-	                   const chkDate = new Date(rowData.chkDate);
-	                   const chkCycle = parseInt(rowData.chkCycle);
-	                   
-	                   if (!isNaN(chkCycle)) {
-	                       const chkNextDate = new Date(chkDate.getTime() + chkCycle * 24 * 60 * 60 * 1000);
-	                       const formattedChkNextDate = chkNextDate.toISOString().split('T')[0];
-	                       return formattedChkNextDate;
-	                   }
-	                   
-	                   return ''; // Return empty string if chkCycle is not a valid number
-	               }
+	               name: 'chkNextDate'
 	           },
 	         	//지울부분
 	           {
 	 			header: '점검판정',
-	             name: 'eqChkYn',
-	             formatter: 'listItemText',
-					editor: {
-		                type: 'select',
-		                options: {
-		                  listItems: [
-		                	<c:forEach items="${equipPassType}" var="u">
-		                	 {
-		                         text: '${u.commdeName }',
-		                         value: '${u.commdeCode }'
-		                       }, 
-							</c:forEach>
-		                  ]
-		                }
-		              }
+	             name: 'eqChkYn'
 	           },
 	           {
 	        	  header: '담당자코드',
-		 	      name: 'empCode',
-		 	      editor : 'text',
-		 	      value : '${chk.empCode}'
+		 	      name: 'empCode'
 			 	      
 	           },	          
 	           {
 	        	  header: '비고',
-		 	      name: 'chkNote',
-		 	      editor : 'text'
+		 	      name: 'chkNote'
 	           }
 	         ]
 	 	});
 	   
-	   //행 클릭 모달
+	   /* //행 클릭 모달
 	     var Grid;
 	     grid.on('click', () => {
 	    	let rowKey = grid.getFocusedCell().rowKey;
@@ -292,10 +259,10 @@
 	        $(".modal").fadeOut();
 	         
 	  		Grid.destroy();
-	     });
+	     }); */
 		
 		 
-	     //사원 목록모달 그리드
+	     /* //사원 목록모달 그리드
 	     function createProdGrid(){
 	        var prodGrid = new tui.Grid({
 	            el: document.getElementById('modal_label'),
@@ -335,7 +302,7 @@
 			    }	
 			})		 
 	        return prodGrid;
-	     }
+	     } */
 		     
 	     
 	     
