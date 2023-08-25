@@ -4,11 +4,15 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.material.stock.mapper.MatLotStockMapper">
 	<select id="selectMatLotStockList" resultType="MatLotStockVO">
-		SELECT a.mat_code, a.mat_lot, a.mat_stock lot_stock, a.mat_exd, b.mat_name
+		SELECT a.mat_code
+			 , a.mat_lot
+			 , a.mat_stock lot_stock
+			 , a.mat_exd
+			 , b.mat_name
 		FROM mat_in a LEFT JOIN com_mat b
-		ON(a.mat_code = b.mat_code)
+			ON(a.mat_code = b.mat_code)
 		WHERE a.mat_code = #{materialCode}
-		AND a.mat_stock <![CDATA[>]]> 0
+			AND a.mat_stock <![CDATA[>]]> 0
 		ORDER BY a.mat_exd
 	</select>
 </mapper>

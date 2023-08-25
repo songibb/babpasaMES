@@ -103,7 +103,7 @@ body {
   
 .modal_content{
 	  /*모달창 크기 조절*/
-	  width:600px; height:600px;
+	  width:1000px; height:600px;
 	  background:#fff; border-radius:10px;
 	  /*모달창 위치 조절*/
 	  position:relative; top:33%; left:45%;
@@ -183,6 +183,10 @@ input[type="date"]{
 .yellow-background {
         background-color: rgb(255,253,235);
 }
+#save, #delete, #dirAdd{
+	margin-top : 120px;
+	float : right;
+}
 </style>    
        
 </head>
@@ -197,8 +201,13 @@ input[type="date"]{
 		                Excel <i class="bi bi-printer"></i>                                                                              
 					</button>
 					
-						<div id="customtemplateSearchAndButton">		
-							<p>제품</p>
+	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
+	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
+				<div id="customtemplateSearchAndButton">	
+				 <div style="display: flex; justify-content: flex-end;">
+            				<div style="flex: 1;">	
+					<p>제품</p>
                   <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
@@ -210,6 +219,10 @@ input[type="date"]{
                   <br>
                   <p>주문일자</p>
                   <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
+                  <br>
+      				<p>배송상태</p>
+      				<label for="before"><input type="checkbox" id="before" value="before">출고전</label>
+      				<label for="comple"><input type="checkbox" id="comple" value="comple">출고완료</label>
                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                      <i class="fas fa-search"></i>
                      검색
@@ -217,11 +230,10 @@ input[type="date"]{
                   <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                      초기화
                   </button>
+                  </div>
+                  </div>
 		            	</div>
 	            
-	            	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-	            	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-	            	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
@@ -338,7 +350,7 @@ input[type="date"]{
 		    		    	  language: 'ko'
 		    		      }
 		    		    },
-		    		    className: 'yellow-background'
+    		      className: 'yellow-background'
 		         },
 		         {
 		           header: '직원이름',
@@ -429,7 +441,7 @@ input[type="date"]{
     	    		outGrid.setValue(rowKey, 'prodCode', prodCode);
     	    		outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
     	    		//선택시 모달창 닫기
-    	    		if(rowKey != null){
+    	    		if(rowKey2 != null){
     	    			$(".modal").fadeOut();
     	        		Grid.destroy();
     	    		}
@@ -456,7 +468,7 @@ input[type="date"]{
  	    		outGrid.setValue(rowKey, 'actCode', actCode);
  	    		outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
  	    		//선택시 모달창 닫기
- 	    		if(rowKey != null){
+ 	    		if(rowKey2 != null){
  	    			$(".modal").fadeOut();
  	        		Grid.destroy();
  	    		}
@@ -765,9 +777,19 @@ input[type="date"]{
 	  let actInsert = $('#actCodeInput').val();
 	  let prodInsert = $('#prodCodeInput').val();
       let sd = $('#startDate').val();
-      let ed = $('#endDate').val();      
+      let ed = $('#endDate').val();    
+      
+      let before = '1';
+	  let comple = '1';
+	  let beforeCheck = document.getElementById('before');
+	  let compleCheck = document.getElementById('comple');
+	  if(beforeCheck.checked && !compleCheck.checked){
+		  comple = '2';
+	  } else if(!beforeCheck.checked && compleCheck.checked){
+		  before = '2';
+	  }
         
-      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed };
+      let search = { actCode : actInsert, prodCode : prodInsert, startDate : sd , endDate : ed, before : before, comple : comple };
       $.ajax({
          url : 'outListFilter',
          method : 'GET',
@@ -853,7 +875,7 @@ input[type="date"]{
 					data : JSON.stringify(outGrid.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data +"건이 처리되었습니다.", "success");
+						swal("성공", "출고 내역이 등록되었습니다.", "success");
 						console.log(data);
 					},
 					error : function(reject){

@@ -416,7 +416,7 @@
   
    		//담당자 미입력시 작동X 
    		if($('#empCode').val() == '' || $('#empCode').val() == null){
-   			alert('담당자를 입력하세요.');
+   			swal("담당자를 입력하세요.", "", "warning");
    		} else{
    			//작업 시작 시간 입력
    			let startTime = getDateTime();
@@ -471,9 +471,14 @@
 		$('#empCode').val(empCode);
 		$('#empName').val(empName);
 		
-   		//불량량 미입력시 작동X
+   		
    		if($('#errAmt').val() == '' || $('#errAmt').val() == null){
-   			alert('불량량을 입력하세요.');
+   			//불량량 미입력시 작동X
+   			swal("불량량을 입력하세요.", "", "warning");
+   			
+   		} else if($('#errAmt').val() > $('#inputAmt').val()){
+   			//불량량이 투입량보다 클 경우 작동X
+   			swal("불량량이 투입량보다 큽니다.", "", "warning");
    		} else{
 			//작업 종료 시간 입력
 			let endTime = getDateTime();

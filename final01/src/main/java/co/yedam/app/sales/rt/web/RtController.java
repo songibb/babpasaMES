@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.sales.order.service.OrderVO;
+import co.yedam.app.sales.out.service.OutVO;
 import co.yedam.app.sales.rt.service.RtService;
 import co.yedam.app.sales.rt.service.RtVO;
 
@@ -54,4 +56,18 @@ public class RtController {
 	public int rtSave(@RequestBody GridVO<RtVO> data) {
 		return rtService.modifyRt(data);
 	}	
+	
+	//모달 ajax(검색용) - 제품
+	@GetMapping("getProdModalSearch")
+	@ResponseBody
+	public List<OrderVO> getProdModalSearch(String prodName){
+		return rtService.prodSearchList(prodName);
+	}
+	
+	//모달 ajax(검색용) - 출고
+		@GetMapping("getOutModalSearch")
+		@ResponseBody
+		public List<RtVO> getOutModalSearch(String prodName){
+			return rtService.outSearchList(prodName);
+		}
 }

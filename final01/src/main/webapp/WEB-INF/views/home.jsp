@@ -11,6 +11,7 @@
 <script src="https://kit.fontawesome.com/d148130f5e.js" crossorigin="anonymous"></script>
 
 <style type="text/css">
+
    .my-box {  
          padding:30px;
          background-color: #cbf1a8; 
@@ -190,6 +191,7 @@
       const options = {
          chart: { title: '제품별 전날 생산량', width:'auto',height: 'auto' }, 
 
+
         legend: {
              visible: false,
            },
@@ -201,6 +203,7 @@
       };
           
 
+
       const chart = toastui.Chart.columnChart({ el, data, options });
       
       
@@ -209,6 +212,7 @@
    
    
    
+
 </script>
 </body>
 </html>

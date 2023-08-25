@@ -52,6 +52,10 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
+	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 </style>    
        
 </head>
@@ -217,7 +221,7 @@
 	 	        editor : 'text'
 		 	  },
 		 	  {
-		 		header: '총수량',
+		 		header: '불량수량',
 		 		name : 'matRtTotalAmt'
 		 		
 		 	  },

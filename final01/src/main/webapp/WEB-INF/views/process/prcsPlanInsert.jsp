@@ -168,10 +168,29 @@
 		let columnNameDe = planDeGrid.getFocusedCell().columnName;
 		planDeGrid.finishEditing(rowKeyDe, columnNameDe);
 
+		
+		//변경사항 없을 시 경고창
 		if(!planGrid.isModified() && !planDeGrid.isModified()){
 			swal("변경사항이 없습니다.", "", "warning");
 			return false;
 		}
+		
+		
+		//주문수량과 생산계획량 비교 -> 생산계획량이 주문수량보다 적을시 경고창
+		let list = planDeGrid.getData();
+		let amtCk = true;
+		$.each(list, function(i, obj){
+			for(let field in obj){
+				if(obj['prcsRqAmt'] > obj['prcsPlanAmt']){
+					amtCk = false;
+				}
+			}
+		})
+		if(amtCk == false){
+			swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
+			return false;
+		}
+
 
     	let codeValue = planGrid.getValue(rowKey, 'prcsPlanCode');	
 		if(codeValue == null){
@@ -194,7 +213,7 @@
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
-				console.log(field+'-'+obj[field]);
+				//console.log(field+'-'+obj[field]);
 				if(field != 'prcsPlanCode' && field != 'prcsDirYn' && obj[field] == null){
 					flag = false;
 				}
@@ -206,7 +225,7 @@
 		//빈 데이터 있는지 체크
 		$.each(deList, function(i, objDe){
 			for(let field in objDe){
-				console.log(field+'-'+objDe[field]);			
+				//console.log(field+'-'+objDe[field]);			
 				if(objDe['prodCode'] == null || objDe['prcsRqAmt'] == null || objDe['prcsPlanAmt'] == null || objDe['ordCode'] == null){
 					flag = false;
 				}
@@ -291,6 +310,19 @@
 
 	//삭제
 	function removeData(){
+
+// 		var swal = swal({
+// 		    title: "정말 삭제하시겠습니까?",
+// 		    text: "",
+// 		    icon: "info",
+// 			buttons: ["취소", "확인"],
+// 			closeOnConfirm: false,
+// 			closeOnCancel : true
+// 		})
+
+		
+// 		sweetAlert.question('제목입니다.', '질문입니다.', '예', '아니오')
+		
 		let message = confirm("정말 삭제하시겠습니까?");
 		if(message) {		
 			//생산계획 -> delete (상세생산계획은 CASCADE로 삭제)

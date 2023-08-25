@@ -6,6 +6,7 @@
   <!-- 전체조회 -->
   <select id="selectEquipChkAllList" resultType="EquipChkVO">
   	SELECT B.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, B.*
+  				,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
   	FROM EQ_EQUIP A LEFT JOIN EQ_CHK B
   		ON(A.EQ_CODE = B.EQ_CODE)
   	ORDER BY A.EQ_CODE ASC
@@ -24,6 +25,71 @@
   	</set>
 	WHERE eq_code = #{eqCode}  
   </update>
+  
+  <!-- 곧 점검해야할 설비 리스트, 왼쪽 그리드 - 미완 -->
+  <select id="LetChkEquipList" resultType="EquipChkVO">
+  	SELECT A.EQ_CODE, 
+	       A.EQ_NAME,
+	       MAX(B.CHK_DATE) AS CHK_DATE,
+	       A.EQ_STS,
+	       MAX(A.CHK_CYCLE + B.CHK_DATE) AS CHK_NEXT_DATE,
+	       FIND_CDNM('0L', EQ_STS) AS EQ_STS2
+	FROM EQ_EQUIP A 
+	JOIN EQ_CHK B ON A.EQ_CODE = B.EQ_CODE
+	WHERE TRUNC(SYSDATE) = TRUNC(A.CHK_CYCLE + B.CHK_DATE)
+	GROUP BY A.EQ_CODE, A.EQ_NAME, A.EQ_STS
+	ORDER BY A.EQ_CODE
+  </select>
+  
+  <!-- 곧 점검해야할 설비 클릭 상세, 오른쪽 그리드  -->
+  <select id="selectLetChkEquipInfo" resultType="EquipChkVO">
+  	SELECT A.CHK_CYCLE
+  			,B.EQ_CHK_CODE
+  			,B.EQ_CODE 
+  			,B.CHK_DATE
+			,B.CHK_NEXT_DATE
+			,B.CHK_TYPE
+			,B.EQ_CHK_YN
+			,B.EMP_CODE
+			,B.CHK_NOTE
+			,FIND_EMP_NAME(EMP_CODE) AS EMP_NAME
+	FROM EQ_EQUIP A JOIN EQ_CHK B
+		ON (A.EQ_CODE = B.EQ_CODE)
+	WHERE A.EQ_CODE = #{eqCode}
+	ORDER BY B.CHK_DATE DESC
+  
+  </select>
+  
+  <!-- 점검 설비 등록 -->
+  <!-- 셀렉트키 삽입 -->
+  <insert id="insertChkEquip" parameterType="EquipChkVO">
+	<selectKey keyProperty="eqChkCode" resultType="String" order="BEFORE">
+		SELECT 'EQ-CHK-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(TO_NUMBER(SUBSTR(EQ_CHK_CODE, -3))), 0) + 1, 3, '0')
+		FROM EQ_CHK
+		WHERE SUBSTR(EQ_CHK_CODE, 8, 6) = TO_CHAR(sysdate, 'rrMMdd')
+	</selectKey>
+  	INSERT INTO EQ_CHK(
+  				EQ_CHK_CODE
+  				,CHK_DATE
+  				,EQ_CODE
+  				,EMP_CODE
+  				,EQ_CHK_YN
+  				,CHK_TYPE
+  				,CHK_NOTE
+  				,CHK_NEXT_DATE
+  				)	
+  			VALUES(
+  				#{eqChkCode}
+  				,#{chkDate}
+  				,#{eqCode}
+  				,#{empCode}
+  				,#{eqChkYn}
+  				,#{chkType}
+  				,#{chkNote}
+  				,#{chkNextDate}
+  			)
+  </insert>
+
   
   <!-- 모달 : 사원 조회 -->
   <select id="selectEmpList" resultType="EmpInfoVO">

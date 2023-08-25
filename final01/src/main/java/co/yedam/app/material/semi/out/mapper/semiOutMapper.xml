@@ -5,7 +5,14 @@
 <mapper namespace="co.yedam.app.material.semi.out.mapper.SemiOutMapper">
 <!-- 전체조회 -->
 	<select id="selectSemiOutList" resultType="SemiOutVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_out_amt semi_out_amt, a.prcs_ing_code prcs_ing_code, c.emp_name emp_name, a.semi_out_date semi_out_date, a.semi_exd semi_exd 
+		SELECT a.semi_lot
+			 , a.prod_code
+			 , b.prod_name
+			 , a.semi_out_amt
+			 , a.prcs_ing_code
+			 , c.emp_name
+			 , a.semi_out_date
+			 , a.semi_exd 
 		FROM semi_out a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -15,7 +22,14 @@
 	
 	<!-- 전체조회중 검색 -->
 	<select id="selectSemiOutSearch" resultType="SemiOutVO">
-		SELECT a.semi_lot semi_lot, a.prod_code prod_code, b.prod_name prod_name, a.semi_out_amt semi_out_amt, a.prcs_ing_code prcs_ing_code, c.emp_name emp_name, a.semi_out_date semi_out_date, a.semi_exd semi_exd 
+		SELECT a.semi_lot
+			 , a.prod_code
+			 , b.prod_name
+			 , a.semi_out_amt
+			 , a.prcs_ing_code
+			 , c.emp_name
+			 , a.semi_out_date
+			 , a.semi_exd 
 		FROM semi_out a LEFT JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c

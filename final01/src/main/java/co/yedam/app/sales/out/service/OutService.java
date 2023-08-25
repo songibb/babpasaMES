@@ -12,7 +12,7 @@ public interface OutService {
 	//제품목록
 	public List<OutVO> prodAllList();
 	//검색
-	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate, String outDate);
+	public List<OutVO> searchOutList(String prodCode, String actCode, String startDate, String outDate, String before, String comple);
 	//출고완료된 품목만 보여주는 출고 리스트
 	public List<OutVO> getOutNList();
 	//등록, 수정, 삭제

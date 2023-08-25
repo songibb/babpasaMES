@@ -185,7 +185,7 @@
           },
           {
             header: '담당자',
-            name: 'empCode'
+            name: 'empName'
           }
         ]
       })  
@@ -304,7 +304,6 @@
   	
   	//생산지시 -> 생산완료 update
 	let dirList = dirGrid.getData();
-	console.log(dirList);
 	
 	function updateDirPrcsStsAjax(){
 		$.ajax({
@@ -313,7 +312,7 @@
 			data : JSON.stringify(dirList),
 			contentType : "application/json",
 			success : function(data){
-				console.log(data);
+				//console.log(data);
 			},
 			error : function(reject){
 	 			console.log(reject);

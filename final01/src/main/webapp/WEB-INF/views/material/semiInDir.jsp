@@ -56,6 +56,10 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
+	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 </style>    
        
 </head>

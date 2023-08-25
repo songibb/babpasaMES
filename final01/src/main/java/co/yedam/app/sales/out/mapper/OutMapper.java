@@ -18,7 +18,9 @@ public interface OutMapper {
 	public List<OutVO> selectAllOut(@Param("actCode")String actCode
 			, @Param("prodCode")String prodCode
 			, @Param("startDate")String startDate
-			, @Param("endDate")String endDate);
+			, @Param("endDate")String endDate
+			, @Param("before") String before
+			, @Param("comple") String comple);
 	//출고완료된 품목만 보여주는 출고 리스트
 	public List<OutVO> selectOutNList();
 	//등록

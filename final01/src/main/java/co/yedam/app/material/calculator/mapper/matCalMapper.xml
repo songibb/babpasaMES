@@ -4,20 +4,42 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.material.calculator.mapper.MatCalMapper">
 	<select id="selectMatCalList" resultType="MatCalVO">
-		SELECT a.cal_category, a.cal_code, a.mat_lot, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.cal_bamt, a.cal_amt, a.cal_date, a.emp_code, c.emp_name
+		SELECT a.cal_category
+			 , a.cal_code
+			 , a.mat_lot
+			 , a.mat_code
+			 , b.mat_name
+			 , b.mat_std
+			 , b.mat_unit
+			 , a.cal_bamt
+			 , a.cal_amt
+			 , a.cal_date
+			 , a.emp_code
+			 , c.emp_name
 		FROM mat_cal a LEFT JOIN com_mat b
-		ON(a.mat_code = b.mat_code)
-		LEFT JOIN com_emp c
-		ON(a.emp_code = c.emp_code)
+			ON(a.mat_code = b.mat_code)
+				LEFT JOIN com_emp c
+					ON(a.emp_code = c.emp_code)
 		ORDER BY a.cal_date
 	</select>
 	
 	<select id="selectMatCalSearch" resultType="MatCalVO">
-		SELECT a.cal_category, a.cal_code, a.mat_lot, a.mat_code, b.mat_name, b.mat_std, b.mat_unit, a.cal_bamt, a.cal_amt, a.cal_date, a.emp_code, c.emp_name
+		SELECT a.cal_category
+			 , a.cal_code
+			 , a.mat_lot
+			 , a.mat_code
+			 , b.mat_name
+			 , b.mat_std
+			 , b.mat_unit
+			 , a.cal_bamt
+			 , a.cal_amt
+			 , a.cal_date
+			 , a.emp_code
+			 , c.emp_name
 		FROM mat_cal a LEFT JOIN com_mat b
-		ON(a.mat_code = b.mat_code)
-		LEFT JOIN com_emp c
-		ON(a.emp_code = c.emp_code)
+			ON(a.mat_code = b.mat_code)
+				LEFT JOIN com_emp c
+					ON(a.emp_code = c.emp_code)
 		
 		<where>
 			<if test="materialCode != null and !materialCode.equals('')">
@@ -98,7 +120,8 @@
 	
 	<!-- 거래처코드, 유통기한, testCode가져오기(mat_in, mat_out에 insert할 때 필요함)  -->
 	<select id="findMatLotInfoAtMatCal" resultType="MatInVO">
-		SELECT act_code, mat_exd
+		SELECT act_code
+			 , mat_exd
 		FROM mat_in
 		WHERE mat_lot = #{matLot}
 	</select>

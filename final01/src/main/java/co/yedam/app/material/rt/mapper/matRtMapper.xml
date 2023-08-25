@@ -5,7 +5,23 @@
 <mapper namespace="co.yedam.app.material.rt.mapper.MatRtMapper">
 <!-- 전체조회 -->
 	<select id="selectMatRtList" resultType="MatRtVO">
-		SELECT a.mat_rt_code, b.mat_namt mat_rt_total_amt, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std, d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code
+			 , b.mat_namt mat_rt_total_amt
+			 , a.mat_test_code
+			 , b.mat_od_de_cd
+			 , a.mat_code
+			 , c.mat_name
+			 , c.mat_unit
+			 , c.mat_std
+			 , d.act_name
+			 , a.act_code
+			 , b.mat_test_date
+			 , e.commde_info err_info
+			 , a.mat_rt_amt
+			 , f.emp_name
+			 , a.emp_code
+			 , a.mat_rt_date
+			 , a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c
@@ -21,7 +37,23 @@
 	
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatRtSearch" resultType="MatRtVO">
-		SELECT a.mat_rt_code, b.mat_namt mat_rt_total_amt, a.mat_test_code, b.mat_od_de_cd mat_od_de_cd, a.mat_code, c.mat_name, c.mat_unit, c.mat_std,d.act_name, a.act_code, b.mat_test_date, e.commde_info err_info, a.mat_rt_amt, f.emp_name, a.emp_code, a.mat_rt_date, a.mat_rt_sts
+		SELECT a.mat_rt_code
+			 , b.mat_namt mat_rt_total_amt
+			 , a.mat_test_code
+			 , b.mat_od_de_cd
+			 , a.mat_code
+			 , c.mat_name
+			 , c.mat_unit
+			 , c.mat_std
+			 , d.act_name
+			 , a.act_code
+			 , b.mat_test_date
+			 , e.commde_info err_info
+			 , a.mat_rt_amt
+			 , f.emp_name
+			 , a.emp_code
+			 , a.mat_rt_date
+			 , a.mat_rt_sts
 		FROM mat_rt a LEFT JOIN mat_test b
 			ON(a.mat_test_code = b.mat_test_code)
 				LEFT JOIN com_mat c
@@ -59,70 +91,103 @@
 	
 	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
 	<select id="selectMatTestFinishList" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
+		SELECT a.mat_test_code
+			 , d.mat_name
+			 , d.mat_unit
+			 , d.mat_std
+			 , c.mat_code
+			 , f.act_code
+			 , e.act_name
+			 , a.mat_od_de_cd
+			 , a.mat_amt
+			 , mat_yamt
+			 , mat_namt
+			 , a.err_code
+			 , b.commde_info err_info
+			 , mat_test_date
 		FROM mat_test a LEFT JOIN com_commde b
-		ON(a.err_code = b.commde_code)
-		LEFT JOIN mat_order_de c
-		ON(a.mat_od_de_cd = c.mat_od_de_cd)
-        LEFT JOIN com_mat d
-        ON(c.mat_code = d.mat_code)
-        LEFT JOIN mat_order f
-        ON(c.mat_od_cd = f.mat_od_cd)
-        LEFT JOIN com_act e
-        ON(f.act_code = e.act_code)
+			ON(a.err_code = b.commde_code)
+				LEFT JOIN mat_order_de c
+					ON(a.mat_od_de_cd = c.mat_od_de_cd)
+       	 				LEFT JOIN com_mat d
+        					ON(c.mat_code = d.mat_code)
+        						LEFT JOIN mat_order f
+        							ON(c.mat_od_cd = f.mat_od_cd)
+        								LEFT JOIN com_act e
+        									ON(f.act_code = e.act_code)
 		WHERE err_rt_sts = 'R1'
 		ORDER BY mat_test_date
 	</select>
 	
 	<!-- 삭제한 행 정보 -->
 	<select id="selectDeletedRowsInfo" resultType="MatTestVO">
-		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date
+		SELECT a.mat_test_code
+			 , d.mat_name
+			 , d.mat_unit
+			 , d.mat_std
+			 , c.mat_code
+			 , f.act_code
+			 , e.act_name
+			 , a.mat_od_de_cd
+			 , a.mat_amt
+			 , mat_yamt
+			 , mat_namt
+			 , a.err_code
+			 , b.commde_info err_info
+			 , mat_test_date
 		FROM mat_test a LEFT JOIN com_commde b
-		ON(a.err_code = b.commde_code)
-		LEFT JOIN mat_order_de c
-		ON(a.mat_od_de_cd = c.mat_od_de_cd)
-        LEFT JOIN com_mat d
-        ON(c.mat_code = d.mat_code)
-        LEFT JOIN mat_order f
-        ON(c.mat_od_cd = f.mat_od_cd)
-        LEFT JOIN com_act e
-        ON(f.act_code = e.act_code)
+			ON(a.err_code = b.commde_code)
+				LEFT JOIN mat_order_de c
+					ON(a.mat_od_de_cd = c.mat_od_de_cd)
+        				LEFT JOIN com_mat d
+        					ON(c.mat_code = d.mat_code)
+        						LEFT JOIN mat_order f
+        							ON(c.mat_od_cd = f.mat_od_cd)
+        								LEFT JOIN com_act e
+        									ON(f.act_code = e.act_code)
 		WHERE a.mat_test_code = #{matTestCode}
 	</select>
 	
 	<!-- 반품 등록 -->
 	<insert id="insertMatRtList" parameterType="MatRtVO">
 			INSERT INTO mat_rt (
-                MAT_RT_CODE, MAT_TEST_CODE, ACT_CODE,
-                MAT_CODE, MAT_RT_AMT, MAT_RT_DATE,
-                MAT_RT_STS, EMP_CODE
+                MAT_RT_CODE
+                , MAT_TEST_CODE
+                , ACT_CODE
+                , MAT_CODE
+                , MAT_RT_AMT
+                , MAT_RT_DATE
+                , MAT_RT_STS
+                , EMP_CODE
             ) VALUES (
-                get_primaryCode('matRtCode'),
-
-                #{matTestCode}, #{actCode},
-                #{matCode}, #{matRtAmt}, #{matRtDate},
-                #{matRtSts}, #{empCode}
+                get_primaryCode('matRtCode')
+                , #{matTestCode}
+                , #{actCode}
+                , #{matCode}
+                , #{matRtAmt}
+                , #{matRtDate}
+                , #{matRtSts}
+                , #{empCode}
             )
 
 	</insert>
 	<update id="updateMatTestStsY" parameterType="MatRtVO">
-		 UPDATE mat_test
-            SET err_rt_sts = 'R2'
-            WHERE mat_test_code = #{matTestCode}
+		UPDATE mat_test
+        SET err_rt_sts = 'R2'
+        WHERE mat_test_code = #{matTestCode}
 	</update>
 	
 	<!-- 반품 수정 -->
 	<update id="updateMatRtList" parameterType="MatRtVO">		
-			UPDATE mat_rt
-			SET mat_rt_amt = #{matRtAmt}, mat_rt_date = #{matRtDate}, mat_rt_sts = #{matRtSts}
-			WHERE mat_rt_code = #{matRtCode}
+		UPDATE mat_rt
+		SET mat_rt_amt = #{matRtAmt}, mat_rt_date = #{matRtDate}, mat_rt_sts = #{matRtSts}
+		WHERE mat_rt_code = #{matRtCode}
 	</update>
 	
 	<!-- 반품 삭제 -->
 	<delete id="deleteMatRtList" parameterType="MatRtVO">
-			DELETE FROM mat_rt
-
-			WHERE mat_rt_code = #{matRtCode}
+		DELETE FROM mat_rt
+		WHERE mat_rt_code = #{matRtCode}
 
 	</delete>
 	<update id="updateMatTestStsN" parameterType="MatRtVO">

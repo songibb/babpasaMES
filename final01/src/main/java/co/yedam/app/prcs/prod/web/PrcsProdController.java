@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.prcs.prod.service.PrcsProdReqVO;
 import co.yedam.app.prcs.prod.service.PrcsProdService;
 import co.yedam.app.prcs.prod.service.PrcsProdVO;
 //20230821 백송이 제품별 공정
@@ -34,6 +37,13 @@ public class PrcsProdController {
 	public List<PrcsProdVO> getPrcsProdList(@RequestParam String prodCode){
 		List<PrcsProdVO> list = prcsProdService.selectPrcsProdList(prodCode);
 		return list;
+	}
+	
+	//제품별공정 등록, 수정, 삭제
+	@PostMapping("updatePrcsProd")
+	@ResponseBody
+	public int updatePrcsProd(@RequestBody PrcsProdReqVO prcsProdReqVO) {		
+		return prcsProdService.updatePrcsProd(prcsProdReqVO);
 	}
 	
 

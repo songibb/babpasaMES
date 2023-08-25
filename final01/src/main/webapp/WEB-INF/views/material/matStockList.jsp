@@ -53,7 +53,9 @@
 		border : 1px solid black;
 	}
 	
-	
+	#customtemplateSearchAndButton p{
+		width : 100px;
+	}
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>    
        

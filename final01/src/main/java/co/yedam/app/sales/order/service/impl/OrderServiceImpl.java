@@ -22,8 +22,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<OrderVO> searchOrderList(String actCode, String prodCode, String startDate, String endDate) {
-		return orderMapper.selectAllOrder(actCode, prodCode, startDate, endDate);
+	public List<OrderVO> searchOrderList(String actCode, String prodCode, String startDate, String endDate, String before, String comple) {
+		return orderMapper.selectAllOrder(actCode, prodCode, startDate, endDate, before, comple);
 	}
 
 	@Override

@@ -5,7 +5,16 @@
 <mapper namespace="co.yedam.app.material.semi.in.mapper.SemiInMapper">
 <!-- 전체조회 -->
 	<select id="selectSemiInList" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, semi_use_yn(semi_lot) use_yn, a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_ing_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot
+			 , semi_use_yn(semi_lot) use_yn
+			 , a.prod_code
+			 , b.prod_name
+			 , a.semi_in_amt
+			 , a.emp_code
+			 , a.prcs_ing_code
+			 , c.emp_name
+			 , a.semi_ind
+			 , a.semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -15,7 +24,16 @@
 	
 	<!-- 전체조회 검색 -->
 	<select id="selectSemiInSearch" resultType="SemiInVO">
-		SELECT a.semi_lot semi_lot, semi_use_yn(semi_lot) use_yn,  a.prod_code prod_code, b.prod_name prod_name, a.semi_in_amt semi_in_amt, a.emp_code, a.prcs_ing_code, c.emp_name emp_name, a.semi_ind semi_ind, a.semi_exd semi_exd 
+		SELECT a.semi_lot
+			 , semi_use_yn(semi_lot) use_yn
+			 , a.prod_code
+			 , b.prod_name
+			 , a.semi_in_amt
+			 , a.emp_code
+			 , a.prcs_ing_code
+			 , c.emp_name
+			 , a.semi_ind
+			 , a.semi_exd 
 		FROM semi_in a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
@@ -45,7 +63,8 @@
 	
 	<!-- 반제품 목록 모달 -->
 	<select id="getSemiModal" resultType="SemiInVO">
-		SELECT prod_code, prod_name
+		SELECT prod_code
+			 , prod_name
 		FROM com_prod
 		WHERE prod_kind = 'S' 
 		ORDER BY prod_code
@@ -53,7 +72,8 @@
 	
 	<!-- 반제품 목록 모달 검색 -->
 	<select id="getSemiModalSearch" resultType="SemiInVO">
-		SELECT prod_code, prod_name
+		SELECT prod_code
+			 , prod_name
 		FROM com_prod
 		WHERE prod_kind = 'S'
 		<if test="matName != null and !matName.equals('')">
@@ -64,36 +84,44 @@
 	
 	<!-- 검수완료된 반제품 목록 -->
 	<select id="selectTestFinishList" resultType="SemiInVO">
-		SELECT a.prcs_ing_code, a.prod_code, c.prod_name, a.test_amt, a.test_date
+		SELECT a.prcs_ing_code
+			 , a.prod_code
+			 , c.prod_name
+			 , a.test_amt
+			 , a.test_date
 		FROM prod_quality a
-		LEFT JOIN semi_in b
-		ON(a.prcs_ing_code = b.prcs_ing_code)
-		LEFT JOIN com_prod c
-		ON(a.prod_code = c.prod_code)
+			LEFT JOIN semi_in b
+				ON(a.prcs_ing_code = b.prcs_ing_code)
+					LEFT JOIN com_prod c
+						ON(a.prod_code = c.prod_code)
 		WHERE b.prcs_ing_code IS NULL
-		AND a.total_test_yn = 'Y'
-		AND a.test_semi_yn = 'S'
+			AND a.total_test_yn = 'Y'
+			AND a.test_semi_yn = 'S'
 		ORDER BY a.test_date
 	</select>
 	
 	<!-- 삭제 행 정보 -->
 	<select id="selectDeleteRowsInfo" resultType="SemiInVO">
-		SELECT a.prcs_ing_code, a.prod_code, c.prod_name, a.test_amt, a.test_date
+		SELECT a.prcs_ing_code
+			 , a.prod_code
+			 , c.prod_name
+			 , a.test_amt
+			 , a.test_date
 		FROM prod_quality a
 		LEFT JOIN com_prod c
-		ON(a.prod_code = c.prod_code)
+			ON(a.prod_code = c.prod_code)
 		WHERE a.prcs_ing_code = #{prcsIngCode}
 	</select>
 	<!-- 등록 -->
 	<insert id="insertSemiIn" parameterType="SemiInVO">
 			INSERT INTO semi_in (
-				SEMI_LOT,
-				PROD_CODE,
-				SEMI_IN_AMT,
-				SEMI_EXD,
-				SEMI_IND,
-				EMP_CODE,
-				PRCS_ING_CODE
+				SEMI_LOT
+				, PROD_CODE
+				, SEMI_IN_AMT
+				, SEMI_EXD
+				, SEMI_IND
+				, EMP_CODE
+				, PRCS_ING_CODE
 			) VALUES (
 				get_primaryCode('semiLot')
 				, #{prodCode}
@@ -118,7 +146,7 @@
 	
 	<!-- 삭제 -->
 	<delete id="deleteSemiIn" parameterType="SemiInVO">
-			DELETE FROM semi_in
-			WHERE semi_lot = #{semiLot}
+		DELETE FROM semi_in
+		WHERE semi_lot = #{semiLot}
 	</delete>
 </mapper>
