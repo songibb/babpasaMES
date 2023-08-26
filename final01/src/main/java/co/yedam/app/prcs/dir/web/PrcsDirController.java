@@ -99,5 +99,14 @@ public class PrcsDirController {
 	}
 	
 	
+	//재지시 등록 (상세생산지시)
+	@PostMapping("insertReDirDe")
+	@ResponseBody
+	public int insertReDirDe(@RequestBody List<PrcsDirVO> reDirList){
+		return prcsDirService.insertReDirDe(reDirList);
+	}
+	
+	
+	
 	
 }

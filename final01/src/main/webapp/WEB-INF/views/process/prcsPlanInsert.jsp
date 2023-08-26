@@ -19,6 +19,9 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
+#customtemplateSearchAndButton{
+	margin-bottom: 30px;
+}
 #planContainer{
 	display: flex;
 	justify-content: space-between;
@@ -85,8 +88,7 @@
 					</div>
 					<div id="rightGrid">
 						<div id="rightGridHeader">
-							<span>상세 생산 계획</span>
-							
+							<span>상세 생산 계획</span>			
 						</div>		
 	           			<div id="planDeGrid"></div>
 					</div>
@@ -171,7 +173,7 @@
 		
 		//변경사항 없을 시 경고창
 		if(!planGrid.isModified() && !planDeGrid.isModified()){
-			swal("변경사항이 없습니다.", "", "warning");
+			swal("경고", "변경사항이 없습니다.", "warning");
 			return false;
 		}
 		
@@ -251,7 +253,7 @@
 		 		}		
 			})
 		} else {
-			swal("모든 값이 입력되지 않았습니다.", "", "warning");
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 	}
 	
@@ -301,7 +303,7 @@
 		 		}		
 			})
 		} else{
-			swal("모든 값이 입력되지 않았습니다.", "", "warning");
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 		
 	
@@ -385,13 +387,13 @@
         el: document.getElementById('planGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 320,
         rowHeaders: ['rowNum', 'checkbox'],
-        	pagination: true,
-        	pageOptions: {
-    			useClient: true,
-    			perPage: 5,
-    		},
+       	pagination: true,
+       	pageOptions: {
+   			useClient: true,
+   			perPage: 8,
+   		},		
         columns: [
           {
             header: '계획코드',
@@ -453,12 +455,12 @@
 		el: document.getElementById('planDeGrid'),
 		scrollX: false,
 		scrollY: false,
-		minBodyHeight: 30,
+		minBodyHeight: 320,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 8,
 		},
 		columns: [
 			{

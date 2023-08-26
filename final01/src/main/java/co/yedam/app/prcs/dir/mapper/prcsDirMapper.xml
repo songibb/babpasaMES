@@ -32,13 +32,15 @@
 		SELECT prcs_dir_de_code,
 			   prcs_dir_code,
 			   prod_code,
+			   find_prod_name(prod_code) AS prod_name,
 			   prcs_plan_amt,
 			   prcs_dir_amt,
 			   prcs_start_de_date,
 			   prcs_end_de_date,
 			   find_cdnm('0S', prcs_ing_sts) AS prcs_ing_sts,
 			   emp_code,
-			   find_emp_name(emp_code) AS emp_name
+			   find_emp_name(emp_code) AS emp_name,
+			   re_dir_ck
 		  FROM prcs_dir_de
 		 WHERE prcs_dir_code = #{prcsDirCode}
 		 ORDER BY prcs_dir_de_code
@@ -159,4 +161,38 @@
 		}
 	</update>
 	
+	
+	<!-- 재지시 등록 (상세생산지시)  -->
+	<insert id="insertReDirDe" parameterType="PrcsDirVO">
+		<selectKey keyProperty="prcsDirDeCode" resultType="String" order="BEFORE">
+			SELECT 'DIRDE-' || TO_CHAR(sysdate, 'rrMMdd') || LPAD(NVL(MAX(SUBSTR(prcs_dir_de_code, -3)),0) + 1, 3, '0')
+			FROM prcs_dir_de
+			WHERE SUBSTR(prcs_dir_de_code, 7, 6) = TO_CHAR(sysdate, 'rrMMdd')
+		</selectKey>
+		INSERT INTO prcs_dir_de (
+								prcs_dir_de_code
+								, prcs_dir_code
+							    , prod_code
+							    , prcs_plan_amt
+							    , prcs_dir_amt
+							    , prcs_start_de_date	 
+							    , emp_code
+							  )
+			 VALUES (
+						#{prcsDirDeCode}
+						, #{prcsDirCode}
+						, #{prodCode}
+						, #{prcsPlanAmt}
+						, #{prcsDirAmt}
+						, sysdate
+						, #{empCode}
+					 )
+	</insert>
+	
+	<!-- 재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정 -->
+	<update id="updateReDirDe" parameterType="PrcsDirVO">
+		UPDATE prcs_dir_de
+		SET re_dir_ck = 'Y'
+		WHERE prcs_dir_de_code = #{prcsDirDeCode}
+	</update>
 </mapper>

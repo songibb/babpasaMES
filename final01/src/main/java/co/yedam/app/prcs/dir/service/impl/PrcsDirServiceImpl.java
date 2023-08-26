@@ -101,6 +101,39 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		}
 		return result;
 	}
+
+	
+	//재지시 등록 (상세생산지시)
+	@Override
+	public int insertReDirDe(List<PrcsDirVO> reDirList) {
+		int result = 0;
+		for(PrcsDirVO vo : reDirList) {
+			//insert할때는 prcsDirDeCode에 selectKey 사용하므로 
+			//vo에 담겨져온 기존 prcsDirDeCode를 이용해서 update먼저 해야함
+
+			//재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정
+			prcsDirMapper.updateReDirDe(vo);
+			
+			//재지시 등록
+			prcsDirMapper.insertReDirDe(vo);
+			
+			String prcsDirDeCode = vo.getPrcsDirDeCode();
+			String empCode = vo.getEmpCode();
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("prcsDirDeCode", prcsDirDeCode);
+			map.put("empCode", empCode);
+			
+			//진행공정 등록 (프로시저)
+			prcsIngMapper.insertPrcsIng(prcsDirDeCode);
+			
+			//생산지시 등록시 자재 출고 (프로시저)
+			prcsDirMapper.insertMatOut(map);
+			
+			result++;		
+		}
+		return result;
+	}
 	
 
 }

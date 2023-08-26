@@ -33,5 +33,12 @@ public interface PrcsDirService {
 	
 	//진행공정 모두 공정완료시 생산지시 수정
 	public int updateDirPrcsSts(List<PrcsDirVO> dirList);
-
+	
+	
+	//재지시 등록 (상세생산지시)
+	public int insertReDirDe(List<PrcsDirVO> reDirList);
+	
+	
+	
+	
 }

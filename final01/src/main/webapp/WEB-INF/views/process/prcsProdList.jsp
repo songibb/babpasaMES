@@ -24,10 +24,14 @@
     width: 600px;
     margin-right: 20px;
 }
+#leftGridHeader{
+	height: 45px;
+}
 #rightGrid{
     width: 1000px;
 }
-#btnFlex{
+#rightGridHeader{
+	height: 45px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -43,11 +47,13 @@
 				</div>
 				<div id="prodContainer">
 					<div id="leftGrid">
-						<span>제품 목록</span>
+						<div id="leftGridHeader">
+							<span>제품 목록</span>
+						</div>
 	           			<div id="grid"></div>
 	           		</div>
 	           		<div id="rightGrid">
-	           			<div id="btnFlex">
+	           			<div id="rightGridHeader">
 	           				<div>
 	           					<span>제품명 : </span> 
 		           				<input type="text" name="prodName" id="prodName" readonly>
@@ -111,7 +117,7 @@
 	          ],
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
@@ -198,7 +204,7 @@
         el: document.getElementById('grid2'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum', 'checkbox'],
 		pagination: true,
 		pageOptions: {

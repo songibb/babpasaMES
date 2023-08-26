@@ -15,20 +15,37 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
     
 <style type="text/css">
+#btnContainer{
+	display: flex;
+	justify-content: end;
+}
 #dirContainer{
 	display: flex;
 	justify-content: space-between;
 }
+.leftGrid{
+    width: 700px;
+    margin-right: 20px;
+}
+.leftGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+.rightGrid{
+    width: 900px;
+}
+.rightGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+
 #matContainer{
 	display: flex;
 	justify-content: space-between;
 }
-#bomGrid{
-    width: 600px;
-}
-#matLotGrid{
-    width: 600px;
-}
+
 
 </style>    
     
@@ -45,28 +62,45 @@
 	            <div>
 	            	<div>          
 	            		<div>  	
-		            		<div id="dirContainer">
+		            		<div id="btnContainer">
 			            		<button id="planModal" class="btn btn-info btn-icon-text">생산 계획 가져오기</button>	  		
-			            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
+			            		<button id="save" class="btn btn-info btn-icon-text">지시 등록</button>
 			            	</div>  
 						</div>	
-						<div style="height: 130px; margin-top: 50px;">
-			            	<p>생산 지시</p>	
-							<div id="dirGrid"></div>
+						
+						<div id="dirContainer">
+							<div class="leftGrid">
+								<div class="leftGridHeader">
+					            	<span>생산 지시</span>	
+								</div>
+								<div id="dirGrid"></div>
+							</div>
+							
+							<div class="rightGrid">
+								<div class="rightGridHeader">
+			           				<span>상세 생산 지시</span>
+			           				<div>
+		           						<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
+		           						<button id="deRemove" class="btn btn-info btn-icon-text">행삭제</button>
+		           					</div>
+			      				</div>
+			           			<div id="dirDeGrid"></div>
+							</div>
 						</div>
-		           		<div style="height: 150px;">
-		           			<p>상세 생산 지시</p>
-		           			<div id="dirDeGrid"></div>
-		           		</div>
+						
 	           		</div>	  
 	           		<hr>
 	           		<div id="matContainer">
-	           			<div>
-	           				<p>공정 자재 소모량</p>
+	           			<div class="leftGrid">
+	           				<div class="leftGridHeader">
+				            	<span>공정별 자재 소모량</span>
+							</div>
 		           			<div id="bomGrid"></div>
 	           			</div>
-	           			<div>
-	           				<p>자재별 LOT 재고</p>
+	           			<div class="rightGrid">
+	           				<div class="rightGridHeader">
+		           				<span>자재별 LOT 재고</span>
+		      				</div>
 		           			<div id="matLotGrid"></div>
 	           			</div>
            			</div>
@@ -86,10 +120,10 @@
 	
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
-// 	//행추가
-// 	document.getElementById('deAdd').addEventListener('click', addDeRow);
-// 	//행삭제
-// 	document.getElementById('deRemove').addEventListener('click', removeDeRow);
+	//행추가
+	document.getElementById('deAdd').addEventListener('click', addDeRow);
+	//행삭제
+	document.getElementById('deRemove').addEventListener('click', removeDeRow);
 	
 	//생산계획조회 모달
 // 	$("#planListModal").click(function(){
@@ -119,18 +153,15 @@
 		dirDeGrid.appendRow();
 	} 
 
-// 	//행추가 버튼 클릭시 상세생산지시 행 추가
-// 	function addDeRow(){
-// 		dirDeGrid.appendRow();
-// 	}
+	//행추가 버튼 클릭시 상세생산지시 행 추가
+	function addDeRow(){
+		dirDeGrid.appendRow();
+	}
 	
-// 	//행삭제 버튼 클릭시 상세생산지시 행 삭제
-// 	function removeDeRow(){
-// 		let message = confirm("정말 삭제하시겠습니까?");
-// 		if(message) {		
-// 			dirDeGrid.removeCheckedRows(false);
-// 		}
-// 	}
+	//행삭제 버튼 클릭시 상세생산지시 행 삭제
+	function removeDeRow(){
+		dirDeGrid.removeCheckedRows(false);
+	}
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
@@ -226,7 +257,7 @@
         el: document.getElementById('dirGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,	
+        minBodyHeight: 200,	
         columns: [
 //           {
 //             header: '지시코드',
@@ -281,7 +312,7 @@
         el: document.getElementById('dirDeGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['checkbox'],
         columns: [
 //           {
@@ -292,25 +323,23 @@
 //             header: '지시코드',
 //             name: 'prcsDirCode'
 //           },
-		  {
-            header: '상세계획코드',
-            name: 'prcsPlanDeCode',
-            hidden: false
-          },
+// 		  {
+//             header: '상세계획코드',
+//             name: 'prcsPlanDeCode',
+//             hidden: false
+//           },
        	  {
             header: '제품코드',
             name: 'prodCode',
-            hidden: false
+            hidden: true
           },
           {
             header: '제품명',
-            name: 'prodName',
-            editor: 'text'
+            name: 'prodName'
           },
           {
             header: '생산계획량',
-            name: 'prcsPlanAmt',
-            editor: 'text'
+            name: 'prcsPlanAmt'
           },
           {
             header: '지시수량',
@@ -353,9 +382,18 @@
         el: document.getElementById('bomGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 5
+		},
         columns: [
+       	  {
+       	  	header: '투입공정',
+            name: 'prcsName'
+          },
     	  {
             header: '자재코드',
             name: 'mpCode',
@@ -368,11 +406,8 @@
           {
             header: '자재소모량',
             name: 'bomAmt'
-          },
-          {
-       	  	header: '투입공정',
-            name: 'prcsName'
           }
+          
 //           {
 //             header: '단위',
 //             name: 'bomUnit'
@@ -385,7 +420,7 @@
         el: document.getElementById('matLotGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
         columns: [
 //           {

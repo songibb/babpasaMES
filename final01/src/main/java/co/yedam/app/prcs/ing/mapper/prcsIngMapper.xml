@@ -28,7 +28,7 @@
 	<!-- 진행 공정 등록 -->
 	<insert id="insertPrcsIng" parameterType="String">
 		{
-			CALL PROD_BOM(
+			CALL PR_PROD_BOM(
 				#{prcsDirDeCode}
 			)
 		}

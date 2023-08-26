@@ -9,7 +9,7 @@
 			   prcs_plan_name,
 			   prcs_plan_date,
 			   emp_code,
-			   find_emp_name(emp_code) AS emp_Name,
+			   find_emp_name(emp_code) AS emp_name,
 			   find_cdnm('0V', prcs_dir_yn) AS prcs_dir_yn,
 			   prcs_start_date,
 			   prcs_end_date
