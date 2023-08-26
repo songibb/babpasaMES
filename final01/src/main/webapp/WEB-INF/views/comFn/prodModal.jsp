@@ -70,7 +70,7 @@
 	    });
 		
 		$.ajax({
-		    url : 'ajaxProdCodeList',
+		    url : 'selectProdList',
 		    method : 'GET',
 		    success : function(data){
 		        prodGrid.resetData(data);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
+import co.yedam.app.prcs.dir.service.PrcsDirReqVO;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.ing.service.PrcsIngService;
@@ -60,18 +61,22 @@ public class PrcsDirController {
 	//생산지시 등록
 	@PostMapping("prcsDirInsert")
 	@ResponseBody
-	public String prcsDirInsert(@RequestBody PrcsDirVO prcsDirVO) { 
-		//selectKey값 가져오기
-		String prcsDirCode = prcsDirService.insertPrcsDir(prcsDirVO);
-		return prcsDirCode;
+//	public String prcsDirInsert(@RequestBody PrcsDirVO prcsDirVO) { 
+//		//selectKey값 가져오기
+//		String prcsDirCode = prcsDirService.insertPrcsDir(prcsDirVO);
+//		return prcsDirCode;
+//	}
+	public int prcsDirInsert(@RequestBody PrcsDirReqVO prcsDirReqVO) {
+		return prcsDirService.insertPrcsDir(prcsDirReqVO);
 	}
 	
+	
 	//상세생산지시 등록
-	@PostMapping("prcsDirDeInsert")
-	@ResponseBody
-	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {				
-		return prcsDirService.insertPrcsDirDe(list);
-	}
+//	@PostMapping("prcsDirDeInsert")
+//	@ResponseBody
+//	public int prcsDirDeInsert(@RequestBody List<PrcsDirVO> list) {				
+//		return prcsDirService.insertPrcsDirDe(list);
+//	}
 	
 	
 	//미지시 생산계획 목록 조회

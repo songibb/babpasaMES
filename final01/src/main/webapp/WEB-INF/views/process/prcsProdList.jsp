@@ -332,10 +332,13 @@
 		    }	
 		})
    		
-   		
-   		
    		return prcsGrid;
    	}
+	
+	$("#close_btn").click(function(){
+	    $(".modal").fadeOut();
+	  	Grid.destroy();
+	});
 
 	</script>
 </body>

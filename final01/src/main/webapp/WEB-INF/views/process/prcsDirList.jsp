@@ -319,7 +319,8 @@
           },
           {
             header: '재지시여부',
-            name: 'reDirCk'
+            name: 'reDirCk',
+            hidden: true
           }
         ]
       })  

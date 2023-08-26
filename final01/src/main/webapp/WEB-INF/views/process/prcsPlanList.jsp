@@ -201,10 +201,10 @@
 			perPage: 10,
 		},
         columns: [
-//           {
-//             header: '상세계획코드',
-//             name: 'prcsPlanDeCode'
-//           },
+          {
+            header: '상세계획코드',
+            name: 'prcsPlanDeCode'
+          },
 //           {
 //             header: '계획코드',
 //             name: 'prcsPlanCode'

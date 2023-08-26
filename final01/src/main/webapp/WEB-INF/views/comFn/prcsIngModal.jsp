@@ -568,11 +568,7 @@
 
 	});	
    
-    //진행공정 그리드 새로고침
- 	function reloadIngGrid(){  
-	      $("#ingGrid").load(window.location.href + "#ingGrid");
-	}
- 	
+
 
 
 	</script>
