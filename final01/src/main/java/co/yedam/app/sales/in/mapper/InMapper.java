@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.sales.in.service.InVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 public interface InMapper {
 	//전체조회
@@ -27,4 +28,6 @@ public interface InMapper {
 	public List<InVO> selectCProd();
 	//입고관리 페이지 그리드
 	public List<InVO> inMngList();
+	//모달 검색 - 제품
+	public List<OrderVO> selectProdSearchList(String prodName);
 }

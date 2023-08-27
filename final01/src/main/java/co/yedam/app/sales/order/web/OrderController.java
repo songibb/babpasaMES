@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
+import co.yedam.app.sales.out.service.OutVO;
 
 @Controller
 public class OrderController {
@@ -67,7 +68,8 @@ public class OrderController {
 	//거래처 목록 모달 ajax(검색용)
 	@GetMapping("getActModalSearch")
 	@ResponseBody
-	public List<OrderVO> getActModalSearch(String actName){
+	public List<OutVO> getActModalSearch(String actName){
 		return orderService.actSearchList(actName);
 	}
+	
 }

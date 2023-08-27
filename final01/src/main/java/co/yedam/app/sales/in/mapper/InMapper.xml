@@ -13,7 +13,7 @@
 				, i.sales_in_exd sales_in_exd
 		FROM sales_in i JOIN com_prod p
 						ON (i.prod_code = p.prod_code)
-		ORDER BY prod_lot
+		ORDER BY prod_lot DESC
 	</select>
 
 <!-- 검색 -->
@@ -48,7 +48,7 @@
 				AND o.sales_out_code != null
 			</if>
 	</where>					
-	ORDER BY prod_lot
+	ORDER BY prod_lot DESC
 	</select>
 	
 	<!-- 제품목록 -->
@@ -56,7 +56,7 @@
 	SELECT prod_code, prod_name, prod_unit, prod_std
 	FROM com_prod
 	WHERE prod_kind = 'C'
-	ORDER BY prod_code
+	ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 입고관리 그리드 -->
@@ -72,7 +72,7 @@
 			, i.test_num
 	FROM sales_in i JOIN com_emp e
 					ON (i.emp_code = e.emp_code) 
-	ORDER BY prod_lot
+	ORDER BY prod_lot DESC
 	</select>
 	
 	<!-- 검수완료된 완제품 목록  -->
@@ -87,7 +87,7 @@
 		WHERE n.test_num IS NULL
 		AND q.total_test_yn = 'Y'
 		AND q.test_semi_yn = 'C'
-		ORDER BY q.test_date
+		ORDER BY q.test_date DESC
 	</select>
 	
 	<!-- 등록 -->
@@ -143,4 +143,15 @@
 <!-- 	        ON(f.act_code = e.act_code) -->
 <!-- 		WHERE a.mat_test_code = #{matTestCode} -->
 <!-- 	</select> -->
+
+<!-- 모달검색 - 제품 -->
+<select id="selectProdSearchList" resultType="OrderVO">
+SELECT prod_code, prod_name, prod_unit, prod_std
+FROM com_prod
+<if test="prodName != null and !prodName.equals('')">
+WHERE prod_name LIKE '%' || #{prodName} || '%'
+</if>
+AND prod_kind = 'C'
+ORDER BY prod_code DESC
+</select>
 </mapper>

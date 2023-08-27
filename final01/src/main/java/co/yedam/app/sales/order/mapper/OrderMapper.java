@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 
 import co.yedam.app.sales.order.service.OrderVO;
+import co.yedam.app.sales.out.service.OutVO;
 
 public interface OrderMapper {
 	//전체조회
@@ -19,8 +20,6 @@ public interface OrderMapper {
 			, @Param("comple") String comple);
 	//거래처 목록
 	public List<OrderVO> selectActAllList();
-	//거래처 목록 검색
-	public List<OrderVO> selectActSearchList(String actName);
 	//제품목록
 	public List<OrderVO> selectProdAllList();
 	//주문 관리 - 미계획 주문 목록
@@ -35,4 +34,10 @@ public interface OrderMapper {
 	//삭제
 	public int deleteOrder();
 	public int deleteOrderDe(OrderVO vo);
+	
+	//모달 검색 - 제품
+	public List<OrderVO> selectProdSearchList(String prodName);
+	
+	//모달 검색 - 거래처
+	public List<OutVO> selectActSearchList(String actName);
 }

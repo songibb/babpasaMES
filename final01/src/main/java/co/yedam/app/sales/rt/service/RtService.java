@@ -23,7 +23,7 @@ public interface RtService {
 	public List<OutVO> getOutList();
 	//모달 검색 - 제품
 	public List<OrderVO> prodSearchList(String prodName);
-	//모달 검색 - 제품
+	//모달 검색 - 출고목록
 	public List<RtVO> outSearchList(String prodName);
 
 }

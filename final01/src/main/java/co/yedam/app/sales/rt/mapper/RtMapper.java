@@ -34,8 +34,8 @@ public interface RtMapper {
 	public List<OutVO> selectOutList();
 	
 	//모달 검색 - 제품
-	public List<OrderVO> selectprodSearchList(String prodName);
+	public List<OrderVO> selectProdSearchList(String prodName);
 	
-	//모달 검색 - 제품
+	//모달 검색 - 출고
 	public List<RtVO> selectOutSearchList(String prodName);
 }

@@ -9,6 +9,7 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.mapper.OrderMapper;
 import co.yedam.app.sales.order.service.OrderService;
 import co.yedam.app.sales.order.service.OrderVO;
+import co.yedam.app.sales.out.service.OutVO;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -64,13 +65,17 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result;
 	}
-	
-	//거래처 목록 검색
+
 	@Override
-	public List<OrderVO> actSearchList(String actName) {
-		
+	public List<OrderVO> prodSearchList(String prodName) {
+		return orderMapper.selectProdSearchList(prodName);
+	}
+
+	@Override
+	public List<OutVO> actSearchList(String actName) {
 		return orderMapper.selectActSearchList(actName);
 	}
+
 }
 
 

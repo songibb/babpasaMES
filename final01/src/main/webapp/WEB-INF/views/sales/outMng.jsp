@@ -29,10 +29,28 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 
 <style>
+h1{
+	font-weight : 700;
+}
+
+h2{
+	clear : both;
+	font-weight : 700;
+}
+
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-family: 'Noto Sans KR', sans-serif;
 }
+
+.m_body > p{
+	display : inline-block;
+}
+
+.m_body > input{
+	border : 1px solid black;
+}
+
 .search-container {
 	display: flex;
 	align-items: center;
@@ -192,7 +210,7 @@ input[type="date"]{
 </head>
 <body>
 <div class="black_bg"></div>
-	<h2>출고 관리</h2>
+	<h1>출고 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -239,22 +257,22 @@ input[type="date"]{
 	   		</div>
 		</div>
 	</div>
-	<div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
+<div class="modal">
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
 	</div>
 
     
@@ -375,12 +393,17 @@ input[type="date"]{
 	        ]
 	      });
 		
+     
+	
+	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
+		var Grid;
+	
 	 //거래처 리스트 모달 시작
-    var Grid;
      $("#actModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createActGrid();
-       
+       $('.modal_title h3').text('거래처 목록');
        Grid.on('click', () => {
            let rowKey = Grid.getFocusedCell().rowKey;
            let actCode = Grid.getValue(rowKey, 'actCode');
@@ -400,7 +423,9 @@ input[type="date"]{
      //제품 리스트 모달 시작
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createProdGrid();
+       $('.modal_title h3').text('제품 목록');
        Grid.on('click', () => {
         let rowKey = Grid.getFocusedCell().rowKey;
         let prodCode = Grid.getValue(rowKey, 'prodCode');
@@ -417,16 +442,14 @@ input[type="date"]{
          });
      });
      
-	
-	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
-		var Grid;
 		outGrid.on('click', () => {
     	let rowKey = outGrid.getFocusedCell().rowKey;
     	let columnName = outGrid.getFocusedCell().columnName;
     	if(columnName == "prodLot"){
     		$(".modal").fadeIn();
+    			preventScroll();
     	       Grid = createLotGrid();
-    	       
+    	       $('.modal_title h3').text('제품LOT 목록');
     	       Grid.on('click', () => {
     	       		let rowKey2 = Grid.getFocusedCell().rowKey;
     	        	let prodLot = Grid.getValue(rowKey2, 'prodLot');
@@ -449,8 +472,9 @@ input[type="date"]{
     	       });
     	} else if(columnName == 'salesOrdDeCode'){
     		$(".modal").fadeIn();
- 	       Grid = createODGrid();
- 	       
+    		preventScroll();
+ 	       	Grid = createODGrid();
+ 	     	$('.modal_title h3').text('상세주문 목록');
  	       Grid.on('click', () => {
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
  	        	let salesOrdDeCode = Grid.getValue(rowKey2, 'salesOrdDeCode');
@@ -463,10 +487,18 @@ input[type="date"]{
  	        	console.log(prcsRqAmt);
  	    		//$("#actCodeInput").val(actCode);
  	    		//$("#actNameFix").val(actName);
+ 	    		if(salesOrdDeCode != null){
  	    		outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
+ 	    		}
+ 	    		if(actName != null){
  	    		outGrid.setValue(rowKey, 'actName', actName);
+ 	    		}
+ 	    		if(actCode != null){
  	    		outGrid.setValue(rowKey, 'actCode', actCode);
+ 	    		}
+ 	    		if(salesOutAmt != null){
  	    		outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
+ 	    		}
  	    		//선택시 모달창 닫기
  	    		if(rowKey2 != null){
  	    			$(".modal").fadeOut();
@@ -481,6 +513,79 @@ input[type="date"]{
 
   	});
 	
+		
+		//모달 검색
+		$('#modalSearchBtn').on('click', function(e){
+				let title = $('.modal_title h3').text();
+				let inputContent = $('#modalSearch').val();
+				
+				if(title == '제품 목록'){
+					let modalSearchData = {prodName : inputContent}
+					$.ajax({
+						url : 'getProdModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				} else if(title == '거래처 목록'){
+					let modalSearchData = {actName : inputContent}
+					$.ajax({
+						url : 'getActModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}else if(title == '제품LOT 목록'){
+					let modalSearchData = {prodName : inputContent}
+					$.ajax({
+						url : 'getLotModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}else if(title == '상세주문 목록'){
+					let modalSearchData = {actName : inputContent}
+					$.ajax({
+						url : 'getOrdDeModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}
+			})		
+			
+			
+	//모달창 닫기
+	$("#close_btn").click(function(){
+        $(".modal").fadeOut();
+        activeScroll();
+    	let inputContent = $('#modalSearch').val('');
+    	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
+     });
+		
 	//prodLot modal
 	 function createLotGrid(){
   	   var odGrid = new tui.Grid({
@@ -495,7 +600,8 @@ input[type="date"]{
   	    		prodSaveAmt : "${lot.prodSaveAmt}",
   	  			salesInExd : `<fmt:formatDate value="${lot.salesInExd}" pattern="yyyy-MM-dd"/>`,
   				empCode : "${lot.empCode}",
-  				testNum : "${lot.testNum}"
+  				testNum : "${lot.testNum}",
+  				prodName : "${lot.prodName}"
   	          	} <c:if test="${not status.last}">,</c:if>
   	          </c:forEach>
   	          ],
@@ -519,6 +625,10 @@ input[type="date"]{
   	               header: '제품코드',
   	               name: 'prodCode'
   	             },
+  	           	{
+   	               header: '제품이름',
+   	               name: 'prodName'
+   	             },
   	             {
   	               header: '입고날짜',
   	               name: 'salesInDate',
@@ -666,13 +776,6 @@ input[type="date"]{
   	   return lotGrid;
      }
 		
-	//모달창 닫기
-	$("#close_btn").click(function(){
-        $(".modal").fadeOut();
-         
-  		Grid.destroy();
-     });
-	
 	//거래처 모달 그리드
      function createActGrid(){
   	   var actGrid = new tui.Grid({
@@ -937,6 +1040,22 @@ input[type="date"]{
     	   outGrid.export('xlsx');
        })
     })
+    
+     //스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
     </script>
 </body>
 </html>

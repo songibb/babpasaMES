@@ -227,7 +227,7 @@ input[type="date"] {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>반품 관리</h2>
+	<h1>반품 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -287,7 +287,6 @@ input[type="date"] {
     		</div>
   		</div>
 	</div>
-
 
 	<script>
 	document.getElementById('save').addEventListener('click', saveServer);
@@ -405,10 +404,17 @@ input[type="date"] {
 	        ]
 	      });
      
+     
+	
+	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
+		var Grid;
+		
      //제품 리스트 모달 시작
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createProdGrid();
+       $('.modal_title h3').text('제품 목록');
        Grid.on('click', () => {
         let rowKey = Grid.getFocusedCell().rowKey;
         let prodCode = Grid.getValue(rowKey, 'prodCode');
@@ -424,17 +430,16 @@ input[type="date"] {
          }
          });
      });
-     
 	
-	//거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
-		var Grid;
-		rtGrid.on('click', () => {
+	
+	rtGrid.on('click', () => {
     	let rowKey = rtGrid.getFocusedCell().rowKey;
     	let columnName = rtGrid.getFocusedCell().columnName;
 		 if(columnName == 'salesOutCode'){
     		$(".modal").fadeIn();
+    		preventScroll();
  	       Grid = createOutGrid();
- 	       
+ 	      $('.modal_title h3').text('출고 목록');
  	       Grid.on('click', () => {
  	       		let rowKey2 = Grid.getFocusedCell().rowKey;
  	        	let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
@@ -480,6 +485,8 @@ input[type="date"] {
                 	  empCode : "${out.empCode}",
                 	  salesOrdDeCode : "${out.salesOrdDeCode}",
                 	  prodLot : "${out.prodLot}",
+                	  prodName : "${out.prodName}",
+                	  actName : "${out.actName}"
                   } <c:if test="${not status.last}">,</c:if>
                </c:forEach>
                ],
@@ -504,9 +511,17 @@ input[type="date"] {
                     name: 'prodCode'
                   },
                   {
+                     header: '제품명',
+                     name: 'prodName'
+                   },
+                  {
                     header: '거래처코드',
                     name: 'actCode'
                   },
+                  {
+                     header: '거래처명',
+                     name: 'actName'
+                   },
                   {
                     header: '출고날짜',
                     name: 'salesOutDate',

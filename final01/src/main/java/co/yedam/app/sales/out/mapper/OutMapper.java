@@ -36,4 +36,16 @@ public interface OutMapper {
 	public List<OutVO> selectLotList();
 	//order detail list
 	public List<OutVO> selectOrderDeList();
+	
+	//모달 검색 - 제품
+	public List<OrderVO> selectProdSearchList(String prodName);
+	
+	//모달 검색 - 거래처
+	public List<OutVO> selectActSearchList(String actName);
+	
+	//모달 검색 - lot
+	public List<OutVO> selectLotSearchList(String prodName);
+	
+	//모달 검색 - 주문상세
+	public List<OutVO> selectOrdDeSearchList(String actName);
 }
