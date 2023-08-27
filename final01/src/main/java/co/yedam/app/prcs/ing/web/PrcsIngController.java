@@ -75,6 +75,13 @@ public class PrcsIngController {
 		return prcsIngService.selectPrcsInfoList(prcsDirDeCode, prcsCode);
 	}
 	
+	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (진행공정 모달)
+	@GetMapping("selectPrcsIngSts")
+	@ResponseBody
+	public String selectPrcsInfoList(PrcsIngVO prcsIngVO) {	
+		return prcsIngService.selectPrcsIngSts(prcsIngVO);
+	}
+	
 	
 	//공정 실적 조회 - 페이지 호출
 	@GetMapping("prcsResultList")

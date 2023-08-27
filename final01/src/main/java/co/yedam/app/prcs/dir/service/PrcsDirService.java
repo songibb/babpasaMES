@@ -15,10 +15,11 @@ public interface PrcsDirService {
 	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode);
 	
 	//생산지시 등록
-	public String insertPrcsDir(PrcsDirVO prcsDirVo);
+	//public String insertPrcsDir(PrcsDirVO prcsDirVo);
+	public int insertPrcsDir(PrcsDirReqVO prcsDirReqVo);
 	
 	//상세생산지시 등록
-	public int insertPrcsDirDe(List<PrcsDirVO> list);
+	//public int insertPrcsDirDe(List<PrcsDirVO> list);
 	
 	
 	//미지시 생산계획 목록 조회 
@@ -33,5 +34,12 @@ public interface PrcsDirService {
 	
 	//진행공정 모두 공정완료시 생산지시 수정
 	public int updateDirPrcsSts(List<PrcsDirVO> dirList);
-
+	
+	
+	//재지시 등록 (상세생산지시)
+	public int insertReDirDe(List<PrcsDirVO> reDirList);
+	
+	
+	
+	
 }

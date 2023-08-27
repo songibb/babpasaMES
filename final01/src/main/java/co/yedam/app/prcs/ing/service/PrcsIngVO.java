@@ -37,6 +37,13 @@ public class PrcsIngVO {
 	private String eqName;
 	
 	
+	//반제품생산공정여부 확인용 JOIN
+	private String semiYn;
+	
+	//프로시저 return
+	private String result;
+	
+	
 	
 }
 

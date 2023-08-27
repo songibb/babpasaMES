@@ -1,6 +1,5 @@
 package co.yedam.app.prcs.ing.service.impl;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,12 +74,50 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 		return prcsIngMapper.selectPrcsInfoList(prcsDirDeCode, prcdCode);		
 	}
 
+	//작업시작 => 진행 공정 조회 (이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X) (진행공정 모달)
+//	@Override
+//	public List<PrcsIngVO> selectPrcsIngSts(String prcsDirDeCode, String prodCode) {
+//		List<PrcsIngVO> list = prcsIngMapper.selectPrcsIngSts(prcsDirDeCode, prodCode);
+//		for(PrcsIngVO vo : list) {
+//			
+//			int result = 0;
+//
+//			//해당 공정이 반제품공정일때
+//			if(vo.getSemiYn().equals("Y")) {
+//			
+//				//해당 공정이 반제품 공정이면서, 공정상태가 공정완료일때
+//				if(vo.getPrcsDirIngSts().equals("공정완료")) {
+//					
+//					result++;
+//				}
+//		
+//			//	
+//			} else if(vo.getSemiYn().equals("N") && vo.getPrcsSeq() == )
+//			
+//		}
+//		return list;
+//	}
 	
+	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (프로시저) (진행공정 모달)
+	public String selectPrcsIngSts(PrcsIngVO prcsIngVO) {
+		prcsIngMapper.selectPrcsIngSts(prcsIngVO);
+		
+		//프로시저 out값 찾기
+		String result = prcsIngVO.getResult();
+		if(result == null) {
+			return "true";
+		}
+		return result;
+	}
+	
+
 	//공정 실적 조회 (검색)
 	@Override
 	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO) {
 		return prcsIngMapper.selectPrcsResultList(prcsSearchVO);
 	}
+
+	
 
 
 }

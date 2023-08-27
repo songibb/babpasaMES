@@ -19,6 +19,9 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
+#customtemplateSearchAndButton{
+	margin-bottom: 30px;
+}
 #planContainer{
 	display: flex;
 	justify-content: space-between;
@@ -85,8 +88,7 @@
 					</div>
 					<div id="rightGrid">
 						<div id="rightGridHeader">
-							<span>상세 생산 계획</span>
-							
+							<span>상세 생산 계획</span>			
 						</div>		
 	           			<div id="planDeGrid"></div>
 					</div>
@@ -171,26 +173,9 @@
 		
 		//변경사항 없을 시 경고창
 		if(!planGrid.isModified() && !planDeGrid.isModified()){
-			swal("변경사항이 없습니다.", "", "warning");
+			swal("경고", "변경사항이 없습니다.", "warning");
 			return false;
 		}
-		
-		
-		//주문수량과 생산계획량 비교 -> 생산계획량이 주문수량보다 적을시 경고창
-		let list = planDeGrid.getData();
-		let amtCk = true;
-		$.each(list, function(i, obj){
-			for(let field in obj){
-				if(obj['prcsRqAmt'] > obj['prcsPlanAmt']){
-					amtCk = false;
-				}
-			}
-		})
-		if(amtCk == false){
-			swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
-			return false;
-		}
-
 
     	let codeValue = planGrid.getValue(rowKey, 'prcsPlanCode');	
 		if(codeValue == null){
@@ -208,19 +193,21 @@
 		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
 		let flag = true; 
 
+		//생산계획 데이터 가져오기
 		let list = planGrid.getData();
 		let object = list[0];	
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
 				//console.log(field+'-'+obj[field]);
-				if(field != 'prcsPlanCode' && field != 'prcsDirYn' && obj[field] == null){
+				if(obj['prcsPlanName'] == null || obj['empCode'] == null || obj['prcsStartDate'] == null || obj['prcsEndDate'] == null){
 					flag = false;
 				}
 			}
 		})
 
 
+		//상세생산계획 데이터 가져오기
 		let deList = planDeGrid.getData();
 		//빈 데이터 있는지 체크
 		$.each(deList, function(i, objDe){
@@ -232,26 +219,41 @@
 			}					
 		})		
 
-		let planInsertList = { prcsPlanVO: object, insertList: deList };
+		let planInsertList = { prcsPlanVO : object, insertList : deList };
 		
-		if(flag){			
-			$.ajax({
-				url : 'prcsPlanInsert',
-				method : 'POST',
-				data : JSON.stringify(planInsertList),
-				contentType : 'application/json',
-				async : false, 
-				success : function(data){									
-					searchPlanList();
-					swal("등록이 완료되었습니다.", "", "success");
-			
-				},
-				error : function(reject){
-		 			console.log(reject);
-		 		}		
+		if(flag){		
+			//주문수량과 생산계획량 비교 -> 생산계획량이 주문수량보다 적을시 경고창
+			let list = planDeGrid.getData();
+			let amtCk = true;
+			$.each(list, function(i, obj){
+				for(let field in obj){
+					if(obj['prcsRqAmt'] > obj['prcsPlanAmt']){
+						amtCk = false;
+					}
+				}
 			})
+			if(amtCk == false){
+				swal("경고", "생산계획량이 주문수량보다 적습니다.", "warning");
+				return false;
+			} else{
+				$.ajax({
+					url : 'prcsPlanInsert',
+					method : 'POST',
+					data : JSON.stringify(planInsertList),
+					contentType : 'application/json',
+					async : false, 
+					success : function(data){									
+						searchPlanList();
+						swal("등록이 완료되었습니다.", "", "success");
+				
+					},
+					error : function(reject){
+			 			console.log(reject);
+			 		}		
+				})
+			}
 		} else {
-			swal("모든 값이 입력되지 않았습니다.", "", "warning");
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 	}
 	
@@ -265,7 +267,7 @@
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
-				//console.log(field+'-'+obj[field]);
+				console.log(field+'-'+obj[field]);
 				if(obj['prcsPlanName'] == null || obj['empCode'] == null || obj['prcsStartDate'] == null || obj['prcsEndDate'] == null){
 					flag = false;
 				}
@@ -286,6 +288,23 @@
 		let planUpdateList = { updateList: list, updateDeList: deList };		
 		
 		if(flag){
+			//주문수량과 생산계획량 비교 -> 생산계획량이 주문수량보다 적을시 경고창
+			let list = planDeGrid.getData();
+			
+			//지시수량이 올바르게 들어갔는지 확인할 변수
+			let amtCk = true;
+			$.each(list, function(i, obj){
+				for(let field in obj){
+					if(obj['prcsRqAmt'] > obj['prcsPlanAmt']){
+						amtCk = false;
+					}
+				}
+			})
+			if(amtCk == false){
+				swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
+				return false;
+			} 
+			
 			$.ajax({
 				url : 'prcsPlanUpdate',
 				method : 'POST',
@@ -301,7 +320,7 @@
 		 		}		
 			})
 		} else{
-			swal("모든 값이 입력되지 않았습니다.", "", "warning");
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 		
 	
@@ -358,40 +377,18 @@
 
 
 	
-	//페이지 호출시 생산계획 등록하는 행 자동 생성
-// 	window.onload = function addRow(){
-// 		planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
-// 		planDeGrid.appendRow();
-// 	} 
-
-	//행추가 버튼 클릭시 상세생산계획 행 추가
-// 	function addDeRow(){
-// 		planDeGrid.appendRow();
-// 	}
-	
-	//행삭제
-// 	function removeRow(){
-// 		let message = confirm("정말 삭제하시겠습니까?");
-// 		if(message) {		
-// 			planGrid.removeCheckedRows(false);
-// 		}
-// 	}
-		
-	
-	
-	
 	//생산계획 grid
     var planGrid = new tui.Grid({
         el: document.getElementById('planGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 320,
         rowHeaders: ['rowNum', 'checkbox'],
-        	pagination: true,
-        	pageOptions: {
-    			useClient: true,
-    			perPage: 5,
-    		},
+       	pagination: true,
+       	pageOptions: {
+   			useClient: true,
+   			perPage: 8,
+   		},		
         columns: [
           {
             header: '계획코드',
@@ -453,12 +450,12 @@
 		el: document.getElementById('planDeGrid'),
 		scrollX: false,
 		scrollY: false,
-		minBodyHeight: 30,
+		minBodyHeight: 320,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 8,
 		},
 		columns: [
 			{

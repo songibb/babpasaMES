@@ -17,6 +17,9 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
+#customtemplateSearchAndButton{
+	margin-bottom: 30px;
+}
 #planContainer{
 	display: flex;
 	justify-content: center;
@@ -25,8 +28,14 @@
     width: 800px;
     margin-right: 20px;
 }
+#leftGridHeader{
+	height: 45px;
+}
 #rightGrid{
     width: 800px;
+}
+#rightGridHeader{
+	height: 45px;
 }
 
 </style>
@@ -57,14 +66,18 @@
 				</div>
 				
 				<div id="planContainer">
-					<div id="leftGrid">
-						<span>생산 계획</span>
-            			<div id="planGrid"></div>
-            		</div>
+            		<div id="leftGrid">
+						<div id="leftGridHeader">
+							<span>생산 계획</span>			
+						</div>		
+	           			<div id="planGrid"></div>
+					</div>
             		<div id="rightGrid">
-            			<span>상세 생산 계획</span>
-           				<div id="planDeGrid"></div>
-           			</div>
+						<div id="rightGridHeader">
+							<span>상세 생산 계획</span>			
+						</div>		
+	           			<div id="planDeGrid"></div>
+					</div>
             	</div>
 	   		</div>
 		</div>
@@ -130,12 +143,12 @@
 	          ],
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 10,
 		},
 		 
         columns: [
@@ -180,18 +193,18 @@
         el: document.getElementById('planDeGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 10,
 		},
         columns: [
-//           {
-//             header: '상세계획코드',
-//             name: 'prcsPlanDeCode'
-//           },
+          {
+            header: '상세계획코드',
+            name: 'prcsPlanDeCode'
+          },
 //           {
 //             header: '계획코드',
 //             name: 'prcsPlanCode'
@@ -217,10 +230,10 @@
             header: '우선순위',
             name: 'prcsPrio'
           },
-          {
-            header: '지시수량',
-            name: 'prcsDirAmt'
-          },
+//           {
+//             header: '지시수량',
+//             name: 'prcsDirAmt'
+//           },
           {
             header: '지시상태',
             name: 'prcsDirSts'
@@ -255,25 +268,25 @@
 		
 	
 	//생산계획 -> 지시완료 update
-	let planList = planGrid.getData();
-	console.log(planList);
+// 	let planList = planGrid.getData();
+// 	console.log(planList);
 	
-	function updatePlanDirStsAjax(){
-		$.ajax({
-			url : 'updatePlanDirSts',
-			method : 'POST',
-			data : JSON.stringify(planList),
-			contentType : "application/json",
-			success : function(data){
-				console.log(data);
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-	}
+// 	function updatePlanDirStsAjax(){
+// 		$.ajax({
+// 			url : 'updatePlanDirSts',
+// 			method : 'POST',
+// 			data : JSON.stringify(planList),
+// 			contentType : "application/json",
+// 			success : function(data){
+// 				console.log(data);
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})
+// 	}
 
-	updatePlanDirStsAjax();
+// 	updatePlanDirStsAjax();
 
 	
 	

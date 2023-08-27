@@ -15,20 +15,37 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
     
 <style type="text/css">
+#btnContainer{
+	display: flex;
+	justify-content: end;
+}
 #dirContainer{
 	display: flex;
 	justify-content: space-between;
 }
+.leftGrid{
+    width: 700px;
+    margin-right: 20px;
+}
+.leftGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+.rightGrid{
+    width: 900px;
+}
+.rightGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+
 #matContainer{
 	display: flex;
 	justify-content: space-between;
 }
-#bomGrid{
-    width: 600px;
-}
-#matLotGrid{
-    width: 600px;
-}
+
 
 </style>    
     
@@ -45,28 +62,45 @@
 	            <div>
 	            	<div>          
 	            		<div>  	
-		            		<div id="dirContainer">
+		            		<div id="btnContainer">
 			            		<button id="planModal" class="btn btn-info btn-icon-text">생산 계획 가져오기</button>	  		
-			            		<button id="save" class="btn btn-info btn-icon-text">저장</button>
+			            		<button id="save" class="btn btn-info btn-icon-text">지시 등록</button>
 			            	</div>  
 						</div>	
-						<div style="height: 130px; margin-top: 50px;">
-			            	<p>생산 지시</p>	
-							<div id="dirGrid"></div>
+						
+						<div id="dirContainer">
+							<div class="leftGrid">
+								<div class="leftGridHeader">
+					            	<span>생산 지시</span>	
+								</div>
+								<div id="dirGrid"></div>
+							</div>
+							
+							<div class="rightGrid">
+								<div class="rightGridHeader">
+			           				<span>상세 생산 지시</span>
+			           				<div>
+		           						<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
+		           						<button id="deRemove" class="btn btn-info btn-icon-text">행삭제</button>
+		           					</div>
+			      				</div>
+			           			<div id="dirDeGrid"></div>
+							</div>
 						</div>
-		           		<div style="height: 150px;">
-		           			<p>상세 생산 지시</p>
-		           			<div id="dirDeGrid"></div>
-		           		</div>
+						
 	           		</div>	  
 	           		<hr>
 	           		<div id="matContainer">
-	           			<div>
-	           				<p>공정 자재 소모량</p>
+	           			<div class="leftGrid">
+	           				<div class="leftGridHeader">
+				            	<span>공정별 자재 소모량</span>
+							</div>
 		           			<div id="bomGrid"></div>
 	           			</div>
-	           			<div>
-	           				<p>자재별 LOT 재고</p>
+	           			<div class="rightGrid">
+	           				<div class="rightGridHeader">
+		           				<span>자재별 LOT 재고</span>
+		      				</div>
 		           			<div id="matLotGrid"></div>
 	           			</div>
            			</div>
@@ -86,138 +120,154 @@
 	
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
-// 	//행추가
-// 	document.getElementById('deAdd').addEventListener('click', addDeRow);
-// 	//행삭제
-// 	document.getElementById('deRemove').addEventListener('click', removeDeRow);
+	//행추가
+	document.getElementById('deAdd').addEventListener('click', addDeRow);
+	//행삭제
+	document.getElementById('deRemove').addEventListener('click', removeDeRow);
 	
-	//생산계획조회 모달
-// 	$("#planListModal").click(function(){
-// 		$(".modal").fadeIn();
-// 		Grid = createProdGrid();
-// 		Grid.on('click', () => {
-// 			let rowKey = Grid.getFocusedCell().rowKey;
-// 	        let planCode = Grid.getValue(rowKey, 'planCode');
-// // 	       	let prodName = Grid.getValue(rowKey, 'prodName');
-// // 			$("#prodCodeInput").val(prodCode);
-// // 			$("#prodNameFix").val(prodName);
-			
-// // 			$("#prodCodeInput").val(prodCode);
-			
-// 			//모달창 닫기
-// 			if(rowKey != null){
-// 				$(".modal").fadeOut();
-// 				Grid.destroy();
-// 			}
-// 		});
-// 	});
-	
-	
-	//페이지 호출시 생산지시 등록하는 행 자동 생성
-	window.onload = function addRow(){
-		dirGrid.appendRow();
-		dirDeGrid.appendRow();
-	} 
 
-// 	//행추가 버튼 클릭시 상세생산지시 행 추가
-// 	function addDeRow(){
-// 		dirDeGrid.appendRow();
-// 	}
+
+	//행추가 버튼 클릭시 체크된 상세생산지시와 같은 행 추가 (분할지시를 위해)
+	function addDeRow(){
+		let list = dirDeGrid.getCheckedRows();
+		if(list.length == 0){
+			swal("경고", "추가할 행을 선택해주세요.", "warning");	
+		}
+		dirDeGrid.appendRows(list);
+	}
 	
-// 	//행삭제 버튼 클릭시 상세생산지시 행 삭제
-// 	function removeDeRow(){
-// 		let message = confirm("정말 삭제하시겠습니까?");
-// 		if(message) {		
-// 			dirDeGrid.removeCheckedRows(false);
-// 		}
-// 	}
+	//행삭제 버튼 클릭시 체크된 상세생산지시 행 삭제
+	function removeDeRow(){
+		dirDeGrid.removeCheckedRows(false);
+	}
 		
 	//저장 버튼 클릭시 실행 될 함수 -> insert 실행
 	function saveServer() {	
 		
-		//편집종료
+		//생산지시 편집종료
 		let rowKey = dirGrid.getFocusedCell().rowKey;
 		let columnName = dirGrid.getFocusedCell().columnName;		
 		dirGrid.finishEditing(rowKey, columnName);
 		
+		//상세생산지시 편집종료
 		let rowKeyDe = dirDeGrid.getFocusedCell().rowKey;
 		let columnNameDe = dirDeGrid.getFocusedCell().columnName;
 		dirDeGrid.finishEditing(rowKeyDe, columnNameDe);
 		
-// 		console.log(dirDeGrid.isModified());
-// 		console.log(dirDeGrid.getModifiedRows());
-// 		if(!dirGrid.isModified() && !dirDeGrid.isModified()){
-// 			swal("변경사항이 없습니다.", "", "warning");
-// 			return false;
-// 		}
 		
-		//생산계획량과 지시수량 비교 -> 생산계획량보다 지시수량이 적을시 경고창
-		let amtCklist = dirDeGrid.getData();
-		let amtCk = true;
-		$.each(amtCklist, function(i, obj){
+		//저장버튼 눌렀을때 그리드에 데이터가 비어있는지 확인할 변수
+		let flag = true; 
+
+		//생산지시 데이터 가져오기
+		let list = dirGrid.getData();
+		let object = list[0];
+		//빈 데이터 있는지 체크
+		$.each(list, function(i, obj){
 			for(let field in obj){
-				if(obj['prcsPlanAmt'] > obj['prcsDirAmt']){
-					amtCk = false;
+				//console.log(field+'-'+obj[field]);
+				if(obj['prcsDirName'] == null || obj['empCode'] == null || obj['prcsStartDate'] == null){
+					flag = false;
 				}
 			}
 		})
-		if(amtCk == false){
-			swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
-			return false;
-		}
 		
-
-		let list = dirGrid.getData();
-		let obj = list[0];
-
-		$.ajax({
-			url : 'prcsDirInsert',
-			method : 'POST',
-			data : JSON.stringify(obj),
-			contentType : 'application/json',
-			success : function(data){					
-				//상세생산지시 insert
-				let rowKey = dirDeGrid.getFocusedCell().rowKey;
-				let columnName = dirDeGrid.getFocusedCell().columnName;
-				//편집종료
-				dirDeGrid.finishEditing(rowKey, columnName);
-				
-				let deList = dirDeGrid.getData();
-				$.each(deList, function(i, objDe){
-					deList[i]['prcsDirCode'] = data;
-				})
-
-				
-				//분할지시
-				//상세지시코드 for문돌려서 상세계획코드 구하기
-				// 상세계획코드 개수가 1이상일때  
-				// 해당 생산계획량 = 각각 지시수량 모두 더한 값 true이면
-				// 아래 ajax 동작
-				//if()
-
-				$.ajax({
-					url : 'prcsDirDeInsert',
-					method : 'POST',
-					data : JSON.stringify(deList),
-					contentType : 'application/json',
-					success : function(data){
-						//등록 후 그리드 내용 지우고, 행추가
-						dirGrid.clear();
-						dirGrid.appendRow();
-						dirDeGrid.clear();
-						dirDeGrid.appendRow();
-						
-						swal("등록이 완료되었습니다.", "", "success");
-					},
-					error : function(reject){
-			 			console.log(reject);
-			 		}
-				})				
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}		
+		//상세생산지시 데이터 가져오기			
+		let deList = dirDeGrid.getData();
+		$.each(deList, function(i, objDe){
+			for(let field in objDe){
+				//console.log(field+'-'+objDe[field]);			
+				if(objDe['prcsStartDeDate'] == null || objDe['prcsDirAmt'] == 0){
+					flag = false;
+				}
+			}	
 		})
+		
+		let dirInsertList = { prcsDirVO : object, insertList : deList };
+		
+		if(flag){
+	
+			//생산계획량과 지시수량 비교 -> 지시수량이 생산계획량보다 적을시 경고창
+			let list = dirDeGrid.getData();
+	
+			//분할지시
+			//상세지시코드 반복문 돌려서 상세계획코드만 codeList에 담기
+			let codeList = [];
+			$.each(list, function(i, obj){
+				codeList.push(obj['prcsPlanDeCode']);
+			})
+
+			//상세계획코드별 중복되는 개수 구해서 result 객체에 담기
+			let result = {}
+			for(let code of codeList){
+				if(result[code]) {
+					//이미 존재하는 데이터는 여기
+					result[code] = result[code] + 1;
+				} else {
+					//처음 들어오는 데이터는 여기
+					result[code] = 0 + 1;
+				}
+			}
+			
+			//지시수량이 올바르게 들어갔는지 확인할 변수
+			let amtCk = true;
+			
+			for(let idx in result){
+				
+				//result객체의 값이 1보다 크면 중복이라는 뜻
+				if(result[idx] > 1){
+					
+					//해당 상세계획코드의 지시수량의 합 구하기
+					let sumDirAmt = 0;
+					let planAmt = 0;
+		 			$.each(list, function(i, obj){
+		 				if(list[i]['prcsPlanDeCode'] == idx){
+		 					sumDirAmt = sumDirAmt + Number(list[i]['prcsDirAmt']);
+		 					planAmt = list[i]['prcsPlanAmt'];
+		 				}
+		 			})	
+		 			
+					//해당 상세계획코드의 지시수량 모두 더한 값이 생산계획량보다 적으면 경고창
+					if( sumDirAmt < planAmt){
+						amtCk = false;
+					}
+		 			
+				} else {
+					//중복값이 없는 경우
+					//지시수량이 생산계획량보다 적을시 경고창
+					$.each(list, function(i, obj){
+						if(list[i]['prcsPlanDeCode'] == idx){
+							if(list[i]['prcsPlanAmt'] > list[i]['prcsDirAmt']){
+								amtCk = false;
+							}
+						}
+					})
+				}
+			}
+			
+			if(amtCk == false){
+				swal("경고", "지시수량이 생산계획량보다 적습니다.", "warning");
+				return false;
+			} 
+					
+			$.ajax({
+				url : 'prcsDirInsert',
+				method : 'POST',
+				data : JSON.stringify(dirInsertList),
+				contentType : 'application/json',
+				async : false, 
+				success : function(data){									
+					swal("등록이 완료되었습니다.", "", "success");
+				},
+				error : function(reject){
+		 			console.log(reject);
+		 		}		
+			})
+
+
+		} else {
+			
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
+		}
 	};
 
 	
@@ -226,7 +276,7 @@
         el: document.getElementById('dirGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,	
+        minBodyHeight: 200,	
         columns: [
 //           {
 //             header: '지시코드',
@@ -281,7 +331,7 @@
         el: document.getElementById('dirDeGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['checkbox'],
         columns: [
 //           {
@@ -292,25 +342,23 @@
 //             header: '지시코드',
 //             name: 'prcsDirCode'
 //           },
-		  {
-            header: '상세계획코드',
-            name: 'prcsPlanDeCode',
-            hidden: false
-          },
+// 		  {
+//             header: '상세계획코드',
+//             name: 'prcsPlanDeCode',
+//             hidden: false
+//           },
        	  {
             header: '제품코드',
             name: 'prodCode',
-            hidden: false
+            hidden: true
           },
           {
             header: '제품명',
-            name: 'prodName',
-            editor: 'text'
+            name: 'prodName'
           },
           {
             header: '생산계획량',
-            name: 'prcsPlanAmt',
-            editor: 'text'
+            name: 'prcsPlanAmt'
           },
           {
             header: '지시수량',
@@ -353,9 +401,18 @@
         el: document.getElementById('bomGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 5
+		},
         columns: [
+       	  {
+       	  	header: '투입공정',
+            name: 'prcsName'
+          },
     	  {
             header: '자재코드',
             name: 'mpCode',
@@ -368,11 +425,8 @@
           {
             header: '자재소모량',
             name: 'bomAmt'
-          },
-          {
-       	  	header: '투입공정',
-            name: 'prcsName'
           }
+          
 //           {
 //             header: '단위',
 //             name: 'bomUnit'
@@ -385,7 +439,7 @@
         el: document.getElementById('matLotGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
         columns: [
 //           {
@@ -455,7 +509,9 @@
   	});
 	
 	
-
+	//생산지시 너무 비어보여서 페이지 호출할떄마다 행추가
+	dirGrid.appendRow();
+	dirDeGrid.appendRow();
 	
 	
     </script>

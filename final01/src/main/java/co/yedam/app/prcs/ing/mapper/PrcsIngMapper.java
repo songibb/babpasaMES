@@ -11,12 +11,12 @@ import co.yedam.app.prcs.ing.service.PrcsIngVO;
 import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 public interface PrcsIngMapper {
-	//진행공정 조회
+	//진행 공정 조회
 	public List<PrcsIngVO> selectPrcsIngList(@Param("prcsDirDeCode") String prcsDirDeCode, 
 											 @Param("prodCode") String prodCode);
 
 	
-	//진행공정 등록 (프로시저)
+	//진행 공정 등록 (프로시저)
 	public int insertPrcsIng(String prcsDirDeCode);
 
 	//작업 시작 전 사용 가능한 설비 조회 (진행공정 모달)
@@ -39,9 +39,14 @@ public interface PrcsIngMapper {
 	public PrcsIngVO selectPrcsInfoList(@Param("prcsDirDeCode") String prcsDirDeCode, 
 			 							@Param("prcsCode") String prcsCode);
 	
-	//공정별 공정상태 조회(진행공정 모달)
+	//작업시작 => 진행 공정 조회 (이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X) (진행공정 모달)
+//	public List<PrcsIngVO> selectPrcsIngSts(@Param("prcsDirDeCode") String prcsDirDeCode, 
+//											@Param("prodCode") String prodCode);
 	
-	
+	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (프로시저) (진행공정 모달)
+	public Integer selectPrcsIngSts(PrcsIngVO prcsIngVO);
+		
+
 	//공정 실적 조회
 	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);
 	

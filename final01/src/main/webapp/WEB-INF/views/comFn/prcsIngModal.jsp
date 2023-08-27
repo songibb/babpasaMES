@@ -20,7 +20,7 @@
 }
 #inputContainer{
 	display: flex; 
-	justify-content: space-between;
+	justify-content: space-around;
 	margin-bottom: 20px;
 }
 #gridContainer{
@@ -70,16 +70,16 @@
 						<div>
 							<label for="prcName">공정명</label>
 							<input type="text" name="prcsName" id="prcsName" readonly>	
-						
+							<br>
 							<label for="inputAmt">투입량</label>
-							<input type="text" name="inputAmt" id="inputAmt" readonly>	
+							<input type="number" name="inputAmt" id="inputAmt" readonly>	
 						</div>	
 						<div>
 							<input type="hidden" id="empCode" name="empCode">
 							
 							<label for="empName">담당자</label>
 							<input type="text" name="empName" id="empName">	
-
+							<br>
 							<label for="errAmt">불량량</label>
 							<input type="number" name="errAmt" id="errAmt">		
 						</div>	
@@ -131,7 +131,7 @@
 	        minBodyHeight: 30,
 	        rowHeaders: ['rowNum'],
 	        selectionUnit: 'row',
-	        bodyHeight: 250,
+	        bodyHeight: 240,
 	        pageOptions : {
 	        	useClient : true,
 	        	type: 'scroll',
@@ -178,7 +178,7 @@
 	        minBodyHeight: 30,
 	        rowHeaders: ['rowNum'],
 	        selectionUnit: 'row',
-	        bodyHeight: 250,
+	        bodyHeight: 240,
 	        pageOptions : {
 	        	useClient : true,
 	        	type: 'scroll',
@@ -228,7 +228,7 @@
             scrollY: true,
             minBodyHeight: 30,
     		rowHeaders: ['rowNum'],
-    		bodyHeight: 250,
+    		bodyHeight: 240,
 	        pageOptions : {
 	        	useClient : true,
 	        	type: 'scroll',
@@ -298,13 +298,19 @@
 	
     ingGrid.on('click', () => {
 		$(".modal").fadeIn();   
-		
+
 		//모달창에 공정명, 투입량 정보 가져오기
 	  	let rowKey = ingGrid.getFocusedCell().rowKey;
     	let prcsName = ingGrid.getValue(rowKey, 'prcsName');
     	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  
     	$('#prcsName').val(prcsName);
 		$('#inputAmt').val(inputAmt);
+		
+   		//모달창에 담당자 정보 가져오기
+    	let empCode = ${user.id};
+    	let empName = `${user.empName}`;
+		$('#empCode').val(empCode);
+		$('#empName').val(empName);
 		
 		//prcsDirDeCode 가져오기
 		let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
@@ -358,14 +364,23 @@
 						prcsBomGridFn = createPrcsBomGrid();	
 
 	 					//담당자 가져오기	
-	 					$('#empCode').val(data['empCode']);					
+	 					$('#empCode').val(data['empCode']);		
+	 					//불량량 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
+	 					$('#errAmt').val('');
 	 					//작업시작시간 가져오기
 	 					$('#prcsStartTime').val(data['prcsStartTime']);
-	 					
+	 					//작업종료시간 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
+	 					$('#prcsEndTime').val('');
+	 				
 						//담당자 input 비활성화
-	 					$('#empCode').prop('readonly', true);					
+	 					$('#empCode').prop('readonly', true);
+						//불량량 input 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
+						$('#errAmt').prop('readonly', false);
 	 					//작업시작 버튼 비활성화
 	 					$('#prcsStartBtn').prop('disabled', true);	
+	 					//작업종료 버튼 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
+						$('#prcsEndBtn').prop('disabled', false);
+	 					
 					} else{		
 						//작업 종료
 						
@@ -411,53 +426,106 @@
 		$('#empCode').val(empCode);
 		$('#empName').val(empName);
 		
-   		//설비명 체크 안할 시 작동X
+		let eqRowKey = eqGridFn.getFocusedCell().rowKey;
+		let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');	
 
-  
-   		//담당자 미입력시 작동X 
-   		if($('#empCode').val() == '' || $('#empCode').val() == null){
-   			swal("담당자를 입력하세요.", "", "warning");
-   		} else{
-   			//작업 시작 시간 입력
-   			let startTime = getDateTime();
-   			$('#prcsStartTime').val(startTime);
-		
-   			//prcsDirDeCode 가져오기
-   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
-   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
-   			//prcsCode 가져오기
-   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
-   			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
-   	    	//eqCode 가져오기
-   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
-   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
-   			//empCode 값 가져오기
-   			let empCode = document.getElementById('empCode').value;	
-		  			
-   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
-   			let startObj = {};
-   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
-   	    	startObj['prcsCode'] = prcsCode;
-   			startObj['eqCode'] = eqCode;
-   			startObj['empCode'] = empCode;
-   			startObj['prcsStartTime'] = startTime;
+   		if($('#empCode').val() == '' || $('#empCode').val() == null){  			
+   			//담당자 미입력시 작동X 
+   			swal("경고", "담당자를 입력하세요.", "warning");   	
    			
-   			console.log(startObj);
-   			//ajax 프로시저
+   		} else if(eqCode == null){  			
+   			//설비명 체크 안할 시 작동X
+   			swal("경고", "설비를 선택하세요.", "warning"); 	
+   			
+   		} else{
+   			
+   			//이전 공정이 완료되었을 시 작업시작버튼 작동 시킬 변수 
+   	  		let btnOk = true;
+   			
+   	  		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+   	    	let dirDeCode = dirDeGrid.getValue(deRowKey, 'prcsDirDeCode');
+   	    	let prodCode = dirDeGrid.getValue(deRowKey, 'prodCode');
+   	    	
+   	    	
+   	    	let deList = dirDeGrid.getData();
+   	    	
+   	    	
+   	    	let ingRowKey = ingGrid.getFocusedCell().rowKey;
+   	    	let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+   	    	
+   	    	let ingObj = {};
+   	    	ingObj['prcsDirDeCode'] = dirDeCode;
+   	    	ingObj['prodCode'] = prodCode;
+   	    	ingObj['prcsCode'] = prcsCode;
+   			
+   			//해당 공정 이전 공정이 공정완료인지 확인할 ajax
    			$.ajax({
-   			    url : 'callPrcsStart',
-   			    method : 'POST',
-   			    data : startObj,
+   				url : 'selectPrcsIngSts',
+   				method : 'GET',
+   				data : ingObj,
+   				async : false,
    			    success : function(data){
-   			    	//담당자 input 비활성화
-   					$('#empCode').prop('readonly', true);	
-   			    	//작업종료 버튼 비활성화
-   					$('#prcsStartBtn').prop('disabled', true);	
+
+   			    	//data가 'false'로 넘어오면 작업시작 할 수 없음
+   			    	if(data == 'false'){
+   			    		btnOk = false;
+   			    	} else{
+   			    		btnOk = true;
+   			    	}
+   			    	
    			    },
    			    error : function(reject){
    			        console.log(reject);
    			    }	
+   				
    			})
+   			
+   			if(btnOk){
+   				
+   				//작업 시작 시간 입력
+   	   			let startTime = getDateTime();
+   	   			$('#prcsStartTime').val(startTime);
+   			
+   	   			//prcsDirDeCode 가져오기
+   	   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
+   	   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
+   	   			//prcsCode 가져오기
+   	   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
+   	   			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+   	   	    	//eqCode 가져오기
+   	   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
+   	   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
+   	   			//empCode 값 가져오기
+   	   			let empCode = document.getElementById('empCode').value;	
+   			  			
+   	   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
+   	   			let startObj = {};
+   	   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
+   	   	    	startObj['prcsCode'] = prcsCode;
+   	   			startObj['eqCode'] = eqCode;
+   	   			startObj['empCode'] = empCode;
+   	   			startObj['prcsStartTime'] = startTime;
+   	   			
+   	   			//ajax 프로시저
+   	   			$.ajax({
+   	   			    url : 'callPrcsStart',
+   	   			    method : 'POST',
+   	   			    data : startObj,
+   	   			    success : function(data){
+   	   			    	//담당자 input 비활성화
+   	   					$('#empCode').prop('readonly', true);	
+   	   			    	//작업시작 버튼 비활성화
+   	   					$('#prcsStartBtn').prop('disabled', true);	
+   	   			    },
+   	   			    error : function(reject){
+   	   			        console.log(reject);
+   	   			    }	
+   	   			})
+   	   			
+   			} else{
+   				swal("경고", "이전 공정이 아직 완료되지 않았습니다.", "warning");
+   				return false;
+   			}
    			
    		}		
    	})
@@ -471,14 +539,18 @@
 		$('#empCode').val(empCode);
 		$('#empName').val(empName);
 		
-   		
-   		if($('#errAmt').val() == '' || $('#errAmt').val() == null){
+		if($('#prcsStartTime').val() == '' || $('#prcsStartTime').val() == null){			
+			//작업시작시간에 값이 없다면 아직 작업을 시작 안한 것이므로 작동X
+			swal("경고", "아직 작업을 시작하지 않았습니다.", "warning");
+			
+		} else if($('#errAmt').val() == '' || $('#errAmt').val() == null){			
    			//불량량 미입력시 작동X
-   			swal("불량량을 입력하세요.", "", "warning");
+   			swal("경고", "불량량을 입력하세요.", "warning");
    			
-   		} else if($('#errAmt').val() > $('#inputAmt').val()){
+   		} else if(Number($('#errAmt').val()) > Number($('#inputAmt').val())){
    			//불량량이 투입량보다 클 경우 작동X
-   			swal("불량량이 투입량보다 큽니다.", "", "warning");
+   			swal("경고", "불량량이 투입량보다 큽니다.", "warning");
+   			
    		} else{
 			//작업 종료 시간 입력
 			let endTime = getDateTime();
@@ -509,7 +581,6 @@
 			endObj['errAmt'] = errAmt;
 			endObj['prcsEndTime'] = endTime;
 			
-			console.log(endObj);
 			//ajax 프로시저
 			$.ajax({
 			    url : 'callPrcsEnd',
@@ -534,31 +605,58 @@
 		$(".modal").fadeOut();			
 	 	eqGridFn.destroy();
 	 	prcsBomGridFn.destroy();
-	 	
-	 	//클릭한 상세 지시의 상세지시코드, 제품코드 가져오기
-    	let rowKey = dirDeGrid.getFocusedCell().rowKey;
-    	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
-    	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
-		//클릭한 상세 지시의 제품코드 가져오기
+	 
+	 	//공정진행관리 조회해서 정보 update
+    	let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+    	let dirDeCode = dirDeGrid.getValue(deRowKey, 'prcsDirDeCode');
+    	let prodCode = dirDeGrid.getValue(deRowKey, 'prodCode');	
     	$.ajax({
 			url : 'prcsIngList',
 			method : 'GET',
 			data : { prcsDirDeCode : dirDeCode, prodCode : prodCode },
 			success : function(data){
-				ingGrid.resetData(data);
+				let ingRowKey = ingGrid.getFocusedCell().rowKey;
+				$.each(data,function(i, obj){
+					ingGrid.setValue(i, 'inputAmt', obj['inputAmt']);
+					ingGrid.setValue(i, 'errAmt', obj['errAmt']);
+					ingGrid.setValue(i, 'prcsAmt', obj['prcsAmt']);
+					ingGrid.setValue(i, 'prcsDirIngSts', obj['prcsDirIngSts']);
+						
+// 					if(i == ingRowKey){
+// 						ingGrid.setValue(i, 'prcsDirIngSts', obj['prcsDirIngSts']);
+// 						ingGrid.setColumnValues(columnName, columnValue, checkCellState)
+// 					}
+				})
  		    },
 			error : function(reject){
 	 			console.log(reject);
 	 		}	
 		})
+			
+		//상세생산지시 조회해서 정보 update
+		let rowKey = dirGrid.getFocusedCell().rowKey;
+    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+		$.ajax({
+			url : 'prcsDirDeList',
+			method : 'GET',
+			data : { prcsDirCode : dirCode },
+			success : function(data){
+				let deRowKey = dirDeGrid.getFocusedCell().rowKey;
+				$.each(data,function(i, obj){
+					if(i == deRowKey){
+						dirDeGrid.setValue(i, 'prcsIngSts', obj['prcsIngSts']);
+					}
+				})
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}	
+		})
+		
 
 	});	
    
-    //진행공정 그리드 새로고침
- 	function reloadIngGrid(){  
-	      $("#ingGrid").load(window.location.href + "#ingGrid");
-	}
- 	
+
 
 
 	</script>

@@ -46,5 +46,14 @@ public class PrcsProdController {
 		return prcsProdService.updatePrcsProd(prcsProdReqVO);
 	}
 	
+	//제품 목록 조회
+	@GetMapping("selectProdList")
+	@ResponseBody
+	public List<PrcsProdVO> selectProdList(){
+		List<PrcsProdVO> list = prcsProdService.selectProdList();
+		return list;
+	}
+	
+	
 
 }

@@ -15,7 +15,33 @@
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-       
+
+<style type="text/css">
+#customtemplateSearchAndButton{
+	margin-bottom: 30px;
+}
+#dirContainer{
+	display: flex;
+	justify-content: space-between;
+}
+.leftGrid{
+    width: 800px;
+    margin-right: 20px;
+}
+.leftGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+.rightGrid{
+    width: 800px;
+}
+.rightGridHeader{
+	height: 45px;
+	display: flex;
+	justify-content: space-between;
+}
+</style>
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -23,20 +49,40 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
-				<div class="table-responsive pt-3">
+				<div class="table-responsive pt-3">	
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>지시일자</p>
+							<p>생산 시작 일자</p>
 							<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
-
+	
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 		            	</div>
 	            	</form>
-	           		<div id="dirGrid"></div>
-	           		<div id="dirDeGrid"></div>
+	            </div>
+	            	
+	            <div>
+	           		<div id="dirContainer">
+						<div class="leftGrid">
+							<div class="leftGridHeader">
+				            	<span>생산 지시</span>	
+							</div>
+							<div id="dirGrid"></div>
+						</div>
+						
+						<div class="rightGrid">
+							<div class="rightGridHeader">
+		           				<span>상세 생산 지시</span>
+		           				<div>
+		           					<button id="reDir" class="btn btn-info btn-icon-text">재지시</button>
+		           				</div>
+		      				</div>
+		           			<div id="dirDeGrid"></div>
+						</div>
+					</div>
+	           		
 	           		<div id="ingGrid"></div>
 				</div>
 	   		</div>
@@ -53,7 +99,10 @@
 	
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchDirist);
+	//재지시
+	document.getElementById('reDir').addEventListener('click', reDirInsert);
 	
+	//검색 
 	function searchDirist(){
 		let searchObj = {};
 		searchObj['startDate'] = $('#startDate').val();
@@ -66,17 +115,96 @@
 			success : function(data){	
 				//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
-					let pdd = data[i]['prcsDirDate'];
-					data[i]['prcsDirDate'] = getDate(pdd);
+					let psd = data[i]['prcsStartDate'];
+					data[i]['prcsStartDate'] = getDate(psd);
 				})
 				dirGrid.resetData(data);
 				dirDeGrid.clear();	
+				ingGrid.clear();
 				},
-				error : function(reject){
-				 console.log(reject);
-				}
+			error : function(reject){
+				console.log(reject);
+			}
 		});
 	};
+	
+	//재지시 등록 (품질검사부적합시 사용)
+	function reDirInsert(){
+		//체크한 행들의 정보 가져오기
+		let checkList = dirDeGrid.getCheckedRows();
+
+		//체크한 행들에서 품질검사부적합이 있는지 체크할 변수
+		let nonPassCk = 0;
+		
+		$.each(checkList, function(i, obj){
+			//담당자는 재지시 버튼 누르는 사람으로 바뀌어야하므로 다시 지정
+			checkList[i]['empCode'] = ${user.id};
+
+			//품질검사부적합이 있을 때마다 1씩 증가
+			if(checkList[i]['prcsIngSts'] == '품질검사부적합'){
+				nonPassCk++;
+			}
+
+		})
+		
+		console.log(checkList);
+		if(nonPassCk == 0){
+			//체크한 리스트에 품질검사부적합이 없을시 경고창
+			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
+			
+		} else if(nonPassCk != checkList.length){
+			//체크한 리스트에 품질검사부적합이 없는 사항을 포함했을시 경고창
+			swal("경고", "체크사항을 다시 확인해주세요", "warning");
+			
+		} else{
+			$.ajax({
+				url : 'insertReDirDe',
+				method : 'POST',
+				data : JSON.stringify(checkList),
+				contentType : 'application/json',
+				success : function(data){	
+					console.log(data);
+					swal("등록이 완료되었습니다.", "", "success");
+					
+					//클릭한 지시의 지시코드 가져오기
+			    	let rowKey = dirGrid.getFocusedCell().rowKey;
+			    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+
+			    	$.ajax({
+						url : 'prcsDirDeList',
+						method : 'GET',
+						data : { prcsDirCode : dirCode },
+						success : function(data){
+							//날짜 츨력 포맷 변경
+							$.each(data, function(i, objDe){
+								let psdd = data[i]['prcsStartDeDate'];
+								let pedd = data[i]['prcsEndDeDate'];
+								data[i]['prcsStartDeDate'] = getDate(psdd);
+								data[i]['prcsEndDeDate'] = getDate(pedd);
+							})
+							
+							dirDeGrid.resetData(data);
+							
+							//재지시 완료된 행들은 사용불가
+							$.each(checkList, function(idx, obj){
+								dirDeGrid.disableRow(obj['rowKey']);
+							});
+							
+			 		    },
+						error : function(reject){
+				 			console.log(reject);
+				 		}	
+					})
+				
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			});
+
+		}
+
+	}
 	
 	//생산지시 조회
     var dirGrid = new tui.Grid({
@@ -87,20 +215,20 @@
 	           		prcsDirCode : "${d.prcsDirCode}",
 	           		prcsPlanCode : "${d.prcsPlanCode}",
 	           		prcsDirName : "${d.prcsDirName}",
-	           		prcsDirDate : "<fmt:formatDate value='${d.prcsDirDate}' pattern='yyyy-MM-dd'/>",
+	           		prcsStartDate : "<fmt:formatDate value='${d.prcsStartDate}' pattern='yyyy-MM-dd'/>",
 	           		prcsDirSts : "${d.prcsDirSts}",
-	           		empCode : "${d.empCode}"
+	           		empName : "${d.empName}"
 	           	} <c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
 	          ],
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 120,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 3,
 		},
 		 
         columns: [
@@ -117,8 +245,8 @@
             name: 'prcsDirName'
           },
           {
-            header: '지시일자',
-            name: 'prcsDirDate'
+            header: '생산시작일자',
+            name: 'prcsStartDate'
           },
           {
             header: '지시상태',
@@ -142,12 +270,12 @@
         el: document.getElementById('dirDeGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
-		rowHeaders: ['rowNum'],
+        minBodyHeight: 120,
+		rowHeaders: ['rowNum', 'checkbox'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 3,
 		},
         columns: [
           {
@@ -156,7 +284,12 @@
           },
           {
             header: '제품코드',
-            name: 'prodCode'
+            name: 'prodCode',
+            hidden: true
+          },
+          {
+            header: '제품명',
+            name: 'prodName'
           },
           {
             header: '생산계획량',
@@ -166,10 +299,10 @@
             header: '지시수량',
             name: 'prcsDirAmt'
           },
-          {
-            header: '생산시작일자',
-            name: 'prcsStartDeDate'
-          },
+//           {
+//             header: '생산시작일자',
+//             name: 'prcsStartDeDate'
+//           },
 //           {
 //             header: '생산마감일자',
 //             name: 'prcsEndDeDate'
@@ -186,6 +319,11 @@
           {
             header: '담당자',
             name: 'empName'
+          },
+          {
+            header: '재지시여부',
+            name: 'reDirCk',
+            hidden: true
           }
         ]
       })  
@@ -196,12 +334,12 @@
         el: document.getElementById('ingGrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 280,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 10
 		},
         columns: [
           {
@@ -210,7 +348,8 @@
           },
           {
             header: '상세지시코드',
-            name: 'prcsDirDeCode'
+            name: 'prcsDirDeCode',
+            hidden: true
           },
           {
             header: '제품코드',
@@ -223,7 +362,8 @@
           },
           {
             header: '공정코드',
-            name: 'prcsCode'
+            name: 'prcsCode',
+            hidden: true
           },
           {
             header: '공정명',
@@ -273,6 +413,16 @@
 				})
 				
 				dirDeGrid.resetData(data);
+				
+				let dirDeList = dirDeGrid.getData();
+				
+				//재지시 완료된 행들은 사용불가
+				$.each(dirDeList, function(i, obj){
+					if(dirDeList[i]['reDirCk'] == 'Y'){		
+						dirDeGrid.disableRow(obj['rowKey']);
+					}
+				});	
+				
  		    },
 			error : function(reject){
 	 			console.log(reject);
@@ -287,6 +437,7 @@
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+    	
 		//클릭한 상세 지시의 제품코드 가져오기
     	$.ajax({
 			url : 'prcsIngList',
@@ -323,6 +474,8 @@
 	updateDirPrcsStsAjax();
    
  
+	
+	
     
 	</script>
 	

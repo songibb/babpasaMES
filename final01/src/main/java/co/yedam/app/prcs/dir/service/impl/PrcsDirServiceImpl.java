@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.prcs.dir.mapper.PrcsDirMapper;
+import co.yedam.app.prcs.dir.service.PrcsDirReqVO;
 import co.yedam.app.prcs.dir.service.PrcsDirService;
 import co.yedam.app.prcs.dir.service.PrcsDirVO;
 import co.yedam.app.prcs.ing.mapper.PrcsIngMapper;
@@ -36,23 +37,30 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 	
 	//생산지시 등록
+//	@Override
+//	public String insertPrcsDir(PrcsDirVO prcsDirVO) {
+//		//selectKey 값 가져오기
+//		int result = prcsDirMapper.insertPrcsDir(prcsDirVO);
+//		String prcsDirCode = String.valueOf(prcsDirVO.getPrcsDirCode());
+//		if(result > 0) {
+//			return prcsDirCode;
+//		} else {
+//			return "실패";
+//		}
+//	}
 	@Override
-	public String insertPrcsDir(PrcsDirVO prcsDirVO) {
+	public int insertPrcsDir(PrcsDirReqVO prcsDirReqVO) {
+		//생산지시 등록
+		int result = prcsDirMapper.insertPrcsDir(prcsDirReqVO.getPrcsDirVO());
+		
 		//selectKey 값 가져오기
-		int result = prcsDirMapper.insertPrcsDir(prcsDirVO);
-		String prcsDirCode = String.valueOf(prcsDirVO.getPrcsDirCode());
-		if(result > 0) {
-			return prcsDirCode;
-		} else {
-			return "실패";
-		}
-	}
-	
-	//상세생산지시 등록
-	@Override
-	public int insertPrcsDirDe(List<PrcsDirVO> list) {
-		int result = 0;
-		for(PrcsDirVO vo : list) {
+		String prcsDirCode = String.valueOf(prcsDirReqVO.getPrcsDirVO().getPrcsDirCode());
+			
+		int resultDe = 0;
+		for(PrcsDirVO vo : prcsDirReqVO.getInsertList()) {
+			vo.setPrcsDirCode(prcsDirCode);
+			
+			//상세생산지시 등록
 			prcsDirMapper.insertPrcsDirDe(vo);
 			
 			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
@@ -70,12 +78,42 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 			
 			//생산지시 등록시 자재 출고 (프로시저)
 			prcsDirMapper.insertMatOut(map);
-			
-			result++;
+			resultDe++;
 		}
-				
+		
+		result = result + resultDe;
 		return result;
 	}
+
+	
+	//상세생산지시 등록
+//	@Override
+//	public int insertPrcsDirDe(List<PrcsDirVO> list) {
+//		int result = 0;
+//		for(PrcsDirVO vo : list) {
+//			prcsDirMapper.insertPrcsDirDe(vo);
+//			
+//			//생산지시 등록시 상세생산계획 (미지시 -> 지시완료) 수정 
+//			prcsDirMapper.updateNotDirPlanList(vo);
+//
+//			String prcsDirDeCode = vo.getPrcsDirDeCode();
+//			String empCode = vo.getEmpCode();
+//			
+//			HashMap<String, String> map = new HashMap<String, String>();
+//			map.put("prcsDirDeCode", prcsDirDeCode);
+//			map.put("empCode", empCode);
+//			
+//			//진행공정 등록 (프로시저)
+//			prcsIngMapper.insertPrcsIng(prcsDirDeCode);
+//			
+//			//생산지시 등록시 자재 출고 (프로시저)
+//			prcsDirMapper.insertMatOut(map);
+//			
+//			result++;
+//		}
+//				
+//		return result;
+//	}
 
 
 	//미지시 생산계획 목록 조회 
@@ -98,6 +136,39 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		for(PrcsDirVO vo : dirList) {
 			prcsDirMapper.updateDirPrcsSts(vo.getPrcsDirCode());
 			result++;
+		}
+		return result;
+	}
+
+	
+	//재지시 등록 (상세생산지시)
+	@Override
+	public int insertReDirDe(List<PrcsDirVO> reDirList) {
+		int result = 0;
+		for(PrcsDirVO vo : reDirList) {
+			//insert할때는 prcsDirDeCode에 selectKey 사용하므로 
+			//vo에 담겨져온 기존 prcsDirDeCode를 이용해서 update먼저 해야함
+
+			//재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정
+			prcsDirMapper.updateReDirDe(vo);
+			
+			//재지시 등록
+			prcsDirMapper.insertReDirDe(vo);
+			
+			String prcsDirDeCode = vo.getPrcsDirDeCode();
+			String empCode = vo.getEmpCode();
+			
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("prcsDirDeCode", prcsDirDeCode);
+			map.put("empCode", empCode);
+			
+			//진행공정 등록 (프로시저)
+			prcsIngMapper.insertPrcsIng(prcsDirDeCode);
+			
+			//생산지시 등록시 자재 출고 (프로시저)
+			prcsDirMapper.insertMatOut(map);
+			
+			result++;		
 		}
 		return result;
 	}

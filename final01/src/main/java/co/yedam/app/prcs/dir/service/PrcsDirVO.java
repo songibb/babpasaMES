@@ -32,6 +32,7 @@ public class PrcsDirVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date prcsEndDeDate;
 	private String prcsIngSts;
+	private String reDirCk;
 	
 	//생산계획 수정용
 	private String prcsPlanDeCode;
@@ -42,5 +43,6 @@ public class PrcsDirVO {
 	
 	//출력용
 	private String empName;
+	private String prodName;
 	
 }
