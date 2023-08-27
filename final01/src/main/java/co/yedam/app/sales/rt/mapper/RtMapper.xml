@@ -26,7 +26,7 @@
 					ON (r.sales_out_code = o.sales_out_code)
 					JOIN com_act a
 					ON ( o.act_code = a.act_code)	
-	ORDER BY sales_rt_code
+	ORDER BY sales_rt_code DESC
   </select>
   
   <!-- 제품 목록 -->
@@ -65,7 +65,7 @@
            		AND TO_CHAR(r.sales_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
          	</if>
 	</where>					
-	ORDER BY sales_rt_code
+	ORDER BY sales_rt_code DESC
 	</select>
 	
 	<!-- 반품 등록 페이지 리스트 -->
@@ -85,7 +85,7 @@
                     ON (r.prod_lot = o.prod_lot)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
-	ORDER BY sales_rt_code
+	ORDER BY sales_rt_code DESC
 	</select>
 	
 	<!-- 등록 -->
@@ -126,22 +126,26 @@
 	
 	<!-- 출고목록조회 모달 -->
 	<select id="selectOutList" resultType="RtVO">
-	SELECT o.*, d.dev_yn
+	SELECT o.*, d.dev_yn, p.prod_name, a.act_name
 	FROM sales_out o JOIN sales_ord_de d
-	                    ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	                ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	                JOIN com_prod p
+	                ON (o.prod_code = p.prod_code)
+	                JOIN com_act a
+	                ON (o.act_code = a.act_code)
 	WHERE d.dev_yn = 'Y'
-	ORDER BY sales_out_code
+	ORDER BY sales_out_code DESC
 	</select>
 	
 	<!-- 모달검색 - 제품 -->
 	<select id="selectProdSearchList" resultType="OrderVO">
 	SELECT prod_code, prod_name, prod_unit, prod_std
 	FROM com_prod
-	<if test="prodName != null and prodName'')">
+	<if test="prodName != null and !prodName.equals('')">
 	WHERE prod_name LIKE '%' || #{prodName} || '%'
 	</if>
 	AND prod_kind = 'C'
-	ORDER BY prod_code
+	ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 모달검색 - 출고목록 -->
@@ -169,7 +173,7 @@
 						ON (o.sales_ord_de_code = d.sales_ord_de_code)
 						JOIN com_emp e
 						ON (o.emp_code = e.emp_code)
-	<if test="prodName != null and prodName'')">
+	<if test="prodName != null and !prodName.equals('')">
 	WHERE prod_name LIKE '%' || #{prodName} || '%'
 	</if>
 	ORDER BY sales_out_code DESC

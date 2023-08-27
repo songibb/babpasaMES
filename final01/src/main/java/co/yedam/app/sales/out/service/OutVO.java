@@ -53,4 +53,7 @@ public class OutVO {
 	private Date devDate;
 	private String devYn;
 	private String empName;
+	
+	private String actSts;
+	private String actKind;
 }

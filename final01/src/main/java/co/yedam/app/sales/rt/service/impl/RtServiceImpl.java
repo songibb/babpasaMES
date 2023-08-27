@@ -73,7 +73,7 @@ public class RtServiceImpl implements RtService {
 
 	@Override
 	public List<OrderVO> prodSearchList(String prodName) {
-		return rtMapper.selectprodSearchList(prodName);
+		return rtMapper.selectProdSearchList(prodName);
 	}
 
 	@Override

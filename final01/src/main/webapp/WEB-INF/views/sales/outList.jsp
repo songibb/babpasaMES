@@ -26,156 +26,173 @@
 	<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 	<link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 <style>
-   body {
-      font-family: 'Nanum Gothic', sans-serif;
-      font-family: 'Noto Sans KR', sans-serif;
-    }
-    .search-container {
-      display: flex;
-      align-items: center;
-      background-color: #fff;
-      border-radius: 8px;
-      padding: 5px 10px;
-      margin-bottom: 10px;
-    }
+h1{
+	font-weight : 700;
+}
 
-    .search-icon {
-      margin-right: 10px;
-      color: #888;
-    }
+h2{
+	clear : both;
+	font-weight : 700;
+}
+body {
+   font-family: 'Nanum Gothic', sans-serif;
+   font-family: 'Noto Sans KR', sans-serif;
+}
+    
+.m_body > p{
+	display : inline-block;
+}
 
-    .search-input {
-      border: none;
-      outline: none;
-      font-size: 16px;
-      width: 100%;
-      padding: 5px;
-    }
-    .col-lg-12 stretch-card{
-       margin-top : 30px;
-    }
+.m_body > input{
+	border : 1px solid black;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+}
+
+.search-icon {
+  margin-right: 10px;
+  color: #888;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  width: 100%;
+  padding: 5px;
+}
+.col-lg-12 stretch-card{
+   margin-top : 30px;
+}
     
-    #customtemplateSearchAndButton{
-       margin-bottom : 80px;
-       float : left;   
-    }
-    
-    #customtemplateSearchAndButton input, #modalTitle input{
-       border : 1px solid black; 
-       display : inline-block;
-    }
-    
-    #customtemplateSearchAndButton p, #modalTitle p{
-       display : inline-block;
-       padding-bottom: 10px;
-       padding-right : 10px;
-    }
-    
-    #customtemplateSearchAndButton .blackcolorInputBox{
-       background-color : #868e96;
-    }
-    
-    .btn-icon-text{
-       margin : 5px;
-       padding : 7px;
-       border-radius : 9px;
-       height : 33px;
-    }
-    
-    .excelDownload{
-       margin-top : 120px;
-       float : right;
-    }
-    
-  
-   /*모달시작*/
-   #actModal, #prodModal{ 
-     cursor:pointer;
-   }
+#customtemplateSearchAndButton{
+   margin-bottom : 80px;
+   float : left;   
+}
+
+#customtemplateSearchAndButton input, #modalTitle input{
+   border : 1px solid black; 
+   display : inline-block;
+}
+
+#customtemplateSearchAndButton p, #modalTitle p{
+   display : inline-block;
+   padding-bottom: 10px;
+   padding-right : 10px;
+}
+
+ #customtemplateSearchAndButton .blackcolorInputBox{
+    background-color : #868e96;
+}
    
-   .modal{ 
-     position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
-   }
+.btn-icon-text{
+   margin : 5px;
+   padding : 7px;
+   border-radius : 9px;
+   height : 33px;
+}
+    
+ .excelDownload{
+    margin-top : 120px;
+    float : right;
+ }
+ 
+
+/*모달시작*/
+#actModal, #prodModal{ 
+  cursor:pointer;
+}
+
+.modal{ 
+  position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
+}
    
-   .modal_content{
-     /*모달창 크기 조절*/
-     width:600px; height:600px;
-     background:#fff; border-radius:10px;
-     /*모달창 위치 조절*/
-     position:relative; top:33%; left:45%;
-     margin-top:-100px; margin-left:-200px;
-     text-align:center;
-     box-sizing:border-box;
-     line-height:23px;
-   }
-   
-   .m_head{
-        height: 10%;
-        margin : 0;
-        /*제목 높낮이 조절*/
-        padding: 17px;
-        display: flex;
-        justify-content: space-between;
-        background-color:rgb(232, 143, 33);
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-      }
+.modal_content{
+  /*모달창 크기 조절*/
+  width:600px; height:600px;
+  background:#fff; border-radius:10px;
+  /*모달창 위치 조절*/
+  position:relative; top:33%; left:45%;
+  margin-top:-100px; margin-left:-200px;
+  text-align:center;
+  box-sizing:border-box;
+  line-height:23px;
+}
+
+.m_head{
+  height: 10%;
+  margin : 0;
+  /*제목 높낮이 조절*/
+  padding: 17px;
+  display: flex;
+  justify-content: space-between;
+  background-color:rgb(232, 143, 33);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
       
-      .close_btn{
-        font-size: 20px;
-        color: black;
-        font-weight: 900;
-        cursor: pointer;
-      }
+.close_btn{
+  font-size: 20px;
+  color: black;
+  font-weight: 900;
+  cursor: pointer;
+}
       
-      .modal_btn{
-        width: 80px;
-        height: 30px;
-        border-radius: 5px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bolder;
-        padding-top: 5px;
-        margin-left: 5px;
-        font-family: sans-serif;
-      }
-      .m_head{
-        height: 10%;
-        padding: 20px;
-        display: flex;
-        justify-content: space-between;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        font-family: sans-serif;
-      }
+.modal_btn{
+  width: 80px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bolder;
+  padding-top: 5px;
+  margin-left: 5px;
+  font-family: sans-serif;
+}
+.m_head{
+  height: 10%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-family: sans-serif;
+}
       
-      .m_body{
-        height: 80%;
-        padding: 20px;
-      }
-      
-      .m_footer{
-        height: 10%;
-        padding: 15px;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
-        display: flex;
-        justify-content: end;
-      }
-      .cancle{
-        background-color: black;
-        color: white;
-      }
-      .save{
-        background-color: black;
-        color: white;
-      }
-   /*모달끝*/
-   
-   /*날짜 input 크기*/
-   input[type="date"]{
-      width : 221px;
-   }
+.m_body{
+  height: 80%;
+  padding: 20px;
+}
+
+.m_footer{
+  height: 10%;
+  padding: 15px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  justify-content: end;
+}
+.cancle{
+  background-color: black;
+  color: white;
+}
+.save{
+  background-color: black;
+  color: white;
+}
+/*모달끝*/
+
+/*날짜 input 크기*/
+input[type="date"]{
+   width : 221px;
+}
 .yellow-background {
         background-color: rgb(255,253,235);
 }
@@ -225,30 +242,32 @@
    
 
 <div class="modal">
-   
-  <div class="modal_content" 
-       title="클릭하면 창이 닫힙니다.">
-          <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
-            <div class="close_btn" id="close_btn">X</div>
-       </div>
-       <div class="m_body">
-            <div id="modal_label"></div>
-       </div>
-       <div class="m_footer">
-            <div class="modal_btn save" id="save_btn">SAVE</div>
-    </div>
-  </div>
-</div>
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
+	</div>
 
 <script>
 
-   //거래처 리스트 모달 시작
     var Grid;
+   //거래처 리스트 모달 시작
      $("#actModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createActGrid();
-       
+       $('.modal_title h3').text('거래처 목록');
        Grid.on('click', () => {
            let rowKey = Grid.getFocusedCell().rowKey;
            let actCode = Grid.getValue(rowKey, 'actCode');
@@ -268,7 +287,9 @@
      //제품 리스트 모달 시작
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createProdGrid();
+       $('.modal_title h3').text('제품 목록');
        Grid.on('click', () => {
         let rowKey = Grid.getFocusedCell().rowKey;
         let prodCode = Grid.getValue(rowKey, 'prodCode');
@@ -292,6 +313,53 @@
      });
 
    //모달 끝
+   
+   //모달 검색
+		$('#modalSearchBtn').on('click', function(e){
+				let title = $('.modal_title h3').text();
+				let inputContent = $('#modalSearch').val();
+				
+				if(title == '제품 목록'){
+					let modalSearchData = {prodName : inputContent}
+					$.ajax({
+						url : 'getProdModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				} else if(title == '거래처 목록'){
+					let modalSearchData = {actName : inputContent}
+					$.ajax({
+						url : 'getActModalSearch',
+						method : 'GET',
+						data : modalSearchData,
+						success : function(data){
+							Grid.resetData(data);
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				}
+			})		
+			
+			
+	//모달창 닫기
+	$("#close_btn").click(function(){
+        $(".modal").fadeOut();
+        activeScroll();
+    	let inputContent = $('#modalSearch').val('');
+    	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
+     });
+   
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -554,6 +622,21 @@
          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
  
+    //스크롤 막기
+  	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+  	}
+  //스크롤 활성화
+  	function activeScroll(){
+      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+ 	 }
 </script>
 </body>
 </html>

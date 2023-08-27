@@ -428,6 +428,7 @@
 	
 	
 	//제품 검색 모달창
+	var Grid;
 	$("#prodModal").click(function(){
 		$(".modal").fadeIn();
 		preventScroll();
@@ -452,6 +453,41 @@
 		   	}
 		});
 	});
+	
+
+	//모달 검색
+	$('#modalSearchBtn').on('click', function(e){
+			let title = $('.modal_title h3').text();
+			let inputContent = $('#modalSearch').val();
+			
+			if(title == '제품 목록'){
+				let modalSearchData = {prodName : inputContent}
+				$.ajax({
+					url : 'getProdModalSearch',
+					method : 'GET',
+					data : modalSearchData,
+					success : function(data){
+						
+						Grid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+			} 
+		})		
+		
+		
+//모달창 닫기
+$("#close_btn").click(function(){
+    $(".modal").fadeOut();
+    activeScroll();
+	let inputContent = $('#modalSearch').val('');
+	if(Grid != null && Grid.el != null){
+			Grid.destroy();	
+		}
+ });
+	
 	
 	//제품 모달창 내용 그리드
 	function createProdGrid(){
@@ -501,53 +537,7 @@
 	   
 	   return prodGrid;
   }
-	
-	//모달창 닫기버튼
-	$(".close_btn").click(function(){
-    	$(".modal").fadeOut();
-    	activeScroll();
-    	let inputContent = $('#modalSearch').val('');
-    	if(Grid != null && Grid.el != null){
- 			Grid.destroy();	
- 		}
-  	});
-	
-// 	//모달 검색
-// 	$('#modalSearchBtn').on('click', function(e){
-// 			let title = $('.modal_title h3').text();
-// 			let inputContent = $('#modalSearch').val();
-			
-// 			if(title == '제품 목록'){
-// 				let modalSearchData = {prodName : inputContent}
-// 				$.ajax({
-// 					url : 'getMatModalSearch',
-// 					method : 'GET',
-// 					data : modalSearchData,
-// 					success : function(data){
-// 						console.log(data);
-// 						Grid.resetData(data);
-// 					},
-// 					error : function(reject){
-// 						console.log(reject);
-// 					}
-// 				})
-// 			} else if(title == '거래처 목록'){
-// 				let modalSearchData = {actName : inputContent}
-// 				$.ajax({
-// 					url : 'getActModalSearch',
-// 					method : 'GET',
-// 					data : modalSearchData,
-// 					success : function(data){
-						
-// 						Grid.resetData(data);
-// 					},
-// 					error : function(reject){
-// 						console.log(reject);
-// 					}
-// 				})
-// 			}
-// 		})
-	
+
 	//검색버튼
 	//검색
     $('#searchBtn').on('click', searchMatIn);
@@ -657,6 +647,22 @@
     $( '#endDate' ).on( 'change', function() {
          $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
        } );
+    
+    //스크롤 막기
+ 	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+ 	}
+ //스크롤 활성화
+ 	function activeScroll(){
+     	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+ 		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+	 }
     </script>
 </body>
 </html>

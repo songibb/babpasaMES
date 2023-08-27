@@ -3,6 +3,7 @@ package co.yedam.app.sales.out.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 public interface OutService {
 	//전체조회
@@ -21,4 +22,12 @@ public interface OutService {
 	public List<OutVO> LotList();
 	//order detail list
 	public List<OutVO> OrderDeList();
+	//모달 검색 - 제품
+	public List<OrderVO> prodSearchList(String prodName);
+	//모달 검색 - 거래처
+	public List<OutVO> actSearchList(String actName);
+	//모달 검색 - 제품LOT
+	public List<OutVO> lotSearchList(String prodName);
+	//모달 검색 - 상세주문
+	public List<OutVO> ordDeSearchList(String actName);
 }

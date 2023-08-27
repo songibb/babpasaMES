@@ -76,7 +76,7 @@
 				AND d.dev_yn != 'Y'
 			</if>
 		</where>
-		ORDER BY d.dev_date, o.ord_code
+		ORDER BY d.dev_date, o.ord_code DESC
 	</select>
 
 	<!-- 거래처 목록 -->
@@ -85,26 +85,26 @@
 		FROM com_act
 		WHERE act_kind = 'ACT-TYPE1'
 		AND ACT_STS = 'D1'
-		ORDER BY act_code
+		ORDER BY act_code DESC
 
 	</select>
 	
-	<!-- 거래처목록 검색 -->
-	<select id="selectActSearchList" resultType="OrderVO">
-		SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
-		FROM com_act
-		<if test="actName != null and !actName.equals('')">
-		WHERE act_name LIKE '%' || #{actName} || '%'
-		</if>
-		ORDER BY act_code
-	</select>
+	<!-- 거래처목록 검색 --> 
+<!-- 	<select id="selectActSearchList" resultType="OrderVO"> -->
+<!-- 		SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind -->
+<!-- 		FROM com_act -->
+<!-- 		<if test="actName != null and !actName.equals('')"> -->
+<!-- 		WHERE act_name LIKE '%' || #{actName} || '%' -->
+<!-- 		</if> -->
+<!-- 		ORDER BY act_code -->
+<!-- 	</select> -->
 	
 	<!-- 제품 목록 -->
 	<select id="selectProdAllList" resultType="OrderVO">
 		SELECT prod_code, prod_name, prod_unit, prod_std
 		FROM com_prod
 		WHERE prod_kind = 'C'
-		ORDER BY prod_code
+		ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 주문서 관리 - 미계획 주문서 목록 -->
@@ -131,7 +131,7 @@
 		ON (o.emp_code = e.emp_code)
 		JOIN com_act a
 		ON (o.act_code = a.act_code)
-		ORDER BY d.dev_date, o.ord_code
+		ORDER BY d.dev_date, o.ord_code DESC
 	</select>
 
 	<!-- 주문서 등록 -->
@@ -205,5 +205,26 @@
 			DELETE FROM sales_ord_de
 			WHERE sales_ord_de_code = #{salesOrdDeCode}
 	</delete>
+	
+ 	<!-- 모달검색 - 제품 -->
+<select id="selectProdSearchList" resultType="OrderVO">
+	SELECT prod_code, prod_name, prod_unit, prod_std
+	FROM com_prod
+	<if test="prodName != null and !prodName.equals('')">
+	WHERE prod_name LIKE '%' || #{prodName} || '%'
+	</if>
+	AND prod_kind = 'C'
+	ORDER BY prod_code DESC
+</select>
 
+<!-- 모달검색 - 거래처 -->
+<select id="selectActSearchList" resultType="OutVO">
+	SELECT act_code, act_name, act_sts, act_kind
+	FROM com_act
+	<if test="actName != null and !actName.equals('')">
+	WHERE act_name LIKE '%' || #{actName} || '%'
+	</if>
+	AND act_kind = 'ACT-TYPE1'
+	ORDER BY act_code DESC
+</select>
 </mapper>

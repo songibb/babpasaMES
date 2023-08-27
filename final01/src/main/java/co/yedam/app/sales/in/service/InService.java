@@ -3,6 +3,7 @@ package co.yedam.app.sales.in.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 
 public interface InService {
@@ -18,4 +19,6 @@ public interface InService {
 	public List<InVO> CProdList();
 	//입고관리 페이지 그리드
 	public List<InVO> inMngList();
+	//모달 검색 - 제품
+	public List<OrderVO> prodSearchList(String prodName);
 }

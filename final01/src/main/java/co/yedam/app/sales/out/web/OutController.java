@@ -15,6 +15,7 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.service.OrderVO;
 import co.yedam.app.sales.out.service.OutService;
 import co.yedam.app.sales.out.service.OutVO;
+import co.yedam.app.sales.rt.service.RtVO;
 
 @Controller
 public class OutController {
@@ -66,5 +67,19 @@ public class OutController {
 	@ResponseBody
 	public int outSave(@RequestBody GridVO<OutVO> data) {
 		return outService.modifyOut(data);
+	}
+			
+	//모달 ajax(검색용) - LOT
+	@GetMapping("getLotModalSearch")
+	@ResponseBody
+	public List<OutVO> getLotModalSearch(String prodName){
+		return outService.lotSearchList(prodName);
+	}
+	
+	//모달 ajax(검색용) - 주문상세
+	@GetMapping("getOrdDeModalSearch")
+	@ResponseBody
+	public List<OutVO> getOrdDeModalSearch(String actName){
+		return outService.ordDeSearchList(actName);
 	}
 }

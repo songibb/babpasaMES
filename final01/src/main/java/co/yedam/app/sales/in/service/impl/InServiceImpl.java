@@ -3,6 +3,7 @@ package co.yedam.app.sales.in.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.naming.IdentityNamingStrategy;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.grid.service.GridVO;
@@ -10,6 +11,7 @@ import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.sales.in.mapper.InMapper;
 import co.yedam.app.sales.in.service.InService;
 import co.yedam.app.sales.in.service.InVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 @Service
 public class InServiceImpl implements InService {
@@ -63,5 +65,10 @@ public class InServiceImpl implements InService {
 	@Override
 	public List<InVO> inMngList() {
 		return inMapper.inMngList();
+	}
+
+	@Override
+	public List<OrderVO> prodSearchList(String prodName) {
+		return inMapper.selectProdSearchList(prodName);
 	}
 }

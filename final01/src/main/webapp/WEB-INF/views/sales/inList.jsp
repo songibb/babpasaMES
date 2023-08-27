@@ -37,9 +37,26 @@
 <link rel="stylesheet"
 	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <style>
+h1{
+	font-weight : 700;
+}
+
+h2{
+	clear : both;
+	font-weight : 700;
+}
+	
 body {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.m_body > p{
+	display : inline-block;
+}
+
+.m_body > input{
+	border : 1px solid black;
 }
 
 .search-container {
@@ -241,31 +258,33 @@ input[type="date"] {
 		</div>
 	</div>
 
-
 	<div class="modal">
-
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
-			<div class="m_head">
-				<div class="modal_title">
-					<h3>목록</h3>
-				</div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<div id="modal_label"></div>
-			</div>
-			<div class="m_footer">
-				<div class="modal_btn save" id="save_btn">SAVE</div>
-			</div>
-		</div>
+   		<div class="modal_content">
+        	<div class="m_head">
+            	<div class="modal_title"><h3>목록</h3></div>
+            	<div class="close_btn" id="close_btn">X</div>
+       		</div>
+       		<div class="m_body">
+       			<p>이름</p>
+                <input type="text" id="modalSearch">
+                <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+            	<div id="modal_label"></div>
+       		</div>
+       		<div class="m_footer">
+            	<div class="modal_btn cancle close_btn">CANCLE</div>
+    		</div>
+  		</div>
 	</div>
 
 	<script>
 
      //제품 리스트 모달 시작
+     var Grid;
      $("#prodModal").click(function(){
        $(".modal").fadeIn();
+       preventScroll();
        Grid = createProdGrid();
+       $('.modal_title h3').text('제품 목록');
        Grid.on('click', () => {
         let rowKey = Grid.getFocusedCell().rowKey;
         let prodCode = Grid.getValue(rowKey, 'prodCode');
@@ -282,13 +301,38 @@ input[type="date"] {
          });
      });
      
-     $("#close_btn").click(function(){
-       $(".modal").fadeOut();
-       
-      Grid.destroy();
-     });
-
-   //모달 끝
+ 	//모달 검색
+ 	$('#modalSearchBtn').on('click', function(e){
+ 			let title = $('.modal_title h3').text();
+ 			let inputContent = $('#modalSearch').val();
+ 			
+ 			if(title == '제품 목록'){
+ 				let modalSearchData = {prodName : inputContent}
+ 				$.ajax({
+ 					url : 'getProdModalSearch',
+ 					method : 'GET',
+ 					data : modalSearchData,
+ 					success : function(data){
+ 						
+ 						Grid.resetData(data);
+ 					},
+ 					error : function(reject){
+ 						console.log(reject);
+ 					}
+ 				})
+ 			} 
+ 		})		
+ 		
+ 		
+ //모달창 닫기
+ $("#close_btn").click(function(){
+     $(".modal").fadeOut();
+     activeScroll();
+ 	let inputContent = $('#modalSearch').val('');
+ 	if(Grid != null && Grid.el != null){
+ 			Grid.destroy();	
+ 		}
+  });
    
    //엑셀 다운로드
    const excelDownload = document.querySelector('.excelDownload');
@@ -483,7 +527,21 @@ input[type="date"] {
          obj.value = '';
       })
    }
- 
+   //스크롤 막기
+	function preventScroll(){
+	   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
+			   event.preventDefault();
+			   event.stopPropagation();
+			
+			   return false;
+	   });
+	}
+//스크롤 활성화
+	function activeScroll(){
+    	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+	 }
 </script>
 </body>
 </html>

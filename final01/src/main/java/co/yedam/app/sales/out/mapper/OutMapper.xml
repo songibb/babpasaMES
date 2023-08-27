@@ -168,10 +168,11 @@
   	
   	<!-- lot list -->
   	<select id="selectLotList" resultType="OutVO">
- 	SELECT *
-  	FROM sales_in 
+ 	SELECT i.*, p.prod_name
+	FROM sales_in i JOIN com_prod p
+	                ON (i.prod_code = p.prod_code)
     WHERE prod_save_amt <![CDATA[>]]> 0
-  	ORDER BY prod_lot
+  	ORDER BY prod_lot DESC
   	</select>
   	<!-- orderde list -->
   	<select id="selectOrderDeList" resultType="OutVO">
@@ -194,4 +195,57 @@
 		AND o.ord_sts = 'P2'
 		ORDER BY o.ord_code DESC
   	</select>
+  	
+  	<!-- 모달검색 - 제품 -->
+	<select id="selectProdSearchList" resultType="OrderVO">
+	SELECT prod_code, prod_name, prod_unit, prod_std
+	FROM com_prod
+	<if test="prodName != null and !prodName.equals('')">
+	WHERE prod_name LIKE '%' || #{prodName} || '%'
+	</if>
+	AND prod_kind = 'C'
+	ORDER BY prod_code DESC
+	</select>
+	
+	<!-- 모달검색 - 거래처 -->
+	<select id="selectActSearchList" resultType="OutVO">
+	SELECT act_code, act_name, act_sts, act_kind
+	FROM com_act
+	<if test="actName != null and !actName.equals('')">
+	WHERE act_name LIKE '%' || #{actName} || '%'
+	</if>
+	AND act_kind = 'ACT-TYPE1'
+	ORDER BY act_code DESC
+	</select>
+	
+	<!-- 모달검색 - lot -->
+	<select id="selectLotSearchList" resultType="OutVO">
+	SELECT i.prod_lot, i.prod_code, p.prod_name, i.sales_in_date, i.sales_in_amt, i.prod_save_amt, i.sales_in_exd
+	FROM sales_in i JOIN com_prod p
+	                ON (i.prod_code = p.prod_code)
+	<if test="prodName != null and !prodName.equals('')">
+	WHERE prod_name LIKE '%' || #{prodName} || '%'
+	</if>
+	AND prod_save_amt <![CDATA[<]]> 1
+	ORDER BY i.prod_lot DESC
+	</select>
+	
+	<!-- 모달검색 - 주문상세 -->
+	<select id="selectOrdDeSearchList" resultType="OutVO">
+	SELECT d.sales_ord_de_code, d.ord_code, p.prod_code, a.act_name, d.prcs_rq_amt
+        , o.ord_date, o.act_code, o.ord_sts, p.prod_name, d.dev_date, d.dev_yn, o.emp_code
+	FROM sales_ord_de d JOIN sales_ord o
+	                    ON (d.ord_code = o.ord_code)
+	                    JOIN com_prod p
+	                    ON (d.prod_code = p.prod_code)
+	                    JOIN com_act a
+	                    ON ( o.act_code = a.act_code)
+    <if test="actName != null and !actName.equals('')">
+	WHERE act_name LIKE '%' || #{actName} || '%'
+	</if>
+	AND d.dev_yn = 'N'
+	AND o.ord_sts = 'P2'
+	ORDER BY d.sales_ord_de_code DESC
+	</select>
+	
   </mapper>
