@@ -32,18 +32,20 @@ public class ActCodeController {
 	@Autowired
 	CommCodeService commCodeService;
 	
-	//전체조회
+	// 거래처조회 페이지
 	@GetMapping("/ActCodeList")
 	public String ActCodeList(Model model) {
 		model.addAttribute("actList", actCodeService.selectActCodeList());
+		model.addAttribute("actTypeList", commCodeService.searchCommCodeUse("ACT-TYPE"));
+		model.addAttribute("actStsList", commCodeService.searchCommCodeUse("0J"));
 		
 		return "common/actCodeList";
 	}
 	//검색조회
 	@GetMapping("/ActCodeSearch")
 	@ResponseBody
-	public List<ActCodeVO>  ActCodeSearch(@RequestParam String actName){
-		List<ActCodeVO> vo = actCodeService.searchSelectActCode(actName);
+	public List<ActCodeVO>  ActCodeSearch(ActCodeVO actCodeVO){
+		List<ActCodeVO> vo = actCodeService.searchSelectActCode(actCodeVO);
 		return vo;
 	}
 	

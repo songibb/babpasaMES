@@ -12,7 +12,7 @@ public interface MatCodeMapper {
 	
 	
 	//자재명 검색 조회
-	public List<MatCodeVO> searchMatCode(String matName);
+	public List<MatCodeVO> searchMatCode(MatCodeVO matCodeVO);
 	
 	//자재코드 추가
 	public int matCodeInsert(MatCodeVO vo);

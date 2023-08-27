@@ -9,7 +9,7 @@ public interface ActCodeService {
 		public List<ActCodeVO> selectActCodeList();
 		
 		//검색조회
-		public List<ActCodeVO> searchSelectActCode(String actName);
+		public List<ActCodeVO> searchSelectActCode(ActCodeVO actCodeVO);
 		
 		//거래처 등록
 		public Map<String, String> insertActInfo(ActCodeVO actCodeVO);

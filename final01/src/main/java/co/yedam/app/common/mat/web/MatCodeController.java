@@ -55,8 +55,8 @@ public class MatCodeController {
 	//자재명 검색조회
 	@GetMapping("/searchMatCodeList")
 	@ResponseBody
-	public List<MatCodeVO> searchMatCodeList(@RequestParam String matName){
-	List<MatCodeVO> vo = matCodeService.searchMatCode(matName);
+	public List<MatCodeVO> searchMatCodeList(MatCodeVO matCodeVO){
+	List<MatCodeVO> vo = matCodeService.searchMatCode(matCodeVO);
 	return vo;
 	}
 	
@@ -77,4 +77,5 @@ public class MatCodeController {
 		
 		return "admincom/matCodeAdmin";
 	}
+	
 }

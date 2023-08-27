@@ -149,8 +149,7 @@
 	   		</div>
 		</div>
 	</div> 
-<div class="modal">
-   
+<div class="modal" id="oneModal">
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
@@ -158,9 +157,36 @@
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
-            <div id="modal_label"></div>
+            <div id="modal_label_one"></div>
+       </div>
+       <div class="m_footer">
+            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
+            <div class="modal_btn save" id="save_btn">SAVE</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="twoModal">
+  <div class="modal_content" 
+       title="클릭하면 창이 닫힙니다.">
+          <div class="m_head">
+            <div class="modal_title"><h3>목록</h3></div>
+            <div class="close_btn" id="close_btn">X</div>
+       </div>
+       <div class="m_body">
+       		<div style="display: flex;  justify-content: space-between; margin-bottom: 10px;" >
+       			<div>
+       				반제품  <input type="text" id="SemiSearchInput">
+       				<button type="button" class="btn btn-info btn-icon-text" id="semiSearchBtn">검색</button>
+       			</div>
+       			<div>
+       				자재  <input type="text" id="matSearchInput">
+       				<button type="button" class="btn btn-info btn-icon-text" id="matSearchBtn">검색</button>
+       			</div>
+       		</div>
             <div style="display: flex; justify-content: center;">
-	             <div id="modal_label2" style="width: 400px; margin-right: 10px"></div>
+	             <div id="modal_label2" style="width: 400px; margin-right: 12px"></div>
 	             <div id="modal_label3" style="width: 400px;"></div>
 	        </div>
        </div>
@@ -736,7 +762,7 @@
 	$("#prodListModal").click(function(){
 		
     	
-    		$(".modal").fadeIn();
+    		$("#oneModal").fadeIn();
   	       Grid = createProdGrid();
   	       
   	       Grid.on('dblclick', () => {
@@ -751,7 +777,7 @@
 	        	bomgrid.setValue([0], 'prodName', prodName); 	        	
  	        	if(prodCode != null && prodName != null){
  	        		
- 	        		$(".modal").fadeOut();
+ 	        		$("#oneModal").fadeOut();
 	        		Grid.destroy();
 	        		deleteBom.style.display = 'none';
 	        		deAdd.style.display = 'inline-block';
@@ -781,7 +807,7 @@
 			})
 		
 		var pordGrid = new tui.Grid({
-			el: document.getElementById('modal_label'),
+			el: document.getElementById('modal_label_one'),
 		       data: [
 		    	   <c:forEach items="${prodNoBomList}" var="p" varStatus="status">
 		          	{
@@ -841,7 +867,7 @@
     	let value = deBomgrid.getFocusedCell().value; 
     	let no = deBomgrid.getValue(rowKey,'bomNo');
     	if(columnName == 'prcsName' && no ==null){
-    		$(".modal").fadeIn();
+    		$("#oneModal").fadeIn();
   	       Grid = createPrcsGrid();
   	       
   	       Grid.on('dblclick', () => {
@@ -860,7 +886,7 @@
   	    	 }
   	    	 
   	    	 if(rowKey2 != null){
-  	    		$(".modal").fadeOut();
+  	    		$("#oneModal").fadeOut();
 	        		Grid.destroy();
   	    	 }
   	    	 
@@ -870,7 +896,7 @@
     	
 
     	if(columnName == 'mpName' && no ==null){
-    		$(".modal").fadeIn();
+    		$("#twoModal").fadeIn();
   	       matGrid = createMatGrid();
   	       halfProdGrid = createHalfProdGrid();
   	      
@@ -891,7 +917,7 @@
  	        	} 
   	    	 }
   	    	if(rowKey2 != null){
-  	    		$(".modal").fadeOut();
+  	    		$("#twoModal").fadeOut();
   	    			matGrid.destroy();
   	    			halfProdGrid.destroy();
   	    			
@@ -934,13 +960,14 @@
 	function createPrcsGrid(){
 		
 		var prcsGrid = new tui.Grid({
-			el: document.getElementById('modal_label'),
+			el: document.getElementById('modal_label_one'),
 		       data: [
 		    	   <c:forEach items="${prcsList}" var="p" varStatus="status">
 		          	{
 		          		prcsCode : "${p.prcsCode}",
 		          		prcsType :"${p.prcsType}",
 		          		prcsName : "${p.prcsName}",
+		          		prcsTypeKr : "${p.prcsTypeKr}",
 		          		semiYn : "${p.semiYn}"
 		          	} <c:if test="${not status.last}">,</c:if>
 		          </c:forEach>
@@ -963,16 +990,12 @@
 		             },
 		             {
 		               header: '공정구분',
-		               name: 'prcsType',
+		               name: 'prcsTypeKr',
 			         },
 		             {
 		               header: '공정이름',
 		               name: 'prcsName'
-		             },
-		             {
-			           header: '반제품공정구분',
-			           name: 'semiYn'
-			         }
+		             }
 		 	    ]
 		      
 		     });
@@ -1005,7 +1028,7 @@
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		         useClient: true,
-		         perPage: 10
+		         perPage: 8
 		       },
 		       columns: [
 		    	     {
@@ -1162,11 +1185,41 @@
    
 
 
+		//모달 검색
 
+		$('#matSearchBtn').on('click', function(e){
+			let inputContent = $('#matSearchInput').val();
+			let matName = {matName : inputContent}
+				$.ajax({
+					url : 'searchMatCodeList',
+					method : 'GET',
+					data : matName,
+					success : function(data){
+						console.log(data);
+						matGrid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+		})
 
-
-
-
+		$('#semiSearchBtn').on('click', function(e){
+			let inputContent = $('#SemiSearchInput').val();
+			let ProdName = {ProdName : inputContent}
+				$.ajax({
+					url : 'semiProdModalSearch',
+					method : 'GET',
+					data : ProdName,
+					success : function(data){
+						console.log(data);
+						halfProdGrid.resetData(data);
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
+		})
 
 
 

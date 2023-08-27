@@ -25,9 +25,9 @@ public class ActCodeServiceImpl implements ActCodeService{
 	}
 
 	@Override
-	public List<ActCodeVO> searchSelectActCode(String actName) {
+	public List<ActCodeVO> searchSelectActCode(ActCodeVO actCodeVO) {
 		
-		return actCodeMapper.searchSelectActCode(actName);
+		return actCodeMapper.searchSelectActCode(actCodeVO);
 	}
 
 	@Override

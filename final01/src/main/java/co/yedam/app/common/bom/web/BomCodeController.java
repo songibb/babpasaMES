@@ -17,6 +17,7 @@ import co.yedam.app.common.bom.service.BomCodeVO;
 import co.yedam.app.common.bom.service.BomReqVO;
 import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.mat.service.MatCodeService;
+import co.yedam.app.common.mat.service.MatCodeVO;
 import co.yedam.app.common.product.service.ProductCodeService;
 import co.yedam.app.common.product.service.ProductCodeVO;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
@@ -42,8 +43,9 @@ public class BomCodeController {
 	MatCodeService matCodeService;
 	//전체조회
 	@GetMapping("/bomCodeList")
-	public String getBomAllList(Model model) {
-		model.addAttribute("bomList", bomCodeService.getBomCodeAll());
+	public String getBomAllList(Model model ) {
+		model.addAttribute("bomList", bomCodeService.getBomCodeAll()); 
+		
 		return "common/bomCodeList";
 	}
 	
@@ -72,7 +74,7 @@ public class BomCodeController {
 		model.addAttribute("prodList", productCodeService.getProductCodeAll());
 		model.addAttribute("prcsList", prcsManageService.selectPrcsManageList());
 		model.addAttribute("matList", matCodeService.selectMatCodeList());
-		model.addAttribute("semiProdList", productCodeService.selectSemiProdList());
+		model.addAttribute("semiProdList", productCodeService.selectSemiProdList(null));
 		model.addAttribute("bomUnit", commCodeService.searchCommCodeUse("0C"));
 		return "admincom/bomCodeAdmin";
 	}
@@ -106,6 +108,10 @@ public class BomCodeController {
 		return bomCodeService.updateBomHeader(list);
 	}
 	
-	
+	@GetMapping("/semiProdModalSearch")
+	@ResponseBody
+	public List<ProductCodeVO> semiProdModalSearch(ProductCodeVO productCodeVO){
+		return productCodeService.selectSemiProdList(productCodeVO);
+	}
 	
 }

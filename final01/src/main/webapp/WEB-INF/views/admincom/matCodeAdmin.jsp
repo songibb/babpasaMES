@@ -21,7 +21,28 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
-
+<style>
+	label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	
+	input[type="text"],
+	select {
+	  width: 20%;
+	  padding: 8px;
+	  margin-bottom: 10px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	
+</style>
 </head>
 <body>
 <div class="black_bg"></div>
@@ -31,7 +52,19 @@
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<div id="">		
-	                  자재명 <input type="text"  id="matSearch">
+	                  자재명 
+	                  <input type="text"  id="matSearch">
+	                  <br>
+	                  단위 
+ 	                  <select id="unitSearch" name="unitSearch">
+								<option value="">선택</option>
+								<c:forEach items="${unitList}" var="u">
+									<option value="${u.commdeCode }">${u.commdeCode }</option>
+								</c:forEach>
+						</select> 
+						<br>
+						규격 
+	                  <input type="text"  id="stdSearch" name="stdSearch">
 	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 	                     <i class="fas fa-search"></i>
 	                     검색
@@ -193,8 +226,10 @@
 		$('#searchBtn').on('click', searchMat);
 		function searchMat(e){
 			
-			let content = $('#matSearch').val();
-			let search = {matName : content};
+			let matName = $('#matSearch').val();
+			let matUnit = $('#unitSearch').val();
+			let matStd = $('#stdSearch').val();
+			let search = {matName : matName, matUnit : matUnit, matStd : matStd };
 			$.ajax({
 				url : "searchMatCodeList",
 				 method :"GET",

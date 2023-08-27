@@ -27,9 +27,9 @@ public class MatCodeServiceImpl implements MatCodeService {
 	
 	
 	@Override
-	public List<MatCodeVO> searchMatCode(String matName) {
+	public List<MatCodeVO> searchMatCode(MatCodeVO matCodeVO) {
 
-		return matCodeMapper.searchMatCode(matName);
+		return matCodeMapper.searchMatCode(matCodeVO);
 	}
 	
 	

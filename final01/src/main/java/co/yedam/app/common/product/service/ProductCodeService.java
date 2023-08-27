@@ -25,7 +25,7 @@ public interface ProductCodeService {
 	
 	
 	//반제품만 보이기 
-	public List<ProductCodeVO> selectSemiProdList();
+	public List<ProductCodeVO> selectSemiProdList(ProductCodeVO productCodeVO);
 	
 	// BOM 등록안된제품가져오기
 	public List<ProductCodeVO> bomNoProdList();

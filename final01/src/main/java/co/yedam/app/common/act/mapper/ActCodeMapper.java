@@ -11,7 +11,7 @@ public interface ActCodeMapper {
 	public List<ActCodeVO> selectActCodeList();
 	
 	//거래처검색조회
-	public List<ActCodeVO> searchSelectActCode(String actName);
+	public List<ActCodeVO> searchSelectActCode(ActCodeVO actCodeVO);
 	
 	
 	//거래처 등록

@@ -23,19 +23,19 @@
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>제품명</p>
+								
+							제품명 
 							<input type="text" placeholder="검색어를 입력하세요" id="bomSearch" ">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
+		            	
 	            	</form>
 	            	</div>
-	            	<p3> bom조회 </p3>
+	            	<p> bom조회 </p>
 	           		<div id="grid"></div>
-	           		<p3> bom상세조회 </p3>
+	           		<p> bom상세조회 </p>
 	           		<div id="grid2"></div>
 				
 	   		</div>
@@ -55,7 +55,6 @@
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
-			  
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -63,28 +62,23 @@
 		   }
 	   })
    }
-   
-   
-   
-   //전체조회
-   let content = $('#bomSearch').val();
-   let search = { prodName : content };
-   $.ajax({
-	   url : 'bomSearch',
-	   method : 'GET',
-	   data : search ,
-	   success : function(data){
-		  
-		   grid.resetData(data);
-	   },
-	   error : function(reject){
-		   console.log(reject);
-	   }
-   })
 
    //bmo 조회
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
+        data: [
+	           <c:forEach items="${bomList}" var="b" varStatus="status">
+	           	{
+	           		bomNo : "${b.bomNo}",
+	           		prodCode :"${b.prodCode}",
+	           		bomWdate :"<fmt:formatDate value='${b.bomWdate}' pattern='yyyy-MM-dd'/>",
+	           		bomUdate :"<fmt:formatDate value='${b.bomUdate}' pattern='yyyy-MM-dd'/>",
+	           		bomYn : "${b.bomYnName}",
+	           		bomPrcsYn : "${b.bomPrcsYnName}",
+	           		prodName : "${b.prodName}"
+	           	} <c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
+	          ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -92,7 +86,7 @@
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 5,
+			perPage: 3,
 		},
         columns: [
           {
@@ -120,11 +114,11 @@
           },
           {
             header: '사용여부',
-            name: 'bomYnName'
+            name: 'bomYn'
           },
           {
             header: '공정사용여부',
-            name: 'bomPrcsYnName'
+            name: 'bomPrcsYn'
           }
         ]
       })  

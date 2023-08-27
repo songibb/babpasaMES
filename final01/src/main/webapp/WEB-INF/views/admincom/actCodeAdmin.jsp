@@ -58,6 +58,22 @@
 					<div class="table-responsive pt-3">
 						<form>
 							거래처명 <input type="text" placeholder="검색어를 입력하세요" id="actSearch" style="width: 20%">
+							<br>
+							거래처 구분 
+							<select id="kindSearch" name="kindSearch" style="width: 20%">
+								<option value="">선택</option>
+								<c:forEach items="${actTypeList}" var="a">
+									<option value="${a.commdeCode }">${a.commdeName }</option>
+								</c:forEach>
+							</select>
+							<br>
+							거래상태 
+							<select id="stsSearch" name="stsSearch" style="width: 20%">
+								<option value="">선택</option>
+								<c:forEach items="${actStsList}" var="s">
+									<option value="${s.commdeCode }">${s.commdeName }</option>
+								</c:forEach>
+							</select>
 							<button type="button" class="btn btn-info btn-icon-text"
 								id="searchBtn">
 								<i class="fas fa-search"></i>검색
@@ -120,7 +136,7 @@
    					
 		 //거래처 리스트 조회
 			$.ajax({
-		       url : "ajaxActCodeList",
+		       url : "ActCodeSearch",
 		       method :"GET",
 		       success : function(result){
 		           grid.resetData(result);
@@ -133,8 +149,10 @@
 			//거래처명 검색조회
 			$('#searchBtn').on('click', searchActIn);
 		  function searchActIn(e){
-			   let content = $('#actSearch').val();
-			   let search = { actName : content };
+			   let actName = $('#actSearch').val();
+			   let actKind = $('#kindSearch').val();
+			   let actSts = $('#stsSearch').val();
+			   let search = { actName : actName, actKind : actKind, actSts : actSts };
 			   $.ajax({
 				   url : 'ActCodeSearch',
 				   method : 'GET',
