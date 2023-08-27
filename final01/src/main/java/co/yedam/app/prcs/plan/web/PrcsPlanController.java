@@ -132,11 +132,11 @@ public class PrcsPlanController {
 	}
 	
 	
-	//조회할때마다 생산지시여부 수정
-	@PostMapping("updatePlanDirSts")
-	@ResponseBody
-	public int updatePlanDirSts(@RequestBody List<PrcsPlanVO> planList) {
-		return prcsPlanService.updatePlanDirSts(planList);
-	}
+	//조회할때마다 생산지시여부 수정  => ServiceImpl 생산계획 조회에서 해결
+//	@PostMapping("updatePlanDirSts")
+//	@ResponseBody
+//	public int updatePlanDirSts(@RequestBody List<PrcsPlanVO> planList) {
+//		return prcsPlanService.updatePlanDirSts(planList);
+//	}
 
 }

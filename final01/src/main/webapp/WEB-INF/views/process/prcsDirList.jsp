@@ -52,7 +52,7 @@
 				<div class="table-responsive pt-3">	
 					<form>
 						<div id="customtemplateSearchAndButton">		
-							<p>지시일자</p>
+							<p>생산 시작 일자</p>
 							<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
 	
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -115,11 +115,12 @@
 			success : function(data){	
 				//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
-					let pdd = data[i]['prcsDirDate'];
-					data[i]['prcsDirDate'] = getDate(pdd);
+					let psd = data[i]['prcsStartDate'];
+					data[i]['prcsStartDate'] = getDate(psd);
 				})
 				dirGrid.resetData(data);
 				dirDeGrid.clear();	
+				ingGrid.clear();
 				},
 			error : function(reject){
 				console.log(reject);
@@ -149,10 +150,12 @@
 		console.log(checkList);
 		if(nonPassCk == 0){
 			//체크한 리스트에 품질검사부적합이 없을시 경고창
-			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");			
+			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
+			
 		} else if(nonPassCk != checkList.length){
 			//체크한 리스트에 품질검사부적합이 없는 사항을 포함했을시 경고창
 			swal("경고", "체크사항을 다시 확인해주세요", "warning");
+			
 		} else{
 			$.ajax({
 				url : 'insertReDirDe',
@@ -212,7 +215,7 @@
 	           		prcsDirCode : "${d.prcsDirCode}",
 	           		prcsPlanCode : "${d.prcsPlanCode}",
 	           		prcsDirName : "${d.prcsDirName}",
-	           		prcsDirDate : "<fmt:formatDate value='${d.prcsDirDate}' pattern='yyyy-MM-dd'/>",
+	           		prcsStartDate : "<fmt:formatDate value='${d.prcsStartDate}' pattern='yyyy-MM-dd'/>",
 	           		prcsDirSts : "${d.prcsDirSts}",
 	           		empName : "${d.empName}"
 	           	} <c:if test="${not status.last}">,</c:if>
@@ -242,8 +245,8 @@
             name: 'prcsDirName'
           },
           {
-            header: '지시일자',
-            name: 'prcsDirDate'
+            header: '생산시작일자',
+            name: 'prcsStartDate'
           },
           {
             header: '지시상태',
@@ -412,6 +415,7 @@
 				dirDeGrid.resetData(data);
 				
 				let dirDeList = dirDeGrid.getData();
+				
 				//재지시 완료된 행들은 사용불가
 				$.each(dirDeList, function(i, obj){
 					if(dirDeList[i]['reDirCk'] == 'Y'){		
@@ -433,6 +437,7 @@
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+    	
 		//클릭한 상세 지시의 제품코드 가져오기
     	$.ajax({
 			url : 'prcsIngList',

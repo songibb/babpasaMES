@@ -268,25 +268,25 @@
 		
 	
 	//생산계획 -> 지시완료 update
-	let planList = planGrid.getData();
-	console.log(planList);
+// 	let planList = planGrid.getData();
+// 	console.log(planList);
 	
-	function updatePlanDirStsAjax(){
-		$.ajax({
-			url : 'updatePlanDirSts',
-			method : 'POST',
-			data : JSON.stringify(planList),
-			contentType : "application/json",
-			success : function(data){
-				console.log(data);
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-	}
+// 	function updatePlanDirStsAjax(){
+// 		$.ajax({
+// 			url : 'updatePlanDirSts',
+// 			method : 'POST',
+// 			data : JSON.stringify(planList),
+// 			contentType : "application/json",
+// 			success : function(data){
+// 				console.log(data);
+// 			},
+// 			error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})
+// 	}
 
-	updatePlanDirStsAjax();
+// 	updatePlanDirStsAjax();
 
 	
 	

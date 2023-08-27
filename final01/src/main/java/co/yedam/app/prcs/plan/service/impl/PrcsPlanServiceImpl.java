@@ -25,8 +25,17 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 //		return prcsPlanMapper.selectPrcsPlanList(searchPlanName, startDate, endDate);
 //	}
 	public List<PrcsPlanVO> selectPrcsPlanList(PrcsSearchVO prcsSearchVO) {
+		List<PrcsPlanVO> planList = prcsPlanMapper.selectPrcsPlanList(prcsSearchVO);
 		
-		return prcsPlanMapper.selectPrcsPlanList(prcsSearchVO);
+		//상세생산계획 모두 지시완료시 생산계획 수정
+		for(PrcsPlanVO vo  : planList) {
+			prcsPlanMapper.updatePlanDirSts(vo.getPrcsPlanCode());	
+		}
+		
+		//수정된 새로운 리스트 조회
+		List<PrcsPlanVO> updatePlanList = prcsPlanMapper.selectPrcsPlanList(prcsSearchVO);
+		
+		return updatePlanList;
 	}
 	
 	//상세생산계획 조회
@@ -67,7 +76,7 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 //		for(PrcsPlanVO vo : list) {
 //			prcsPlanMapper.insertPrcsPlanDe(vo);
 //			
-//			//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+//			//생산계획 등록시 주문서 (미계획 -> 계획 / 계획코드 등록) 수정
 //			prcsPlanMapper.updateNotPlanOrderList(vo);
 //			result++;
 //		}
@@ -140,18 +149,19 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 		return deList;
 	}
 
-	//상세생산계획 모두 지시완료시 생산계획 수정
-	@Override
-	public int updatePlanDirSts(List<PrcsPlanVO> planList) {
-		int result = 0;
-		for(PrcsPlanVO vo : planList) {
-			prcsPlanMapper.updatePlanDirSts(vo.getPrcsPlanCode());
-			result++;
-		}
-		return result;
-	}
+
+	//상세생산계획 모두 지시완료시 생산계획 수정      => 생산계획 조회에 합침
+//	@Override
+//	public int updatePlanDirSts(List<PrcsPlanVO> planList) {
+//		int result = 0;
+//		for(PrcsPlanVO vo : planList) {
+//			prcsPlanMapper.updatePlanDirSts(vo.getPrcsPlanCode());
+//			result++;
+//		}
+//		return result;
+//	}
 	
-	//생산계획 등록시 주문서 (미계획 -> 계획) 수정
+	//생산계획 등록시 주문서 (미계획 -> 계획 / 계획코드 등록) 수정    => 생산계획 등록에 합침
 //	@Override
 //	public int updateNotPlanOrderList(PrcsPlanVO prcsPlanVO) {
 //		return prcsPlanMapper.updateNotPlanOrderList(prcsPlanVO);

@@ -31,6 +31,11 @@ public interface PrcsIngService {
 	//데이터 입력된 경우, 공정 실적 관리 조회 (진행공정 모달)
 	public PrcsIngVO selectPrcsInfoList(String prcsDirDeCode, String prcsCode);
 	
+	//작업시작 => 진행 공정 조회 (이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X) (진행공정 모달)
+	//public List<PrcsIngVO> selectPrcsIngSts(String prcsDirDeCode, String prodCode);
+	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (진행공정 모달)
+	public String selectPrcsIngSts(PrcsIngVO prcsIngVO);
+	
 	
 	//공정 실적 조회 (검색)
 	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);

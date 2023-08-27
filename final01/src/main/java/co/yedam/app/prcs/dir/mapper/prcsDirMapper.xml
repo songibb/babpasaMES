@@ -18,10 +18,10 @@
 		 <where>
 		 		prcs_dir_sts IN ('P1','P2')
 			<if test="startDate != null and !startDate.equals('')">
-				AND TO_CHAR(prcs_dir_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				AND TO_CHAR(prcs_dir_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		 ORDER BY prcs_dir_code DESC
