@@ -29,7 +29,17 @@
 				find_cdnm('ACT-TYPE', act_kind) AS kind,
 				find_cdnm('0J', act_sts) AS sts
 		FROM com_act
-        WHERE act_name LIKE '%' || #{actName} || '%'
+		<where>
+			<if test="actName != null and actName != ''">
+        		AND act_name LIKE '%' || #{actName} || '%'
+        	</if>
+        	<if  test="actSts != null and actSts != ''">
+        		AND act_sts = #{actSts}
+        	</if>
+        	<if  test="actKind != null and actKind != ''">
+        		 AND act_kind = #{actKind}
+        	</if>
+        </where>
         ORDER BY act_code
   	</select>
   	

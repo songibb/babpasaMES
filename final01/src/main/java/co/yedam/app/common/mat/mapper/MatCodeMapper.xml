@@ -21,7 +21,17 @@
 				mat_std,
 				mat_safe
 		FROM com_mat
-		WHERE mat_name LIKE '%' || #{matName} || '%'
+		<where>
+			<if test="matName != null and matName != ''">
+				AND mat_name LIKE '%' || #{matName} || '%'
+			</if>
+			<if test="matUnit != null and matUnit != ''">
+				AND mat_unit = #{matUnit}
+			</if>
+			<if test="matStd != null and matStd != ''">
+				AND mat_std LIKE '%' || #{matStd} || '%'
+			</if>
+		</where>
 		ORDER BY mat_code
 	</select>
 	

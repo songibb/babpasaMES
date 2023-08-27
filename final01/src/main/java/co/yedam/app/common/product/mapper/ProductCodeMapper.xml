@@ -42,7 +42,12 @@
 					prod_unit,
 					prod_std
 			FROM com_prod
-			where prod_kind='S'
+			<where>
+				prod_kind='S'
+				<if test="prodName != null and prodName != ''">
+					AND prod_name LIKE '%' || #{prodName} || '%'
+				</if>
+			</where>
 		ORDER BY prod_code
 	  </select>
 	  

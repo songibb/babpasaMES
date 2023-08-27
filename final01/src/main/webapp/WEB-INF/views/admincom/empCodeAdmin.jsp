@@ -68,7 +68,7 @@
                    <form action="" method="get" name="formInfo">
                   			
                   		부서명
-                  			<select id="inputDeptList" name="deptCode">
+                  			<select id="inputDeptSearch" name="deptCode">
 								<option value="">선택</option>
 								<c:forEach items="${inputDeptList}" var="d">
 									<option value="${d.commdeCode }">${d.commdeName }</option>
@@ -141,7 +141,7 @@
 //사원명검색조회
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
-		let inputDeptList = $('#inputDeptList').val();
+		let inputDeptList = $('#inputDeptSearch').val();
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
@@ -164,7 +164,7 @@
 		   })
 	}
 	//ajax 전체조회
-		   let inputDeptList = $('#inputDeptList').val();
+		   let inputDeptList = $('#inputDeptSearch').val();
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
