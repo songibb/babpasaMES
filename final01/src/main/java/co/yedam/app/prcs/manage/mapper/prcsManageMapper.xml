@@ -14,7 +14,19 @@
 			   semi_yn,
 			   find_cdnm('0U', semi_yn) AS semi_yn_kr
 		  FROM prcs_manage
+		<where>
+			<if test="searchPrcsType != null and !searchPrcsType.equals('')">
+        		AND prcs_type = #{searchPrcsType}
+        	</if>
+			<if test="semiYes == 2">
+				AND semi_yn != 'N'
+			</if>
+			<if test="semiNo == 2">
+				AND semi_yn != 'Y'
+			</if>
+		</where>
 		 ORDER BY prcs_code DESC
+		 
 	</select>
 	
 	

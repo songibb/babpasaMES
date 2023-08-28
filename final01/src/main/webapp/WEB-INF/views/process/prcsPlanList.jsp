@@ -17,9 +17,7 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
-#customtemplateSearchAndButton{
-	margin-bottom: 30px;
-}
+
 #planContainer{
 	display: flex;
 	justify-content: center;
@@ -38,37 +36,39 @@
 	height: 45px;
 }
 
-	input[type="text"],
-	select {
-	  width: 15%;
-	  padding: 6px;
-	  margin-bottom: 15px;
-	  border: 1px solid #ccc;
-	  border-radius: 4px;
-	}
-	input[type="date"],
-	select {
-	  width: 15%;
-	  padding: 5px;
-	  margin-bottom: 30px;
-	  border: 1px solid #ccc;
-	  border-radius: 4px;
-	}
-	
-	select {
-	  background-color: white; 
-	}
-	form p{
-		width: 80px;
-		display: inline-block;
-		font-size: 20px;
-	}
-	h1{
-		margin-left: 15px;
-	}
-	h1, h2{
-		font-weight: 800;
-	}
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+
+input[type="text"] {
+  width: 15%;
+  padding: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+input[type="date"]{
+  width: 15%;
+  padding: 5px;
+  margin-bottom: 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+select {
+  background-color: white; 
+}
+form p{
+	width: 80px;
+	display: inline-block;
+	font-size: 20px;
+}
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
 
 </style>
 
@@ -80,22 +80,17 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<form>
-								
-						
-						
+					<form>						
 						<p>계획명</p>
 						<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
 						<br>
 						<p>계획일자</p>
-                 			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
-						
-						
+                 		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
+											
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
 						<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
-
 	            	</form>
 				</div>
 				
@@ -209,11 +204,13 @@
           },
           {
             header: '예상생산시작일',
-            name: 'prcsStartDate'
+            name: 'prcsStartDate',
+            className: 'yellow-background'
           },
           {
             header: '예상생산종료일',
-            name: 'prcsEndDate'
+            name: 'prcsEndDate',
+            className: 'yellow-background'
           },
           {
        	    header: '생산지시여부',

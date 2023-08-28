@@ -19,65 +19,97 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
-#customtemplateSearchAndButton{
-	margin-bottom: 30px;
+.yellow-background {
+	background-color: rgb(255,253,235);
 }
-#planContainer{
-	display: flex;
-	justify-content: space-between;
-}
-#leftGrid{
-    width: 800px;
-    margin-right: 20px;
-}
-#leftGridHeader{
-	height: 45px;
-	display: flex;
-	justify-content: space-between;
-}
-#rightGrid{
-    width: 800px;
-}
-#rightGridHeader{
-	height: 45px;
-	display: flex;
-	justify-content: space-between;
-}
+#btnContainer{ 
+	display: flex; 
+ 	justify-content: space-between; 
+ } 
+ #planContainer{ 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
+ #leftGrid{ 
+     width: 800px; 
+     margin-right: 20px; 
+ } 
+ #leftGridHeader{ 
+ 	height: 45px; 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
+ #rightGrid{ 
+     width: 800px; 
+ } 
+ #rightGridHeader{ 
+ 	height: 45px; 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
+
+ input[type="text"] { 
+   width: 15%; 
+   padding: 6px; 
+   margin-bottom: 15px; 
+   border: 1px solid #ccc; 
+   border-radius: 4px; 
+ } 
+ input[type="date"] { 
+   width: 25%; 
+   padding: 5px; 
+   margin-bottom: 35px; 
+   border: 1px solid #ccc; 
+   border-radius: 4px; 
+ } 
+ .table-responsive p{ 
+ 	width: 80px; 
+ 	display: inline-block; 
+ 	font-size: 20px; 
+ } 
+ h1{ 
+ 	margin-left: 15px; 
+ } 
+ h1, h2{ 
+ 	font-weight: 800; 
+ } 
 </style>
 
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 계획 관리</h2>
+	<h1>생산 계획 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">				
-				<div style="display: flex; justify-content: space-between;">
-					<form>
-						<div id="customtemplateSearchAndButton">		
+				<div class="table-responsive pt-3">
+							
+					<p>계획명</p>
+					<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
+					<br>	   	
+	            	
+	            	<div id="btnContainer">
+	            		<div style="width: 900px;">
 							<p>계획일자</p>
 	                 		<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-							<br>
-							
-							<p>계획명</p>
-							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
-
+	                 		
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
-		            	</div>	            	
-	            	</form>		
-	            	<div>
-	            		<button id="orderModal" class="btn btn-info btn-icon-text">미계획 주문서 가져오기</button>
-	            	</div>	
+		            	</div>
+		            	<div>
+	            			<button id="orderModal" class="btn btn-info btn-icon-text">미계획 주문서 가져오기</button>
+	            		</div>	
+	            	</div>     	
+	            	
             	</div>
 
 				
 				<div id="planContainer">
 					<div id="leftGrid">
 						<div id="leftGridHeader">
-							<span>생산 계획</span>	
+							<h2>생산 계획</h2>	
 							<div>
 								<button id="remove" class="btn btn-info btn-icon-text">삭제</button>
 								<button id="save" class="btn btn-info btn-icon-text">저장</button>		            		
@@ -88,7 +120,7 @@
 					</div>
 					<div id="rightGrid">
 						<div id="rightGridHeader">
-							<span>상세 생산 계획</span>			
+							<h2>상세 생산 계획</h2>			
 						</div>		
 	           			<div id="planDeGrid"></div>
 					</div>
@@ -437,8 +469,10 @@
   		      options: {
   		    	  language: 'ko'
   		      }
-  		    }
+  		    },
+  		  	className: 'yellow-background'
           }
+          
         ]
 	});
 	
