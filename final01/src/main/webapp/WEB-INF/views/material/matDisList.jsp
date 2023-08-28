@@ -172,7 +172,7 @@
 				],
 				scrollX: false,
 			    scrollY: false,
-			    minBodyHeight: 30,
+			    minBodyHeight: 400,
 			    rowHeaders: ['rowNum'],
 			    selectionUnit: 'row',
 			    pagination: true,
@@ -300,7 +300,7 @@
 			],
 			scrollX: false,
 			scrollY: false,
-			minBodyHeight: 30,
+			minBodyHeight: 400,
 			rowHeaders: ['rowNum'],
 			pagination: true,
 			pageOptions: {
