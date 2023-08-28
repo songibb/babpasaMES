@@ -14,6 +14,11 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    <style>
+    	.yellow-background {
+        background-color: rgb(255,253,235);
+		}
+    </style>
 </head>
 <body>
 	<div class="black_bg"></div>
@@ -81,7 +86,7 @@
 	          ],
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 120,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
@@ -107,10 +112,12 @@
           {
             header: '등록날짜',
             name: 'bomWdate',
+		    className: 'yellow-background'
           },
           {
             header: '수정날짜',
-            name: 'bomUdate'
+            name: 'bomUdate',
+		    className: 'yellow-background'
           },
           {
             header: '사용여부',
@@ -130,7 +137,7 @@
         el: document.getElementById('grid2'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {

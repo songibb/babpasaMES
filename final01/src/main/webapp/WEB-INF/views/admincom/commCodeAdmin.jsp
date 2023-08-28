@@ -125,7 +125,7 @@
 			el: document.getElementById('grid'),
 			scrollX: false,
 			scrollY: false,
-			 minBodyHeight: 30,
+			 minBodyHeight: 400,
 			 rowHeaders: ['rowNum'],
 			pagination: true,
 			pageOptions: {
@@ -154,7 +154,7 @@
 			el: document.getElementById('grid2'),
 			scrollX: false,
 			scrollY: false,
-			 minBodyHeight: 30,
+			 minBodyHeight: 400,
 			 rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pagination: true,
 			pageOptions: {

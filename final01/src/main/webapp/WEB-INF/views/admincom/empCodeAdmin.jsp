@@ -54,6 +54,10 @@
 	  background-color: white; 
 	}
 	
+	.yellow-background {
+        background-color: rgb(255,253,235);
+	}
+	
 </style>
 </head>
 <body>
@@ -190,7 +194,7 @@
 	       el: document.getElementById('grid'),
 		   scrollX: false,
 	       scrollY: false,
-	       minBodyHeight: 30,
+	       minBodyHeight: 400,
 	       rowHeaders: ['rowNum'],
 	       pagination: true,
 	       pageOptions: {
@@ -208,7 +212,8 @@
 	         },
 	         {
 	           header: '입사일',
-	           name: 'empDate'
+	           name: 'empDate',
+	           className: 'yellow-background'
 	         },
 	         {
 	           header: '직급정보',

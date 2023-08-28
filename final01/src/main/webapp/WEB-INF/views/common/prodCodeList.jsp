@@ -114,7 +114,7 @@ function searchProdIn(e){
      el: document.getElementById('grid'),
      scrollX: false,
      scrollY: false,
-     minBodyHeight: 30,
+     minBodyHeight: 400,
 		rowHeaders: [{type:'rowNum'},{type: 'checkbox'}],
 		pagination: true,
 		pageOptions: {
