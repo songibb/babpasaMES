@@ -28,7 +28,10 @@ public class EquipChkVO {
 	private String eqSts;
 	private String eqSts2;
 	
-	
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date endDate;
 
 	
 	

@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>반품 조회</title>
+<title>폐기 조회</title>
 <!-- 토스트 페이지 네이션 -->
 <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -241,7 +241,7 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>반품 조회</h1>
+	<h1>폐기 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -253,7 +253,7 @@ form {
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
-						<p>반품일자</p>
+						<p>폐기일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
@@ -261,7 +261,7 @@ form {
 						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
 					</form>
 					<div id="grid">
-						<h2>반품 목록</h2>
+						<h2>폐기 목록</h2>
 						<button type="button" class="btn btn-info btn-icon-text excelDownload">
 							Excel <i class="bi bi-printer"></i>
 						</button>

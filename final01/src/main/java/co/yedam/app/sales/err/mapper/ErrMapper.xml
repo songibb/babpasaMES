@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="co.yedam.app.sales.err.mapper.ErrMapper">
+  <!-- 전체조회 -->
+  <select id="selectErrList" resultType="ErrVO">
+  	SELECT d.*, p.prod_name, e.emp_name
+	FROM sales_dispose d JOIN com_prod p
+						 ON (d.prod_code = p.prod_code)
+						 JOIN com_emp e
+						 ON (d.emp_code = e.emp_code)
+	ORDER BY sales_dp_code
+  </select>
+  <!-- 등록 -->
+  <insert id="insertErrDis" parameterType="ErrVO">
+  	INSERT INTO sales_dispose(
+			sales_dp_code
+			, test_num
+			, prod_code
+			, sales_dp_amt
+			, sales_dp_date
+			, emp_code
+		) VALUES (
+			get_primaryCode('salesDpCode')
+			, #{testNum}
+			, #{prodCode}
+			, #{salesDpAmt}
+			, #{salesDpDate}
+			, #{empCode}
+		)
+  </insert>
+  <!-- 삭제 -->
+  <delete id="deleteErrDis" parameterType="ErrVO">
+  	DELETE FROM sales_dispose
+	WHERE sales_dp_code = #{salesDpCode}
+  </delete>
+  </mapper>

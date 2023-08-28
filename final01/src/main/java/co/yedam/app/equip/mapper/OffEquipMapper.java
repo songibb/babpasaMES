@@ -26,4 +26,5 @@ public interface OffEquipMapper {
 	
 	//비가동 설비명 검색
 	public List<EquipVO> offsearchEquip(String eqName);
+	
 }

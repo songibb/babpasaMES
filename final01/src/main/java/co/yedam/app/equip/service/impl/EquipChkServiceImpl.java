@@ -70,4 +70,10 @@ public class EquipChkServiceImpl implements EquipChkService {
 				
 	}
 
+	//검색
+	@Override
+	public List<EquipChkVO> searchChkEquip(String startDate, String outDate) {
+		return equipChkMapper.searchChkEquip(startDate, outDate);
+	}
+
 }
