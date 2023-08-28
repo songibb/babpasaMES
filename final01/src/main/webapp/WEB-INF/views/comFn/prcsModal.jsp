@@ -4,17 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품 목록</title>
+<title>공정 목록</title>
 </head>
 <body>
-	<div class="modal" id="pdModal">
+	<div class="modal" id="psModal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>제품 목록</h3></div>
-				<div class="close_btn" id="close_btn">X</div>
+				<div class="modal_title"><h3>공정 목록</h3></div>
+				<div class="close_btn" id="close_btn2">X</div>
 			</div>
 			<div class="m_body">
-				<div id="modal_label"></div>
+				<div id="modal_label2"></div>
 			</div>
 <!-- 			<div class="m_footer"> -->
 <!-- 				<div class="modal_btn save" id="save_btn">SAVE</div> -->
@@ -23,18 +23,18 @@
 	</div>
 
 	<script type="text/javascript">
-	//제품 모달
+	//공정 모달
 	var Grid;
-	$("#prodModal").click(function(){
-	    $("#pdModal").fadeIn();
-	    Grid = createProdGrid();
+	$("#prcsModal").click(function(){
+	    $("#psModal").fadeIn();
+	    Grid = createPrcsGrid();
 	    
 	    Grid.on('dblclick', () => {
 	        let rowKey = Grid.getFocusedCell().rowKey;
-	        let prodCode = Grid.getValue(rowKey, 'prodCode');
-	        let prodName = Grid.getValue(rowKey, 'prodName');
-	        $("#searchProdCode").val(prodCode);
-	        $("#prodNameFix").val(prodName);	        
+	        let prcsCode = Grid.getValue(rowKey, 'prcsCode');
+	        let prcsName = Grid.getValue(rowKey, 'prcsName');
+	        $("#searchPrcsCode").val(prcsCode);
+	        $("#prcsNameFix").val(prcsName);	        
 	        
 	        //모달창 닫기
 	        if(rowKey != null){
@@ -45,9 +45,9 @@
 	    });
 	});
 	
-	function createProdGrid(){
-	    var prodGrid = new tui.Grid({
-	        el: document.getElementById('modal_label'),
+	function createPrcsGrid(){
+	    var prcsGrid = new tui.Grid({
+	        el: document.getElementById('modal_label2'),
 	        scrollX: false,
 	        scrollY: false,
 	        minBodyHeight: 30,
@@ -60,31 +60,31 @@
 	        },
 	        columns: [
 	            {
-	                header: '제품코드',
-	                name: 'prodCode',
+	                header: '공정코드',
+	                name: 'prcsCode',
 	            },
 	            {
-	                header: '제품명',
-	                name: 'prodName'
+	                header: '공정명',
+	                name: 'prcsName'
 	            },
 	        ]       
 	    });
 		
 		$.ajax({
-		    url : 'selectProdList',
+		    url : 'selectPrcsManageList',
 		    method : 'GET',
 		    success : function(data){
-		    	prodGrid.resetData(data);
+		    	prcsGrid.resetData(data);
 		    },
 		    error : function(reject){
 		        console.log(reject);
 		    }	
 		})
-	    return prodGrid;
+	    return prcsGrid;
 	}
 	
 	
-	$("#close_btn").click(function(){
+	$("#close_btn2").click(function(){
 	    $(".modal").fadeOut();
 	    if (Grid != null && Grid.el != null) {
 	        Grid.destroy();

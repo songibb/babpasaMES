@@ -54,7 +54,7 @@ h2{
 	justify-content: space-between;
 }
 
-#prodNameFix, #actNameFix {
+#prodNameFix, #prcsNameFix {
 	background-color : #868e96;
 	border-color: #868e96;
 }
@@ -77,6 +77,11 @@ h2{
            				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
            				<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 						<br>
+						<p>공정명</p>
+           				<input type="text" id="searchPrcsCode">
+           				<i class="bi bi-search" id="prcsModal"></i> <!-- 돋보기 아이콘 -->
+           				<input type="text" class="blackcolorInputBox" id="prcsNameFix" readonly>
+           				<br>
 						<p>지시일자</p>
                 		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 						
@@ -105,6 +110,7 @@ h2{
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
 		<jsp:include page="../comFn/prodModal.jsp"></jsp:include>
+		<jsp:include page="../comFn/prcsModal.jsp"></jsp:include>
 	</div>
     
 	<script>
@@ -114,6 +120,7 @@ h2{
 	function searchResultList(){
 		let searchObj = {};
 		searchObj['searchProdCode'] = $('#searchProdCode').val();
+		searchObj['searchPrcsCode'] = $('#searchPrcsCode').val();
 		searchObj['startDate'] = $('#startDate').val();
 		searchObj['endDate'] = $('#endDate').val();	   
 

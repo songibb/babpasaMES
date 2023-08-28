@@ -81,7 +81,7 @@ h1, h2{
 	           		<div id="rightGrid">
 	           			<div id="rightGridHeader">
 	           				<div>
-	           					<p>제품명 : </p> 
+	           					
 		           				<input type="text" name="prodName" id="prodName" readonly>
 		           			</div>	
 		           			<div>

@@ -86,7 +86,7 @@
 					</div>	
 					<div id="gridContainer">
 						<div>
-							<span>사용 가능한 설비</span>
+							<span id="eqTitle">사용 가능한 설비</span>
 							<div id="eqGrid"></div>
 						</div>
 						<div>
@@ -333,6 +333,8 @@
 				
 				//공정 실적데이터가 없을 경우
 				if(isEmpty){			
+					//'사용 가능한 설비'로 문구 적용
+					$("#eqTitle").text("사용 가능한 설비");
 					
 					//설비, bom 그리드 생성
 					eqGridFn = createEqGrid();
@@ -359,6 +361,9 @@
 					if(prcsEndTime == null){
 						//작업 시작
 						
+						//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
+						$("#eqTitle").text("사용 중인 설비");
+						
 						//선택된 설비, bom그리드 생성
 						eqGridFn = createSelectEqGrid();
 						prcsBomGridFn = createPrcsBomGrid();	
@@ -383,6 +388,9 @@
 	 					
 					} else{		
 						//작업 종료
+						
+						//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
+						$("#eqTitle").text("사용 중인 설비");
 						
 						//선택된 설비, bom그리드 생성
 						eqGridFn = createSelectEqGrid();
@@ -445,18 +453,16 @@
    	  		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
    	    	let dirDeCode = dirDeGrid.getValue(deRowKey, 'prcsDirDeCode');
    	    	let prodCode = dirDeGrid.getValue(deRowKey, 'prodCode');
-   	    	
-   	    	
+   	    	  	    	
    	    	let deList = dirDeGrid.getData();
    	    	
-   	    	
    	    	let ingRowKey = ingGrid.getFocusedCell().rowKey;
-   	    	let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+   	    	let prcsIngCode = ingGrid.getValue(ingRowKey, 'prcsIngCode');
    	    	
    	    	let ingObj = {};
+   	    	ingObj['prcsIngCode'] = prcsIngCode;
    	    	ingObj['prcsDirDeCode'] = dirDeCode;
    	    	ingObj['prodCode'] = prodCode;
-   	    	ingObj['prcsCode'] = prcsCode;
    			
    			//해당 공정 이전 공정이 공정완료인지 확인할 ajax
    			$.ajax({
@@ -465,7 +471,7 @@
    				data : ingObj,
    				async : false,
    			    success : function(data){
-
+					console.log(data);
    			    	//data가 'false'로 넘어오면 작업시작 할 수 없음
    			    	if(data == 'false'){
    			    		btnOk = false;
@@ -476,8 +482,7 @@
    			    },
    			    error : function(reject){
    			        console.log(reject);
-   			    }	
-   				
+   			    }	  				
    			})
    			
    			if(btnOk){
@@ -489,9 +494,9 @@
    	   			//prcsDirDeCode 가져오기
    	   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
    	   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
-   	   			//prcsCode 가져오기
+   	   			//prcsIngCode 가져오기
    	   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
-   	   			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+   	   			let prcsIngCode = ingGrid.getValue(ingRowKey, 'prcsIngCode');
    	   	    	//eqCode 가져오기
    	   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
    	   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
@@ -501,7 +506,7 @@
    	   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
    	   			let startObj = {};
    	   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
-   	   	    	startObj['prcsCode'] = prcsCode;
+   	   	    	startObj['prcsIngCode'] = prcsIngCode;
    	   			startObj['eqCode'] = eqCode;
    	   			startObj['empCode'] = empCode;
    	   			startObj['prcsStartTime'] = startTime;
@@ -561,7 +566,7 @@
 			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
 			//prcsCode 가져오기
 			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
-			let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+			let prcsIngCode = ingGrid.getValue(ingRowKey, 'prcsIngCode');
 			//errAmt 가져오기
 			let errAmt = document.getElementById('errAmt').value;					
 	    	//eqCode 가져오기
@@ -576,7 +581,7 @@
 			//프로시저 매개변수에 필요한 값이 담긴 list 만들기
 			let endObj = {};
 			endObj['prcsDirDeCode'] = prcsDirDeCode;
-			endObj['prcsCode'] = prcsCode;
+			endObj['prcsIngCode'] = prcsIngCode;
 			endObj['eqCode'] = eqCode;
 			endObj['errAmt'] = errAmt;
 			endObj['prcsEndTime'] = endTime;

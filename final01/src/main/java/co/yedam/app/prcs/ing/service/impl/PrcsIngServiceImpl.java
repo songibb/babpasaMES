@@ -49,7 +49,7 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	public int callPrcsStart(PrcsIngVO prcsIngVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("prcsDirDeCode", prcsIngVO.getPrcsDirDeCode());
-		map.put("prcsCode", prcsIngVO.getPrcsCode());
+		map.put("prcsIngCode", prcsIngVO.getPrcsIngCode());
 		map.put("eqCode", prcsIngVO.getEqCode());
 		map.put("empCode", prcsIngVO.getEmpCode());
 		map.put("prcsStartTime", prcsIngVO.getPrcsStartTime());
@@ -61,7 +61,7 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 	public int callPrcsEnd(PrcsIngVO prcsIngVO) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("prcsDirDeCode", prcsIngVO.getPrcsDirDeCode());
-		map.put("prcsCode", prcsIngVO.getPrcsCode());
+		map.put("prcsIngCode", prcsIngVO.getPrcsIngCode());
 		map.put("eqCode", prcsIngVO.getEqCode());
 		map.put("errAmt", prcsIngVO.getErrAmt());
 		map.put("prcsEndTime", prcsIngVO.getPrcsEndTime());
@@ -104,7 +104,8 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 		
 		//프로시저 out값 찾기
 		String result = prcsIngVO.getResult();
-		if(result == null) {
+		System.out.println(result);
+		if(result == null || result.equals("true")) {
 			return "true";
 		}
 		return result;

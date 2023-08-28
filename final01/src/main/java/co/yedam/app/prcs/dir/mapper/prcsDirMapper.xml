@@ -120,6 +120,17 @@
          ORDER BY p.prcs_plan_code DESC
 	</select>
 	
+	<!-- 미지시 상세생산계획 목록 조회 -->
+	<select id="selectNotDirPlanDeList" resultType="PrcsPlanVO">
+        SELECT d.prcs_plan_de_code,
+               d.prod_code,
+               find_prod_name(d.prod_code) AS prod_name,
+               d.prcs_plan_amt
+		  FROM prcs_plan p JOIN prcs_plan_de d
+                             ON p.prcs_plan_code = d.prcs_plan_code
+         WHERE d.prcs_plan_code = #{prcsPlanCode} AND d.prcs_dir_sts = 'T1' 
+         ORDER BY p.prcs_plan_code DESC
+	</select>
 		
 	<!-- 생산지시 등록시 상세생산계획 수정 -->
 	<update id="updateNotDirPlanList" parameterType="PrcsPlanVO">
