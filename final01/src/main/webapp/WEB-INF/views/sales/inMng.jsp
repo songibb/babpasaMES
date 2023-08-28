@@ -84,7 +84,7 @@
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
-                				<p>제품명</p>
+                				<p>제품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 				<input type="text" id="prodCodeInput">
                 				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
@@ -149,7 +149,7 @@
 	        ],
 	        scrollX: false,
 	        scrollY: false,
-	        minBodyHeight: 30,
+	        minBodyHeight: 400,
 	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 	        pagination: true,
 			pageOptions: {
@@ -228,7 +228,7 @@
 		          ],
 			   scrollX: false,
 		       scrollY: false,
-		       minBodyHeight: 30,
+		       minBodyHeight: 400,
 		       rowHeaders: ['rowNum'],
 		       pagination: true,
 		       pageOptions: {
@@ -505,7 +505,7 @@ $("#close_btn").click(function(){
 	          ],
 		   scrollX: false,
 	       scrollY: false,
-	       minBodyHeight: 30,
+	       minBodyHeight: 400,
 	       rowHeaders: ['rowNum'],
 	       selectionUnit: 'row',
 	       pagination: true,
