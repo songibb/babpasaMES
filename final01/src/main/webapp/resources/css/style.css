@@ -28456,7 +28456,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav .nav-item.active > .nav-link i.menu-arrow::before {
-  content: "\e64b";
+  content: ">";
 }
 
 .sidebar .nav .nav-item:hover > .nav-link i,
@@ -30446,3 +30446,4 @@ div.tagsinput span.tag a {
     display: none;
   }
 }
+

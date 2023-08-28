@@ -161,14 +161,14 @@
 			 , find_mat_name(mp_code) AS mat_name
 			 , SUM(bom_amt) AS bom_amt
 			 , NVL(mat_stock,0) AS mat_stock
-		FROM v_prod_bom a
-		LEFT JOIN (SELECT mat_code
-						, SUM(mat_stock) AS mat_stock
-		           FROM mat_in
-		           GROUP BY mat_code) b
-			ON (a.mp_code = b.mat_code)
-		WHERE prod_code= #{prodCode}
+		FROM V_MAT_BOM a
+			LEFT JOIN (SELECT mat_code
+			 			    , SUM(mat_stock) AS mat_stock
+		           	   FROM mat_in
+		               GROUP BY mat_code) b
+				ON (a.mp_code = b.mat_code)
+		WHERE PROD_CODE = #{prodCode}
 			AND bom_yn='O'
-			AND mp_kind='M' group by find_mat_name(mp_code), mp_code, mat_stock
+		group by find_mat_name(mp_code), mp_code, mat_stock
 	</select>
 </mapper>

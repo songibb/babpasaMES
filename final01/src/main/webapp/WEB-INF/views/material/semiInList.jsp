@@ -16,18 +16,50 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 <style>
-	#save, #delete{
-		margin-top : 120px;
-		float : right;
+	.excelDownload{
+   		margin: 0px;
+   }
+
+	h1{
+		margin-left: 15px;
 	}
 	
-	h1{
-		font-weight : 700;
+	h1, h2{
+		font-weight: 800;
 	}
 	
 	h2{
-		clear : both;
-		font-weight : 700;
+		clear: both;
+		display : inline-block;
+	}
+	
+	#searchP input[type="text"] {
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	#searchP input[type="date"]{
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	#searchP p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	
+	#searchP label[for="before"]{
+		margin-bottom : 35px;
+	}
+	
+	#searchP label[for="after"]{
+		margin-right : 20px;
 	}
 	
 	.yellow-background {
@@ -57,6 +89,15 @@
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
+	
+	#prodNameFix {
+		background-color : #868e96;
+		border-color: #868e96;
+	}
+	
+	#prodModal{
+		cursor : pointer;
+	}
 </style>    
        
 </head>
@@ -66,12 +107,9 @@
        <div class="card">
            <div class="card-body">
                <div class="table-responsive pt-3">
-               		<button type="button" class="btn btn-info btn-icon-text excelDownload">
-                      	 Excel
-                      	<i class="bi bi-printer"></i>                                                                              
-                   	</button>
-                  	<div id="customtemplateSearchAndButton">
-        				<div style="display: flex; justify-content: space-between;">
+               		
+                  	
+        				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
 				                <input type="text" id="prodCodeInput">
@@ -94,10 +132,17 @@
                 				</button>
             				</div>
         				</div>
-	    			</div>
-		            <h2>반제품 입고 목록</h2>
-		            <br>
-		            <div id="grid"></div>
+	    			
+		            
+		            
+		            <div id="grid">
+		            	<h2>입고 목록</h2>
+		            
+		            	<button type="button" class="btn btn-info btn-icon-text excelDownload">
+                      	 Excel
+                      	<i class="bi bi-printer"></i>                                                                              
+                   	</button>
+		            </div>
 				</div>
 			</div>
 		</div>
@@ -122,258 +167,265 @@
 
 	<script>
    
-	   //모달 시작
-	   var Grid;
-	     $("#prodModal").click(function(){
-	       $(".modal").fadeIn();
-	       preventScroll();
-	       Grid = createProdGrid();
-	       $('.modal_title h3').text('반제품 목록');
-	       Grid.on('dblclick', () => {
-	        	let rowKey = Grid.getFocusedCell().rowKey;
-	        	let prodCode = Grid.getValue(rowKey, 'prodCode');
-	        	let prodName = Grid.getValue(rowKey, 'prodName');
-	    		$("#prodCodeInput").val(prodCode);
-	    		$("#prodNameFix").val(prodName);
-	    		//모달창 닫기
-	    		console.log(rowKey);
-	    		if(rowKey != null){
-	    			$(".modal").fadeOut();
-	    			activeScroll();
-	    			let inputContent = $('#modalSearch').val('');
-	    			if(Grid != null && Grid.el != null){
-	 	    			Grid.destroy();	
-	 	    		}
-	    		}
+		//모달 시작
+		var Grid;
+		$("#prodModal").click(function () {
+		    $(".modal").fadeIn();
+		    preventScroll();
+		    Grid = createProdGrid();
+		    $('.modal_title h3').text('반제품 목록');
+		    Grid.on('dblclick', () => {
+		        let rowKey = Grid
+		            .getFocusedCell()
+		            .rowKey;
+		        let prodCode = Grid.getValue(rowKey, 'prodCode');
+		        let prodName = Grid.getValue(rowKey, 'prodName');
+		        $("#prodCodeInput").val(prodCode);
+		        $("#prodNameFix").val(prodName);
+		        //모달창 닫기
+		        console.log(rowKey);
+		        if (rowKey != null) {
+		            $(".modal").fadeOut();
+		            activeScroll();
+		            let inputContent = $('#modalSearch').val('');
+		            if (Grid != null && Grid.el != null) {
+		                Grid.destroy();
+		            }
+		        }
 	
-	    		});
-	      	});
-	     
-	     $(".close_btn").click(function(){
-	         	$(".modal").fadeOut();
-	         	activeScroll();
-	         	let inputContent = $('#modalSearch').val('');
-	         	if(Grid != null && Grid.el != null){
- 	    			Grid.destroy();	
- 	    		}
-	     });
-     
-	   //반제품 모달 그리드
-	     function createProdGrid(){
-	  	   var prodGrid = new tui.Grid({
-	  	       el: document.getElementById('modal_label'),
-	  	       data: [
-	  	    	   <c:forEach items="${prodList}" var="p" varStatus="status">
-	  	          	{
-	  	          		prodCode : "${p.prodCode}",
-	  	          		prodName :"${p.prodName}"
-	  	          	} <c:if test="${not status.last}">,</c:if>
-	  	          </c:forEach>
-	  	          ],
-	  		   scrollX: false,
-	  	       scrollY: false,
-	  	       minBodyHeight: 400,
-	  	       rowHeaders: ['rowNum'],
-	  	       selectionUnit: 'row',
-	  	       pagination: true,
-	  	       pageOptions: {
-	  	       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	  	         useClient: true,
-	  	         perPage: 10
-	  	       },
-	  	       columns: [
-	  	    	     {
-	  	               header: '반제품코드',
-	  	               name: 'prodCode',
-	  	             },
-	  	             {
-	  	               header: '반제품명',
-	  	               name: 'prodName'
-	  	             }
-	  	 	    ]
-	  	      
-	  	     });
-	  	   
-	  	   return prodGrid;
-	     }
-	   
-	   
-	   //모달 검색
-	   $('#modalSearchBtn').on('click', function(e){
-			let title = $('.modal_title h3').text();
-			let inputContent = $('#modalSearch').val();
-			
-			if(title == '반제품 목록'){
-				let modalSearchData = {prodName : inputContent}
-				$.ajax({
-					url : 'getSemiModalSearch',
-					method : 'GET',
-					data : modalSearchData,
-					success : function(data){
-						
-						Grid.resetData(data);
-					},
-					error : function(reject){
-						console.log(reject);
-					}
-				})
-			}
+		    });
+		});
+	
+		$(".close_btn").click(function () {
+		    $(".modal").fadeOut();
+		    activeScroll();
+		    let inputContent = $('#modalSearch').val('');
+		    if (Grid != null && Grid.el != null) {
+		        Grid.destroy();
+		    }
+		});
+	
+		//반제품 모달 그리드
+		function createProdGrid() {
+		    var prodGrid = new tui.Grid({
+		        el: document.getElementById('modal_label'),
+		        data: [<c:forEach items="${prodList}" var="p" varStatus="status">
+		            {
+		                prodCode: "${p.prodCode}",
+		                prodName: "${p.prodName}"
+		            }
+		            <c:if test="${not status.last}">,</c:if>
+		        </c:forEach>
+		            ],
+		        scrollX: false,
+		        scrollY: false,
+		        minBodyHeight: 400,
+		        rowHeaders: ['rowNum'],
+		        selectionUnit: 'row',
+		        pagination: true,
+		        pageOptions: {
+		            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		            useClient: true,
+		            perPage: 10
+		        },
+		        columns: [
+		            {
+		                header: '반제품코드',
+		                name: 'prodCode'
+		            }, {
+		                header: '반제품명',
+		                name: 'prodName'
+		            }
+		        ]
+	
+		    });
+	
+		    return prodGrid;
+		}
+	
+		//모달 검색
+		$('#modalSearchBtn').on('click', function (e) {
+		    let title = $('.modal_title h3').text();
+		    let inputContent = $('#modalSearch').val();
+	
+		    if (title == '반제품 목록') {
+		        let modalSearchData = {
+		            prodName: inputContent
+		        }
+		        $.ajax({
+		            url: 'getSemiModalSearch',
+		            method: 'GET',
+		            data: modalSearchData,
+		            success: function (data) {
+	
+		                Grid.resetData(data);
+		            },
+		            error: function (reject) {
+		                console.log(reject);
+		            }
+		        })
+		    }
 		})
-   
-	   //엑셀 다운로드
-	   const excelDownload = document.querySelector('.excelDownload');
-	   
-	   document.addEventListener('DOMContentLoaded', ()=>{
-	      excelDownload.addEventListener('click', function(e){
-	         grid.export('xlsx');
-	      })
-	   })
-
 	
-   //전체조회 그리드
-	   var grid = new tui.Grid({
-		       el: document.getElementById('grid'),
-		       data: [
-		           <c:forEach items="${inList}" var="semi">
-		           	{
-		           	semiLot : "${semi.semiLot}",
-		           	prodName :"${semi.prodName}",
-		           	semiInAmt :"${semi.semiInAmt}",
-		           	empName : "${semi.empName}",
-		           	useYn : "${semi.useYn}",
-		           	semiInd : `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
-		           	semiExd : `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
-		           	},
-		           </c:forEach>
-		          ],
-			   scrollX: false,
-		       scrollY: false,
-		       minBodyHeight: 400,
-		       rowHeaders: ['rowNum'],
-		       pagination: true,
-		       pageOptions: {
-		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		         useClient: true,
-		         perPage: 10
-		       },
-		       columns: [
-		 	      {
-		 	        header: '반제품명',
-		 	        name: 'prodName'
-		 	      },
-		 	      {
-		 	        header: '입고량',
-		 	        name: 'semiInAmt',
-		 	       	formatter(e) { 
-		 	        	val = e['value'].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		 	           	return val;
-		 	        }
-		 	      },
-		 	      {
-		 	        header: '반제품 LOT',
-		 	        name: 'semiLot',
-		 	      },
-		 	      {
-			 	    header: '입고일자',
-			 	    name: 'semiInd',
-		 	  		className: 'yellow-background'
-			 	  },
-			 	  {
-			 	    header: '유통기한',
-			 	    name: 'semiExd',
-		 	  		className: 'yellow-background'
-			 	  },
-			 	  {
-		 	    	header: '사용여부',
-		 	    	name: 'useYn'
-			 	  },
-		 	      {
-		 	        header: '담당자',
-		 	        name: 'empName'
-		 	      }
-		 	    ]
-		      
-		     });
-   
-	   //검색
-	   $('#searchBtn').on('click', searchSemiIn);
-	   function searchSemiIn(e){
-		   let prod = $('#prodCodeInput').val();
-			let sd = $('#startDate').val();
-			let ed = $('#endDate').val();	
-			
-			var checkboxList = [];
-			let checkedList = $('input[type="checkbox"]:checked');
-			$.each(checkedList, function(idx, obj){
-				checkboxList.push(obj.value);
-			})
-				  
-			let search = { productCode : prod , startDate : sd , endDate : ed, checkList : checkboxList };
-		   $.ajax({
-			   url : 'getSemiInFilter',
-			   method : 'GET',
-			   data : search ,
-			   success : function(data){
-				   
-				  for(let i of data){
-						let date = new Date(i.semiInd);
-						let year = date.getFullYear();    //0000년 가져오기
-						let month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-						let day = date.getDate();        //일자 가져오기
-				   		i.semiInd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-						
-						date = new Date(i.semiExd);
-						year = date.getFullYear();    //0000년 가져오기
-						month = date.getMonth() + 1;  //월은 0부터 시작하니 +1하기
-						day = date.getDate();        //일자 가져오기
-				   		i.semiExd = year + "-" + (("00"+month.toString()).slice(-2)) + "-" + (("00"+day.toString()).slice(-2));
-				  }
-				   grid.resetData(data);
-			   },
-			   error : function(reject){
-				   console.log(reject);
-			   }
-		   });
-	   }
-   
-	   //초기화 버튼
-	   $('#searchResetBtn').on('click', resetInput);
-	   function resetInput(e){
-		   $('input').each(function(idx, obj){
-			   obj.value = '';
-		   })
-	   }
-   
-	   
+		//엑셀 다운로드
+		const excelDownload = document.querySelector('.excelDownload');
+	
+		document.addEventListener('DOMContentLoaded', () => {
+		    excelDownload.addEventListener('click', function (e) {
+		        grid.export('xlsx');
+		    })
+		})
+	
+		//전체조회 그리드
+		var grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    data: [<c:forEach items="${inList}" var="semi">
+		        {
+		            semiLot: "${semi.semiLot}",
+		            prodName: "${semi.prodName}",
+		            semiInAmt: "${semi.semiInAmt}",
+		            empName: "${semi.empName}",
+		            useYn: "${semi.useYn}",
+		            semiInd: `<fmt:formatDate value="${semi.semiInd}" pattern="yyyy-MM-dd"/>`,
+		            semiExd: `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
+		        },
+		    </c:forEach>
+		        ],
+		    scrollX: false,
+		    scrollY: false,
+		    minBodyHeight: 400,
+		    rowHeaders: ['rowNum'],
+		    pagination: true,
+		    pageOptions: {
+		        //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		        useClient: true,
+		        perPage: 10
+		    },
+		    columns: [
+		        {
+		            header: '반제품명',
+		            name: 'prodName'
+		        }, {
+		            header: '입고량',
+		            name: 'semiInAmt',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            }
+		        }, {
+		            header: '반제품 LOT',
+		            name: 'semiLot'
+		        }, {
+		            header: '입고일자',
+		            name: 'semiInd',
+		            className: 'yellow-background'
+		        }, {
+		            header: '유통기한',
+		            name: 'semiExd',
+		            className: 'yellow-background'
+		        }, {
+		            header: '사용여부',
+		            name: 'useYn'
+		        }, {
+		            header: '담당자',
+		            name: 'empName'
+		        }
+		    ]
+	
+		});
+	
+		//검색
+		$('#searchBtn').on('click', searchSemiIn);
+		function searchSemiIn(e) {
+		    let prod = $('#prodCodeInput').val();
+		    let sd = $('#startDate').val();
+		    let ed = $('#endDate').val();
+	
+		    var checkboxList = [];
+		    let checkedList = $('input[type="checkbox"]:checked');
+		    $.each(checkedList, function (idx, obj) {
+		        checkboxList.push(obj.value);
+		    })
+	
+		    let search = {
+		        productCode: prod,
+		        startDate: sd,
+		        endDate: ed,
+		        checkList: checkboxList
+		    };
+		    $.ajax({
+		        url: 'getSemiInFilter',
+		        method: 'GET',
+		        data: search,
+		        success: function (data) {
+	
+		            for (let i of data) {
+		                let date = new Date(i.semiInd);
+		                let year = date.getFullYear(); //0000년 가져오기
+		                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+		                let day = date.getDate(); //일자 가져오기
+		                i.semiInd = year + "-" + (
+		                    ("00" + month.toString()).slice(-2)
+		                ) + "-" + (
+		                    ("00" + day.toString()).slice(-2)
+		                );
+	
+		                date = new Date(i.semiExd);
+		                year = date.getFullYear(); //0000년 가져오기
+		                month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+		                day = date.getDate(); //일자 가져오기
+		                i.semiExd = year + "-" + (
+		                    ("00" + month.toString()).slice(-2)
+		                ) + "-" + (
+		                    ("00" + day.toString()).slice(-2)
+		                );
+		            }
+		            grid.resetData(data);
+		        },
+		        error: function (reject) {
+		            console.log(reject);
+		        }
+		    });
+		}
+	
+		//초기화 버튼
+		$('#searchResetBtn').on('click', resetInput);
+		function resetInput(e) {
+		    $('input').each(function (idx, obj) {
+		        obj.value = '';
+		    })
+		}
+	
 		//스크롤 막기
-	 	function preventScroll(){
-		   $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
-			   $('#element').on('scroll touchmove mousewheel', function(event) { // 터치무브와 마우스휠 스크롤 방지
-				   event.preventDefault();
-				   event.stopPropagation();
-				
-				   return false;
-		   });
-	 	}
-
-	 	//스크롤 활성화
-	  	function activeScroll(){
-	      	$('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
-	  		$('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
-	 	 }
-   
-  
-     
-   
-   
-	 //이전 날짜 선택불가
-	   $( '#startDate' ).on( 'change', function() {
-	     $( '#endDate' ).attr( 'min',  $( '#startDate' ).val() );
-	   } );
-	  //이후날짜 선택불가
-	   $( '#endDate' ).on( 'change', function() {
-	        $( '#startDate' ).attr( 'max',  $( '#endDate' ).val() );
-	      } );
+		function preventScroll() {
+		    $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴
+		    $('#element').on(
+		        'scroll touchmove mousewheel',
+		        function (event) { // 터치무브와 마우스휠 스크롤 방지
+		            event.preventDefault();
+		            event.stopPropagation();
+	
+		            return false;
+		        }
+		    );
+		}
+	
+		//스크롤 활성화
+		function activeScroll() {
+		    $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
+		    $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
+		}
+	
+		//이전 날짜 선택불가
+		$('#startDate').on('change', function () {
+		    $('#endDate').attr('min', $('#startDate').val());
+		});
+		//이후날짜 선택불가
+		$('#endDate').on('change', function () {
+		    $('#startDate').attr('max', $('#endDate').val());
+		});
    
 
 </script>
