@@ -13,11 +13,21 @@
     <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>  
+    
+    <style>
+	    h1{
+			margin-left: 15px;
+		}
+		
+		h1, h2{
+			font-weight: 800;
+		}
+	</style> 
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>완제품 품질 검사 조회</h2>
+	<h1>완제품 품질 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -25,8 +35,8 @@
 
 	          
 	            <div id="container" style="display: flex; justify-content: center;">
-		           		<div id="grid" style="width: 700px; margin-right: 50px"></div>
-		           		<div id="grid2" style="width: 800px;"></div>
+		           		<div id="grid" style="width: 700px; margin-right: 50px"><h2>완제품 품질 검사 목록</h2></div>
+		           		<div id="grid2" style="width: 800px;"><h2>완제품 품질 검사 목록</h2></div>
 	   			</div>
 			</div>
 		</div> 
@@ -153,11 +163,11 @@
 				},
 				{
 					header: '적합여부',
-					name :'passYn'
+					name :'passYn2'
 				},
 				{
 					header: '담당자',
-					name : 'empCode'
+					name : 'empName'
 					
 				}
 			]

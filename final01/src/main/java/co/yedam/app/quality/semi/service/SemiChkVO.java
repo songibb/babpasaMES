@@ -40,4 +40,8 @@ public class SemiChkVO {
 	
 	private String testName;
 	private int passValue;
+	
+	private String empName;
+	
+	private String passYn2;
 }

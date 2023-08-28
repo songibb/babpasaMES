@@ -29,9 +29,59 @@
 	    .yellow-background {
 	        background-color: rgb(255,253,235);
 		}
+
+		h1{
+			font-weight : 800;
+			margin-left : 15px;
+		}
 		
-		#insertForm{
-			align : center;
+		h2{
+			font-weight : 800;
+		}
+		
+		label {
+		  display: inline-block;
+		  margin-bottom: 7px;
+		  margin-top: 2px;
+		  font-weight: bold;
+		  width:110px;
+		}
+	
+	
+		#input-container input[type="text"],
+		select {
+		  width: 50%;
+		  padding: 8px;
+		  margin-bottom: 10px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		#customtemplateSearchAndButton input[type="text"],
+		select {
+		  width: 200px;
+		  padding: 6px;
+		  margin-bottom: 15px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		#customtemplateSearchAndButton input[type="date"],
+		select {
+		  width: 200px;
+		  padding: 5px;
+		  margin-bottom: 30px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		#customtemplateSearchAndButton p{
+			width : 115px;
+			font-size: 20px;
+		}
+		
+		#offStime{
+			width:200px;
 		}
     </style>
     
@@ -40,71 +90,87 @@
 <body>
 
 	<div class="black_bg"></div>
-	<h2>비가동 설비 조회</h2>
-	<div class="col-lg-12 stretch-card">
-    	<div class="card">
-        	<div class="card-body" id="offcontainer">
-            	<div class="table-responsive pt-3">
-            		<div id="customtemplateSearchAndButton">		
-							<p>비가동일자</p>
-                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
-							<br>
-							
-							<p>설비명</p>
-  							<input type="text" placeholder="검색어를 입력하세요" id="offequipSearch">
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
-		            	</div>
-        
-					<div id="grid"></div>
+	<h1>비가동 설비 조회</h1>
+	<div style="display: flex;">
+		<div  style="width: 30%;">
+            	<div class="col-lg-12 stretch-card">
+                	<div class="card">
+		        		<div class="card-body" id="offcontainer">
+		            		<div class="table-responsive pt-3">
+								<form id="insertForm"> 
+									<div style="display: flex; justify-content: space-between;" >
+										<h2>비가동 등록</h2>
+										<button class="btn btn-info btn-icon-text" id="actModal">설비조회</button>
+									</div>
+							     	<br>
+								    <div id="input-container">
+									      
+								      		<label>비가동코드</label>
+								        	 <input type="text" name="offNo" id="offNo" readonly style="background-color: #d3d3d3;"> 
+												<br>
+									         <label>설비코드</label>
+									        	<input type="text" name="eqCode" id="eqCode">
+									        	 <br>
+									         <label>설비명</label>
+									        	 <input type="text" name="eqName" id="eqName">
+												<br>
+									         <label>비가동구분</label>
+									         	<input type="text" name="offType" id="offType">
+												<br>
+									         <label>작업내용</label>
+									         	<input type="text" name="offInfo" id="offInfo">
+												<br>
 
-                </div>
-                <hr>
-                <div>
-					<form id="insertForm"> 
-				     	<h3>비가동 등록</h3>
-					    <table>
-						      <tr><button class="btn btn-info btn-icon-text" id="actModal">설비조회</button> 
-						      		<th>비가동코드</th>
-						        	 <td><input type="text" name="offNo" id="offNo" readonly style="background-color: #d3d3d3;"></td>  
-						      </tr>
-						      <tr>
-						         
-						         <th>설비코드</th>
-						        	 <td><input type="text" name="eqCode" id="eqCode"></td>
-						        	 
-						        	 <!--설비코드 모달 리스트로 검색해서 데이터 갖고오기  -->
-						         <th>설비명</th>
-						        	 <td><input type="text" name="eqName" id="eqName"></td>
-						      </tr>
-						      <tr>
-						         <th>비가동구분</th>
-						         	<td><input type="text" name="offType" id="offType"></td>
-						         	<!--select box식으로 구분 선택하도록  -->
-						         <th>작업내용</th>
-						         	<td><input type="text" name="offInfo" id="offInfo"></td>
-						         	<!--작업 내용은 입력 가능 -->
-						      </tr>
-						       <tr>
-						         <th>비가동시작시간</th>
-						         	<td><input type="text" name="offStime" id="offStime">
-						         	 <input type="button" value="시작" onclick="setCurrentTime()" /></td>
-						         	 <!--최초에는 시작 버튼만 활성화..  -->
-						         <th>비가동종료시간</th>
-						         	<td><input type="text" name="offEtime" id="offEtime">
-						         	 <input type="button" value="종료" onclick="setCurrentTime2()" /></td>    
-						      </tr>
-					   </table>
-			  
-						<button type="submit" class="btn btn-info btn-icon-text">저장</button>
-					</form>
+									         <label>비가동시작시간</label>
+									         	<input type="text" name="offStime" id="offStime">
+									         	 <input type="button" value="시작" onclick="setCurrentTime()" />
+									         	<br>
+									         <label>비가동종료시간</label>
+									         	<input type="text" name="offEtime" id="offEtime">
+									         	 <input type="button" value="종료" onclick="setCurrentTime2()" />   
+									      
+								   </div>
+						  
+									<button type="submit" class="btn btn-info btn-icon-text">저장</button>
+								</form>
+							</div>
+						</div>
+					</div>
 				</div>
-            </div>
-         </div>    
-     </div>           
+			</div>
+	
 
+		<div  style="width: 70%">
+			<div class="col-lg-12 stretch-card">
+		    	<div class="card">
+		        	<div class="card-body" id="offcontainer">
+		            	<div class="table-responsive pt-3">
+		            		<div id="customtemplateSearchAndButton">		
+							
+									<p>설비명</p>
+		  							<input type="text" placeholder="검색어를 입력하세요" id="offequipSearch">
+									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+										<i class="fas fa-search"></i>검색
+									</button>
+									<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
+				            	</div>
+		        
+							<div id="grid"></div>
+		
+		                </div>
+		             </div>
+		               
+		    		</div> 
+		    	</div>	
+	    	</div> 
+	    	 
+                <hr>
+                
+            
+       </div>
+           
+               
+	
 
 
 	<script>
@@ -205,19 +271,35 @@
 			 	 {
 				 	 header: '시작시간',
 				 	 name: 'offStime',
-			 	  	 className: 'yellow-background'
+			 	  	 className: 'yellow-background',
+		             width: 'auto'
 				 	 
 				 },
 				 {
 			 	     header: '종료시간',
 			 	     name: 'offEtime',
-			 	  	 className: 'yellow-background'
+			 	  	 className: 'yellow-background',
+		             width: 'auto'
 			 	  }
 		 	      
   
 		 	    ]
-		      })  
-		    
+		      });
+			
+	setDisabled();
+	
+	
+	
+	//비활성화
+	function setDisabled(){
+		$.each(grid.getData(), function(idx, obj){
+			
+			if(obj['offEtime'] != null){
+				grid.disableRow(obj['rowKey']);
+			
+			}
+		})
+	}
 			
 		    var Grid;
 		    $("#actModal").click(function(){
@@ -229,6 +311,9 @@
 		        let eqName = Grid.getValue(rowKey, 'eqName');
 		        let eqSts = Grid.getValue(rowKey, 'eqSts');
 		        
+		        if(rowKey != null){
+		        $(".modal").fadeOut();
+	              Grid.destroy();
 		        // 설비 정보 가져오는 부분 추가
 		        $.ajax({
 		          url: "getOffEquipInfo",  // 설비 정보를 가져올 API 엔드포인트
@@ -242,8 +327,7 @@
 		            $('#eqCode').val(eqCode);
 		            $('#eqName').val(eqName);
 		            
-		            $(".modal").fadeOut();
-		              Grid.destroy();
+		           
 
 		          },
 		          error: function(reject){
@@ -251,15 +335,15 @@
 		          }
 		        });
 		        
-		        
+		        }
 		      });
 		    });
   
 
-$("#close_btn").click(function(){
-	  $(".modal").fadeOut(); 
-		Grid.destroy();
-	});
+	$("#close_btn").click(function(){
+		  $(".modal").fadeOut(); 
+			Grid.destroy();
+		});
 
 
 
@@ -307,6 +391,7 @@ function createActGrid(){
 		    })   
 	   return actGrid;
 }
+
 
 
 //거래처 등록/수정 한개버튼으로 같이하기
@@ -369,10 +454,11 @@ $("#insertForm").on('submit', function(e){
 				//form 비우기
 				 $('form')[0].reset();
 			} else{
-				alert('등록처리가 실패되었습니다.');
+				alert('등록 처리가 실패되었습니다.');
 			}   	
 		})
 		.fail(reject => console.log(reject));
+	  	
 	}
 
 	//리스트 리셋
@@ -428,7 +514,10 @@ $("#insertForm").on('submit', function(e){
 		let offStime = grid.getValue(rowKey, 'offStime');
 		let offEtime = grid.getValue(rowKey, 'offEtime');
 
-		
+		if(offEtime != null){
+			$('#input-container input[type="text"]').val('');
+		}else{
+	
 		$("#offNo").val(offNo);
 		$("#offCode").val(offCode);
 		$("#eqCode").val(eqCode);
@@ -437,6 +526,7 @@ $("#insertForm").on('submit', function(e){
 		$("#offInfo").val(offInfo);
 		$("#offStime").val(offStime);
 		$("#offEtime").val(offEtime);
+		}
 	});
 
 	</script>

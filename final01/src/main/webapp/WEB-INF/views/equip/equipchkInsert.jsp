@@ -18,6 +18,7 @@
     <style>
     	h1{
     		font-weight : 800;
+    		margin-left : 15px;
     	}
     
     	h2{
@@ -32,20 +33,24 @@
       <div class="card">
          <div class="card-body">
             <div class="table-responsive pt-3">
-                  
-                  <div style="display: flex; justify-content: flex-end;">
+         	</div> 
+         	
+               <div id="container" style="display: flex; justify-content: center;">
+                       <div id="grid" style="width: 700px; margin-right: 50px"><h2>당일 점검 설비 </h2></div>
+               <div>
+                  	<div style="display: flex; justify-content: space-between;">
+                  	<h2>점검 내역</h2>
+                  	<div>
 					<button id="commAdd" class="btn btn-info btn-icon-text">추가</button>
                      <button id="save" class="btn btn-info btn-icon-text">저장</button>
+                     </div>
                   </div>
-               </div>
-               <div id="container" style="display: flex; justify-content: center;">
-               			
-                       <div id="grid" style="width: 600px; margin-right: 50px"><h2>당일 점검 설비 </h2></div>
-                       <div id="grid2" style="width: 1000px;"><h2>점검 내역</h2></div>
+                     <div id="grid2" style="width: 800px;"></div>
+              	 </div>
                </div>
          </div>
       </div> 
-   </div>
+  </div>
    
       <div class="modal">
    
@@ -119,7 +124,7 @@
          el: document.getElementById('grid'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 150,
+          minBodyHeight: 300,
           rowHeaders: ['rowNum'],
          pagination: true,
          pageOptions: {
@@ -160,7 +165,7 @@
          el: document.getElementById('grid2'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 150,
+          minBodyHeight: 300,
           rowHeaders: [{type: 'rowNum'}],
          pagination: true,
          pageOptions: {

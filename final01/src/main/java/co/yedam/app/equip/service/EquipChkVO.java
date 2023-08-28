@@ -20,6 +20,7 @@ public class EquipChkVO {
 	private String chkNote;		//점검 비고
 	private String empCode;		//담당자
 	private String empName;		//담당자명
+	private String empName2;
 
 	private String eqName;		//설비명 (EQ_EQUIP)
 	private int chkCycle;		//점검주기 (EQ_EQUIP)
@@ -27,11 +28,14 @@ public class EquipChkVO {
 	private String eqType2;
 	private String eqSts;
 	private String eqSts2;
+  
+	private String eqChkYn2;
 	
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date startDate;
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date endDate;
+
 
 	
 	
