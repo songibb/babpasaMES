@@ -83,7 +83,7 @@
    
    <div id="chart-prcs" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div>
    </div>
-
+	
 <script>
 
 

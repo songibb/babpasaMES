@@ -156,7 +156,7 @@
 				],
 			   	scrollX: false,
 		       	scrollY: false,
-		       	minBodyHeight: 30,
+		       	minBodyHeight: 400,
 		       	rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		       	pagination: true,
 		       	pageOptions: {
@@ -256,7 +256,7 @@
 			],
 			scrollX: false,
 		    scrollY: false,
-		    minBodyHeight: 30,
+		    minBodyHeight: 160,
 		    rowHeaders: ['rowNum'],
 		    pagination: true,
 		    pageOptions: {
@@ -322,7 +322,7 @@
 			],
 			scrollX: false,
 			scrollY: false,
-			minBodyHeight: 30,
+			minBodyHeight: 160,
 			rowHeaders: ['rowNum'],
 			pagination: true,
 			pageOptions: {
@@ -626,7 +626,7 @@
 	          	],
 		   		scrollX: false,
 	       		scrollY: false,
-	       		minBodyHeight: 30,
+	       		minBodyHeight: 400,
 	       		rowHeaders: ['rowNum'],
 	       		selectionUnit: 'row',
 	       		pagination: true,

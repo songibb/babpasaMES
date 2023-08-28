@@ -116,7 +116,6 @@
 		width : 100px;
 	}
 	
-	
 /*모달끝*/
 	
 </style>    
@@ -281,7 +280,7 @@
 			],
 		    scrollX: false,
 		    scrollY: false,
-		    minBodyHeight: 30,
+		    minBodyHeight: 400,
 		    rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
@@ -300,8 +299,7 @@
 				},
 				{
 		            header: '자재코드',            // [필수] 컬럼 이름
-		            name: 'matCode',                 // [필수] 컬럼 매핑 이름 값
-		            hidden : true                // [선택] 숨김 여부
+		            name: 'matCode'              // [선택] 숨김 여부
 		        },
 		        {
 		            header: '단위',
@@ -404,7 +402,7 @@
 		 	 	{
 		        	header: '담당자명',            // [필수] 컬럼 이름
 		            name: 'empName'             // [필수] 컬럼 매핑 이름 값                   // [선택] 숨김 여부
-		        },
+		        }
 			]
 		});
 		
@@ -739,7 +737,7 @@
 				],
 	  		   	scrollX: false,
 	  	       	scrollY: false,
-	  	       	minBodyHeight: 30,
+	  	       	minBodyHeight: 400,
 	  	       	rowHeaders: ['rowNum'],
 	  	       	selectionUnit: 'row',
 	  	       	pagination: true,
@@ -788,7 +786,7 @@
 	          	],
 		   		scrollX: false,
 	       		scrollY: false,
-	       		minBodyHeight: 30,
+	       		minBodyHeight: 400,
 	       		rowHeaders: ['rowNum'],
 	       		selectionUnit: 'row',
 	       		pagination: true,
@@ -927,7 +925,7 @@
 				],
 	  		   	scrollX: false,
 	  	       	scrollY: false,
-	  	       	minBodyHeight: 30,
+	  	       	minBodyHeight: 160,
 	  	       	rowHeaders: ['rowNum'],
 	  	       	selectionUnit: 'row',
 	  	      	pagination: true,
@@ -980,10 +978,14 @@
 	        	el: document.getElementById('modal_label3'),
 	            scrollX: true,
 	            scrollY: true,
-	            minBodyHeight: 30,
+	            minBodyHeight: 240,
 	    		rowHeaders: ['rowNum'],
 	    		pagination: true,
-	    		
+	    		pageOptions: {
+	    	       	//백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+	    	         	useClient: true,
+	    	         	perPage: 6
+	    	    },
 	            columns: [
 	            	{
 	                	header: '자재명',
