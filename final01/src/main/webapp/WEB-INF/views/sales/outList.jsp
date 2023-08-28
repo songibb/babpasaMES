@@ -210,12 +210,12 @@ input[type="date"]{
                       <i class="bi bi-printer"></i>                                                                              
                    </button>
                   <div id="customtemplateSearchAndButton">
-                  <p>제품</p>
+                  <p>제품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                   <input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
                   <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
                   <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
                   <br>
-                  <p>거래처</p>
+                  <p>거래처&nbsp;&nbsp;&nbsp;</p>
                   <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
                     <i class="bi bi-search" id="actModal"></i>
                   <input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
@@ -386,7 +386,7 @@ input[type="date"]{
              ],
          scrollX: false,
           scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 400,
           rowHeaders: ['rowNum'],
           selectionUnit: 'row',
           pagination: true,
@@ -435,7 +435,7 @@ input[type="date"]{
              ],
          scrollX: false,
           scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 400,
           rowHeaders: ['rowNum'],
           selectionUnit: 'row',
           pagination: true,
@@ -488,7 +488,7 @@ input[type="date"]{
              ],
          scrollX: false,
           scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 400,
           rowHeaders: ['rowNum'],
           selectionUnit: 'row',
           pagination: true,

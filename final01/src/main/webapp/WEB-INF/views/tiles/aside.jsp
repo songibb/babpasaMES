@@ -78,6 +78,11 @@
                 	<li class="nav-item"><a class="nav-link" href="orderMng">주문 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
+                	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>
+                	</security:authorize>
+                	<security:authorize access="hasAnyAuthority('A','S')">
+                	<li class="nav-item"><a class="nav-link" href="inMng">완제품 재고 관리</a></li>
+                	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
                 	<li class="nav-item"><a class="nav-link" href="outList">완제품 출고 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','S')">
@@ -89,11 +94,6 @@
                 	<security:authorize access="hasAnyAuthority('A','S')">
                 	<li class="nav-item"><a class="nav-link" href="rtMng">완제품 반품 관리</a></li>
                 	</security:authorize>
-                	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                	<li class="nav-item"><a class="nav-link" href="inList">완제품 재고 조회</a></li>
-                	</security:authorize>
-                	<security:authorize access="hasAnyAuthority('A','S')">
-                	<li class="nav-item"><a class="nav-link" href="inMng">완제품 재고 관리</a></li>
                 	</security:authorize>
               	</ul>
             </div>

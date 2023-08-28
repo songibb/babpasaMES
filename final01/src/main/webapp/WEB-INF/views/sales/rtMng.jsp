@@ -243,7 +243,7 @@ input[type="date"] {
 					<div id="customtemplateSearchAndButton">
 					<div style="display: flex; justify-content: flex-end;">
             				<div style="flex: 1;">
-						<p>제품명</p>
+						<p>제품&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
@@ -331,7 +331,7 @@ input[type="date"] {
 		          ],
 	        scrollX: false,
 	        scrollY: false,
-	        minBodyHeight: 30,
+	        minBodyHeight: 400,
 			rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 			pageOptions: {
 				useClient: true,
@@ -492,7 +492,7 @@ input[type="date"] {
                ],
            scrollX: false,
             scrollY: false,
-            minBodyHeight: 30,
+            minBodyHeight: 400,
             rowHeaders: ['rowNum'],
             selectionUnit: 'row',
             pagination: true,
@@ -612,7 +612,7 @@ input[type="date"] {
                ],
            scrollX: false,
             scrollY: false,
-            minBodyHeight: 30,
+            minBodyHeight: 400,
             rowHeaders: ['rowNum'],
             selectionUnit: 'row',
             pagination: true,
