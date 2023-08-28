@@ -16,6 +16,10 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>  
 
 <style type="text/css">
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+
 #prodContainer{
 	display: flex;
 	justify-content: center;
@@ -35,11 +39,33 @@
 	display: flex;
 	justify-content: space-between;
 }
+#rightGridHeader div:first-child{
+	margin-top: 10px;
+}
+#rightGridHeader p{
+	width: 80px;
+	display: inline-block;
+	font-size: 20px;
+}
+
+input[type="text"] {
+  padding: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>제품 공정 흐름도</h2>
+	<h1>제품 공정 흐름도</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -48,14 +74,14 @@
 				<div id="prodContainer">
 					<div id="leftGrid">
 						<div id="leftGridHeader">
-							<span>제품 목록</span>
+							<h2>제품 목록</h2>
 						</div>
 	           			<div id="grid"></div>
 	           		</div>
 	           		<div id="rightGrid">
 	           			<div id="rightGridHeader">
 	           				<div>
-	           					<span>제품명 : </span> 
+	           					<p>제품명 : </p> 
 		           				<input type="text" name="prodName" id="prodName" readonly>
 		           			</div>	
 		           			<div>
@@ -114,7 +140,7 @@
 	           		prodName : "${p.prodName}"
 	           	} <c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
-	          ],
+	    ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,

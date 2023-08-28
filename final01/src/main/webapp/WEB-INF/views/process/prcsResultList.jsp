@@ -16,36 +16,87 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
        
+<style type="text/css">
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+
+form p{
+	width: 110px;
+	display: inline-block;
+	font-size: 20px;
+}
+input[type="text"] {
+  width: 15%;
+  padding: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+input[type="date"]{
+  width: 15%;
+  padding: 5px;
+  margin-bottom: 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
+h2{
+	display: inline-block;
+}
+#resultGridHeader{
+	display: flex;
+	justify-content: space-between;
+}
+
+#prodNameFix, #actNameFix {
+	background-color : #868e96;
+	border-color: #868e96;
+}
+.excelDownload{
+	margin-top : 0;
+	float : right;
+}
+</style>  
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>공정 실적 조회</h2>
+	<h1>공정 실적 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<button type="button" class="btn btn-info btn-icon-text excelDownload">
-		                Excel <i class="bi bi-printer"></i>                                                                              
-					</button>
-					<form>
-						<div id="customtemplateSearchAndButton">
-							<p>지시일자</p>
-                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
-							<br>
-							
-							<p>제품명</p>
-               				<input type="text" id="searchProdCode">
-               				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
-               				<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
-
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>						
-		            	</div>
+					<form>	
+						<p>제품명</p>
+           				<input type="text" id="searchProdCode">
+           				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
+           				<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
+						<br>
+						<p>지시일자</p>
+                		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
+						
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<i class="fas fa-search"></i>검색
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>						
 	            	</form>
-	           		<div id="resultGrid"></div>
 				</div>
+				
+				<div id="resultGridHeader">
+					<h2>공정 실적 목록</h2>
+					<div>
+						<button type="button" class="btn btn-info btn-icon-text excelDownload">
+		                	Excel <i class="bi bi-printer"></i>                                                                              
+						</button>
+					</div>
+				</div>
+					
+           		<div id="resultGrid"></div>
 	   		</div>
 		</div>
 	</div> 
@@ -127,15 +178,21 @@
           },
           {
             header: '작업시작시간',
-            name: 'prcsStartTime'
+            name: 'prcsStartTime',
+            className: 'yellow-background',
+            width: 'auto'
           },
           {
             header: '작업종료시간',
-            name: 'prcsEndTime'
+            name: 'prcsEndTime',
+            className: 'yellow-background',
+            width: 'auto'
           },
           {
              header: '지시등록일자',
-             name: 'prcsDirDate'
+             name: 'prcsDirDate',
+             className: 'yellow-background',
+             width: 'auto'
           },
         ]
 	})  

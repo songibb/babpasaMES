@@ -50,13 +50,18 @@
 	background-color: rgb(255,253,235);
 }
 
-
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
 </style>    
     
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 지시</h2>
+	<h1>생산 지시</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -68,24 +73,24 @@
 	            		<div>  	
 		            		<div id="btnContainer">
 			            		<button id="planModal" class="btn btn-info btn-icon-text">생산 계획 가져오기</button>	  		
-			            		<button id="save" class="btn btn-info btn-icon-text">지시 등록</button>
 			            	</div>  
 						</div>	
 						
 						<div id="dirContainer">
 							<div class="leftGrid">
 								<div class="leftGridHeader">
-					            	<span>생산 지시</span>	
+					            	<h2>생산 지시</h2>	
 								</div>
 								<div id="dirGrid"></div>
 							</div>
 							
 							<div class="rightGrid">
 								<div class="rightGridHeader">
-			           				<span>상세 생산 지시</span>
+			           				<h2>상세 생산 지시</h2>
 			           				<div>
-		           						<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
+			           					<button id="deAdd" class="btn btn-info btn-icon-text">행추가</button>
 		           						<button id="deRemove" class="btn btn-info btn-icon-text">행삭제</button>
+		           						<button id="save" class="btn btn-info btn-icon-text">지시 등록</button>
 		           					</div>
 			      				</div>
 			           			<div id="dirDeGrid"></div>
@@ -97,13 +102,13 @@
 	           		<div id="matContainer">
 	           			<div class="leftGrid">
 	           				<div class="leftGridHeader">
-				            	<span>공정별 자재 소모량</span>
+				            	<h2>공정별 자재 소모량</h2>
 							</div>
 		           			<div id="bomGrid"></div>
 	           			</div>
 	           			<div class="rightGrid">
 	           				<div class="rightGridHeader">
-		           				<span>자재별 LOT 재고</span>
+		           				<h2>자재별 LOT 재고</h2>
 		      				</div>
 		           			<div id="matLotGrid"></div>
 	           			</div>
