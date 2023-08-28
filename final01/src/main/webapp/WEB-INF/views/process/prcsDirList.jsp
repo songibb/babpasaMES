@@ -41,6 +41,11 @@
 	display: flex;
 	justify-content: space-between;
 }
+
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+
 </style>
 </head>
 <body>
@@ -246,7 +251,8 @@
           },
           {
             header: '생산시작일자',
-            name: 'prcsStartDate'
+            name: 'prcsStartDate',
+            className: 'yellow-background'
           },
           {
             header: '지시상태',
@@ -280,7 +286,8 @@
         columns: [
           {
             header: '상세지시코드',
-            name: 'prcsDirDeCode'
+            name: 'prcsDirDeCode',
+            width: 'auto'
           },
           {
             header: '제품코드',

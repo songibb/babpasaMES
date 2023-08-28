@@ -38,43 +38,77 @@
 	height: 45px;
 }
 
+	input[type="text"],
+	select {
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 30px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+
 </style>
 
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 계획 조회</h2>
+	<h1>생산 계획 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>계획일자</p>
-                  			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
-							<br>
-							
-							<p>계획명</p>
-							<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
+								
+						
+						
+						<p>계획명</p>
+						<input type="text" placeholder="검색어를 입력하세요" id ="searchPlanName" name="searchPlanName">
+						<br>
+						<p>계획일자</p>
+                 			<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
+						
+						
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<i class="fas fa-search"></i>검색
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
-		            	</div>
 	            	</form>
 				</div>
 				
 				<div id="planContainer">
             		<div id="leftGrid">
 						<div id="leftGridHeader">
-							<span>생산 계획</span>			
+							<h2>생산 계획</h2>			
 						</div>		
 	           			<div id="planGrid"></div>
 					</div>
             		<div id="rightGrid">
 						<div id="rightGridHeader">
-							<span>상세 생산 계획</span>			
+							<h2>상세 생산 계획</h2>			
 						</div>		
 	           			<div id="planDeGrid"></div>
 					</div>
@@ -154,7 +188,8 @@
         columns: [
           {
             header: '계획코드',
-            name: 'prcsPlanCode'
+            name: 'prcsPlanCode',
+            width: 'auto'
           },
           {
             header: '계획명',
@@ -203,7 +238,8 @@
         columns: [
           {
             header: '상세계획코드',
-            name: 'prcsPlanDeCode'
+            name: 'prcsPlanDeCode',
+            width: 'auto'
           },
 //           {
 //             header: '계획코드',
