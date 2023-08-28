@@ -407,21 +407,19 @@ form {
         return prodGrid;
     }
 
-    //전체 반품 목록 조회 그리드
+    //전체 폐기 목록 조회 그리드
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${rtList}" var="rt" varStatus="status">
+        data: [<c:forEach items="${disList}" var="d" varStatus="status">
             {
-                salesRtCode: "${rt.salesRtCode}",
-                prodLot: "${rt.prodLot}",
-                salesOutCode: "${rt.salesOutCode}",
-                salesRtAmt: "${rt.salesRtAmt}",
-                salesRtDate: `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
-                salesRtWhy: "${rt.salesRtWhy}",
-                empCode: "${rt.empCode}",
-                empName: "${rt.empName}",
-                prodCode: "${rt.prodCode}",
-                salesOutAmt: "${rt.salesOutAmt}"
+            	salesDpCode: "${d.salesDpCode}",
+            	testNum: "${d.testNum}",
+            	prodCode: "${d.prodCode}",
+            	prodName: "${d.prodName}",
+            	salesDpAmt: "${d.salesDpAmt}",
+            	salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
+            	empCode: "${d.empCode}",
+            	empName: "${d.empName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -437,45 +435,33 @@ form {
             perPage: 10
         },
         columns: [
-            {
-                header: '반품코드',
-                name: 'salesRtCode',
-                value: '${rt.salesRtCode}'
-            }, {
-                header: '출고코드',
-                name: 'salesOutCode',
-                value: '${rt.salesOutCode}'
-
-            }, {
-                header: '제품LOT',
-                name: 'prodLot',
-                value: '${rt.prodLot}'
-            }, {
-                header: '제품코드',
-                name: 'prodCode',
-                value: '${rt.prodCode}'
-            }, {
-                header: '출고량',
-                name: 'salesOutAmt'
-            }, {
-                header: '반품량',
-                name: 'salesRtAmt'
-            }, {
-                header: '반품일',
-                name: 'salesRtDate',
-                className: 'yellow-background'
-            }, {
-                header: '반품사유',
-                name: 'salesRtWhy',
-                value: '${rt.salesRtWhy}'
-            }, {
-                header: '직원코드',
-                name: 'empCode',
-                hidden: true
-            }, {
-                header: '직원이름',
-                name: 'empName'
-            }
+        	 {
+                 header: '폐기코드',
+                 name: 'salesDpCode'
+             }, {
+                 header: '검수코드',
+                 name: 'testNum'
+             }, {
+                 header: '제품코드',
+                 name: 'prodCode'
+             }, {
+                 header: '제품명',
+                 name: 'prodName'
+             }, {
+                 header: '폐기량',
+                 name: 'salesDpAmt'
+             }, {
+                 header: '폐기일자',
+                 name: 'salesDpDate',
+                 className: 'yellow-background'
+             }, {
+                 header: '직원이름',
+                 name: 'empName'
+             }, {
+                 header: '직원코드',
+                 name: 'empCode',
+                 hidden: true
+             }
         ]
 
     });
@@ -499,17 +485,16 @@ form {
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
-                    let date = new Date(obj['salesRtDate']);
+                    let date = new Date(obj['salesDpDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
                     let day = date.getDate(); //일자 가져오기
-                    obj['salesRtDate'] = year + "-" + (
+                    obj['salesDpDate'] = year + "-" + (
                         ("00" + month.toString()).slice(-2)
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
 
-                    obj['salesOutAmt'] = obj['salesOutAmt'];
                 })
                 grid.resetData(data2);
             },
