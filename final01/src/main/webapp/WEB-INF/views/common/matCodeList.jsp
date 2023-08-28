@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생산 지시</title>
+<title>자재 조회</title>
 
 
 <!-- 반드시 순서 중요함 time-picker date-picker가 toastui-calendar.min.js -->
@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css"/>
 <style>
-	label {
+label {
 	  display: block;
 	  margin-bottom: 7px;
 	  margin-top: 2px;
@@ -31,9 +31,17 @@
 	
 	input[type="text"],
 	select {
-	  width: 20%;
-	  padding: 8px;
-	  margin-bottom: 10px;
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -41,20 +49,35 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
 	
 </style>
 </head>
 <body>
 <div class="black_bg"></div>
-	<h3>자재 조회</h3>
+	<h1>자재 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<div id="">		
-	                  자재명 <input type="text"  id="matSearch">
+					<form>		
+	                  <p>자재명</p> 
+	                  <input type="text"  id="matSearch">
 	                  <br>
-	                  단위 
+	                  <p>단위</p> 
  	                  <select id="unitSearch" name="unitSearch">
 								<option value="">선택</option>
 								<c:forEach items="${unitList}" var="u">
@@ -62,16 +85,17 @@
 								</c:forEach>
 						</select> 
 						<br>
-						규격 
-	                  <input type="text"  id="stdSearch" name="stdSearch">
-	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+						<p>규격 </p>
+	                  <input type="text"  id="stdSearch" name="stdSearch" style="margin-bottom: 35px">
+	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-top: 0">
 	                     <i class="fas fa-search"></i>
 	                     검색
 	                  </button>
-	                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+	                  <button type="reset" class="btn btn-info btn-icon-text" id="searchResetBtn" style="margin-top: 0">
 	                     초기화
 	                  </button>
-		          	</div>
+		          	</form>
+		          	<h2>자재 목록</h2>
 		          </div>
 	           		<div id="grid"></div>
 				
@@ -117,7 +141,7 @@
 			 	scrollX: false,
 		        scrollY: false,
 		        minBodyHeight: 400,
-		        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+		        rowHeaders: ['rowNum'],
 				pageOptions: {
 					useClient: true,
 			        perPage: 10

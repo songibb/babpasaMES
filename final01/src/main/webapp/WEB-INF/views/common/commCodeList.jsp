@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공통코드관리</title>
+<title>공통 코드 조회</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -15,37 +15,68 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
 	<style>
-		input[type="text"],
-		select {
-		  width: 20%;
-		  padding: 4px;
-		  margin-bottom: 10px;
-		  border: 1px solid #ccc;
-		  border-radius: 4px;
-		}
-		
-		select {
-		  background-color: white; 
-		}
+label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	
+	input[type="text"],
+	select {
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
 	</style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>공통코드관리</h3>
+	<h1>공통 코드 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3" >
 					<form>
-						공통코드 <input type="text" placeholder="검색어를 입력하세요" id="commSearch" ">
+						<p>공통코드</p>
+						<input type="text" placeholder="검색어를 입력하세요" id="commSearch" " style="margin-bottom: 35px" >
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
 						<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 		            </form>
 		            
-	            	<div style="display: flex; justify-content: flex-end;">
-	            		<input type="text" name="commCode" id="commCode" readonly="readonly" style="margin-bottom: 0.2%; width: 5%">
+	            	<div >
+	            		<h2>공통 코드 목록</h2>
+	            		<input type="text" name="commCode" id="commCode" readonly="readonly" style="margin-bottom: 0.2%; width: 5%; float : right;">
 	            	</div>
 	            </div>
 	            <div id="container" style="display: flex; justify-content: center;">
@@ -108,7 +139,7 @@
 					name: 'commCode'
 				},
 				{
-					header: '이름',
+					header: '공통코드명',
 					name: 'commName'
 				},
 				{
@@ -125,7 +156,7 @@
 			scrollX: false,
 			scrollY: false,
 			 minBodyHeight: 400,
-			 rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+			 rowHeaders: ['rowNum'],
 			pagination: true,
 			pageOptions: {
 				useClient: true,
@@ -147,7 +178,7 @@
 					hidden : true
 				},
 				{
-					header: '이름',
+					header: '공통상세코드명',
 					name: 'commdeName'
 				},
 				{

@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>거래처관리</title>
+<title>거래처 관리</title>
 <!-- 토스트 페이지 네이션 dd-->
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -31,12 +31,19 @@
 	  margin-top: 2px;
 	  font-weight: bold;
 	}
-	
 	input[type="text"],
 	select {
-	  width: 100%;
-	  padding: 8px;
-	  margin-bottom: 10px;
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -44,57 +51,50 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 100px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	#id input, 
+	#id select{
+		width: 100%;
+		 padding: 8px;
+		
+	}
+	#id label {
+		margin-top: 15px;
+		margin-bottom : 13px;
+		font-size: 20px;
+		font-weight: 400;
+	}
 	
+	#deleteAct{
+		float : right;
+	}
+	h2{
+		display: inline-block;
+	}
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>거래처관리</h1>
+	<h1>거래처 관리</h1>
 	<div style="display: flex;">
-	<div  style="width: 75%">
-		<div class="col-lg-12 stretch-card">
-			<div class="card">
-				<div class="card-body">
-					<div class="table-responsive pt-3">
-						<form>
-							거래처명 <input type="text" placeholder="검색어를 입력하세요" id="actSearch" style="width: 20%">
-							<br>
-							거래처 구분 
-							<select id="kindSearch" name="kindSearch" style="width: 20%">
-								<option value="">선택</option>
-								<c:forEach items="${actTypeList}" var="a">
-									<option value="${a.commdeCode }">${a.commdeName }</option>
-								</c:forEach>
-							</select>
-							<br>
-							거래상태 
-							<select id="stsSearch" name="stsSearch" style="width: 20%">
-								<option value="">선택</option>
-								<c:forEach items="${actStsList}" var="s">
-									<option value="${s.commdeCode }">${s.commdeName }</option>
-								</c:forEach>
-							</select>
-							<button type="button" class="btn btn-info btn-icon-text"
-								id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
-							<button type="reset" class="btn btn-info btn-icon-text" id="deleteAct">삭제</button>
-						</form>
-					</div>
-					<div id="grid"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div  style="width: 25%;">
+		<div  style="width: 25%;">
 		<div class="col-lg-12 stretch-card">
 			<div class="card" >
 				<div class="card-body">
 					<div class="table-responsive pt-3">
 						<form id="id">
 						
-						<h3 style="margin-bottom: 10px">등록/수정 창</h3>
+						<h2 style="margin-bottom: 20px">등록/수정</h2>
 						
 						<div>					
 							<label>거래처코드</label>
@@ -113,18 +113,60 @@
 									<option value="${s.commdeCode }">${s.commdeName }</option>
 								</c:forEach>
 							</select>
-							<label>거래처구분</label>
+							<label>거래처 구분</label>
 							<select id="actTypeList" name="actKind">
 								<c:forEach items="${actTypeList}" var="a">
 									<option value="${a.commdeCode }">${a.commdeName }</option>
 								</c:forEach>
 							</select>
-									
-							<button type="submit" class="btn btn-info btn-icon-text">저장</button>
-							<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+							<div style="text-align: center;">
+							<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">저장</button>
+							<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">취소</button>
+							</div>
 							</div>
 						</form>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div  style="width: 75%">
+		<div class="col-lg-12 stretch-card">
+			<div class="card">
+				<div class="card-body">
+					<div class="table-responsive pt-3">
+						<form>
+							<p>거래처명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id="actSearch" >
+							<br>
+							<p>거래처 구분 </p>
+							<select id="kindSearch" name="kindSearch" >
+								<option value="">선택</option>
+								<c:forEach items="${actTypeList}" var="a">
+									<option value="${a.commdeCode }">${a.commdeName }</option>
+								</c:forEach>
+							</select>
+							<br>
+							<p>거래상태 </p>
+							<select id="stsSearch" name="stsSearch"  style="margin-bottom: 35px" >
+								<option value="">선택</option>
+								<c:forEach items="${actStsList}" var="s">
+									<option value="${s.commdeCode }">${s.commdeName }</option>
+								</c:forEach>
+							</select>
+							<button type="button" class="btn btn-info btn-icon-text"
+								id="searchBtn" style="margin-top: 0">
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="reset" class="btn btn-info btn-icon-text"  style="margin-top: 0">초기화</button>
+						</form>
+						
+					</div>
+					<div>
+							<h2>거래처 목록</h2>
+							<button type="button" class="btn btn-info btn-icon-text" id="deleteAct" >삭제</button>
+					</div>
+					<div id="grid"></div>
 				</div>
 			</div>
 		</div>

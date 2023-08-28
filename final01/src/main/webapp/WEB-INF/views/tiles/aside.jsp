@@ -11,7 +11,7 @@
 <security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">  
 	<ul class="nav">
     	<li class="nav-item">
-            <a class="nav-link" href="">
+            <a class="nav-link" href="${pageContext.request.contextPath}/">
             	<i class="mdi mdi-view-grid icon-grid menu-icon"></i>
               	<span class="menu-title">메인</span>
             </a>
@@ -25,40 +25,40 @@
             <div class="collapse" id="ui-basic">
               	<ul class="nav flex-column sub-menu">
               		<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="empinfo">사원 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/empinfo">사원 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="empDir">사원 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/empDir">사원 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="commCodeList">공통 코드 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/commCodeList">공통 코드 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="commCodeAdmin">공통 코드 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/commCodeAdmin">공통 코드 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="prodCodeList">제품 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prodCodeList">제품 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="prodCodeAdmin">제품 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/prodCodeAdmin">제품 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="matCodeList">자재 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCodeList">자재 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="matCodeAdmin">자재 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/matCodeAdmin">자재 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="ActCodeList">거래처 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/ActCodeList">거래처 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="actCodeAdmin">거래처 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/actCodeAdmin">거래처 관리</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
-                		<li class="nav-item"> <a class="nav-link" href="bomCodeList">BOM 조회</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/bomCodeList">BOM 조회</a></li>
                 	</security:authorize>
                 	<security:authorize access="hasAnyAuthority('A','C')">
-                		<li class="nav-item"> <a class="nav-link" href="bomCodeAdmin">BOM 관리</a></li>
+                		<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/bomCodeAdmin">BOM 관리</a></li>
                 	</security:authorize>
               	</ul>
             </div>

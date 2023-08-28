@@ -25,19 +25,26 @@
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
 <style>
+label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	
 	input[type="text"],
 	select {
-	  width: 20%;
-	  padding: 5px;
-	  margin-bottom: 10px;
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
 	input[type="date"],
 	select {
-	  width: 20%;
+	  width: 15%;
 	  padding: 5px;
-	  margin-bottom: 10px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -45,39 +52,55 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
+	
 	
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
 </style>
 </head>
 <body>
 <div class="black_bg"></div>
-   <h3>사원조회</h3>
+   <h1>사원 조회</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">
                <div class="table-responsive pt-3">
-                   <form action="" method="get" name="formInfo">
-                  			
-                  		부서명 <select id="inputDeptSearch" name="deptCode">
+                   <form action="" method="get" name="formInfo">	
+                  		<p>부서명</p>
+                  		 	<select id="inputDeptSearch" name="deptCode">
 								<option value="">선택</option>
 								<c:forEach items="${inputDeptList}" var="d">
 									<option value="${d.commdeCode }">${d.commdeName }</option>
 								</c:forEach>
 							</select>
 							<br>	
-							
-						사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch">
-							<br>
-							
-						입사일자 <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-							
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-               </form>
+						<p>사원명</p>
+						<input type="text" placeholder="검색어를 입력하세요" id="empSearch">
+						<br>	
+						<p>입사일자</p>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-bottom: 35px">
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-top: 0">
+						<i class="fas fa-search"></i>검색
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 0">초기화</button>
+               	</form>
+               	<h2>사원 목록</h2>
                <div id="grid"></div>
                 </div>
          </div>

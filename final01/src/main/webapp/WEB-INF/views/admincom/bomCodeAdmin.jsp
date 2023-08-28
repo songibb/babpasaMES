@@ -8,12 +8,12 @@
 <meta charset="UTF-8">
 <style>
 /*모달시작*/
-#actModal{ 
-	cursor:pointer;
-}
-  
+
 .modal{ 
 	position:absolute; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; display:none;
+}
+.modal{
+	position: fixed;
 }
   
 .modal_content{
@@ -89,6 +89,45 @@
 	background-color: black;
 	color: white;
 }
+
+	input[type="text"],
+	select {
+	  width: 28%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
+	
+	.modal input{
+		 width: 60%;
+	}
 /*모달끝*/
 </style>
 <title>BOM관리</title>
@@ -112,13 +151,14 @@
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>BOM관리</h3>
+	<h1>BOM 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div style="display: flex; justify-content: space-between;">
-					<form>
-							제품명 <input type="text" placeholder="검색어를 입력하세요" id="bomSearch">
+					<form style="width: 800px">
+							<p>제품명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id="bomSearch" style="margin-bottom: 35px">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -129,7 +169,7 @@
 					<div>
 	            		<br>
 	            		<div style="display: flex; justify-content: space-between;">
-		            	<h5>제품bom등록</h5>
+		            	<h2>BOM 목록</h2>
 		            	<div>
 			            	<button id = "deleteBom" class="btn btn-info btn-icon-text">삭제</button>
 			            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
@@ -140,7 +180,7 @@
 		           		<br>
 		           		<div>
 		           			<div style="display: flex; flex; justify-content: space-between;">
-			           		<h5> bom상세등록 </h5>
+			           		<h2> BOM 상세 목록 </h2>
 			           		<button id = "deAdd" class="btn btn-info btn-icon-text" style="float: right; display: none;">상세추가</button>
 			           		</div>
 			           		<div id="deBomgrid"></div>
@@ -160,8 +200,6 @@
             <div id="modal_label_one"></div>
        </div>
        <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
     </div>
   </div>
 </div>
@@ -191,8 +229,6 @@
 	        </div>
        </div>
        <div class="m_footer">
-            <div class="modal_btn cancle" id="close_btn">CANCLE</div>
-            <div class="modal_btn save" id="save_btn">SAVE</div>
     </div>
   </div>
 </div>
@@ -245,8 +281,11 @@
 		
 		console.log(bomInfo);
     	console.log(bomDeInfo);
+    	
+    	
 		
 		let bNoValue = bomgrid.getValue(rowKey, 'bomNo');
+		
 		if(bNoValue == null){
 			bomInsert();
 			
@@ -286,6 +325,10 @@
 			}
 		})	 */
 		if(flagIn){
+			if(!bomgrid.isModified()){
+				swal("변경사항이 없습니다","","warning");
+				return false;
+			}
 			
 			bomUpdate();
 		}else{
@@ -616,7 +659,7 @@
                 name: 'prcsCode'
             },
             {
-                header: '공정이름',
+                header: '공정명',
                 name: 'prcsName',
                 editor: 'text'
             },
@@ -631,7 +674,7 @@
             hidden: true
           },
           {
-              header: '자재/반제품이름',
+              header: '자재/반제품명',
               name: 'mpName',
               editor: 'text'
             },
