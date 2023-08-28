@@ -14,6 +14,7 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+
 </head>
 <body>
    <div class="black_bg"></div>
@@ -27,11 +28,12 @@
 
                   </div>
                </div>
-               <div id="container" style="display: flex; justify-content: center;">
-                       <div id="grid" style="width: 600px; margin-right: 50px"></div>
-                       <div id="grid2" style="width: 1000px;"></div>
+               <div id="container" style="display: flex; justify-content: center;" >
+               			
+                       <div id="grid" style="width: 700px; margin-right: 20px"><h3>반제품 품질 검사 목록</h3></div>
+                       <div id="grid2" style="width: 800px;"><h3>상세 품질 검사 조회</h3></div>
                </div>
-         </div>
+         </div> 
       </div> 
    </div>
   
@@ -64,7 +66,7 @@
          el: document.getElementById('grid'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 200,
           rowHeaders: ['rowNum'],
          pagination: true,
          pageOptions: {
@@ -74,15 +76,18 @@
          columns: [
             {
                header: '검사번호',
-               name: 'testNum'
+               name: 'testNum',
+               width: 'auto'
             },
             {
                header: '생산진행코드',
-               name: 'prcsIngCode'
+               name: 'prcsIngCode',
+               width: 'auto'
             },
             {
                header: '생산코드',
-               name: 'prcsCode'
+               name: 'prcsCode',
+               width: 'auto'
             },
             {
                header: '생산량',
@@ -111,7 +116,7 @@
          el: document.getElementById('grid2'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 200,
           rowHeaders: [{type: 'rowNum'}],
          pagination: true,
          pageOptions: {
@@ -121,20 +126,24 @@
          columns: [
             {
                header: '검사번호',
-               name: 'testNum'
+               name: 'testNum',
+               width: 'auto'
             },
             {
                header: '공정진행코드',
-               name: 'prcsIngCode'
+               name: 'prcsIngCode',
+               width: 'auto'
             },
             {
                header: '상세검사번호',
-               name: 'testNumInfo'
+               name: 'testNumInfo',
+               width: 'auto'
             },
             {
                header: '검사코드',
                name: 'testCode',
-               hidden: true
+               hidden: true,
+               width: 'auto'
             },
             {
                header: '검사명',

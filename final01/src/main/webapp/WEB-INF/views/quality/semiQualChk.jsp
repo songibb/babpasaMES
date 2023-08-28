@@ -29,8 +29,8 @@
                   </div>
                </div>
                <div id="container" style="display: flex; justify-content: center;">
-                       <div id="grid" style="width: 600px; margin-right: 50px"></div>
-                       <div id="grid2" style="width: 1000px;"></div>
+                       <div id="grid" style="width: 700px; margin-right: 20px"><h3>반제품 품질 검사 목록</h3></div>
+                       <div id="grid2" style="width: 800px;"><h3>상세 품질 검사 조회</h3></div>
                </div>
          </div>
       </div> 
@@ -76,7 +76,7 @@
          el: document.getElementById('grid'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 200,
           rowHeaders: ['rowNum'],
          pagination: true,
          pageOptions: {
@@ -111,7 +111,7 @@
          el: document.getElementById('grid2'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 200,
           rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
          pagination: true,
          pageOptions: {
