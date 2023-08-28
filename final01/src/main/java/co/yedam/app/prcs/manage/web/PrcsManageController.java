@@ -14,6 +14,7 @@ import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 //20230823 백송이 - 공정 관리
 @Controller
 public class PrcsManageController {
@@ -27,17 +28,17 @@ public class PrcsManageController {
 	//공정관리 조회 - 호출
 	@GetMapping("prcsManageList")
 	public String getPrcsManageAllList(Model model){
-		//model.addAttribute("prcsManageList",prcsManageService.selectPrcsManageList());
+		model.addAttribute("prcsManageList",prcsManageService.selectPrcsManageList());
 		model.addAttribute("prcsTypeList", commCodeService.searchCommCodeUse("PRCS-TYPE"));
 		model.addAttribute("semiYnList", commCodeService.searchCommCodeUse("0U"));
 		return "process/prcsManageList";
 	}
 	
-	//공정관리 조회 - 리스트
+	//공정관리 조회 - 리스트 (검색)
 	@GetMapping("selectPrcsManageList")
 	@ResponseBody
-	public List<PrcsManageVO> getPrcsManageList(){
-		List<PrcsManageVO> list = prcsManageService.selectPrcsManageList();
+	public List<PrcsManageVO> getPrcsManageList(PrcsSearchVO prcsSearchVO){
+		List<PrcsManageVO> list = prcsManageService.selectPrcsManageList(prcsSearchVO);
 		return list;
 	}
 

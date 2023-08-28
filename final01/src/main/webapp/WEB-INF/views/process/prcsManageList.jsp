@@ -15,26 +15,79 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
+<style type="text/css">
+form p{
+	width: 180px;
+	display: inline-block;
+	font-size: 20px;
+}
+form select {
+	width: 10%;
+	padding: 6px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+form input[type="checkbox"] {
+	width: 15%;
+	padding: 6px;
+	margin-bottom: 30px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
+h2{
+	display: inline-block;
+}
+#gridHeader{
+	display: flex;
+	justify-content: space-between;
+}
+
+
+</style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>공정 관리</h2>
+	<h1>공정 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<form>
-						<div id="customtemplateSearchAndButton">		
-		            	</div>
+					<form>	
+						<p>공정구분</p>
+						<select id="searchPrcsType" name="searchPrcsType">
+							<option value="">선택</option>
+							<c:forEach items="${prcsTypeList}" var="p">
+								<option value="${p.commdeCode}">${p.commdeName }</option>
+							</c:forEach>
+						</select>
+						<br>	
+						<p>반제품생산공정여부</p>
+      					<label for="semiYes"><input type="checkbox" name="semiCk" id="semiYes">반제품유</label>
+      					<label for="semiNo"><input type="checkbox" name="semiCk" id="semiNo">반제품무</label>
+      					
+      					<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<i class="fas fa-search"></i>검색
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 	            	</form>
 	            </div>	
 	            
-            	<div>
-	           		<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
-	           		<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
-	           		<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>
+	            <div id="gridHeader">
+		            <h2>공정 목록</h2>
+	            	<div>
+		           		<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
+		           		<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
+		           		<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>
+	           		</div>
            		</div>
-           	
+           		
            		<div id="grid"></div>
 				
 	   		</div>
@@ -50,12 +103,49 @@
 	//저장
 	document.getElementById('saveBtn').addEventListener('click', saveServer);
 	
+	//검색
+	document.getElementById('searchBtn').addEventListener('click', searchPrcsManageList);
 	
 	//공정관리 조회
-	function selectListAjax(){
+// 	function selectListAjax(){
+// 		$.ajax({
+// 	        url : "selectPrcsManageList",
+// 	        method :"GET",
+// 	        success : function(result){
+// 	            grid.resetData(result);
+// 	        },
+// 	        error : function(reject){
+// 	 			console.log(reject);
+// 	 		}
+// 		})
+// 	}
+	
+// 	selectListAjax();
+	
+	//공정관리 조회 (검색)
+	function searchPrcsManageList(){
+
+		let manageObj = {};
+		manageObj['semiYes'] = 1;
+		manageObj['semiNo'] = 1;
+		
+		manageObj['searchPrcsType'] = $('#searchPrcsType').val();
+		if($('#semiYes').is(':checked')){
+ 			manageObj['semiYes'] = 2;
+		}
+		if($('#semiNo').is(':checked')){
+			manageObj['semiNo'] = 2;
+		}
+		if($('#semiYes').is(':checked') && $('#semiNo').is(':checked')){
+			manageObj['semiYes'] = 1;
+			manageObj['semiNo'] = 1;
+		}
+	
+		
 		$.ajax({
 	        url : "selectPrcsManageList",
 	        method :"GET",
+	        data : manageObj,
 	        success : function(result){
 	            grid.resetData(result);
 	        },
@@ -63,11 +153,10 @@
 	 			console.log(reject);
 	 		}
 		})
+		
 	}
 	
-	selectListAjax();
-	
-	
+
 	function addRow(){	
 		grid.appendRow({}, {at:0});
 	};
@@ -135,6 +224,16 @@
 
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
+        data: [
+	           <c:forEach items="${prcsManageList}" var="p" varStatus="status">
+	           	{
+	           		prcsCode : "${p.prcsCode}",
+	           		prcsType : "${p.prcsType}",
+	           		prcsName : "${p.prcsName}",
+	           		semiYn : "${p.semiYn}"
+	           	} <c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
+	    ] ,
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,

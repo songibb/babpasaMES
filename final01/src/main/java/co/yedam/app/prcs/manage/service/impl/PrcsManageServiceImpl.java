@@ -9,6 +9,7 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.prcs.manage.mapper.PrcsManageMapper;
 import co.yedam.app.prcs.manage.service.PrcsManageService;
 import co.yedam.app.prcs.manage.service.PrcsManageVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 @Service
 public class PrcsManageServiceImpl implements PrcsManageService {
@@ -16,10 +17,15 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 	@Autowired
 	PrcsManageMapper prcsManageMapper;
 	
-	//공정관리 조회
 	@Override
 	public List<PrcsManageVO> selectPrcsManageList() {
 		return prcsManageMapper.selectPrcsManageList();
+	}
+	
+	//공정관리 조회 (검색 포함)
+	@Override
+	public List<PrcsManageVO> selectPrcsManageList(PrcsSearchVO prcsSearchVO) {
+		return prcsManageMapper.selectPrcsManageList(prcsSearchVO);
 	}
 
 	//공정관리 등록, 수정, 삭제
@@ -47,6 +53,8 @@ public class PrcsManageServiceImpl implements PrcsManageService {
 
 		return result;
 	}
+
+	
 
 	
 

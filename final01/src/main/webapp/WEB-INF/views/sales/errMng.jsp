@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>주문 관리</title>
+<title>폐기 관리</title>
 
 <!-- 토스트 페이지 네이션 -->
-<script type="text/javascript"src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
-<link rel="stylesheet"href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
 <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 <!-- 페이지 네이션 끝 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
@@ -110,23 +110,13 @@ body {
 }
 
 /*모달시작*/
-#actModal, #prodModal, #delete {
+#prodModal, #delete {
 	cursor: pointer;
-}
-
-.modal {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
-	top: 0;
-	left: 0;
-	display: none;
 }
 
 .modal_content {
 	/*모달창 크기 조절*/
-	width: 600px;
+	width: 900px;
 	height: 600px;
 	background: #fff;
 	border-radius: 10px;
@@ -135,7 +125,7 @@ body {
 	top: 33%;
 	left: 45%;
 	margin-top: -100px;
-	margin-left: -200px;
+	margin-left: -300px;
 	text-align: center;
 	box-sizing: border-box;
 	line-height: 23px;
@@ -230,10 +220,6 @@ input[type="date"], select {
 	border-radius: 4px;
 }
 
-select {
-	background-color: white;
-}
-
 form p {
 	width: 80px;
 	display: inline-block;
@@ -244,7 +230,7 @@ form {
 	margin-bottom: 35px;
 }
 
-#prodNameFix, #actNameFix {
+#prodNameFix {
 	background-color: #868e96;
 	border-color: #868e96;
 }
@@ -253,7 +239,7 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>주문 관리</h1>
+	<h1>폐기 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
@@ -263,32 +249,23 @@ form {
 						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
-						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
-						<br>
-						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
-						<i class="bi bi-search" id="actModal"></i> <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
-						<br>
-						<p>주문일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
-						<br>
-						<p>배송상태</p>
-						<label for="before"><input type="checkbox" id="before" value="before">배송전</label> 
-						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">배송완료</label>
+						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> <br>
+						<p>폐기일자</p>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
 					</form>
-					<div id="grid">
-						<h2>주문 목록</h2>
-						<button class="btn btn-info btn-icon-text" id="save">저장</button>
-						<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-						<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
-						<button type="button" class="btn btn-info btn-icon-text excelDownload">
-							Excel <i class="bi bi-printer"></i>
-						</button>
-					</div>
+				</div>
+				<div id="grid">
+					<h2>폐기 목록</h2>
+					<button type="button" class="btn btn-info btn-icon-text excelDownload">
+						Excel <i class="bi bi-printer"></i>
+					</button>
+					<button class="btn btn-info btn-icon-text" id="save">저장</button>
+					<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+					<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 				</div>
 			</div>
 		</div>
@@ -324,9 +301,9 @@ form {
     //삭제버튼
     $('#delete').on("click", function () {
         //그리드에서 행 지움
-        orderGrid.removeCheckedRows(false);
+        rtGrid.removeCheckedRows(false);
         //마우스 커서 없앰
-        orderGrid.blur();
+        rtGrid.blur();
     });
 
     //행추가 버튼 클릭시 주문등록 행 추가
@@ -337,30 +314,27 @@ form {
             now.getMonth() + 1
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
-        let ordDate = year + "-" + month + "-" + day;
-        orderGrid.appendRow({
-            'ordDate': ordDate,
+        let salesRtDate = year + "-" + month + "-" + day;
+        rtGrid.appendRow({
+            'salesRtDate': salesRtDate,
             'empCode': `${user.id}`,
             'empName': `${user.empName}`
         }, {at: 0});
     }
 
-    //주문 form
-    var orderGrid = new tui.Grid({
+    //폐기 form
+    var rtGrid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${orderNList}" var="order" varStatus="status">
+        data: [<c:forEach items="${disList}" var="d" varStatus="status">
             {
-                salesOrdDeCode: "${order.salesOrdDeCode}",
-                ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
-                actName: "${order.actName}",
-                ordSts: "${order.ordSts}",
-                prodName: "${order.prodName}",
-                prcsRqAmt: "${order.prcsRqAmt}",
-                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-                devYn: "${order.devYn}",
-                empCode: "${order.empCode}",
-                empName: "${order.empName}",
-                prodCode: "${order.prodCode}"
+            	salesDpCode: "${d.salesDpCode}",
+            	testNum: "${d.testNum}",
+            	prodCode: "${d.prodCode}",
+            	prodName: "${d.prodName}",
+            	salesDpAmt: "${d.salesDpAmt}",
+            	salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
+            	empCode: "${d.empCode}",
+            	empName: "${d.empName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -381,45 +355,24 @@ form {
         columns: [
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
-                header: '주문상세코드',
-                name: 'salesOrdDeCode'
+                header: '폐기코드',
+                name: 'salesDpCode'
             }, {
-                header: '주문날짜',
-                name: 'ordDate',
-                value: '${order.ordDate}',
-                editor: {
-                    type: 'datePicker',
-                    options: {
-                        language: 'ko'
-                    }
-                },
-                className: 'yellow-background'
+                header: '검수코드',
+                name: 'testNum'
             }, {
-                header: '거래처명',
-                name: 'actName',
-                editor: 'text',
-                value: '${order.actName}'
-            }, {
-                header: '생산계획상태',
-                name: 'ordSts',
-                formatter: function (e) {
-                    if (e.value == 'P1') {
-                        return "계획전";
-                    } else if (e.value == 'P2') {
-                        return "계획완료";
-                    }
-                }
+                header: '제품코드',
+                name: 'prodCode'
             }, {
                 header: '제품명',
-                name: 'prodName',
+                name: 'prodName'
+            }, {
+                header: '폐기량',
+                name: 'salesDpAmt',
                 editor: 'text'
             }, {
-                header: '주문량',
-                name: 'prcsRqAmt',
-                editor: 'text'
-            }, {
-                header: '납기일자',
-                name: 'devDate',
+                header: '폐기일자',
+                name: 'salesDpDate',
                 editor: {
                     type: 'datePicker',
                     options: {
@@ -427,70 +380,20 @@ form {
                     }
                 },
                 className: 'yellow-background'
-            }, {
-                header: '출고여부',
-                name: 'devYn',
-                value: '${order.devYn}',
-                formatter: function (e) {
-                    if (e.value == 'Y') {
-                        return "출고완료";
-                    } else if (e.value == 'N') {
-                        return "출고전";
-                    }
-                }
-            }, {
-                header: '주문코드',
-                name: 'ordCode',
-                hidden: true
-            }, {
-                header: '거래처코드',
-                name: 'actCode',
-                hidden: true
             }, {
                 header: '직원이름',
                 name: 'empName'
-            }, {
-                header: '생산계획코드',
-                name: 'prcsPlanCode',
-                hidden: true
-            }, {
-                header: '제품코드',
-                name: 'prodCode',
-                hidden: true
             }, {
                 header: '직원코드',
                 name: 'empCode',
                 hidden: true
             }
+
         ]
     });
 
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
-
-    //거래처 리스트 모달 시작
-    $("#actModal").click(function () {
-        $(".modal").fadeIn();
-        preventScroll();
-        Grid = createActGrid();
-        $('.modal_title h3').text('거래처 목록');
-        Grid.on('click', () => {
-            let rowKey = Grid
-                .getFocusedCell()
-                .rowKey;
-            let actCode = Grid.getValue(rowKey, 'actCode');
-            let actName = Grid.getValue(rowKey, 'actName');
-            $("#actCodeInput").val(actCode);
-            $("#actNameFix").val(actName);
-            //모달창 닫기
-            console.log(rowKey);
-            if (rowKey != null) {
-                $(".modal").fadeOut();
-                Grid.destroy();
-            }
-
-        });
-    });
 
     //제품 리스트 모달 시작
     $("#prodModal").click(function () {
@@ -516,52 +419,35 @@ form {
         });
     });
 
-    orderGrid.on('click', () => {
-        let rowKey = orderGrid
+    rtGrid.on('click', () => {
+        let rowKey = rtGrid
             .getFocusedCell()
             .rowKey;
-        let columnName = orderGrid
+        let columnName = rtGrid
             .getFocusedCell()
             .columnName;
-        if (columnName == "actName") {
+        if (columnName == 'salesOutCode') {
             $(".modal").fadeIn();
             preventScroll();
-            Grid = createActGrid();
-            $('.modal_title h3').text('거래처 목록');
+            Grid = createOutGrid();
+            $('.modal_title h3').text('출고 목록');
             Grid.on('click', () => {
                 let rowKey2 = Grid
                     .getFocusedCell()
                     .rowKey;
-                let actCode = Grid.getValue(rowKey2, 'actCode');
-                let actName = Grid.getValue(rowKey2, 'actName');
-                console.log(actCode);
-                console.log(actName);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                orderGrid.setValue(rowKey, 'actCode', actCode);
-                orderGrid.setValue(rowKey, 'actName', actName);
-                //선택시 모달창 닫기
-                if (rowKey2 != null) {
-                    $(".modal").fadeOut();
-                    Grid.destroy();
-                }
-
-            });
-        } else if (columnName == 'prodName') {
-            $(".modal").fadeIn();
-            preventScroll();
-            Grid = createProdGrid();
-            $('.modal_title h3').text('제품 목록');
-            Grid.on('click', () => {
-                let rowKey2 = Grid
-                    .getFocusedCell()
-                    .rowKey;
+                let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
+                let prodLot = Grid.getValue(rowKey2, 'prodLot');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
-                let prodName = Grid.getValue(rowKey2, 'prodName');
+                let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
+                console.log(salesOutCode);
+                console.log(prodLot);
                 console.log(prodCode);
-                console.log(prodName);
+                console.log(salesOutAmt);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                orderGrid.setValue(rowKey, 'prodCode', prodCode);
-                orderGrid.setValue(rowKey, 'prodName', prodName);
+                rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
+                rtGrid.setValue(rowKey, 'prodLot', prodLot);
+                rtGrid.setValue(rowKey, 'prodCode', prodCode);
+                rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -574,6 +460,77 @@ form {
         //}
 
     });
+
+    //출고목록 모달
+    function createOutGrid() {
+        var prodGrid = new tui.Grid({
+            el: document.getElementById('modal_label'),
+            data: [<c:forEach items="${outList}" var="out" varStatus="status">
+                {
+                    salesOutCode: "${out.salesOutCode}",
+                    prodCode: "${out.prodCode}",
+                    actCode: "${out.actCode}",
+                    salesOutDate: `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
+                    salesOutAmt: "${out.salesOutAmt}",
+                    empCode: "${out.empCode}",
+                    salesOrdDeCode: "${out.salesOrdDeCode}",
+                    prodLot: "${out.prodLot}",
+                    prodName: "${out.prodName}",
+                    actName: "${out.actName}"
+                }
+                <c:if test="${not status.last}">,</c:if>
+            </c:forEach>
+                ],
+            scrollX: false,
+            scrollY: false,
+            minBodyHeight: 320,
+            rowHeaders: ['rowNum'],
+            selectionUnit: 'row',
+            pagination: true,
+            pageOptions: {
+                //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+                useClient: true,
+                perPage: 10
+            },
+            columns: [
+                {
+                    header: '출고코드',
+                    name: 'salesOutCode'
+                }, {
+                    header: '제품코드',
+                    name: 'prodCode'
+                }, {
+                    header: '제품명',
+                    name: 'prodName'
+                }, {
+                    header: '거래처코드',
+                    name: 'actCode'
+                }, {
+                    header: '거래처명',
+                    name: 'actName'
+                }, {
+                    header: '출고날짜',
+                    name: 'salesOutDate',
+                    className: 'yellow-background'
+                }, {
+                    header: '출고량',
+                    name: 'salesOutAmt'
+                }, {
+                    header: '직원코드',
+                    name: 'empCode'
+                }, {
+                    header: '상세주문코드',
+                    name: 'salesOrdDeCode'
+                }, {
+                    header: '제품LOT',
+                    name: 'prodLot'
+                }
+            ]
+
+        });
+
+        return prodGrid;
+    }
 
     //모달 검색
     $('#modalSearchBtn').on('click', function (e) {
@@ -596,12 +553,12 @@ form {
                     console.log(reject);
                 }
             })
-        } else if (title == '거래처 목록') {
+        } else if (title == '출고 목록') {
             let modalSearchData = {
-                actName: inputContent
+                prodName: inputContent
             }
             $.ajax({
-                url: 'getActModalSearch',
+                url: 'getOutModalSearch',
                 method: 'GET',
                 data: modalSearchData,
                 success: function (data) {
@@ -623,52 +580,6 @@ form {
             Grid.destroy();
         }
     });
-
-    //거래처 모달 그리드
-    function createActGrid() {
-        var actGrid = new tui.Grid({
-            el: document.getElementById('modal_label'),
-            data: [<c:forEach items="${actList}" var="a" varStatus="status">
-                {
-                    actCode: "${a.actCode}",
-                    actName: "${a.actName}",
-                    actSts: "${a.actSts}",
-                    actKind: "${a.actKind}"
-                }
-                <c:if test="${not status.last}">,</c:if>
-            </c:forEach>
-                ],
-            scrollX: false,
-            scrollY: false,
-            minBodyHeight:320,
-            rowHeaders: ['rowNum'],
-            selectionUnit: 'row',
-            pagination: true,
-            pageOptions: {
-                //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-                useClient: true,
-                perPage: 10
-            },
-            columns: [
-                {
-                    header: '거래처코드',
-                    name: 'actCode'
-                }, {
-                    header: '거래처명',
-                    name: 'actName'
-                }, {
-                    header: '거래상태',
-                    name: 'actSts'
-                }, {
-                    header: '거래처구분',
-                    name: 'actKind'
-                }
-            ]
-
-        });
-
-        return actGrid;
-    }
 
     //제품 리스트 모달 그리드
     function createProdGrid() {
@@ -719,58 +630,35 @@ form {
     //검색 버튼
     $('#searchBtn').on('click', searchOrderList);
     function searchOrderList(e) {
-        let actInsert = $('#actCodeInput').val();
         let prodInsert = $('#prodCodeInput').val();
         let sd = $('#startDate').val();
         let ed = $('#endDate').val();
 
-        let before = '1';
-        let comple = '1';
-        let beforeCheck = document.getElementById('before');
-        let compleCheck = document.getElementById('comple');
-        if (beforeCheck.checked && !compleCheck.checked) {
-            comple = '2';
-        } else if (!beforeCheck.checked && compleCheck.checked) {
-            before = '2';
-        }
-
         let search = {
-            actCode: actInsert,
             prodCode: prodInsert,
             startDate: sd,
-            endDate: ed,
-            before: before,
-            comple: comple
+            endDate: ed
         };
         $.ajax({
-            url: 'orderListFilter',
+            url: 'rtListFilter',
             method: 'GET',
             data: search,
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
-                    let date = new Date(obj['ordDate']);
+                    let date = new Date(obj['salesRtDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
                     let day = date.getDate(); //일자 가져오기
-                    obj['ordDate'] = year + "-" + (
+                    obj['salesRtDate'] = year + "-" + (
                         ("00" + month.toString()).slice(-2)
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
 
-                    date = new Date(obj['devDate']);
-                    year = date.getFullYear(); //0000년 가져오기
-                    month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                    day = date.getDate(); //일자 가져오기
-                    obj['devDate'] = year + "-" + (
-                        ("00" + month.toString()).slice(-2)
-                    ) + "-" + (
-                        ("00" + day.toString()).slice(-2)
-                    );
-
+                    obj['salesOutAmt'] = obj['salesOutAmt'];
                 })
-                orderGrid.resetData(data2);
+                rtGrid.resetData(data2);
             },
             error: function (reject) {
                 console.log(reject);
@@ -797,12 +685,12 @@ form {
 
     //저장 함수
     function saveServer() {
-        orderGrid.blur();
-        let modifyGridInfo = orderGrid.getModifiedRows();
+        rtGrid.blur();
+        let modifyGridInfo = rtGrid.getModifiedRows();
 
         // 수정된게 없으면 바로 빠져나감
 
-        if (!orderGrid.isModified()) {
+        if (!rtGrid.isModified()) {
             swal("", "변경사항이 없습니다", "warning");
             return false;
         }
@@ -811,36 +699,36 @@ form {
         var flag = true;
         //create, modify, delete 포함하는 전체 배열을 도는 each문
 
-        if (orderGrid.getModifiedRows().createdRows.length > 0) {
+        if (rtGrid.getModifiedRows().createdRows.length > 0) {
 
-            $.each(orderGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['ordDate'] == null || obj2['actCode'] == "" || obj2['prodCode'] == "" || obj2['prcsRqAmt'] == "" || obj2['devDate'] == null || obj2['empCode'] == "") {
+            $.each(rtGrid.getModifiedRows().createdRows, function (idx2, obj2) {
+                if (obj2['prodCode'] == "" || obj2['salesOutCode'] == "" || obj2['salesRtAmt'] == "" || obj2['salesRtDate'] == null || obj2['salesRtWhy'] == "" || obj2['empCode'] == "" || obj2['prodLot'] == "") {
                     flag = false;
                     return false;
                 }
             })
         }
 
-        if (orderGrid.getModifiedRows().updatedRows.length > 0) {
+//         if (rtGrid.getModifiedRows().updatedRows.length > 0) {
 
-            $.each(orderGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-                if (obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
-                    flag = false;
-                    return false;
-                }
-            })
+//             $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
+//                 if (obj2['salesInDate'] == null || obj2['salesInExd'] == null || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
+//                     flag = false;
+//                     return false;
+//                 }
+//             })
 
-        }
+//         }
 
         if (flag) {
             $.ajax({
-                url: 'orderSave',
+                url: 'rtSave',
                 method: 'POST',
-                data: JSON.stringify(orderGrid.getModifiedRows()),
+                data: JSON.stringify(rtGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "주문이 등록되었습니다.", "success");
-                    // 						orderGrid.resetData(data);
+                    swal("성공", "반품내역이 등록되었습니다.", "success");
+                    // 						rtGrid.resetData(data);
                 },
                 error: function (reject) {
                     console.log(reject);
@@ -852,6 +740,15 @@ form {
         }
 
     }
+
+    //엑셀 다운로드
+    const excelDownload = document.querySelector('.excelDownload');
+
+    document.addEventListener('DOMContentLoaded', () => {
+        excelDownload.addEventListener('click', function (e) {
+            rtGrid.export('xlsx');
+        })
+    })
 
     //스크롤 막기
     function preventScroll() {
@@ -866,21 +763,11 @@ form {
             }
         );
     }
-
     //스크롤 활성화
     function activeScroll() {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-
-    //엑셀 다운로드
-    const excelDownload = document.querySelector('.excelDownload');
-
-    document.addEventListener('DOMContentLoaded', () => {
-        excelDownload.addEventListener('click', function (e) {
-            orderGrid.export('xlsx');
-        })
-    })
 	</script>
 </body>
 </html>

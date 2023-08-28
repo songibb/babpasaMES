@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>거래처관리</title>
+<title>제품관리</title>
 <!-- 토스트 페이지 네이션 dd-->
 <script type="text/javascript"
 	src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
@@ -28,16 +28,23 @@
 <style>
 	label {
 	  display: block;
-	  margin-bottom: 10px;
-	  margin-top: 3px;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
 	  font-weight: bold;
 	}
-	
 	input[type="text"],
 	select {
-	  width: 100%;
-	  padding: 10px;
-	  margin-bottom: 10px;
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  width: 21%;
+	  padding: 5px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -45,50 +52,53 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	#id input, 
+	#id select{
+		width: 100%;
+		 padding: 8px;
+		
+	}
+	#id label {
+		margin-top: 19.5px;
+		margin-bottom : 14px;
+		font-size: 20px;
+		font-weight: 400;
+	}
 	
+	#deleteProd{
+		float : right;
+	}
+	h2{
+		display: inline-block;
+	}
+	
+	button {
+		margin-top: 0;
+	}
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>제품관리</h1>
+	<h1>제품 관리</h1>
 	<div style="display: flex;">
-		<div style="width: 75%">
-			<div class="col-lg-12 stretch-card" >
-				<div class="card">
-					<div class="card-body">
-						<div class="table-responsive pt-3">
-							<form>
-								<div>		
-									제품명 <input type="text" placeholder="검색어를 입력하세요" id="prodSearch" style="width: 20%">
-									<br>
-									제품구분
-									<select id="prodTypeList" name="prodKind" style="width: 20%">
-											<option value="">선택</option>
-											<c:forEach items="${prodTypeList}" var="p">
-												<option value="${p.commdeCode }">${p.commdeName }</option>
-											</c:forEach>
-									</select>
-									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-										<i class="fas fa-search"></i>검색
-									</button>
-									
-									<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-										<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
-				            	</div>
-			            	</form>
-			           		<div id="grid"></div>
-						</div>
-			   		</div>
-				</div>
-			</div> 
-		</div>
-			<div style="width: 25%">
+		<div style="width: 25%">
 				<div class="col-lg-12 stretch-card">
 					<div class="card">
 						<div class="card-body">
 							<div class="table-responsive pt-3">
-								<form>
-									<h3 style="margin-bottom: 10px">등록/수정</h3>
+								<form id="id">
+									<h2 style="margin-bottom: 10px">등록/수정</h2>
 										<label>제품코드</label>
 										<input type="text" name="prodCode" id="prodCode" readonly="readonly" style="background-color: skyblue;">
 										<label>제품명</label>
@@ -104,15 +114,51 @@
 										<input type="text" name="prodUnit" id="prodUnit">
 										<label>규격</label>
 										<input type="text" name="prodStd" id="prodStd" style="margin-bottom: 55px">
-										
-									<button type="submit" class="btn btn-info btn-icon-text" >저장</button>
-									<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+										<div style="text-align: center;">
+											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">저장</button>
+											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">취소</button>
+										</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		<div style="width: 75%">
+			<div class="col-lg-12 stretch-card" >
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive pt-3">
+							<form>
+								<div>		
+									<p>제품명</p>
+									<input type="text" placeholder="검색어를 입력하세요" id="prodSearch" >
+									<br>
+									<p>제품구분</p>
+									<select id="prodTypeListSearch" name="prodKind" style="margin-bottom: 35px">
+											<option value="">선택</option>
+											<c:forEach items="${prodTypeList}" var="p">
+												<option value="${p.commdeCode }">${p.commdeName }</option>
+											</c:forEach>
+									</select>
+									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" >
+										<i class="fas fa-search"></i>검색
+									</button>
+									
+									<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+				            	</div>
+			            	</form>
+			            	<div>
+				            	<h2>제품 목록</h2>
+				            	<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
+			           		</div>
+			           		<div id="grid"></div>
+						</div>
+			   		</div>
+				</div>
+			</div> 
+		</div>
+
 	</div>
     <div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
@@ -149,7 +195,7 @@
 	$('#searchBtn').on('click', searchProdIn);
    function searchProdIn(e){
 	   let prodName = $('#prodSearch').val();
-	   let prodKind = $('#prodTypeList').val();
+	   let prodKind = $('#prodTypeListSearch').val();
 	   let search = { prodName : prodName, prodKind:prodKind };
 	   $.ajax({
 		   url : 'getProdCodeFilter',
@@ -208,7 +254,7 @@
         ]
       });
     
-    $("form").on('submit', function(e){
+    $("#id").on('submit', function(e){
     	let prodInfo = getProdInfo();
     	
     	if(prodInfo.prodCode != ''){
@@ -273,7 +319,7 @@
 
     //form에 입력된 값들가져오기
     function getProdInfo(){
-		let inputList = $('form').serializeArray();
+		let inputList = $('#id').serializeArray();
 		
 		let prodInfo = {};
 		$.each(inputList, function(idx, obj){

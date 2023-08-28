@@ -46,25 +46,43 @@
 	background-color: rgb(255,253,235);
 }
 
+input[type="date"] {
+  width: 15%;
+  padding: 5px;
+  margin-bottom: 35px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form p{
+	width: 125px;
+	display: inline-block;
+	font-size: 20px;
+}
+
+h1{
+	margin-left: 15px;
+}
+h1, h2{
+	font-weight: 800;
+}
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>생산 관리</h2>
+	<h1>생산 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">	
 					<form>
-						<div id="customtemplateSearchAndButton">		
-							<p>생산 시작 일자</p>
-							<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
-	
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-		            	</div>
+						<p>생산 시작일자</p>
+						<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
+
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<i class="fas fa-search"></i>검색
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 	            	</form>
 	            </div>
 	            	
@@ -72,14 +90,14 @@
 	           		<div id="dirContainer">
 						<div class="leftGrid">
 							<div class="leftGridHeader">
-				            	<span>생산 지시</span>	
+				            	<h2>생산 지시</h2>	
 							</div>
 							<div id="dirGrid"></div>
 						</div>
 						
 						<div class="rightGrid">
 							<div class="rightGridHeader">
-		           				<span>상세 생산 지시</span>
+		           				<h2>상세 생산 지시</h2>
 		           				<div>
 		           					<button id="reDir" class="btn btn-info btn-icon-text">재지시</button>
 		           				</div>

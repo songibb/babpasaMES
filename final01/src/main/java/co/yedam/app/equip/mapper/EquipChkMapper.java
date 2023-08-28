@@ -2,6 +2,8 @@ package co.yedam.app.equip.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import co.yedam.app.equip.service.EquipChkVO;
 
 public interface EquipChkMapper {
@@ -26,4 +28,8 @@ public interface EquipChkMapper {
 	
 	//점검 설비 등록
 	public int insertChkEquip(EquipChkVO vo);
+	
+	//검색
+	public List<EquipChkVO> searchChkEquip(@Param("startDate")String startDate
+										 , @Param("endDate")String endDate);
 }
