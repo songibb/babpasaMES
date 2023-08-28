@@ -18,4 +18,11 @@ public class ErrVO {
 	private String empCode;
 	
 	private String prodName;
+	
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	private Date endDate;
+	
+	
 }

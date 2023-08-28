@@ -301,9 +301,9 @@ form {
     //삭제버튼
     $('#delete').on("click", function () {
         //그리드에서 행 지움
-        rtGrid.removeCheckedRows(false);
+        disGrid.removeCheckedRows(false);
         //마우스 커서 없앰
-        rtGrid.blur();
+        disGrid.blur();
     });
 
     //행추가 버튼 클릭시 주문등록 행 추가
@@ -314,16 +314,16 @@ form {
             now.getMonth() + 1
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
-        let salesRtDate = year + "-" + month + "-" + day;
-        rtGrid.appendRow({
-            'salesRtDate': salesRtDate,
+        let salesDpDate = year + "-" + month + "-" + day;
+        disGrid.appendRow({
+            'salesDpDate': salesDpDate,
             'empCode': `${user.id}`,
             'empName': `${user.empName}`
         }, {at: 0});
     }
 
     //폐기 form
-    var rtGrid = new tui.Grid({
+    var disGrid = new tui.Grid({
         el: document.getElementById('grid'),
         data: [<c:forEach items="${disList}" var="d" varStatus="status">
             {
@@ -388,7 +388,6 @@ form {
                 name: 'empCode',
                 hidden: true
             }
-
         ]
     });
 
@@ -419,35 +418,35 @@ form {
         });
     });
 
-    rtGrid.on('click', () => {
-        let rowKey = rtGrid
+    disGrid.on('click', () => {
+        let rowKey = disGrid
             .getFocusedCell()
             .rowKey;
-        let columnName = rtGrid
+        let columnName = disGrid
             .getFocusedCell()
             .columnName;
-        if (columnName == 'salesOutCode') {
+        if (columnName == 'testNum') {
             $(".modal").fadeIn();
             preventScroll();
-            Grid = createOutGrid();
-            $('.modal_title h3').text('출고 목록');
+            Grid = createChkGrid();
+            $('.modal_title h3').text('검수 목록');
             Grid.on('click', () => {
                 let rowKey2 = Grid
                     .getFocusedCell()
                     .rowKey;
-                let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
-                let prodLot = Grid.getValue(rowKey2, 'prodLot');
+                let testNum = Grid.getValue(rowKey2, 'testNum');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
-                let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
-                console.log(salesOutCode);
-                console.log(prodLot);
+                let prodName = Grid.getValue(rowKey2, 'prodName');
+                let testAmt = Grid.getValue(rowKey2, 'testAmt');
+                console.log(testNum);
                 console.log(prodCode);
-                console.log(salesOutAmt);
+                console.log(prodName);
+                console.log(testAmt);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
-                rtGrid.setValue(rowKey, 'prodLot', prodLot);
-                rtGrid.setValue(rowKey, 'prodCode', prodCode);
-                rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
+                disGrid.setValue(rowKey, 'testNum', testNum);
+                disGrid.setValue(rowKey, 'prodCode', prodCode);
+                disGrid.setValue(rowKey, 'prodName', prodName);
+                disGrid.setValue(rowKey, 'salesDpAmt', testAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -461,22 +460,19 @@ form {
 
     });
 
-    //출고목록 모달
-    function createOutGrid() {
-        var prodGrid = new tui.Grid({
+    //검수목록 모달
+    function createChkGrid() {
+        var chkGrid = new tui.Grid({
             el: document.getElementById('modal_label'),
-            data: [<c:forEach items="${outList}" var="out" varStatus="status">
+            data: [<c:forEach items="${chkList}" var="c" varStatus="status">
                 {
-                    salesOutCode: "${out.salesOutCode}",
-                    prodCode: "${out.prodCode}",
-                    actCode: "${out.actCode}",
-                    salesOutDate: `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
-                    salesOutAmt: "${out.salesOutAmt}",
-                    empCode: "${out.empCode}",
-                    salesOrdDeCode: "${out.salesOrdDeCode}",
-                    prodLot: "${out.prodLot}",
-                    prodName: "${out.prodName}",
-                    actName: "${out.actName}"
+                	testNum: "${c.testNum}",
+                    prodCode: "${c.prodCode}",
+                    prodName: "${c.prodName}",
+                    testDate: `<fmt:formatDate value="${c.testDate}" pattern="yyyy-MM-dd"/>`,
+                    testAmt: "${c.testAmt}",
+                    passAmt: "${c.passAmt}",
+                    nonPassAmt: "${c.nonPassAmt}"
                 }
                 <c:if test="${not status.last}">,</c:if>
             </c:forEach>
@@ -494,8 +490,8 @@ form {
             },
             columns: [
                 {
-                    header: '출고코드',
-                    name: 'salesOutCode'
+                    header: '검수코드',
+                    name: 'testNum'
                 }, {
                     header: '제품코드',
                     name: 'prodCode'
@@ -503,33 +499,24 @@ form {
                     header: '제품명',
                     name: 'prodName'
                 }, {
-                    header: '거래처코드',
-                    name: 'actCode'
-                }, {
-                    header: '거래처명',
-                    name: 'actName'
-                }, {
-                    header: '출고날짜',
-                    name: 'salesOutDate',
+                    header: '검수날짜',
+                    name: 'testDate',
                     className: 'yellow-background'
                 }, {
-                    header: '출고량',
-                    name: 'salesOutAmt'
+                    header: '검수량',
+                    name: 'testAmt'
                 }, {
-                    header: '직원코드',
-                    name: 'empCode'
+                    header: '합격량',
+                    name: 'passAmt'
                 }, {
-                    header: '상세주문코드',
-                    name: 'salesOrdDeCode'
-                }, {
-                    header: '제품LOT',
-                    name: 'prodLot'
+                    header: '불합격량',
+                    name: 'nonPassAmt'
                 }
             ]
 
         });
 
-        return prodGrid;
+        return chkGrid;
     }
 
     //모달 검색
@@ -553,12 +540,12 @@ form {
                     console.log(reject);
                 }
             })
-        } else if (title == '출고 목록') {
+        } else if (title == '폐기 목록') {
             let modalSearchData = {
                 prodName: inputContent
             }
             $.ajax({
-                url: 'getOutModalSearch',
+                url: 'errSearchList',
                 method: 'GET',
                 data: modalSearchData,
                 success: function (data) {
@@ -640,25 +627,23 @@ form {
             endDate: ed
         };
         $.ajax({
-            url: 'rtListFilter',
+            url: 'errListFilter',
             method: 'GET',
             data: search,
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
-                    let date = new Date(obj['salesRtDate']);
+                    let date = new Date(obj['salesDpDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
                     let day = date.getDate(); //일자 가져오기
-                    obj['salesRtDate'] = year + "-" + (
+                    obj['salesDpDate'] = year + "-" + (
                         ("00" + month.toString()).slice(-2)
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
-
-                    obj['salesOutAmt'] = obj['salesOutAmt'];
                 })
-                rtGrid.resetData(data2);
+                disGrid.resetData(data2);
             },
             error: function (reject) {
                 console.log(reject);
@@ -685,12 +670,12 @@ form {
 
     //저장 함수
     function saveServer() {
-        rtGrid.blur();
-        let modifyGridInfo = rtGrid.getModifiedRows();
+    	disGrid.blur();
+        let modifyGridInfo = disGrid.getModifiedRows();
 
         // 수정된게 없으면 바로 빠져나감
 
-        if (!rtGrid.isModified()) {
+        if (!disGrid.isModified()) {
             swal("", "변경사항이 없습니다", "warning");
             return false;
         }
@@ -699,36 +684,25 @@ form {
         var flag = true;
         //create, modify, delete 포함하는 전체 배열을 도는 each문
 
-        if (rtGrid.getModifiedRows().createdRows.length > 0) {
+        if (disGrid.getModifiedRows().createdRows.length > 0) {
 
-            $.each(rtGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['prodCode'] == "" || obj2['salesOutCode'] == "" || obj2['salesRtAmt'] == "" || obj2['salesRtDate'] == null || obj2['salesRtWhy'] == "" || obj2['empCode'] == "" || obj2['prodLot'] == "") {
+            $.each(disGrid.getModifiedRows().createdRows, function (idx2, obj2) {
+                if (obj2['salesDpCode'] == "" || obj2['testNum'] == "" || obj2['prodCode'] == "" || obj2['salesDpAmt'] == null || obj2['salesDpDate'] == "" || obj2['empCode'] == "") {
                     flag = false;
                     return false;
                 }
             })
         }
 
-//         if (rtGrid.getModifiedRows().updatedRows.length > 0) {
-
-//             $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-//                 if (obj2['salesInDate'] == null || obj2['salesInExd'] == null || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
-//                     flag = false;
-//                     return false;
-//                 }
-//             })
-
-//         }
-
         if (flag) {
             $.ajax({
-                url: 'rtSave',
+                url: 'ErrDisDirSave',
                 method: 'POST',
-                data: JSON.stringify(rtGrid.getModifiedRows()),
+                data: JSON.stringify(disGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "반품내역이 등록되었습니다.", "success");
-                    // 						rtGrid.resetData(data);
+                    swal("성공", "폐기내역이 등록되었습니다.", "success");
+                    // 						disGrid.resetData(data);
                 },
                 error: function (reject) {
                     console.log(reject);
@@ -746,7 +720,7 @@ form {
 
     document.addEventListener('DOMContentLoaded', () => {
         excelDownload.addEventListener('click', function (e) {
-            rtGrid.export('xlsx');
+        	disGrid.export('xlsx');
         })
     })
 
