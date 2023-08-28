@@ -22,6 +22,7 @@
    
    .my-box .title{
       font-size : 30px;
+      font-weight: 600;
       padding-bottom : 30px;
       display : inline-block;
       
@@ -78,11 +79,10 @@
    </div>
    <div style="height: 110%; display: flex; justify-content: space-between;">
      <div id="chart-area" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div>
-     
-     <div id="chart-prodList" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div>
-   
-   <div id="chart-prcs" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div>
+      <div id="chart-prcs" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div>
+     <div id="chart-prodList" style="width: 31%; height: 60%; min-width: 20%; min-height: 20%;"></div> 
    </div>
+ 
 	
 <script>
 
@@ -113,7 +113,13 @@
      ],
    };
    const options = {
-      chart: { title: '', width:'auto',height: 'auto' }, 
+      chart: { title: '제품별 판매량 (전일)', width:'auto',height: 'auto' }, 
+      yAxis: {
+  	    title: '판매량'
+  	  },
+  	  xAxis: {
+  	    title: '제품명'
+  	  },
 
      legend: {
           visible: false,
@@ -121,7 +127,12 @@
      theme: {
           series: {
              barWidth: 30
-             }
+             },
+             title: {
+                 fontSize: 20,
+                 fontWeight: 700,
+                 color: 'gray'
+               }
            }
    };
       
@@ -150,7 +161,13 @@
             ],
           };
    const options = {
-      chart: { title: '제품별 현재 재고량', width:'auto',height: 'auto' }, 
+      chart: { title: '제품별 재고량 (현재)', width:'auto',height: 'auto' }, 
+      yAxis: {
+    	    title: '재고량'
+    	  },
+    	  xAxis: {
+    	    title: '제품명'
+    	  },
 
      legend: {
           visible: false,
@@ -158,7 +175,12 @@
      theme: {
           series: {
              barWidth: 30
-             }
+             },
+             title: {
+                 fontSize: 20,
+                 fontWeight: 700,
+                 color: 'gray'
+               }
            }
    };
        
@@ -178,7 +200,7 @@
                            ],
                series: [
                  {
-                   name: '재고량',
+                   name: '생산량',
                    data: [
                       <c:forEach items="${prcsAmtList}" var="p">
                          ${p.passAmt},
@@ -189,8 +211,13 @@
                ],
              };
       const options = {
-         chart: { title: '제품별 전날 생산량', width:'auto',height: 'auto' }, 
-
+         chart: { title: '제품별 생산량 (전일)', width:'auto',height: 'auto' }, 
+         yAxis: {
+     	    title: '생산량'
+     	  },
+     	  xAxis: {
+     	    title: '제품명'
+     	  },
 
         legend: {
              visible: false,
@@ -198,7 +225,12 @@
         theme: {
              series: {
                 barWidth: 30
-                }
+                },
+                title: {
+                    fontSize: 20,
+                    fontWeight: 700,
+                    color: 'gray'
+                  }
               }
       };
           

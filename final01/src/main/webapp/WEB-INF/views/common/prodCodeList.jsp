@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품조회</title>
+<title>제품 조회</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -16,16 +16,24 @@
 <style>
 	label {
 	  display: block;
-	  margin-bottom: 10px;
-	  margin-top: 3px;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
 	  font-weight: bold;
 	}
 	
 	input[type="text"],
 	select {
-	  width: 100%;
-	  padding: 10px;
-	  margin-bottom: 10px;
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -33,12 +41,26 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
 	
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>제품조회</h3>
+	<h1>제품 조회</h1>
 
 		<div>
 			<div class="col-lg-12 stretch-card" >
@@ -47,15 +69,17 @@
 						<div class="table-responsive pt-3">
 							<form>
 								<div>		
-									제품명 <input type="text" placeholder="검색어를 입력하세요" id="prodSearch" style="width: 20%">
+									<p>제품명</p>
+									<input type="text" placeholder="검색어를 입력하세요" id="prodSearch" >
 									<br>
-									제품구분
-									<select id="prodTypeList" name="prodKind" style="width: 20%">
+									<p>제품구분</p>
+									<select id="prodTypeList" name="prodKind" style="margin-bottom: 35px">
 											<option value="">선택</option>
 											<c:forEach items="${prodTypeList}" var="p">
 												<option value="${p.commdeCode }">${p.commdeName }</option>
 											</c:forEach>
 									</select>
+									
 									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 										<i class="fas fa-search"></i>검색
 									</button>
@@ -64,6 +88,7 @@
 										<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
 				            	</div>
 			            	</form>
+			            	<h2>제품 목록</h2>
 			           		<div id="grid"></div>
 						</div>
 			   		</div>
@@ -115,7 +140,7 @@ function searchProdIn(e){
      scrollX: false,
      scrollY: false,
      minBodyHeight: 400,
-		rowHeaders: [{type:'rowNum'},{type: 'checkbox'}],
+		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,

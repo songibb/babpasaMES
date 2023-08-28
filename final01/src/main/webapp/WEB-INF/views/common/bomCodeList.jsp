@@ -18,19 +18,54 @@
     	.yellow-background {
         background-color: rgb(255,253,235);
 		}
+		
+			input[type="text"],
+	select {
+	  width: 28%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
     </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>BOM조회</h3>
+	<h1>BOM 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<form>
+					<form style="width: 800px">
 								
-							제품명 
-							<input type="text" placeholder="검색어를 입력하세요" id="bomSearch" ">
+							<p>제품명</p> 
+							<input type="text" placeholder="검색어를 입력하세요" id="bomSearch" style="margin-bottom: 35px">
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -38,9 +73,9 @@
 		            	
 	            	</form>
 	            	</div>
-	            	<p> bom조회 </p>
+	            	<h2> BOM 목록 </h2>
 	           		<div id="grid"></div>
-	           		<p> bom상세조회 </p>
+	           		<h2> BOM 상세 목록 </h2>
 	           		<div id="grid2"></div>
 				
 	   		</div>
@@ -154,7 +189,7 @@
               name: 'bomCode',
             },
           {
-                header: '공정코드',
+                header: '공정명',
                 name: 'prcsName',
             },
           {
@@ -162,7 +197,7 @@
             name: 'kindName',
           },
           {
-            header: '자재/반제품코드',
+            header: '자재/반제품명',
             name: 'mpName'
           },
           {

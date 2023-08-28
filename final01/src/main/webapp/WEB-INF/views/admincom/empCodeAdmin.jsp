@@ -27,31 +27,59 @@
 <style>
 	label {
 	  display: block;
-	  margin-bottom: 5px;
-	  margin-top: 7.5px;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
 	  font-weight: bold;
 	}
-	
 	input[type="text"],
 	input[type="password"],
 	select {
-	  width: 100%;
-	  padding: 5px;
-	  margin-bottom: 10px;
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
 	input[type="date"],
+	
 	select {
-	  width: 25%;
+	  width: 21%;
 	  padding: 5px;
-	  margin-bottom: 10px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
-	
 	select {
 	  background-color: white; 
+	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	#userInsertForm input,
+	#userInsertForm input[type="password"] ,
+	#userInsertForm select
+	{
+		width: 100%;
+		 padding: 8px;
+		
+	}
+	#userInsertForm label {
+		margin-top: 8px;
+		margin-bottom : 10px;
+		font-size: 20px;
+		font-weight: 400;
+	}
+
+	h2{
+		display: inline-block;
 	}
 	
 	.yellow-background {
@@ -62,48 +90,16 @@
 </head>
 <body>
 <div class="black_bg"></div>
-   	<h3>사원관리</h3>
+   	<h1>사원 관리</h1>
    	<div style="display: flex; ">
-		<div style="width: 75%;">
-		     <div class="col-lg-12 stretch-card">
-       <div class="card">
-           <div class="card-body">
-               <div class="table-responsive pt-3">
-                   <form action="" method="get" name="formInfo">
-                  			
-                  		부서명
-                  			<select id="inputDeptSearch" name="deptCode">
-								<option value="">선택</option>
-								<c:forEach items="${inputDeptList}" var="d">
-									<option value="${d.commdeCode }">${d.commdeName }</option>
-								</c:forEach>
-							</select>
-							<br>	
-							
-						사원명 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" style="width: 25%">
-							<br>
-							
-						입사일자 <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-							
-								<i class="fas fa-search"></i>검색
-							</button>
-							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-               </form>
-               <div id="grid"></div>
-                </div>
-         </div>
-      </div>
-   </div>  
-	   </div>
-	   <div style="width: 25%;">
+   	<div style="width: 25%;">
 			<div class="col-lg-12 stretch-card">
 			<div class="card" >
 				<div class="card-body">
 					<div class="table-responsive pt-3">
 						<form id="userInsertForm" method="post">
 						<div>
-						<h3 style="border: 1px">등록/수정</h3>
+						<h2 style="border: 1px">등록/수정</h2>
 						<br>
 						</div>
 							<label>사원코드</label>
@@ -128,14 +124,52 @@
 									<option value="${i.commdeCode }">${i.commdeName }</option>
 								</c:forEach>
 							</select>
+							<div style="text-align: center; margin-bottom: 5px;">
 							<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
 							<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+							</div>
 						</form>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div style="width: 75%;">
+		     <div class="col-lg-12 stretch-card">
+       <div class="card">
+           <div class="card-body">
+               <div class="table-responsive pt-3">
+                   <form action="" method="get" name="formInfo">
+                  			
+                  		<p>부서명</p>
+                  			<select id="inputDeptSearch" name="deptCode">
+								<option value="">선택</option>
+								<c:forEach items="${inputDeptList}" var="d">
+									<option value="${d.commdeCode }">${d.commdeName }</option>
+								</c:forEach>
+							</select>
+							<br>	
+							
+						<p>사원명</p>
+						 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" >
+							<br>
+							
+						<p>입사일자</p> 
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-bottom: 35px">
+							<button type="button" style="margin-top: 0px" class="btn btn-info btn-icon-text" id="searchBtn">
+							
+								<i class="fas fa-search"></i>검색
+							</button>
+							<button type="reset"  style="margin-top: 0px" class="btn btn-info btn-icon-text">초기화</button>
+               </form>
+               <h2>사원 목록</h2>
+               <div id="grid"></div>
+                </div>
+         </div>
+      </div>
+   </div>  
+	   </div>
+	   
    </div>
    <div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
@@ -307,7 +341,12 @@
 				   method : 'GET',
 				   data : search,
 				   success : function(data){
-					   grid.resetData(data);
+					   $.each(data, function(i, objDe){
+							let empDate = data[i]['empDate'];
+							data[i]['empDate'] = getDate(empDate);
+						})
+						
+						  grid.resetData(data);
 					   
 				   },
 				   error : function(reject){
@@ -344,7 +383,11 @@
 				   method : 'GET',
 				   data : search,
 				   success : function(data){
-					   grid.resetData(data);
+					   $.each(data, function(i, objDe){
+							let empDate = data[i]['empDate'];
+							data[i]['empDate'] = getDate(empDate);
+						})
+						grid.resetData(data);
 				   },
 				   error : function(reject){
 					   console.log(reject);

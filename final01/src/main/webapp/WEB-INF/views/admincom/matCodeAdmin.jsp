@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생산 지시</title>
+<title>자재 관리</title>
 
 
 <!-- 반드시 순서 중요함 time-picker date-picker가 toastui-calendar.min.js -->
@@ -31,9 +31,17 @@
 	
 	input[type="text"],
 	select {
-	  width: 20%;
-	  padding: 8px;
-	  margin-bottom: 10px;
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	input[type="date"],
+	select {
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -41,46 +49,68 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	h2{
+		display : inline-block;
+	}
+	
+	#matSave, #delete, #matAdd{
+	
+	float : right;
+}
+
 	
 </style>
 </head>
 <body>
 <div class="black_bg"></div>
-	<h3>자재 관리</h3>
+	<h1>자재 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
-					<div id="">		
-	                  자재명 
-	                  <input type="text"  id="matSearch">
-	                  <br>
-	                  단위 
- 	                  <select id="unitSearch" name="unitSearch">
+					<form>		
+						<p>자재명 </p>
+						<input type="text"  id="matSearch">
+						<br>
+						<p> 단위 </p>
+						<select id="unitSearch" name="unitSearch">
 								<option value="">선택</option>
 								<c:forEach items="${unitList}" var="u">
 									<option value="${u.commdeCode }">${u.commdeCode }</option>
 								</c:forEach>
 						</select> 
 						<br>
-						규격 
-	                  <input type="text"  id="stdSearch" name="stdSearch">
-	                   <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+						<p>규격 </p>
+						<input type="text"  id="stdSearch" name="stdSearch" style="margin-bottom: 35px">
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-top: 0">
 	                     <i class="fas fa-search"></i>
 	                     검색
-	                  </button>
-	                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+						</button>
+						<button type="reset" class="btn btn-info btn-icon-text" id="searchResetBtn" style="margin-top: 0">
 	                     초기화
-	                  </button>
-		          	</div>
+						</button>
+		          	</form>
 		          </div>
-		          <div style="display: flex; justify-content: right;">
-	            	<button id="matSave" class="btn btn-info btn-icon-text" >저장</button>
-	            	<button id="delete" class="btn btn-info btn-icon-text" >삭제</button>
-	            	<button id="matAdd" class="btn btn-info btn-icon-text">행추가</button>
+		          <div>
+		        	 <div>
+		            	<h2>자재 목록</h2>
+		            	<button id="matSave" class="btn btn-info btn-icon-text" >저장</button>
+		            	<button id="delete" class="btn btn-info btn-icon-text" >삭제</button>
+		            	<button id="matAdd" class="btn btn-info btn-icon-text">행추가</button>
 	            	</div>
 	           		<div id="grid"></div>
-				
+				</div>
 	   		</div>
 		</div>
 	</div>
@@ -122,6 +152,11 @@
 		function matSave(){
 			grid.blur();
 			let modifyGridInfo = grid.getModifiedRows();
+			
+			if(!grid.isModified()){
+				swal("변경사항이 없습니다","","warning");
+				return false;
+			}
 			
 			if(!grid.isModified()){
 				swal("값이 모두 입력되지 않았습니다","success");

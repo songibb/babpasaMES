@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품조회</title>
+<title>거래처 조회</title>
 	<!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -21,11 +21,20 @@
 	  font-weight: bold;
 	}
 	
+
 	input[type="text"],
 	select {
-	  width: 100%;
-	  padding: 8px;
-	  margin-bottom: 10px;
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -33,42 +42,55 @@
 	select {
 	  background-color: white; 
 	}
+	form p{
+		width: 100px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+
 	
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h3>거래처조회</h3>
+	<h1>거래처 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
 								
-							거래처명
-							<input type="text" placeholder="검색어를 입력하세요" id="actSearch" style="width: 20%">
+							<p>거래처명</p>
+							<input type="text" placeholder="검색어를 입력하세요" id="actSearch">
 							<br>
-							거래처 구분 
-							<select id="kindSearch" name="kindSearch" style="width: 20%">
+							<p>거래처 구분 </p>
+							<select id="kindSearch" name="kindSearch" >
 								<option value="">선택</option>
 								<c:forEach items="${actTypeList}" var="a">
 									<option value="${a.commdeCode }">${a.commdeName }</option>
 								</c:forEach>
 							</select>
 							<br>
-							거래상태 
-							<select id="stsSearch" name="stsSearch" style="width: 20%">
+							<p>거래상태 </p>
+							<select id="stsSearch" name="stsSearch" style="margin-bottom: 35px">
 								<option value="">선택</option>
 								<c:forEach items="${actStsList}" var="s">
 									<option value="${s.commdeCode }">${s.commdeName }</option>
 								</c:forEach>
 							</select>
-							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-top: 0">
 								<i class="fas fa-search"></i>검색
 							</button>
-							<button type="button" class="btn btn-info btn-icon-text">초기화</button>
+							<button type="reset" class="btn btn-info btn-icon-text"  style="margin-top: 0">초기화</button>
 		            	
 	            	</form>
+	            	<h2>거래처 목록</h2>
 	           		<div id="grid"></div>
 				</div>
 	   		</div>
