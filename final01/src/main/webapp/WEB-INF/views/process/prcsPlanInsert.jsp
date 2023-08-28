@@ -330,48 +330,46 @@
 	//삭제
 	function removeData(){
 
-// 		var swal = swal({
-// 		    title: "정말 삭제하시겠습니까?",
-// 		    text: "",
-// 		    icon: "info",
-// 			buttons: ["취소", "확인"],
-// 			closeOnConfirm: false,
-// 			closeOnCancel : true
-// 		})
-
-		
-// 		sweetAlert.question('제목입니다.', '질문입니다.', '예', '아니오')
-		
-		let message = confirm("정말 삭제하시겠습니까?");
-		if(message) {		
-			//생산계획 -> delete (상세생산계획은 CASCADE로 삭제)
-			
-			//체크한 행들의 prcsPlanCode와 ordCode가 담긴 list 만들기
-			let checkList = planGrid.getCheckedRows();
-
-			let planCodeList = [];			
-			$.each(checkList, function(i, obj){
-				planCode = checkList[i]['prcsPlanCode'];
-				planCodeList.push(planCode);
-			})
-			
-			$.ajax({
-				url : 'prcsPlanDelete',
-				method : 'POST',
-				data : JSON.stringify(planCodeList),
-				contentType : 'application/json',
-				success : function(data){	
-					//체크된 행 부분 삭제
-					planGrid.removeCheckedRows(false);
-					//planDeGrid.clear();
-					searchPlanList();
-					swal(" 삭제가 완료되었습니다.", "", "success");
-				},
-				error : function(reject){
-		 			console.log(reject);
-		 		}		
-			})	
-		} 
+		swal({
+			title: "정말 삭제하시겠습니까?",
+			text: "",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+		.then((message) => {
+			if(message) {		
+				//생산계획 -> delete (상세생산계획은 CASCADE로 삭제)
+				
+				//체크한 행들의 prcsPlanCode와 ordCode가 담긴 list 만들기
+				let checkList = planGrid.getCheckedRows();
+	
+				let planCodeList = [];			
+				$.each(checkList, function(i, obj){
+					planCode = checkList[i]['prcsPlanCode'];
+					planCodeList.push(planCode);
+				})
+				
+				$.ajax({
+					url : 'prcsPlanDelete',
+					method : 'POST',
+					data : JSON.stringify(planCodeList),
+					contentType : 'application/json',
+					success : function(data){	
+						//체크된 행 부분 삭제
+						planGrid.removeCheckedRows(false);
+						//planDeGrid.clear();
+						searchPlanList();
+						swal(" 삭제가 완료되었습니다.", "", "success");
+					},
+					error : function(reject){
+			 			console.log(reject);
+			 		}		
+				})	
+			} else{
+				swal("삭제가 취소되었습니다.", "", {icon: "warning"});
+			}
+		})
 	}
 	
 
@@ -428,7 +426,8 @@
   		      options: {
   		    	  language: 'ko'
   		      }
-  		    }
+  		    },
+  		  	className: 'yellow-background'
           },
           {
             header: '예상생산종료일',

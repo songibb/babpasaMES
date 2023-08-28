@@ -46,6 +46,10 @@
 	justify-content: space-between;
 }
 
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+
 
 </style>    
     
@@ -304,6 +308,7 @@
    		    	  language: 'ko'
    		      }
    		    },
+   		 	className: 'yellow-background'
           },
 //           {
 //             header: '생산종료일자',
@@ -373,7 +378,8 @@
    		      options: {
    		    	  language: 'ko'
    		      }
-   		    }
+   		    },
+   		 	className: 'yellow-background'
           },
 //           {
 //             header: '생산마감일자',
