@@ -548,7 +548,7 @@
         el: document.getElementById('bomgrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 120,
 		rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		pagination: true,
 		pageOptions: {
@@ -600,7 +600,7 @@
         el: document.getElementById('deBomgrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 30,
+        minBodyHeight: 400,
         rowHeaders: ['rowNum'],
         columns: [
           {
