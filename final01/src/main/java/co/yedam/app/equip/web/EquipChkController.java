@@ -17,6 +17,7 @@ import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.equip.service.EquipChkService;
 import co.yedam.app.equip.service.EquipChkVO;
+import co.yedam.app.sales.out.service.OutVO;
 
 //장서영 - 설비 점검
 
@@ -108,4 +109,13 @@ public class EquipChkController {
 			List<EmpInfoVO> list = empInfoService.selectEmpInfoList();
 			return list;
 		}
+		
+	// 검색 ajax
+	@GetMapping("/searchChkEquip")
+	@ResponseBody
+	public List<EquipChkVO> outListFilter(@RequestParam(value = "startDate", required = false) String startDate
+									, @RequestParam(value = "endDate", required = false) String endDate) {
+		List<EquipChkVO> vo = equipChkService.searchChkEquip(startDate, startDate);
+		return vo;
+	}
 }

@@ -20,5 +20,4 @@ public class OffEquipVO {
 	private String eqName;
 	private String eqType;
 	private String eqSts;
-	
 }

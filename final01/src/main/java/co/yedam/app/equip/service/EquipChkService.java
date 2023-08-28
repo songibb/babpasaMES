@@ -24,4 +24,7 @@ public interface EquipChkService {
 	
 	//점검 설비 등록
 	public int modifyEquipChk(GridVO<EquipChkVO> data);
+	
+	//검색
+	public List<EquipChkVO> searchChkEquip(String startDate, String outDate);
 }

@@ -94,6 +94,12 @@
                 	<security:authorize access="hasAnyAuthority('A','S')">
                 	<li class="nav-item"><a class="nav-link" href="rtMng">완제품 반품 관리</a></li>
                 	</security:authorize>
+                	<security:authorize access="hasAnyAuthority('A','C','S','P','M','Q','E')">
+                	<li class="nav-item"><a class="nav-link" href="ErrDisList">완제품 폐기 조회</a></li>
+                	</security:authorize>
+                	<security:authorize access="hasAnyAuthority('A','S')">
+                	<li class="nav-item"><a class="nav-link" href="ErrDisDir">완제품 폐기 관리</a></li>
+                	</security:authorize>
                 	</security:authorize>
               	</ul>
             </div>

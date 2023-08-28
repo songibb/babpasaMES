@@ -98,4 +98,20 @@
      ORDER BY EMP_CODE ASC
   </select>
   
+  <!-- 검색 -->
+  <select id="searchChkEquip" resultType="EquipChkVO">
+  SELECT B.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, B.*
+  				,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
+  	FROM EQ_EQUIP A LEFT JOIN EQ_CHK B
+  		ON(A.EQ_CODE = B.EQ_CODE)
+  	<where>
+  	<if test="startDate != null and startDate != ''">
+      	AND TO_CHAR(B.CHK_DATE, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+   	</if>
+   	<if test="endDate != null and endDate != ''">
+   		AND TO_CHAR(B.CHK_DATE, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+   	</if>
+  	</where>
+  	ORDER BY A.EQ_CODE ASC
+  	</select>
   </mapper>
