@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="${pageContext.request.contextPath}/resources/js/template.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/off-canvas.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/hoverable-collapse.js"></script>
@@ -69,10 +70,34 @@
 				</div>
 			</li> -->
 			
+			
         	<li class="nav-item nav-profile dropdown">
+        	<c:if test="${user.role ne null}">
         		<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-              	${user.empName}
+              	| <c:if test="${user.role eq 'A'}">
+              		관리자
+              	</c:if>
+              	<c:if test="${user.role eq 'C'}">
+              		공통팀
+              	</c:if>
+              	<c:if test="${user.role eq 'S'}">
+              		영업팀
+              	</c:if>
+              	<c:if test="${user.role eq 'P'}">
+              		생산팀
+              	</c:if>
+              	<c:if test="${user.role eq 'M'}">
+              		자재팀
+              	</c:if>
+              	<c:if test="${user.role eq 'Q'}">
+              		품질팀
+              	</c:if>
+              	<c:if test="${user.role eq 'E'}">
+              		설비팀
+              	</c:if>
+              	 | ${user.empName} 님
             	</a>
+            </c:if>
             	<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               		
               			<sec:authorize access="!isAuthenticated()">
