@@ -79,13 +79,22 @@ public class PrcsDirController {
 //	}
 	
 	
-	//미지시 생산계획 목록 조회
+	//미지시 생산계획 조회
 	@GetMapping("notDirPlanList")
 	@ResponseBody
 	public List<PrcsPlanVO> getNotDirPlanList(){
 		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList();
 		return list;
 	}
+	
+	//미지시 상세생산계획 조회
+	@GetMapping("notDirPlanDeList")
+	@ResponseBody
+	public List<PrcsPlanVO> getNotDirPlanDeList(String prcsPlanCode){
+		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanDeList(prcsPlanCode);
+		return list;
+	}
+	
 	
 
 	//BOM 조회

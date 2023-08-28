@@ -47,7 +47,7 @@
 	            Grid.destroy();   
 				
 	    		$.ajax({
-	    			url : 'prcsPlanDeList',
+	    			url : 'notDirPlanDeList',
 	    			method : 'GET',
 	    			data : { prcsPlanCode : planCode },
 	    			success : function(data){

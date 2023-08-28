@@ -75,7 +75,7 @@
 		{
 			CALL PR_PRCS_START(
 				#{prcsDirDeCode},
-				#{prcsCode},
+				#{prcsIngCode},
 				#{eqCode},
 				#{empCode},
 				#{prcsStartTime}
@@ -88,7 +88,7 @@
 		{
 			CALL PR_PRCS_END(
 				#{prcsDirDeCode},
-				#{prcsCode},
+				#{prcsIngCode},
 				#{eqCode},
 				#{errAmt},
 				#{prcsEndTime}
@@ -133,9 +133,9 @@
 	<select id="selectPrcsIngSts" statementType="CALLABLE" parameterType="PrcsIngVO">
 		{
 			CALL PR_SELECT_ING_STS(
-				#{prcsDirDeCode}
+				#{prcsIngCode}
+				, #{prcsDirDeCode}
 				, #{prodCode}
-				, #{prcsCode}
 				, #{result, mode=OUT, jdbcType=VARCHAR}
 			)
 		}
@@ -161,6 +161,9 @@
 		  				   JOIN prcs_dir d 
 		  				     ON dd.prcs_dir_code = d.prcs_dir_code
 		<where>
+			<if test="searchPrcsCode != null and !searchPrcsCode.equals('')">
+					AND l.prcs_code LIKE '%' || #{searchPrcsCode} || '%'
+			</if>
 			<if test="searchProdCode != null and !searchProdCode.equals('')">
 					AND l.prod_code LIKE '%' || #{searchProdCode} || '%'
 			</if>

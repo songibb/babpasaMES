@@ -532,11 +532,11 @@
 // 				name: 'prcsDirAmt',
 // 				hidden: true
 // 			},
-//      		{
-// 				header: '지시상태',
-// 				name: 'prcsDirSts',
-// 				hidden: true
-// 			},
+     		{
+				header: '지시상태',
+				name: 'prcsDirSts',
+				hidden: true
+			},
 // 			{
 // 				header: '생산량',
 // 				name: 'prcsAmt',
@@ -570,6 +570,13 @@
 						$.each(planDeGrid.getData(), function(idx, obj){
 							planDeGrid.disableRow(obj['rowKey']);
 						});
+					} else{
+						//분할지시 한 경우, 상세 생산 계획에서 지시완료 일때 수정 불가
+						$.each(data, function(i, obj){
+							if(data[i]['prcsDirSts'] == '지시완료'){
+								planDeGrid.disableRow(obj['rowKey']);
+							}
+						})
 					}
 	 		    },
 				error : function(reject){
@@ -585,7 +592,8 @@
 		$.each(planGrid.getData(), function(idx, obj){
 			if(obj['prcsDirYn'] == '지시완료'){	
 				planGrid.disableRow(obj['rowKey']);
-			}
+			} 
+			
 		})
 	}
 	

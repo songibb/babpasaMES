@@ -24,10 +24,10 @@ public interface PrcsDirMapper {
 	public int insertPrcsDirDe(PrcsDirVO prcsDirVO);
 	
 	
-	//미지시 계획 조회
+	//미지시 생산계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanList();
 	
-	//미지시 상세 계획 조회
+	//미지시 상세생산계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);
 	
 	

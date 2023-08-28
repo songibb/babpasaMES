@@ -6,13 +6,16 @@ import lombok.Data;
 public class PrcsSearchVO {
 	//검색용 VO
 	
+	//날짜
+	private String startDate;				
+	private String endDate;
+
 	//생산계획 검색
 	private String searchPlanName;			//계획명
 	
+	//공정실적 검색
 	private String searchProdCode; 			//제품코드
-	
-	private String startDate;				
-	private String endDate;
+	private String searchPrcsCode;			//공정코드
 	
 	//공정관리 검색
 	private String searchPrcsType;			//공정구분

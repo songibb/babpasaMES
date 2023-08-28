@@ -122,6 +122,12 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		return prcsDirMapper.selectNotDirPlanList();
 	}
 	
+	//미지시 상세생산계획 목록 조회 
+	@Override
+	public List<PrcsPlanVO> selectNotDirPlanDeList(String prcsPlanCode) {
+		return prcsDirMapper.selectNotDirPlanDeList(prcsPlanCode);
+	}
+	
 	
 	//BOM 조회
 	@Override
