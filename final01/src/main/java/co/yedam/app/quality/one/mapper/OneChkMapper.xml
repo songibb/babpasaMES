@@ -58,6 +58,8 @@
   			   ,B.TEST_RESULT
   			   ,B.PASS_YN
   			   ,B.EMP_CODE
+  			   ,FIND_CDNM('0O', PASS_YN) AS PASS_YN2
+  			   ,FIND_EMP_NAME(EMP_CODE) AS EMP_NAME
   			   ,FIND_CDNM('TEST-TYPE', TEST_CODE) AS TEST_NAME
   		FROM prod_quality A
   		JOIN prod_quality_info B

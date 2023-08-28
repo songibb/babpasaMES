@@ -28,18 +28,47 @@
 		margin-bottom : 20px;
 		radius : 5px;
 	}
+	
+	h1{
+		margin-left : 15px;
+		font-weight : 800;
+	}
+	
+	#customtemplateSearchAndButton input[type="date"],
+	select {
+	  width: 200px;
+	  padding: 5px;
+	  margin-bottom: 30px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	form p{
+	width: 100px;
+	display: inline-block;
+	font-size: 20px;
+	}
+	
+	#customtemplateSearchAndButton input[type="text"],
+	select {
+	  width: 15%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
 </style>
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>설비 점검</h1>
+	<h1>설비 점검 조회</h1>
 	<div class="col-lg-12 stretch-card">
     	<div class="card">
         	<div class="card-body">
             	<div class="table-responsive pt-3">
 	            	<form>
 	            		<div id="customtemplateSearchAndButton">
-	            			<p>설비구분</p>
+	            			<!-- <p>설비구분</p>
 	            			<select name="job">
 							    <option value="">설비구분</option>
 							    <option value="증숙">증숙</option>
@@ -53,12 +82,12 @@
 							    <option value="합격">합격</option>
 							    <option value="불합격">불합격</option>
 							    <option value="기타">기타</option>
-							</select>
+							</select> -->
 						
 							<br>
 							<p>점검일자</p>
-							 <p><input type="date"></p> ~ <p> <input type="date"></p>
-							<button type="button" class="btn btn-info btn-icon-text">검색</button>
+							 <input type="date"> ~ <input type="date">
+							<button type="button" id="searchBtn" class="btn btn-info btn-icon-text">검색</button>
 							</div>
 							
 
@@ -166,8 +195,9 @@
 		           		chkCycle : "${chk.chkCycle}",
 		           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
 		           		chkNextDate : "<fmt:formatDate value='${chk.chkNextDate}' pattern='yyyy-MM-dd'/>",
-		           		eqChkYn : "${chk.eqChkYn}",
+		           		eqChkYn2 : "${chk.eqChkYn2}",
 		           		empCode : "${chk.empCode}",
+		           		empName2 : "${chk.empName2}",
 		           		chkNote : "${chk.chkNote}"		   	        
 		           	}<c:if test="${not status.last}">,</c:if>
 		           </c:forEach>
@@ -207,105 +237,28 @@
 	               header: '차기점검일자',
 	               name: 'chkNextDate'
 	           },
-	         	//지울부분
 	           {
 	 			header: '점검판정',
-	             name: 'eqChkYn'
+	             name: 'eqChkYn2'
 	           },
 	           {
 	        	  header: '담당자코드',
-		 	      name: 'empCode'
+		 	      name: 'empCode',
+		 	      hidden: true
 			 	      
-	           },	          
+	           },	    
+	           {
+	        	  header: '담당자명',
+		 	      name: 'empName2'
+			 	      
+	           },
 	           {
 	        	  header: '비고',
 		 	      name: 'chkNote'
 	           }
 	         ]
 	 	});
-	   
-	   /* //행 클릭 모달
-	     var Grid;
-	     grid.on('click', () => {
-	    	let rowKey = grid.getFocusedCell().rowKey;
-	    	let columnName = grid.getFocusedCell().columnName;
-	    	if(columnName == "empCode"){
-	    		$(".modal").fadeIn();
-	    	       Grid = createProdGrid();
-	    	       
-	    	       Grid.on('click', () => {
-	    	       		let rowKey2 = Grid.getFocusedCell().rowKey;
-	    	        	let empCode = Grid.getValue(rowKey2, 'empCode');
-	    	        	let empName = Grid.getValue(rowKey2, 'empName');
-	    	        	
-	    	        	console.log(empCode);
-	    	        	console.log(empName);
 
-	    	        	grid.setValue(rowKey, 'empCode', empCode);
-	    	        	grid.setValue(rowKey, 'empName', empName);
-	    	    		//선택시 모달창 닫기
-	    	    		if(rowKey != null){
-	    	    			$(".modal").fadeOut();
-	    	        		Grid.destroy();
-	    	    		}
-
-	    	       });
-	    	}
-
-	  	});
-		
-		//모달창 닫기
-		$("#close_btn").click(function(){
-	        $(".modal").fadeOut();
-	         
-	  		Grid.destroy();
-	     }); */
-		
-		 
-	     /* //사원 목록모달 그리드
-	     function createProdGrid(){
-	        var prodGrid = new tui.Grid({
-	            el: document.getElementById('modal_label'),
-	           scrollX: false,
-	            scrollY: false,
-	            minBodyHeight: 30,
-	            rowHeaders: ['rowNum'],
-	            selectionUnit: 'row',
-	            pagination: true,
-	            pageOptions: {
-	            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-	              useClient: true,
-	              perPage: 10
-	            },
-	            columns: [
-	          	  	{
-	                    header: '사원번호',
-	                    name: 'empCode',
-	                  },                  
-	                  {
-	                    header: '사원명',
-	                    name: 'empName'
-	                  }
-	             ]
-	           
-	          });
-	        
-	        
-	        $.ajax({
-			    url : 'empCodeList',
-			    method : 'GET',
-			    success : function(data){
-			    	prodGrid.resetData(data);
-			    },
-			    error : function(reject){
-			        console.log(reject);
-			    }	
-			})		 
-	        return prodGrid;
-	     } */
-		     
-	     
-	     
 	     grid.on('afterChange', (ev) => {
 	         let change = ev.changes[0];
 	         let rowData = grid.getRow(change.rowKey);
@@ -334,6 +287,52 @@
 	         }
 	     });
 
+	     
+	   //검색 버튼
+	        $('#searchBtn').on('click', searchChkEquip);
+	        function searchChkEquip(e) {
+	            let sd = $('#startDate').val();
+	            let ed = $('#endDate').val();
+
+	            let search = {
+	                startDate: sd,
+	                endDate: ed
+	            };
+	            $.ajax({
+	                url: 'searchChkEquip',
+	                method: 'GET',
+	                data: search,
+	                success: function (data2) {
+
+	                    $.each(data2, function (idx, obj) {
+	                        let date = new Date(obj['chkDate']);
+	                        let year = date.getFullYear(); //0000년 가져오기
+	                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+	                        let day = date.getDate(); //일자 가져오기
+	                        obj['chkDate'] = year + "-" + (
+	                            ("00" + month.toString()).slice(-2)
+	                        ) + "-" + (
+	                            ("00" + day.toString()).slice(-2)
+	                        );
+
+	                    })
+	                    grid.resetData(data2);
+	                },
+	                error: function (reject) {
+	                    console.log(reject);
+	                }
+	            });
+	        }
+
+	        
+	        //이전 날짜 선택불가
+	        $('#startDate').on('change', function () {
+	            $('#endDate').attr('min', $('#startDate').val());
+	        });
+	        //이후날짜 선택불가
+	        $('#endDate').on('change', function () {
+	            $('#startDate').attr('max', $('#endDate').val());
+	        });
 	</script>
 </body>
 </html>	

@@ -44,4 +44,8 @@ public class OneChkVO {
 	
 	private String testSemiYn;
 	
+	private String empName;
+	
+	private String passYn2;
+	
 }

@@ -21,7 +21,26 @@
 	 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&family=Noto+Sans+KR&display=swap" rel="stylesheet">
 	 
-
+	<style>
+		h1{
+			font-weight : 800;
+			margin-left : 15px;
+		}
+		
+		input[type="text"],
+		select {
+		  width: 200px;
+		  padding: 6px;
+		  margin-bottom: 15px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		#customtemplateSearchAndButton p{
+			width : 80px;
+			font-size: 20px;
+		}
+	</style>
 
 </head>
 <body>
@@ -70,7 +89,7 @@
 		        ],
 		        scrollX: false,
 		        scrollY: false,
-		        minBodyHeight: 300,
+		        minBodyHeight: 400,
 				rowHeaders: ['rowNum'],
 				pagination: true,
 				pageOptions: {

@@ -29,13 +29,28 @@
 		float : right;
 	}
 
+	#customtemplateSearchAndButton p{
+		width: 80px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	
+	#customtemplateSearchAndButton input[type="text"],
+		select {
+		  width: 230px;
+		  padding: 6px;
+		  margin-bottom: 15px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+	
 	h1{
-		font-weight : 700;
+		margin-left: 15px;
 	}
 
-	h2{
-		clear : both;
-		font-weight : 700;
+	h1, h2{
+		font-weight: 800;
 	}
 	
 	.yellow-background {
@@ -49,7 +64,7 @@
        
 </head>
 <body>
-   <h2>자재 검수 관리</h2>
+   <h1>자재 검수 관리</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">

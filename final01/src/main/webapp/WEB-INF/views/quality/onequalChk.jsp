@@ -13,28 +13,41 @@
     <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
-    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    
+    <style>
+      h1{
+			margin-left: 15px;
+		}
+		h1, h2{
+			font-weight: 800;
+		}
+    </style>   
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h2>완제품 품질 검사</h2>
+	<h1>완제품 품질 검사</h1>
 	<div class="col-lg-12 stretch-card">
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">
-		            
-	            	<div style="display: flex; justify-content: flex-end;">
-
-		            	<button id="save" class="btn btn-info btn-icon-text">저장</button>
-	            	</div>
-	            </div>
-	            <div id="container" style="display: flex; justify-content: center;">
-		           		<div id="grid" style="width: 600px; margin-right: 50px"></div>
-		           		<div id="grid2" style="width: 1000px;"></div>
-	   			</div>
-			</div>
-		</div> 
-	</div>
+      <div class="card">
+         <div class="card-body">
+            <div class="table-responsive pt-3">
+                  
+                  
+               </div>
+               <div id="container" style="display: flex; justify-content: center;">
+                       <div id="grid" style="width: 700px; margin-right: 20px"><h2>완제품 품질 검사 목록</h2></div>
+                      <div>
+                       <div style="display: flex; justify-content: space-between;">
+                       <h2>상세 품질 검사 조회</h2>
+                     <button id="save" class="btn btn-info btn-icon-text">저장</button>
+                     </div>
+                       <div id="grid2" style="width: 800px;"></div>
+                       </div>
+		
+               </div>
+         </div>
+      </div> 
+   </div>
 	
 		<div class="modal">
    
@@ -151,14 +164,26 @@
 				},
 				{
 					header: '적합여부',
-					name :'passYn'
+					name :'passYn',
+					hidden: true
 				},
+				{
+					header: '적합여부',
+					name :'passYn2'
+				},
+				
 				{
 					header: '담당자',
 					name : 'empCode',
-					editor: 'text'
+					editor: 'text',
+					hidden: true
 					
+				},
+				{
+					header: '담당자',
+					name :'empName'
 				}
+				
 			]
 			
 		})
@@ -196,6 +221,10 @@
 				data : { testNum : testNum },
 				success : function(data){
 	 				grid2.resetData(data);
+	 				grid2.setColumnValues('empCode', ${user.id});
+	 				grid2.setColumnValues('empName', `${user.empName}`);
+	 				
+	 				
 	 		    },
 				error : function(reject){
 		 			console.log(reject);

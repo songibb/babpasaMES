@@ -21,6 +21,11 @@
 <meta charset="EUC-KR">
 <title>설비 등록 페이지</title>
 <style>
+
+		h1{
+			font-weight : 800;
+		}
+		
         body {
             font-family: 'Nanum Gothic', sans-serif;
             margin: 0;
@@ -44,7 +49,8 @@
         table {
             width: 80%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 20px;           
+            
         }
 
         th, td {
@@ -83,13 +89,17 @@
             max-width: 100px;
             max-height: 100px;
         }
+       
+
     </style>
 
 </head>
 
-<h2>설비 관리</h2>
+<h1>설비 관리</h1>
 <body>
 <hr>
+<div class="card">
+<div class="card-body">
 <form name="insertForm" action="equipInsert" method="post">
    <table>
    <button type="button" id="actModal">설비조회</button>
@@ -109,14 +119,14 @@
 			</select>
          </td>
          <th>거래처</th>
-         <td><input type="text" name="actCode" id="actCode"><button type="button" id="actModal2">설비조회</button></td>
+         <td><input type="text" name="actCode" id="actCode"><button type="button" id="actModal2" style="margin-left: 10px;">거래처조회</button></td>
       
       </tr>
       <tr>
          <th>모델명</th>
          <td><input type="text" name="modelName" id="modelName"></td>
          <th>점검주기</th>
-         <td><input type="text" name="chkCycle" id="chkCycle">일</td>
+         <td><input type="text" name="chkCycle" id="chkCycle"> 일</td>
          
       </tr>
       <tr>
@@ -149,6 +159,8 @@
    <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
 </form>   
+</div>
+</div>
 
    
 <div class="modal">
@@ -400,7 +412,7 @@
 				success : function(data){
 					//삭제 후 <input> 태그 칸 값 비우기
 					$('input').val("");
-					alert('삭제가 완료되었습니다.');
+					swal('삭제 성공!', '설비가 삭제되었습니다.', 'success' )
 				    },
 				error : function(reject){
 		 			console.log(reject);

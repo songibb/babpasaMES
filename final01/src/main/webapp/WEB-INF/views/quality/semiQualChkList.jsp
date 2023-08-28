@@ -14,11 +14,18 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
-
+	<style>
+		h1{
+			margin-left: 15px;
+		}
+		h1, h2{
+			font-weight: 800;
+		}
+	</style>
 </head>
 <body>
    <div class="black_bg"></div>
-   <h2>반제품 품질 조회</h2>
+   <h1>반제품 품질 조회</h1>
    <div class="col-lg-12 stretch-card">
       <div class="card">
          <div class="card-body">
@@ -30,8 +37,8 @@
                </div>
                <div id="container" style="display: flex; justify-content: center;" >
                			
-                       <div id="grid" style="width: 700px; margin-right: 20px"><h3>반제품 품질 검사 목록</h3></div>
-                       <div id="grid2" style="width: 800px;"><h3>상세 품질 검사 조회</h3></div>
+                       <div id="grid" style="width: 700px; margin-right: 20px"><h2>반제품 품질 검사 목록</h2></div>
+                       <div id="grid2" style="width: 800px;"><h2>상세 품질 검사 조회</h2></div>
                </div>
          </div> 
       </div> 
@@ -159,11 +166,11 @@
             },
             {
                header: '적합여부',
-               name :'passYn'
+               name :'passYn2'
             },
             {
                header: '담당자',
-               name: 'empCode'
+               name: 'empName'
                
             }
          ]
