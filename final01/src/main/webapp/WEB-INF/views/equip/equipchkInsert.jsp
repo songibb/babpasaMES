@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>반제품 품질 검사</title>
+<title>설비 점검 등록</title>
    <!-- 토스트 페이지 네이션 -->
     <script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
@@ -14,10 +14,20 @@
     <!-- 페이지 네이션 끝 -->
     <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
     <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
+    
+    <style>
+    	h1{
+    		font-weight : 800;
+    	}
+    
+    	h2{
+    		font-weight : 800;
+    	}
+    </style>
 </head>
 <body>
    <div class="black_bg"></div>
-   <h2>설비 점검 등록</h2>
+   <h1>설비 점검 등록</h1>
    <div class="col-lg-12 stretch-card">
       <div class="card">
          <div class="card-body">
@@ -30,8 +40,8 @@
                </div>
                <div id="container" style="display: flex; justify-content: center;">
                			
-                       <div id="grid" style="width: 600px; margin-right: 50px"></div>
-                       <div id="grid2" style="width: 1000px;"></div>
+                       <div id="grid" style="width: 600px; margin-right: 50px"><h2>당일 점검 설비 </h2></div>
+                       <div id="grid2" style="width: 1000px;"><h2>점검 내역</h2></div>
                </div>
          </div>
       </div> 
@@ -109,7 +119,7 @@
          el: document.getElementById('grid'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 150,
           rowHeaders: ['rowNum'],
          pagination: true,
          pageOptions: {
@@ -150,7 +160,7 @@
          el: document.getElementById('grid2'),
          scrollX: false,
          scrollY: false,
-          minBodyHeight: 30,
+          minBodyHeight: 150,
           rowHeaders: [{type: 'rowNum'}],
          pagination: true,
          pageOptions: {

@@ -25,8 +25,8 @@
 
 	          
 	            <div id="container" style="display: flex; justify-content: center;">
-		           		<div id="grid" style="width: 600px; margin-right: 50px"></div>
-		           		<div id="grid2" style="width: 1000px;"></div>
+		           		<div id="grid" style="width: 700px; margin-right: 50px"></div>
+		           		<div id="grid2" style="width: 800px;"></div>
 	   			</div>
 			</div>
 		</div> 
@@ -60,7 +60,7 @@
 			el: document.getElementById('grid'),
 			scrollX: false,
 			scrollY: false,
-			 minBodyHeight: 30,
+			 minBodyHeight: 200,
 			 rowHeaders: ['rowNum'],
 			pagination: true,
 			pageOptions: {
@@ -70,15 +70,18 @@
 			columns: [
 			 	{
 	               header: '검사번호',
-	               name: 'testNum'
+	               name: 'testNum',
+	               width: 'auto'
 	            },
 	            {
 	               header: '공정상세코드',
-	               name: 'prcsIngCode'
+	               name: 'prcsIngCode',
+	               width: 'auto'
 	            },
 	            {
 	               header: '공정코드',
-	               name: 'prcsCode'
+	               name: 'prcsCode',
+	               width: 'auto'
 	            },
 	            {
 	               header: '생산량',
@@ -107,7 +110,7 @@
 			el: document.getElementById('grid2'),
 			scrollX: false,
 			scrollY: false,
-			 minBodyHeight: 30,
+			 minBodyHeight: 200,
 			 rowHeaders: [{type: 'rowNum'}],
 			pagination: true,
 			pageOptions: {
@@ -117,20 +120,24 @@
 			columns: [
 				{
 					header: '검사번호',
-					name: 'testNum'
+					name: 'testNum',
+		            width: 'auto'
 				},
 				{
 					header: '공정진행코드',
-					name: 'prcsIngCode'
+					name: 'prcsIngCode',
+		            width: 'auto'
 				},
 				{
 					header: '상세검사번호',
-					name: 'testNumInfo'
+					name: 'testNumInfo',
+		            width: 'auto'
 				},
 				{
 					header: '검사코드',
 					name: 'testCode',
-					hidden: true
+					hidden: true,
+		            width: 'auto'
 				},
 				{
 					header: '검사명',
