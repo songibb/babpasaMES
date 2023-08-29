@@ -426,7 +426,15 @@ form {
             }, {
                 header: '주문량',
                 name: 'prcsRqAmt',
-                editor: 'text'
+                editor: 'text',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '납기일자',
                 name: 'devDate',
@@ -474,7 +482,18 @@ form {
             }
         ]
     });
+    setDisabled();
+    
+    //비활성화
+    function setDisabled() {
+        $.each(orderGrid.getData(), function (idx, obj) {
 
+            if (obj['ordCode'] != null && (obj['ordSts'] == 'P2')) {
+            	orderGrid.disableRow(obj['rowKey']);
+            }
+        })
+    }
+    
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
 
@@ -662,7 +681,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -708,7 +727,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -798,6 +817,7 @@ form {
     function resetInput(e) {
         $('input').each(function (idx, obj) {
             obj.value = '';
+            obj.checked = false;
         })
     }
 
@@ -814,19 +834,7 @@ form {
     function saveServer() {
         orderGrid.blur();
         let modifyGridInfo = orderGrid.getModifiedRows();
-
-        orderInfo = orderGrid.findRows({ordCode : null});
-        console.log(orderGrid.findRows({ordCode : null}));
-        let actName = orderInfo.actName;
-        console.log(actName);
-        $.each(orderInfo, function(idx, obj){
-			if(actName == obj['actName']) 				        		
-        		console.log(obj['actName']);
-				
-        	})
-        		alert('nn');
-//         		swal("거래처를 통일해 주세요.", "", "error");
-        
+			        
        // 수정된게 없으면 바로 빠져나감
 
         if (!orderGrid.isModified()) {
@@ -868,6 +876,8 @@ form {
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     // 						orderGrid.resetData(data);
+                    searchOrderList();
+                    
                 },
                 error: function (reject) {
                     console.log(reject);

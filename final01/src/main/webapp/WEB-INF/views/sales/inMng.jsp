@@ -216,11 +216,27 @@ form {
             }, {
                 header: '입고량',
                 name: 'salesInAmt',
-                editor: 'text'
+                editor: 'text',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '재고량',
                 name: 'prodSaveAmt',
-                editor: 'text'
+                editor: 'text',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '유통기한',
                 name: 'salesInExd',
@@ -286,7 +302,15 @@ form {
                 className: 'yellow-background'
             }, {
                 header: '검사량',
-                name: 'testAmt'
+                name: 'testAmt',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '제품LOT', // [필수] 컬럼 이름
                 name: 'prodLot', // [필수] 컬럼 매핑 이름 값
@@ -528,7 +552,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {

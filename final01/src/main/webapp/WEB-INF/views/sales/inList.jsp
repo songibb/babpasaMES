@@ -388,7 +388,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -452,10 +452,26 @@ form {
                 className: 'yellow-background'
             }, {
                 header: '입고량',
-                name: 'salesInAmt'
+                name: 'salesInAmt',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '재고량',
-                name: 'prodSaveAmt'
+                name: 'prodSaveAmt',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '유통기한',
                 name: 'salesInExd',
