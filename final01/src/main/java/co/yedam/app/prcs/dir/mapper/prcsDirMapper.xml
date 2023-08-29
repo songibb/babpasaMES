@@ -154,6 +154,7 @@
 	<select id="selectBomList" resultType="BomCodeVO">
 		SELECT DISTINCT find_prod_name(v.prod_code) AS prod_name,
 			   find_prcs_name(v.prcs_code) AS prcs_name,
+			   mp_code,
 			   find_mat_name(v.mp_code) AS mat_name, 
 			   v.bom_amt * #{prcsDirAmt} AS bom_amt, 
 			   p.prcs_seq

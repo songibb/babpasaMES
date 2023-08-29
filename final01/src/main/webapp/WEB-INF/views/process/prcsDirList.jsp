@@ -187,7 +187,7 @@ h1, h2{
 				contentType : 'application/json',
 				success : function(data){	
 					console.log(data);
-					swal("등록이 완료되었습니다.", "", "success");
+					swal("성공", "등록이 완료되었습니다.", "success");
 					
 					//클릭한 지시의 지시코드 가져오기
 			    	let rowKey = dirGrid.getFocusedCell().rowKey;

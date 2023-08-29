@@ -178,6 +178,8 @@
 				planDeGrid.clear();	
 				stopEdit();
 				
+				//삭제버튼 다시 생기게하기
+				remove.style.display = 'inline-block';
 				
 				gridClick = 'Y';
 			},
@@ -276,7 +278,7 @@
 					async : false, 
 					success : function(data){									
 						searchPlanList();
-						swal("등록이 완료되었습니다.", "", "success");
+						swal("성공", "등록이 완료되었습니다.", "success");
 				
 					},
 					error : function(reject){
@@ -333,7 +335,7 @@
 				}
 			})
 			if(amtCk == false){
-				swal("경고", "주문수량보다 생산계획량이 적습니다.", "warning");
+				swal("경고", "생산계획량이 주문수량보다 적습니다", "warning");
 				return false;
 			} 
 			
@@ -508,18 +510,20 @@
 			},
 			{
 				header: '제품명',
-				name: 'prodName',
-				editor: 'text'
+				name: 'prodName'
 			},
 			{
 				header: '주문수량',
-				name: 'prcsRqAmt',
-				editor: 'text'
+				name: 'prcsRqAmt'
 			},
 			{
 				header: '생산계획량',
 				name: 'prcsPlanAmt',
-				editor: 'text'
+				editor: 'text',
+				validation: {
+	 	 	    	dataType: 'number',
+	 	 	        required: true
+	 	 	    }
 			},
 			{
 				header: '우선순위',
