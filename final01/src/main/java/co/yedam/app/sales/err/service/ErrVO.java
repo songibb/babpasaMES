@@ -24,5 +24,9 @@ public class ErrVO {
 	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
 	private Date endDate;
 	
-	
+	private Date testDate;
+	private int testAmt;
+	private int passAmt;
+	private int nonPassAmt;
+	private String empName;
 }

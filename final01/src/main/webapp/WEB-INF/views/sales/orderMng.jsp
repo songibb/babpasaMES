@@ -259,22 +259,22 @@ form {
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
 						<i class="bi bi-search" id="actModal"></i> <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
 						<br>
 						<p>주문일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
 						<br>
-						<p>배송상태</p>
-						<label for="before"><input type="checkbox" id="before" value="before">배송전</label> 
-						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">배송완료</label>
+						<p>출고상태</p>
+						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
+						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -338,11 +338,20 @@ form {
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
         let ordDate = year + "-" + month + "-" + day;
-        orderGrid.appendRow({
-            'ordDate': ordDate,
-            'empCode': `${user.id}`,
-            'empName': `${user.empName}`
-        }, {at: 0});
+        if(orderGrid.getModifiedRows().createdRows.length > 0){
+        	orderGrid.appendRow({
+                'ordDate': ordDate,
+                'empCode': `${user.id}`,
+                'empName': `${user.empName}`,
+                'actName': orderGrid.getModifiedRows().createdRows[0].actName
+            }, {at: 0});
+        }else {
+            orderGrid.appendRow({
+                'ordDate': ordDate,
+                'empCode': `${user.id}`,
+                'empName': `${user.empName}`
+            }, {at: 0});
+        }
     }
 
     //주문 form
@@ -360,7 +369,8 @@ form {
                 devYn: "${order.devYn}",
                 empCode: "${order.empCode}",
                 empName: "${order.empName}",
-                prodCode: "${order.prodCode}"
+                prodCode: "${order.prodCode}",
+                ordCode: "${order.ordCode}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -381,8 +391,8 @@ form {
         columns: [
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
-                header: '주문상세코드',
-                name: 'salesOrdDeCode'
+                header: '주문코드',
+                name: 'ordCode'
             }, {
                 header: '주문날짜',
                 name: 'ordDate',
@@ -395,7 +405,7 @@ form {
                 },
                 className: 'yellow-background'
             }, {
-                header: '거래처명',
+                header: '거래처',
                 name: 'actName',
                 editor: 'text',
                 value: '${order.actName}'
@@ -447,7 +457,7 @@ form {
                 name: 'actCode',
                 hidden: true
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }, {
                 header: '생산계획코드',
@@ -537,8 +547,13 @@ form {
                 console.log(actCode);
                 console.log(actName);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                orderGrid.setValue(rowKey, 'actCode', actCode);
-                orderGrid.setValue(rowKey, 'actName', actName);
+                
+                
+                let beforeAct = orderGrid.getModifiedRows().createdRows;
+                for(data of beforeAct){                	
+	                orderGrid.setValue(data.rowKey, 'actCode', actCode);
+	                orderGrid.setValue(data.rowKey, 'actName', actName);
+                }
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -800,7 +815,19 @@ form {
         orderGrid.blur();
         let modifyGridInfo = orderGrid.getModifiedRows();
 
-        // 수정된게 없으면 바로 빠져나감
+        orderInfo = orderGrid.findRows({ordCode : null});
+        console.log(orderGrid.findRows({ordCode : null}));
+        let actName = orderInfo.actName;
+        console.log(actName);
+        $.each(orderInfo, function(idx, obj){
+			if(actName == obj['actName']) 				        		
+        		console.log(obj['actName']);
+				
+        	})
+        		alert('nn');
+//         		swal("거래처를 통일해 주세요.", "", "error");
+        
+       // 수정된게 없으면 바로 빠져나감
 
         if (!orderGrid.isModified()) {
             swal("", "변경사항이 없습니다", "warning");
@@ -839,16 +866,16 @@ form {
                 data: JSON.stringify(orderGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "주문이 등록되었습니다.", "success");
+                    swal("성공", "작업이 성공하였습니다.", "success");
                     // 						orderGrid.resetData(data);
                 },
                 error: function (reject) {
                     console.log(reject);
-                    swal("값이 입력되지 않았습니다.", "", "error");
+                    swal("실패", "작업을 실패했습니다.", "error");
                 }
             })
         } else {
-            swal("", "값이 입력되지 않았습니다.", "warning");
+            swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }

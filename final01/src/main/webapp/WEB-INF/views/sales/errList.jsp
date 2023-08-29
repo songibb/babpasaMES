@@ -241,14 +241,14 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>폐기 조회</h1>
+	<h1>완제품 폐기 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
@@ -455,7 +455,7 @@ form {
                  name: 'salesDpDate',
                  className: 'yellow-background'
              }, {
-                 header: '직원이름',
+                 header: '담당자',
                  name: 'empName'
              }, {
                  header: '직원코드',

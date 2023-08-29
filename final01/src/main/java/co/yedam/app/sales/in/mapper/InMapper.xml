@@ -24,13 +24,14 @@
 			, i.sales_in_amt
 			, i.prod_save_amt
 			, i.sales_in_exd
-			, i.emp_code 
+			, i.emp_code
 			, e.emp_name
-			, o.sales_out_code
-		FROM sales_in i JOIN com_emp e
-						ON (i.emp_code = e.emp_code)
-						JOIN sales_out o
-						ON (i.prod_lot = o.prod_lot)
+			, i.test_num
+			, p.prod_name
+	FROM sales_in i JOIN com_emp e
+					ON (i.emp_code = e.emp_code) 
+					JOIN com_prod p
+					ON (i.prod_code = p.prod_code)
 	<where>
 			<if test="prodCode != null and prodCode != ''">
 				AND prod_code LIKE '%' || #{prodCode} || '%'
@@ -70,8 +71,11 @@
 			, i.emp_code
 			, e.emp_name
 			, i.test_num
+			, p.prod_name
 	FROM sales_in i JOIN com_emp e
 					ON (i.emp_code = e.emp_code) 
+					JOIN com_prod p
+					ON (i.prod_code = p.prod_code)
 	ORDER BY prod_lot DESC
 	</select>
 	

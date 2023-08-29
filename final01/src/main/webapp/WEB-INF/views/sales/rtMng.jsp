@@ -239,14 +239,14 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>반품 관리</h1>
+	<h1>완제품 반품 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput">
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> <br>
@@ -384,7 +384,7 @@ form {
                 name: 'salesRtAmt',
                 editor: 'text'
             }, {
-                header: '반품일',
+                header: '반품일자',
                 name: 'salesRtDate',
                 editor: {
                     type: 'datePicker',
@@ -404,7 +404,7 @@ form {
                 editor: 'text',
                 hidden: true
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }
         ]
@@ -494,7 +494,8 @@ form {
                     salesOrdDeCode: "${out.salesOrdDeCode}",
                     prodLot: "${out.prodLot}",
                     prodName: "${out.prodName}",
-                    actName: "${out.actName}"
+                    actName: "${out.actName}",
+                    empName: "${out.empName}",
                 }
                 <c:if test="${not status.last}">,</c:if>
             </c:forEach>
@@ -514,34 +515,40 @@ form {
                 {
                     header: '출고코드',
                     name: 'salesOutCode'
+                },{
+                    header: '상세주문코드',
+                    name: 'salesOrdDeCode'
+                }, {
+                    header: '제품LOT',
+                    name: 'prodLot'
                 }, {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    hidden: true
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    hidden: true
                 }, {
                     header: '거래처명',
                     name: 'actName'
                 }, {
-                    header: '출고날짜',
+                    header: '출고일자',
                     name: 'salesOutDate',
                     className: 'yellow-background'
                 }, {
                     header: '출고량',
                     name: 'salesOutAmt'
                 }, {
-                    header: '직원코드',
-                    name: 'empCode'
+                    header: '담당자',
+                    name: 'empCode',
+                    hidden: true
                 }, {
-                    header: '상세주문코드',
-                    name: 'salesOrdDeCode'
-                }, {
-                    header: '제품LOT',
-                    name: 'prodLot'
+                    header: '담당자',
+                    name: 'empName'
                 }
             ]
 
@@ -745,16 +752,16 @@ form {
                 data: JSON.stringify(rtGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "반품내역이 등록되었습니다.", "success");
+                    swal("성공", "작업이 성공하였습니다.", "success");
                     // 						rtGrid.resetData(data);
                 },
                 error: function (reject) {
                     console.log(reject);
-                    swal("값이 입력되지 않았습니다.", "", "error");
+                    swal("실패", "작업을 실패했습니다.", "error");
                 }
             })
         } else {
-            swal("", "값이 입력되지 않았습니다.", "warning");
+            swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }

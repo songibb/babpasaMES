@@ -119,20 +119,22 @@
 			#{salesRtCode}
 			, #{salesRtAmt}
 			, #{prodLot}
-			, #{salesOrdDeCode}
+<!-- 			, #{salesOrdDeCode} -->
 			)
 		
 	</delete>
 	
 	<!-- 출고목록조회 모달 -->
 	<select id="selectOutList" resultType="RtVO">
-	SELECT o.*, d.dev_yn, p.prod_name, a.act_name
+	SELECT o.*, d.dev_yn, p.prod_name, a.act_name, e.emp_name
 	FROM sales_out o JOIN sales_ord_de d
 	                ON (o.sales_ord_de_code = d.sales_ord_de_code)
 	                JOIN com_prod p
 	                ON (o.prod_code = p.prod_code)
 	                JOIN com_act a
 	                ON (o.act_code = a.act_code)
+	                JOIN com_emp e
+	                ON (o.emp_code = e.emp_code)
 	WHERE d.dev_yn = 'Y'
 	ORDER BY sales_out_code DESC
 	</select>

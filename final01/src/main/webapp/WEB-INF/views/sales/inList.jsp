@@ -245,31 +245,27 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>재고 조회</h1>
+	<h1>완제품 입고 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>입고일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
-						<br>
-						<p>배송상태</p>
-						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
-						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;"> 
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
 					</form>
 					<div id="grid">
-						<h2>재고 목록</h2>
+						<h2>입고 목록</h2>
 						<button type="button" class="btn btn-info btn-icon-text excelDownload">
 							Excel <i class="bi bi-printer"></i>
 						</button>
@@ -427,7 +423,8 @@ form {
                 salesInExd: `<fmt:formatDate value="${in.salesInExd}" pattern="yyyy-MM-dd"/>`,
                 empCode: "${in.empCode}",
                 empName: "${in.empName}",
-                testNum: "${in.testNum}"
+                testNum: "${in.testNum}",
+                prodName: "${in.prodName}"
             },
         </c:forEach>
             ],
@@ -447,7 +444,10 @@ form {
                 header: '제품LOT',
                 name: 'prodLot'
             }, {
-                header: '입고날짜',
+                header: '제품명',
+                name: 'prodName'
+            }, {
+                header: '입고일자',
                 name: 'salesInDate',
                 className: 'yellow-background'
             }, {
@@ -465,7 +465,7 @@ form {
                 name: 'empCode', // [필수] 컬럼 매핑 이름 값
                 hidden: true
             }, {
-                header: '직원이름', // [필수] 컬럼 이름
+                header: '담당자', // [필수] 컬럼 이름
                 name: 'empName' // [필수] 컬럼 매핑 이름 값
             }, {
                 header: '검사번호', // [필수] 컬럼 이름
