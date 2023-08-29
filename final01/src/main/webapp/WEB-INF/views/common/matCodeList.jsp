@@ -168,7 +168,13 @@ label {
 		              },
 		              {
 			 	 	        header: '안전재고량',
-			 	 	        name: 'matSafe'
+			 	 	        name: 'matSafe',
+			 	 	      formatter(e) {
+				                val = e['value']
+				                    .toString()
+				                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+				                return val;
+				            }
 			 	 	  }
 		        ]
 		   

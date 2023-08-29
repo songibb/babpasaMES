@@ -286,30 +286,46 @@
 		
 		let bNoValue = bomgrid.getValue(rowKey, 'bomNo');
 		
+		let flagIn = true;
+			
+		let noData = false;
+			
+			
 		if(bNoValue == null){
 			bomInsert();
 			
+		}else{
+			$.each(bomInfo, function(field, array){
+				if(field == 'upDateRows' && array.length != 0){
+					
+					$.each(array, function(i, obj){
+						for(let field in obj){
+							if(obj[field] == null){
+								flagIn = false;
+							
+							}
+							
+						}
+					})
+					
+				}
+			})
+			if(flagIn){
+				if(!bomgrid.isModified()){
+					swal("경고","변경사항이 없습니다","warning");
+					return false;
+				}
+				
+				bomUpdate();
+			}else{
+				swal("경고","모든 값이 입력되지 않았습니다","warning");
+			}
+		
+		};
+			
 		}
 		
-		let flagIn = true;
 		
-		let noData = false;
-		
-		$.each(bomInfo, function(field, array){
-			if(field == 'upDateRows' && array.length != 0){
-				
-				$.each(array, function(i, obj){
-					for(let field in obj){
-						if(obj[field] == null){
-							flagIn = false;
-						
-						}
-						
-					}
-				})
-				
-			}
-		})
 		
 /* 		$.each(bomDeInfo, function(deField, deArray){
 			if( deField == 'updatedRows' && deArray.length != 0){
@@ -324,18 +340,6 @@
 				
 			}
 		})	 */
-		if(flagIn){
-			if(!bomgrid.isModified()){
-				swal("경고","변경사항이 없습니다","warning");
-				return false;
-			}
-			
-			bomUpdate();
-		}else{
-			swal("경고","모든 값이 입력되지 않았습니다","warning");
-		}
-	
-	};
 		
 	//등록 함수
 	function bomInsert(){
@@ -495,7 +499,7 @@
 		contentType : 'application/json',
 		 data : JSON.stringify(list),
 		success : function(data){	
-			if(data>1){
+			if(data>=1){
 				swal("성공","BOM 정보수정이 정상적으로 처리되었습니다","success");
 			}
 			//deBomgrid.clear();
@@ -539,6 +543,7 @@
 						data : JSON.stringify(checkedBom),
 						success : function(result){
 								swal("성공","BOM 삭제가 정상적으로 처리되었습니다", {icon: "success",});
+								   $('form')[0].reset();
 								   let content = $('#bomSearch').val();
 								   let search = { prodName : content };
 								   $.ajax({
@@ -703,7 +708,8 @@
             validation: {
  	 	        dataType: 'number',
  	 	        required: true
- 	 	      }
+ 	 	      },
+ 	 	      
           }
         ]
       });
@@ -824,7 +830,7 @@
 	        		Grid.destroy();
 	        		deleteBom.style.display = 'none';
 	        		deAdd.style.display = 'inline-block';
-	        		 
+	        		$('form')[0].reset();
 
  	        	}
   	    	 }

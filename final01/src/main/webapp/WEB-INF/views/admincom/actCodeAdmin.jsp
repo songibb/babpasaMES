@@ -326,18 +326,18 @@
 				.done(data => { 
 					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
 						swal("성공", "거래처 등록이 정상적으로 처리되었습니다","success");
-					
+						$('form')[1].reset();
 						//밑에 조회 ajax 새로 처리 필요
 						$.ajax({
-						       url : "ajaxActCodeList",
-						       method :"GET",
-						       success : function(result){
-						           grid.resetData(result);
-						       },
-						       error : function(reject){
-									console.log(reject);
-								}
-							});
+							       url : "ActCodeSearch",
+							       method :"GET",
+							       success : function(result){
+							           grid.resetData(result);
+							       },
+							       error : function(reject){
+										console.log(reject);
+									}
+								});
 						
 						//form 비우기
 						 $('form')[0].reset();
@@ -362,18 +362,18 @@
 				.done(data => { 
 					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
 						swal("성공", "거래처 정보수정이 정상적으로 처리되었습니다" ,"success");
-					
+						$('form')[1].reset();
 						//밑에 조회 ajax 새로 처리 필요
 						$.ajax({
-						       url : "ajaxActCodeList",
-						       method :"GET",
-						       success : function(result){
-						           grid.resetData(result);
-						       },
-						       error : function(reject){
-									console.log(reject);
-								}
-							});
+							       url : "ActCodeSearch",
+							       method :"GET",
+							       success : function(result){
+							           grid.resetData(result);
+							       },
+							       error : function(reject){
+										console.log(reject);
+									}
+								});
 						
 						//form 비우기
 						 $('form')[0].reset();
@@ -446,18 +446,20 @@
 					                		  swal("실패","모두 이미 사용중인 거래처로 삭제처리가 실패되었습니다", "error");
 					                	  }else{
 					                	  swal("성공",successCount +"개 거래처 삭제 성공!\n "
-					                			  + errCount +"개 거래처 삭제 실패! \n사용중인 제품의 경우 삭제되지 않았습니다","success");
+					                			  + errCount +"개 거래처 삭제 실패! \n사용중인 거래처의 경우 삭제되지 않았습니다","success");
 					                	  }
-										$.ajax({
-										       url : "ajaxActCodeList",
-										       method :"GET",
-										       success : function(result){
-										           grid.resetData(result);
-										       },
-										       error : function(reject){
-													console.log(reject);
-												}
-											});
+					                	  $('form')[1].reset();
+					                	  $('form')[0].reset();
+					                	  $.ajax({
+					           		       url : "ActCodeSearch",
+					           		       method :"GET",
+					           		       success : function(result){
+					           		           grid.resetData(result);
+					           		       },
+					           		       error : function(reject){
+					           					console.log(reject);
+					           				}
+					           			});
 					                 
 					                },
 					                error : function(reject){
