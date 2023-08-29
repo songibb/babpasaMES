@@ -104,7 +104,15 @@
 	            {
 	                header: '생산계획량',
 	                name: 'prcsPlanAmt',
-	                hidden: true
+	                hidden: true,
+	                formatter(e) {
+	                	if (e['value'] != null){
+	    	                val = e['value']
+	    	                    .toString()
+	    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	    	                return val;
+	                	}
+	                }
 	            },
 	            {
 	            	header: '생산예정일',

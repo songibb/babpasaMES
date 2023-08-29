@@ -253,11 +253,27 @@ h1, h2{
           },
           {
             header: '주문수량',
-            name: 'prcsRqAmt'
+            name: 'prcsRqAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '상세계획량',
-            name: 'prcsPlanAmt'
+            name: 'prcsPlanAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '우선순위',

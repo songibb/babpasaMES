@@ -318,11 +318,27 @@ h1, h2{
           },
           {
             header: '생산계획량',
-            name: 'prcsPlanAmt'
+            name: 'prcsPlanAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '지시수량',
-            name: 'prcsDirAmt'
+            name: 'prcsDirAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
 //           {
 //             header: '생산시작일자',
@@ -400,15 +416,39 @@ h1, h2{
           },
           {
             header: '투입량',
-            name: 'inputAmt'
+            name: 'inputAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '불량량',
-            name: 'errAmt'
+            name: 'errAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '생산량',
-            name: 'prcsAmt'
+            name: 'prcsAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '공정상태',
