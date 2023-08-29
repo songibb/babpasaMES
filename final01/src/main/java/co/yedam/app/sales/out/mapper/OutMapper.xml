@@ -176,24 +176,32 @@
   	</select>
   	<!-- orderde list -->
   	<select id="selectOrderDeList" resultType="OutVO">
-  	SELECT d.sales_ord_de_code sales_ord_de_code
-		, o.ord_date ord_date
-		, a.act_code act_code
-		, a.act_name act_name
-		, o.ord_sts ord_sts
-		, p.prod_name prod_name
-		, d.prcs_rq_amt prcs_rq_amt
-		, d.dev_date dev_date
-		, d.dev_yn dev_yn
-		FROM sales_ord o JOIN sales_ord_de d
-		ON (o.ord_code = d.ord_code)
-		JOIN com_prod p
-		ON (d.prod_code = p.prod_code)
-		JOIN com_act a
-		ON (o.act_code = a.act_code)
-		WHERE d.dev_yn = 'N'
-		AND o.ord_sts = 'P2'
-		ORDER BY o.ord_code DESC
+	  SELECT d.sales_ord_de_code sales_ord_de_code
+			, o.ord_date ord_date
+			, a.act_code act_code
+			, a.act_name act_name
+			, o.ord_sts ord_sts
+			, p.prod_name prod_name
+			, d.prcs_rq_amt prcs_rq_amt
+			, d.dev_date dev_date
+			, d.dev_yn dev_yn
+			, e.emp_code
+			, e.emp_name
+			, r.prcs_dir_sts
+	FROM sales_ord o JOIN sales_ord_de d
+					 ON (o.ord_code = d.ord_code)
+					 JOIN com_prod p
+					 ON (d.prod_code = p.prod_code)
+					 JOIN com_act a
+					 ON (o.act_code = a.act_code)
+					 JOIN prcs_dir r
+					 ON (o.prcs_plan_code = r.prcs_plan_code)
+					 JOIN com_emp e
+					 ON (o.emp_code = e.emp_code)
+	WHERE d.dev_yn = 'N'
+	AND o.ord_sts = 'P2'
+	AND prcs_dir_sts = 'P3'
+	ORDER BY o.ord_code DESC
   	</select>
   	
   	<!-- 모달검색 - 제품 -->

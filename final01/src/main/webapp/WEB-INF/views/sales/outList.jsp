@@ -245,25 +245,25 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>출고 조회</h1>
+	<h1>완제품 출고 조회</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
 						<i class="bi bi-search" id="actModal"></i> <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
 						<br>
-						<p>주문일자</p>
+						<p>출고일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> <br>
-						<p>배송상태</p>
+						<p>출고상태</p>
 						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
 						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -522,7 +522,8 @@ form {
                 salesOutDate: `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
                 empCode: "${out.empCode}",
                 empName: "${out.empName}",
-                prodSaveAmt: "${out.prodSaveAmt}"
+                prodSaveAmt: "${out.prodSaveAmt}",
+                prodName: "${out.prodName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -542,15 +543,18 @@ form {
                 header: '출고코드',
                 name: 'salesOutCode'
             }, {
-                header: '제품Lot',
+                header: '제품LOT',
                 name: 'prodLot',
                 value: '${out.prodLot}'
+            }, {
+                header: '제품명',
+                name: 'prodName'
             }, {
                 header: '상세주문코드',
                 name: 'salesOrdDeCode',
                 value: '${out.salesOrdDeCode}'
             }, {
-                header: '거래처명',
+                header: '거래처',
                 name: 'actName',
                 value: '${out.actName}'
             }, {
@@ -560,11 +564,11 @@ form {
                 header: '출고량',
                 name: 'salesOutAmt'
             }, {
-                header: '출고날짜',
+                header: '출고일자',
                 name: 'salesOutDate',
                 className: 'yellow-background'
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }, {
                 header: '직원코드',

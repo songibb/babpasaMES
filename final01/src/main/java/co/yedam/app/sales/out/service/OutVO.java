@@ -56,4 +56,6 @@ public class OutVO {
 	
 	private String actSts;
 	private String actKind;
+	
+	private String prcsDirSts;
 }

@@ -70,11 +70,14 @@
 	<!-- 그리드 모달 - 검수목록 -->
 	<select id="ModalDisList" resultType="ErrVO">
 	SELECT q.test_num, q.prod_code, q.test_date, q.test_amt, q.total_test_yn
-        , q.pass_amt, q.non_pass_amt, q.test_semi_yn, p.prod_name
+	    , q.pass_amt, q.non_pass_amt, q.test_semi_yn, p.prod_name
 	FROM prod_quality q JOIN com_prod p
-                    ON (q.prod_code = p.prod_code)
+	                    ON (q.prod_code = p.prod_code)
+	                    JOIN sales_dispose d
+	                    ON (q.test_num = d.test_num)
 	WHERE total_test_yn = 'N'
 	AND test_semi_yn = 'C'
+	AND d.sales_dp_code IS NULL
 	ORDER BY test_num DESC
 	</select>
 	

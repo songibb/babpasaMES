@@ -253,26 +253,26 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>출고 관리</h1>
+	<h1>완제품 출고 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
 						<i class="bi bi-search" id="actModal"></i> <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
 						<br>
-						<p>주문일자</p>
+						<p>출고일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
 						<br>
-						<p>배송상태</p>
+						<p>출고상태</p>
 						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
 						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -359,7 +359,8 @@ form {
                 salesOutDate: `<fmt:formatDate value="${out.salesOutDate}" pattern="yyyy-MM-dd"/>`,
                 empCode: "${out.empCode}",
                 empName: "${out.empName}",
-                prodSaveAmt: "${out.prodSaveAmt}"
+                prodSaveAmt: "${out.prodSaveAmt}",
+              	prodName: "${out.prodName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -383,17 +384,20 @@ form {
                 header: '출고코드',
                 name: 'salesOutCode'
             }, {
-                header: '제품Lot',
+                header: '제품LOT',
                 name: 'prodLot',
                 editor: 'text',
                 value: '${out.prodLot}'
+            }, {
+                header: '제품명',
+                name: 'prodName'
             }, {
                 header: '상세주문코드',
                 name: 'salesOrdDeCode',
                 editor: 'text',
                 value: '${out.salesOrdDeCode}'
             }, {
-                header: '거래처명',
+                header: '거래처',
                 name: 'actName',
                 value: '${out.actName}'
             }, {
@@ -405,7 +409,7 @@ form {
                 name: 'salesOutAmt',
                 editor: 'text'
             }, {
-                header: '출고날짜',
+                header: '출고일자',
                 name: 'salesOutDate',
                 editor: {
                     type: 'datePicker',
@@ -415,12 +419,11 @@ form {
                 },
                 className: 'yellow-background'
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }, {
-                header: '직원코드',
+                header: '담당자',
                 name: 'empCode',
-                editor: 'text',
                 hidden: true
             }, {
                 header: '출고여부',
@@ -503,14 +506,17 @@ form {
                     .rowKey;
                 let prodLot = Grid.getValue(rowKey2, 'prodLot');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
+                let prodName = Grid.getValue(rowKey2, 'prodName');
                 let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
                 console.log(prodLot);
                 console.log(prodCode);
                 console.log(prodCode);
+                console.log(prodName);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                 outGrid.setValue(rowKey, 'prodLot', prodLot);
                 outGrid.setValue(rowKey, 'prodCode', prodCode);
                 outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
+                outGrid.setValue(rowKey, 'prodName', prodName);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -664,13 +670,13 @@ form {
             },
             columns: [
                 {
-                    header: '제품Lot',
+                    header: '제품LOT',
                     name: 'prodLot'
                 }, {
                     header: '제품코드',
                     name: 'prodCode'
                 }, {
-                    header: '제품이름',
+                    header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '입고날짜',
@@ -686,9 +692,6 @@ form {
                     header: '유통기한',
                     name: 'salesInExd',
                     className: 'yellow-background'
-                }, {
-                    header: '직원코드',
-                    name: 'empCode'
                 }, {
                     header: '품질검사번호',
                     name: 'testNum'
@@ -715,7 +718,10 @@ form {
                     prcsRqAmt: "${order.prcsRqAmt}",
                     devDate: `<fmt:formatDate value="${order.devDate}" pattern="yyyy-MM-dd"/>`,
                     devYn: "${order.devYn}",
-                    empCode: "${order.empCode}"
+                    empCode: "${order.empCode}",
+                    empName: "${order.empName}",
+                    prodName: "${order.prodName}",
+                    prcsDirSts: "${order.prcsDirSts}"
                 }
                 <c:if test="${not status.last}">,</c:if>
             </c:forEach>
@@ -729,7 +735,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -747,8 +753,17 @@ form {
                     header: '거래처코드',
                     name: 'actCode'
                 }, {
-                    header: '생산계획상태',
-                    name: 'ordSts'
+                    header: '생산상태',
+                    name: 'prcsDirSts',
+                    formatter: function (e) {
+                        if (e.value == 'P1') {
+                            return "작업대기";
+                        } else if (e.value == 'P2') {
+                            return "공정진행중";
+                        } else if (e.value == 'P3'){
+                        	return "생산완료";
+                        }
+                    }
                 }, {
                     header: '제품명',
                     name: 'prodName',
@@ -762,14 +777,24 @@ form {
                 }, {
                     header: '출고여부',
                     name: 'devYn',
-                    value: '${order.devYn}'
+                    formatter: function (e) {
+                        if (e.value == 'Y') {
+                            return "출고완료";
+                        } else if (e.value == 'N') {
+                            return "출고전";
+                        }
+                    }
                 }, {
                     header: '주문코드',
                     name: 'ordCode',
                     hidden: true
                 }, {
+                    header: '담당자',
+                    name: 'empName'
+                }, {
                     header: '직원코드',
                     name: 'empCode',
+                    hidden : true
                 }, {
                     header: '생산계획코드',
                     name: 'prcsPlanCode',
@@ -987,17 +1012,17 @@ form {
                 data: JSON.stringify(outGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "출고 내역이 등록되었습니다.", "success");
+                    swal("성공", "작업이 성공하였습니다.", "success");
                     console.log(data);
                 },
                 error: function (reject) {
-                    swal("값이 입력되지 않았습니다.", "", "error");
+                    swal("실패", "작업을 실패했습니다.", "error");
                     console.log(reject);
 
                 }
             })
         } else {
-            alert("값이 입력되지 않았습니다.");
+        	swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }

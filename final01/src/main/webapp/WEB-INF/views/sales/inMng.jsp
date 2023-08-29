@@ -15,7 +15,6 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
-
 <style>
 #save, #delete {
 	float: right;
@@ -108,14 +107,15 @@ form {
 
 </head>
 <body>
-	<h1>재고 관리</h1>
+	<h1>완제품 입고 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" id="prodCodeInput"> <i class="bi bi-search" id="prodModal"></i>
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
+						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix"readonly> 
 						<br>
@@ -175,7 +175,8 @@ form {
                 salesInExd: `<fmt:formatDate value="${in.salesInExd}" pattern="yyyy-MM-dd"/>`,
                 empCode: "${in.empCode}",
                 empName: "${in.empName}",
-                testNum: "${in.testNum}"
+                testNum: "${in.testNum}",
+                prodName: "${in.prodName}"
             },
         </c:forEach>
             ],
@@ -200,7 +201,10 @@ form {
                 header: '제품LOT',
                 name: 'prodLot'
             }, {
-                header: '입고날짜',
+                header: '제품명',
+                name: 'prodName'
+            }, {
+                header: '입고일자',
                 name: 'salesInDate',
                 editor: {
                     type: 'datePicker',
@@ -232,7 +236,7 @@ form {
                 name: 'empCode', // [필수] 컬럼 매핑 이름 값
                 hidden: true
             }, {
-                header: '직원이름', // [필수] 컬럼 이름
+                header: '담당자', // [필수] 컬럼 이름
                 name: 'empName' // [필수] 컬럼 매핑 이름 값
             }, {
                 header: '검사번호', // [필수] 컬럼 이름
@@ -371,16 +375,16 @@ form {
                 data: JSON.stringify(inGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "입고내역이 등록 되었습니다.", "success");
+                    swal("성공", "작업이 성공하였습니다.", "success");
                     selectAjax();
                 },
                 error: function (reject) {
                     console.log(reject);
-                    swal("값이 입력되지 않았습니다.", "", "error");
+                    swal("실패", "작업을 실패했습니다.", "error");
                 }
             })
         } else {
-            swal("", "값이 입력되지 않았습니다.", "warning");
+            swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }
@@ -431,7 +435,6 @@ form {
 
                 })
                 inGrid.resetData(data2);
-                setDisabled();
             },
             error: function (reject) {
                 console.log(reject);
@@ -612,7 +615,6 @@ form {
         // let prodName = testGrid.getValue(rowKey, 'prodName');     	let testDate =
         // testGrid.getValue(rowKey, 'testDate');
         let testAmt = testGrid.getValue(rowKey, 'testAmt');
-
         let prodLot = testGrid.getValue(rowKey, 'prodLot');
 
         let now = new Date(); // 현재 날짜 및 시간
@@ -622,13 +624,15 @@ form {
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
         let salesInDate = year + "-" + month + "-" + day;
-
+        
         let salesInAmt = testGrid.getValue(rowKey, 'salesInAmt');
         let prodSaveAmt = testGrid.getValue(rowKey, 'prodSaveAmt');
         let salesInExd = testGrid.getValue(rowKey, 'salesInExd');
+        let prodName = testGrid.getValue(rowKey, 'prodName');
 
         console.log(testNum);
         console.log(prodCode);
+        console.log(prodName);
         console.log(testAmt);
         console.log(prodLot);
         console.log(salesInDate);
@@ -640,12 +644,14 @@ form {
 
         testGrid.blur();
         inGrid.appendRow({
-            'testNum': testNum, 'prodCode': prodCode,
-            // 'prodName' : prodName,     					   'testDate' : testDate,
+            'testNum': testNum, 
+            'prodCode': prodCode,
+            'prodName' : prodName,     					   
+			// 'testDate' : testDate,
             // 'testAmt' : testAmt,
 
             'prodLot': prodLot,
-            'salesIndate': salesInDate,
+            'salesInDate': salesInDate,
             'salesInAmt': testAmt,
             'prodSaveAmt': testAmt,
             'salesInExd': salesInExd,

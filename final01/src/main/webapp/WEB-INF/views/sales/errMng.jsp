@@ -239,14 +239,14 @@ form {
 </head>
 <body>
 	<div class="black_bg"></div>
-	<h1>폐기 관리</h1>
+	<h1>완제품 폐기 관리</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> <br>
@@ -359,7 +359,8 @@ form {
                 name: 'salesDpCode'
             }, {
                 header: '검수코드',
-                name: 'testNum'
+                name: 'testNum',
+                editor : 'text'
             }, {
                 header: '제품코드',
                 name: 'prodCode'
@@ -381,7 +382,7 @@ form {
                 },
                 className: 'yellow-background'
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }, {
                 header: '직원코드',
@@ -701,16 +702,16 @@ form {
                 data: JSON.stringify(disGrid.getModifiedRows()),
                 contentType: 'application/json',
                 success: function (data) {
-                    swal("성공", "폐기내역이 등록되었습니다.", "success");
+                    swal("성공", "작업이 성공하였습니다.", "success");
                     // 						disGrid.resetData(data);
                 },
                 error: function (reject) {
                     console.log(reject);
-                    swal("값이 입력되지 않았습니다.", "", "error");
+                    swal("실패", "작업을 실패했습니다.", "error");
                 }
             })
         } else {
-            swal("", "값이 입력되지 않았습니다.", "warning");
+            swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }

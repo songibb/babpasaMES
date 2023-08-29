@@ -252,23 +252,23 @@ form {
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
-						<p>제품</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="prodCodeInput">
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput">
+						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
 						<i class="bi bi-search" id="actModal"></i> 
 						<input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
 						<br>
 						<p>주문일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
 						<br>
-						<p>배송상태</p>
-						<label for="before"><input type="checkbox" id="before" value="before">배송전</label> 
-						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">배송완료</label>
+						<p>출고상태</p>
+						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
+						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -519,7 +519,8 @@ form {
                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
                 devYn: "${order.devYn}",
                 empCode: "${order.empCode}",
-                empName: "${order.empName}"
+                empName: "${order.empName}",
+                ordCode: "${order.ordCode}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -536,27 +537,17 @@ form {
         },
         columns: [
             {
-                header: '주문상세코드',
-                name: 'salesOrdDeCode'
+                header: '주문코드',
+                name: 'ordCode'
             }, {
                 header: '주문날짜',
                 name: 'ordDate',
                 value: '${order.ordDate}',
                 className: 'yellow-background'
             }, {
-                header: '거래처명',
+                header: '거래처',
                 name: 'actName',
                 value: '${order.actName}'
-            }, {
-                header: '생산계획상태',
-                name: 'ordSts',
-                formatter: function (e) {
-                    if (e.value == 'P1') {
-                        return "계획전";
-                    } else if (e.value == 'P2') {
-                        return "계획완료";
-                    }
-                }
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -587,7 +578,7 @@ form {
                 name: 'actCode',
                 hidden: true
             }, {
-                header: '직원이름',
+                header: '담당자',
                 name: 'empName'
             }, {
                 header: '생산계획코드',
