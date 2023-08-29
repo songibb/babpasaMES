@@ -261,7 +261,7 @@
     		 e.preventDefault();
     		 
     		 if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-    			 swal("필요한 정보를 모두 입력해 주세요.","","warning");
+    			 swal("경고","모든 값이 입력되지 않았습니다","warning");
     		 }else{
     			 if(prodInfo.prodName == prodInfo.prodBeforeName){
     				 //수정 ajax
@@ -278,7 +278,7 @@
     		   					//동록 ajax
     		   					 prodUpdate(prodInfo);
     		   				   }else{
-    		   					swal("이미 존재하는 제품명입니다.","","warning");
+    		   					swal("경고","이미 존재하는 제품명입니다","warning");
     		   				   }
     		   			   },
     		   			   error : function(reject){
@@ -291,7 +291,7 @@
     	}else{
     		e.preventDefault();
     		if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
-    			swal("필요한 정보를 모두 입력해 주세요.","","warning");
+    			swal("경고","모든 값이 입력되지 않았습니다","warning");
    		 }else{
    			 	let prodNameCheck = {prodNameUse : prodInfo.prodName};
    			 	
@@ -305,7 +305,7 @@
 	   					//동록 ajax
 	   		   			 prodInsert(prodInfo);
 	   				   }else{
-	   					swal("이미 존재하는 제품명입니다.","","warning");
+	   					swal("경고","이미 존재하는 제품명입니다","warning");
 	   				   }
 	   			   },
 	   			   error : function(reject){
@@ -340,7 +340,7 @@
 		})
 		.done(data => {
 			if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-				swal("제품 등록이 정상적으로 처리되었습니다","","success");
+				swal("성공","제품 등록이 정상적으로 처리되었습니다","success");
 			
 				//밑에 조회 ajax 새로 처리 필요
 				$.ajax({
@@ -355,9 +355,9 @@
 				});
 				
 				//form 비우기
-				 $('form')[1].reset();
+				 $('form')[0].reset();
 			} else{
-				swal("제품 등록처리가 실패되었습니다","","error");
+				swal("실패","제품 등록처리가 실패되었습니다","error");
 			}
 		})
 		.fail(reject => console.log(reject));
@@ -375,7 +375,7 @@
 			.done(data => { 
 				console.log(data);
 				if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-					swal("제품 정보수정이 정상적으로 처리되었습니다","","success");
+					swal("성공","제품 수정이 정상적으로 처리되었습니다","success");
 				
 					//밑에 조회 ajax 새로 처리 필요
 					$.ajax({
@@ -390,7 +390,7 @@
 					});
 					
 					//form 비우기
-					 $('form')[1].reset();
+					 $('form')[0].reset();
 				} else{
 					swal("제품 정보 수정이 실패되었습니다","","error");
 				}   	
@@ -449,13 +449,13 @@
 					                    	  let successCount = checkCount-errCount;
 					                    	  
 					                    	  if(errCount==0){
-						                		  swal("삭제 완료되었습니다","", {icon: "success",});
+						                		  swal("성공","제품 삭제가 정상적으로 처리되었습니다","success");
 						                		
 						                	  }else if(successCount==0){
-						                		  swal("모두 이미 사용중인 제품으로 삭제가 실패되었습니다","", {icon: "error",});
+						                		  swal("실패","모두 이미 사용중인 제품으로 삭제처리가 되지않았습니다","error");
 						                	  }else{
-						                	  swal(successCount +"개 제품 삭제 성공!\n "
-						                			  + errCount +"개 제품 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
+						                	  swal("성공",successCount +"개 제품 삭제 성공!\n "
+						                			  + errCount +"개 제품 삭제 실패! \n 사용중인 제품의 경우 삭제되지 않았습니다","success");
 						                	  }
            	 
 					                    	$.ajax({
@@ -483,7 +483,7 @@
 		            }); 
 		            
 				}else{
-					swal("선택된 체크박스가 없습니다","","warning");
+					swal("경고","선택된 체크박스가 없습니다","","warning");
 				}
 		        
 		    

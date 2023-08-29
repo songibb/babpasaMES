@@ -278,7 +278,7 @@
 					  e.preventDefault();
 					if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel==''){
 						
-						alert('모든 정보를 입력해 주세요.');
+						swal("경고","모든 값이 입력되지 않았습니다","warning");
 						}else{ 
 
 					//수정 ajax
@@ -288,7 +288,7 @@
 					  e.preventDefault();
 					  if(actInfo.actName =='' || actInfo.actNum =='' || actInfo.actTel==''){
 						 
-							alert('모든 정보를 입력해 주세요.');
+						  swal("경고","모든 값이 입력되지 않았습니다","warning");
 							}else{ 
 
 					  
@@ -325,7 +325,7 @@
 				})
 				.done(data => { 
 					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-						alert( '거래처 등록이 정상적으로 처리되었습니다.');
+						swal("성공", "거래처 등록이 정상적으로 처리되었습니다","success");
 					
 						//밑에 조회 ajax 새로 처리 필요
 						$.ajax({
@@ -342,7 +342,7 @@
 						//form 비우기
 						 $('form')[0].reset();
 					} else{
-						alert('거래처 등록처리가 실패되었습니다.');
+						swal('실패','거래처 등록처리가 실패되었습니다','error');
 					}   	
 				})
 				.fail(reject => console.log(reject));
@@ -361,7 +361,7 @@
 				})
 				.done(data => { 
 					if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-						alert( '거래처 정보수정이 정상적으로 처리되었습니다.');
+						swal("성공", "거래처 정보수정이 정상적으로 처리되었습니다" ,"success");
 					
 						//밑에 조회 ajax 새로 처리 필요
 						$.ajax({
@@ -378,7 +378,7 @@
 						//form 비우기
 						 $('form')[0].reset();
 					} else{
-						alert('거래처 정보 수정이 실패되었습니다.');
+						swal('실패','거래처 정보 수정이 실패되었습니다.','error');
 					}   	
 				})
 				.fail(reject => console.log(reject));
@@ -440,13 +440,13 @@
 					                	  let successCount = checkCount-errCount;
 					                	  
 					                	  if(errCount==0){
-					                		  swal("삭제 완료되었습니다","", {icon: "success",});
+					                		  swal("성공","거래처 정보삭제가 정상적으로 처리되었습니다","success");
 					                		
 					                	  }else if(successCount==0){
-					                		  swal("모두 이미 사용중인 거래처로 삭제가 실패되었습니다","", {icon: "error",});
+					                		  swal("실패","모두 이미 사용중인 거래처로 삭제처리가 실패되었습니다", "error");
 					                	  }else{
-					                	  swal(successCount +"개 거래처 삭제 성공!\n "
-					                			  + errCount +"개 거래처 삭제 실패!","사용중인 제품의 경우 삭제되지 않았습니다","success");
+					                	  swal("성공",successCount +"개 거래처 삭제 성공!\n "
+					                			  + errCount +"개 거래처 삭제 실패! \n사용중인 제품의 경우 삭제되지 않았습니다","success");
 					                	  }
 										$.ajax({
 										       url : "ajaxActCodeList",
@@ -472,7 +472,7 @@
 		            });
 		            
 		        }else{
-		        	swal("선택된 체크박스가 없습니다","","warning");
+		        	swal("경고","선택된 체크박스가 없습니다","warning");
 		        }
 		        
 		        

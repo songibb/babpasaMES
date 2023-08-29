@@ -282,7 +282,7 @@
 			commCode = $("#commCode").val();
 			
 			if($('#commCode').val().length === 0){
-				swal("공통코드 선택필요!","상세코드를 추가할 공통코드를 먼저 선택해주세요","warning");
+				swal("경고","상세코드를 추가할 공통코드를 먼저 선택해주세요","warning");
 			}else{
 				grid2.appendRow( {'commCode' : commCode}, { at: 0 });
 			}
@@ -299,7 +299,7 @@
 			
 			//변경사항없으면 빠져나감
 			if(!grid2.isModified()){
-				swal("변경사항이 없습니다","","warning");
+				swal("경고","변경사항이 없습니다","warning");
 				return false;
 			}
 			
@@ -340,7 +340,7 @@
 					data : JSON.stringify(grid2.getModifiedRows()),
 					contentType : 'application/json',
 					success : function(data){
-						swal("성공", data+"건이 처리되었습니다","success");
+						swal("성공", "저장되었습니다","success");
 						$.ajax({
 							url : 'ajaxCommCodeList',
 							method : 'GET',
@@ -361,7 +361,7 @@
 					}
 				})
 		} else {
-			alert("값이 입력되지 않았습니다.");
+			swal('경고','모든값이 입력되지 않았습니다','warning');
 		}
 
 	}
