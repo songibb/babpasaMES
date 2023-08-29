@@ -39,8 +39,14 @@
 		 
 
         let checkList = Grid.getCheckedRows();
-      	matgrid.appendRows(checkList,{ at: 0 });
-
+    	
+      	//matgrid.appendRows(checkList);
+      	$.each(checkList, function(idx,obj){
+      		matgrid.appendRow(obj, {at: 0});
+      		
+      		
+      	})
+		
         $(".modal").fadeOut();
         Grid.destroy();  
 	

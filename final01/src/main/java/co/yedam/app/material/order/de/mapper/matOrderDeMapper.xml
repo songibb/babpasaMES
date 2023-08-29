@@ -183,7 +183,7 @@
 	</select>
 	
 	<!-- 모달검색 - 거래처 -->
-	<select id="selectActMatModalSearch" resultType="OutVO">
+	<select id="selectActMatModalSearch" resultType="OrderVO">
 		SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
 		FROM com_act
 		<if test="actName != null and !actName.equals('')">

@@ -30,4 +30,6 @@ public class EquipVO {
 	private String empCode;
 	private String chkType;
 	private String chkNote;
+	
+	private String actName;
 }

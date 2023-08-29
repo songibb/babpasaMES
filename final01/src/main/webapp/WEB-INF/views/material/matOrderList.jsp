@@ -447,6 +447,7 @@
 		function resetInput(e) {
 		    $('input').each(function (idx, obj) {
 		        obj.value = '';
+		        obj.checked = false;
 		    })
 		}
 	

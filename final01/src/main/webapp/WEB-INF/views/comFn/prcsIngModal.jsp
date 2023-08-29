@@ -246,7 +246,15 @@
               },
               {
                 header: '자재소모량',
-                name: 'bomAmt'
+                name: 'bomAmt',
+                formatter(e) {
+                	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                	}
+                }
               }
 //               {
 //                 header: '단위',
