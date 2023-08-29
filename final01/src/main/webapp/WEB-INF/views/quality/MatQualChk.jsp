@@ -159,16 +159,40 @@
 		 	 	  },
 	 	 	      {
 			 			header: '자재전체투입량',
-			 		 	name: 'matAmt'
+			 		 	name: 'matAmt',
+			 		 	formatter(e) {
+	                    	if (e['value'] != null){
+	        	                val = e['value']
+	        	                    .toString()
+	        	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	        	                return val;
+	                        	}
+	        	            }
 			 	  },
 			 	  {
 	                    header: '합격량', 
 	                    name: 'matYamt',
-	                    editor: 'text'
+	                    editor: 'text',
+			 		 	formatter(e) {
+	                    	if (e['value'] != null){
+	        	                val = e['value']
+	        	                    .toString()
+	        	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	        	                return val;
+	                        	}
+	        	            }
 	              },
 	              {
 	            	  	header: '불합격량',
-			 		 	name: 'matNamt' 
+			 		 	name: 'matNamt',
+			 		 	formatter(e) {
+	                    	if (e['value'] != null){
+	        	                val = e['value']
+	        	                    .toString()
+	        	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	        	                return val;
+	                        	}
+	        	            }
 	              },
 	              {
 	            	  	header: '담당자',
