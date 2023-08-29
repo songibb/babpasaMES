@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 public interface MatOrderDeMapper {
 	//전체조회
@@ -33,4 +34,10 @@ public interface MatOrderDeMapper {
 	
 	//해당 계획 소모 자재
 	public List<MatInVO> selectNewPlanUseAmt(String prodCode);
+	
+	//자재 거래처 모달
+	public List<OrderVO> selectActMatModal();
+	
+	//자재 거래처 모달 검색
+	public List<OrderVO> selectActMatModalSearch(String actName);
 }

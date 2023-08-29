@@ -17,7 +17,7 @@ import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
-import co.yedam.app.sales.order.service.OrderService;
+import co.yedam.app.sales.order.service.OrderVO;
 
 
 @Controller
@@ -25,10 +25,6 @@ public class MatOrderDeController {
 	//전체조회
 	@Autowired
 	MatOrderDeService mods;
-	
-	//거래처 모달
-	@Autowired
-	OrderService orderService;
 	
 	//자재목록 모달
 	@Autowired
@@ -38,7 +34,7 @@ public class MatOrderDeController {
 	public String getMatOrderList(Model model) {
 		List<MatOrderDeVO> mo = mods.selectMatOrderList();
 		model.addAttribute("matOrderList", mo);
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		return "material/matOrderList";
 	}
@@ -56,7 +52,7 @@ public class MatOrderDeController {
 	public String getMatOrderDir(Model model) {
 		List<MatOrderDeVO> mo = mods.selectMatOrderList();
 		model.addAttribute("matOrderList", mo);
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		//신규생산계획 조회
 		model.addAttribute("planList", mods.getNewPrcsPlan());
@@ -75,6 +71,13 @@ public class MatOrderDeController {
 	@ResponseBody
 	public List<MatInVO> getNewPrcsPlanUseAmt(String prodCode){
 		return mods.getNewPlanUseAmt(prodCode);
+	}
+	
+	//거래처 목록 모달 ajax(검색용)
+	@GetMapping("getActMatModalSearch")
+	@ResponseBody
+	public List<OrderVO> getActMatModalSearch(String actName){
+		return mods.getActMatModalSearch(actName);
 	}
 	
 }

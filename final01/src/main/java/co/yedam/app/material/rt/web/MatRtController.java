@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatModalService;
+import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatRtVO;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
-import co.yedam.app.sales.order.service.OrderService;
 
 @Controller
 public class MatRtController {
@@ -26,7 +26,7 @@ public class MatRtController {
 	
 	//거래처 모달
 	@Autowired
-	OrderService orderService;
+	MatOrderDeService mods;
 		
 	//자재목록 모달
 	@Autowired
@@ -36,7 +36,7 @@ public class MatRtController {
 	@GetMapping("matRtList")
 	public String getMatRtList(Model model){
 		model.addAttribute("rtList", mrs.selectMatRtList());
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		
 		return "material/matRtList";
@@ -63,7 +63,7 @@ public class MatRtController {
 	public String getMatRtDir(Model model) {
 		model.addAttribute("rtList", mrs.selectMatRtList());
 		model.addAttribute("testList", mrs.selectMatTestFinishList());
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		return "material/matRtDir";
 	}

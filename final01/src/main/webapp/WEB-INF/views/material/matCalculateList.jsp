@@ -41,6 +41,14 @@
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
+	}
 	#searchP  input[type="date"]{
 	  width: 15%;
 	  padding: 5px;
@@ -112,7 +120,7 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
@@ -334,7 +342,7 @@
 		            header: '최종수량',
 		            name: 'finalAmt'
 		        }, {
-		            header: '담당자명',
+		            header: '담당자',
 		            name: 'empName'
 		        }
 		    ]

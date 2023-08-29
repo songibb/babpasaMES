@@ -88,11 +88,7 @@
 	.m_body > p{
 		display : inline-block;
 	}
-	
-	.m_body > input{
-		border : 1px solid black;
-	}
-	
+
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
@@ -100,6 +96,14 @@
 	#matNameFix, #actNameFix {
 		background-color : #868e96;
 		border-color: #868e96;
+	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
 	}
 </style>    
        
@@ -116,12 +120,12 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
-                				<p>업체명</p>
-                				<input type="text" id="actCodeInput">
+                				<p>거래처</p>
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -362,7 +366,7 @@
 		            actName: inputContent
 		        }
 		        $.ajax({
-		            url: 'getActModalSearch',
+		            url: 'getActMatModalSearch',
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
@@ -492,6 +496,13 @@
 		            name: 'matOdCd',
 		            width: 150
 		        }, {
+		            header: '발주일자',
+		            name: 'matOdRq',
+		            className: 'yellow-background'
+		        }, {
+		            header: '거래처',
+		            name: 'actName'
+		        }, {
 		            header: '자재명',
 		            name: 'matName'
 		        }, {
@@ -529,14 +540,7 @@
 		                return val + "원";
 		            },
 		            width: 120
-		        }, {
-		            header: '업체명',
-		            name: 'actName'
-		        }, {
-		            header: '발주일자',
-		            name: 'matOdRq',
-		            className: 'yellow-background'
-		        }, {
+		        },   {
 		            header: '납기요청일',
 		            name: 'matOdAcp',
 		            className: 'yellow-background'

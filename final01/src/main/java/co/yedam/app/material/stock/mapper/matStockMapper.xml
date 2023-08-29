@@ -10,6 +10,7 @@
 			 , b.mat_name
 			 , b.mat_std
 			 , b.mat_unit
+			 , b.mat_safe
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 		<where>
@@ -17,7 +18,7 @@
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
 		</where>
-		GROUP BY a.mat_code, b.mat_name, b.mat_std, b.mat_unit
+		GROUP BY a.mat_code, b.mat_name, b.mat_std, b.mat_unit, b.mat_safe
 		ORDER BY a.mat_code
 	</select>
 
