@@ -206,7 +206,13 @@
           },
           {
             header: '사용량',
-            name: 'bomAmt'
+            name: 'bomAmt',
+            formatter(e) {
+                val = e['value']
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                return val;
+            }
           }
         ]
       })  

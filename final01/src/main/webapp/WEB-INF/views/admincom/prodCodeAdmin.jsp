@@ -341,7 +341,7 @@
 		.done(data => {
 			if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
 				swal("성공","제품 등록이 정상적으로 처리되었습니다","success");
-			
+				$('form')[1].reset();
 				//밑에 조회 ajax 새로 처리 필요
 				$.ajax({
 					   url : "ajaxProdCodeList",
@@ -376,7 +376,7 @@
 				console.log(data);
 				if(data != null && data['결과'] == 'Success'){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
 					swal("성공","제품 수정이 정상적으로 처리되었습니다","success");
-				
+					$('form')[1].reset();
 					//밑에 조회 ajax 새로 처리 필요
 					$.ajax({
 					   url : "ajaxProdCodeList",
@@ -457,7 +457,8 @@
 						                	  swal("성공",successCount +"개 제품 삭제 성공!\n "
 						                			  + errCount +"개 제품 삭제 실패! \n 사용중인 제품의 경우 삭제되지 않았습니다","success");
 						                	  }
-           	 
+					                    	  $('form')[1].reset();
+					                    	  $('form')[0].reset();
 					                    	$.ajax({
 					     					   url : "ajaxProdCodeList",
 					     				       method :"GET",

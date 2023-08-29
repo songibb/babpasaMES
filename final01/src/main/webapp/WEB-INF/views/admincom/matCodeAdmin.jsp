@@ -220,7 +220,7 @@
 						let message = success-errCount+total +"건 저장완료 \n" + errCount +"건 저장실패 \n (사용중인 자재는 삭제되지 않습니다)"
 						swal("성공", message,"success");
 						
-						
+						$('form')[0].reset();
 						$.ajax({
 							url : "ajaxMatCodeList",
 							 method :"GET",
@@ -331,7 +331,15 @@
 			 	 	      validation: {
 			 	 	        dataType: 'number',
 			 	 	        required: true
-			 	 	      }
+			 	 	      },
+			 	 	    formatter(e) {
+		                    	if (e['value'] != null){
+		    	                val = e['value']
+		    	                    .toString()
+		    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		    	                return val;
+		                    	}
+		    	            }
 			 	 	  }
 		        ]
 		   

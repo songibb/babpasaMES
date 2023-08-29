@@ -334,6 +334,7 @@
 			success : function(result){
 				swal("성공", "사원 정보등록이 정상적으로 처리되었습니다", "success")
 				$('#userInsertForm')[0].reset();
+				$('form')[1].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
 				 $.ajax({
@@ -376,6 +377,7 @@
 			if(data > 0){
 				swal("성공", "사원 정보수정이 정상적으로 처리되었습니다", "success");
 				$('#userInsertForm')[0].reset();
+				$('form')[1].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
 				 $.ajax({

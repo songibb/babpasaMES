@@ -96,7 +96,7 @@
 			</div>
 		</div> 
 	</div>
-	
+
 		<div class="modal">
    
   <div class="modal_content" 
@@ -341,6 +341,7 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", "저장되었습니다","success");
+						
 						$.ajax({
 							url : 'ajaxCommCodeList',
 							method : 'GET',
@@ -348,6 +349,8 @@
 								 grid.resetData(result);
 								 grid2.clear();
 								 $("#commCode").val("");
+								 $("#commSearch").val("");
+								 
 								 
 								 
 							},
