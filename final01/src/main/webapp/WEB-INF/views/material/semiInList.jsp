@@ -82,10 +82,6 @@
 		display : inline-block;
 	}
 	
-	.m_body > input{
-		border : 1px solid black;
-	}
-	
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
@@ -97,6 +93,14 @@
 	
 	#prodModal{
 		cursor : pointer;
+	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
 	}
 </style>    
        
@@ -112,7 +116,7 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
-				                <input type="text" id="prodCodeInput">
+				                <input type="text" id="prodCodeInput" placeholder="검색어를 선택하세요">
 				                <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
 				                <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 				                <br>
@@ -302,10 +306,20 @@
 		        perPage: 10
 		    },
 		    columns: [
+		    	{
+		            header: '반제품 LOT',
+		            name: 'semiLot'
+		        },
 		        {
 		            header: '반제품명',
 		            name: 'prodName'
-		        }, {
+		        },
+		        {
+		            header: '입고일자',
+		            name: 'semiInd',
+		            className: 'yellow-background'
+		        },
+		        {
 		            header: '입고량',
 		            name: 'semiInAmt',
 		            formatter(e) {
@@ -314,14 +328,7 @@
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
 		            }
-		        }, {
-		            header: '반제품 LOT',
-		            name: 'semiLot'
-		        }, {
-		            header: '입고일자',
-		            name: 'semiInd',
-		            className: 'yellow-background'
-		        }, {
+		        },   {
 		            header: '유통기한',
 		            name: 'semiExd',
 		            className: 'yellow-background'

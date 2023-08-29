@@ -46,6 +46,15 @@
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
+	}
+	
 	#searchP input[type="date"]{
 	  width: 15%;
 	  padding: 5px;
@@ -94,9 +103,7 @@
 		display: inline-block;
 	}
 	
-	#m_body_s>input {
-		border: 1px solid black;
-	}
+	
 	
 	#customtemplateSearchAndButton p{
 			width : 100px;
@@ -124,7 +131,7 @@
 						<div id="searchP" style="display: flex; justify-content: space-between;">
 							<div style="flex: 1;">
 								<p>자재명</p>
-								<input type="text" id="matCodeInput"> <i
+								<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요"> <i
 									class="bi bi-search" id="matModal"></i>
 								<!-- 돋보기 아이콘 -->
 								<input type="text" class="blackcolorInputBox" id="matNameFix"
@@ -428,7 +435,7 @@
 		                }
 		            }
 		        }, {
-		            header: '담당자명',
+		            header: '담당자',
 		            name: 'empName'
 		        }, {
 		            header: '담당자코드',
@@ -541,7 +548,7 @@
 	
 		                    if (obj['matLot'] == matLot) {
 		                        isNotExist = false;
-		                        swal("", "이미 해당 LOT로 등록된 행이 존재합니다", "warning");
+		                        swal("경고", "이미 해당 LOT로 등록된 행이 존재합니다", "warning");
 		                        return false;
 		                    }
 		                })
@@ -674,7 +681,7 @@
 	
 		                finalAmt = Number(rowData.calBamt) - Number(rowData.calAmt);
 		                if (finalAmt < 0) {
-		                    swal("", "기존수량을 넘을 수 없습니다", "warning");
+		                    swal("경고", "기존수량을 넘을 수 없습니다", "warning");
 		                    grid.setValue(change.rowKey, 'calAmt', rowData.calBamt);
 		                    grid.setValue(change.rowKey, 'finalAmt', 0);
 		                } else {
@@ -698,7 +705,7 @@
 		    // 수정된게 없으면 바로 빠져나감
 	
 		    if (!grid.isModified()) {
-		        swal("", "변경사항이 없습니다", "warning");
+		        swal("경고", "변경사항이 없습니다", "warning");
 		        return false;
 		    }
 	
@@ -729,7 +736,7 @@
 		            }
 		        })
 		    } else {
-		        swal("", "값이 입력되지 않았습니다", "warning");
+		        swal("경고", "값이 입력되지 않았습니다", "warning");
 		    }
 	
 		}

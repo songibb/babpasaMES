@@ -75,9 +75,7 @@
 		display : inline-block;
 	}
 	
-	#m_body_s > input{
-		border : 1px solid black;
-	}
+	
 	
 	#customtemplateSearchAndButton p{
 		width : 100px;
@@ -96,6 +94,14 @@
 		margin-right : 20px;
 	}
 	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
+	}
+	
 </style>    
        
 </head>
@@ -110,7 +116,7 @@
         				<div id="searchP" style="display: flex; justify-content: flex-end;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
@@ -254,7 +260,7 @@
 		            name: 'empCode',
 		            hidden: true
 		        }, {
-		            header: '담당자명',
+		            header: '담당자',
 		            name: 'empName'
 		        }, {
 		            header: '비고',
@@ -471,7 +477,7 @@
 		    // 수정된게 없으면 바로 빠져나감
 	
 		    if (!grid.isModified()) {
-		        swal("", "변경사항이 없습니다", "warning");
+		        swal("경고", "변경사항이 없습니다", "warning");
 		        return false;
 		    }
 	
@@ -518,7 +524,7 @@
 		            }
 		        })
 		    } else {
-		        swal("", "값이 입력되지 않았습니다", "warning");
+		        swal("경고", "값이 입력되지 않았습니다", "warning");
 		    }
 		}
 	

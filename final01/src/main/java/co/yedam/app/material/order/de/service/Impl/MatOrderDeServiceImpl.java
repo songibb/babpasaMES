@@ -11,6 +11,7 @@ import co.yedam.app.material.order.de.mapper.MatOrderDeMapper;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 @Service
 public class MatOrderDeServiceImpl implements MatOrderDeService {
@@ -70,6 +71,18 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	public List<MatInVO> getNewPlanUseAmt(String prodCode) {
 		
 		return modm.selectNewPlanUseAmt(prodCode);
+	}
+
+	@Override
+	public List<OrderVO> getActMatModal() {
+		
+		return modm.selectActMatModal();
+	}
+
+	@Override
+	public List<OrderVO> getActMatModalSearch(String actName) {
+		
+		return modm.selectActMatModalSearch(actName);
 	}
 
 }

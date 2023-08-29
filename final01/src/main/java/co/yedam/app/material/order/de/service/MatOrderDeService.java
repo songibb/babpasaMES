@@ -5,6 +5,7 @@ import java.util.List;
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanVO;
+import co.yedam.app.sales.order.service.OrderVO;
 
 
 
@@ -22,4 +23,10 @@ public interface MatOrderDeService {
 	
 	//해당 계획 소모 자재
 	public List<MatInVO> getNewPlanUseAmt(String prodCode);
+	
+	//자재 거래처 모달
+	public List<OrderVO> getActMatModal();
+	
+	//자재 거래처 모달 검색
+	public List<OrderVO> getActMatModalSearch(String actName);
 }

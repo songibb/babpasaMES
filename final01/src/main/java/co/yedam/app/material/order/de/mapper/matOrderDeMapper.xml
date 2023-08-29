@@ -171,4 +171,25 @@
 			AND bom_yn='O'
 		group by find_mat_name(mp_code), mp_code, mat_stock
 	</select>
+	
+	<!-- 거래처 목록 -->
+	<select id="selectActMatModal" resultType="OrderVO">
+		SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
+		FROM com_act
+		WHERE act_kind = 'ACT-TYPE2'
+		AND ACT_STS = 'D1'
+		ORDER BY act_code DESC
+
+	</select>
+	
+	<!-- 모달검색 - 거래처 -->
+	<select id="selectActMatModalSearch" resultType="OutVO">
+		SELECT act_code, act_name, act_sts, act_kind
+		FROM com_act
+		<if test="actName != null and !actName.equals('')">
+		WHERE act_name LIKE '%' || #{actName} || '%'
+		</if>
+		AND act_kind = 'ACT-TYPE2'
+		ORDER BY act_code DESC
+	</select>
 </mapper>

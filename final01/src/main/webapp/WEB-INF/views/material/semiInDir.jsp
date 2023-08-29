@@ -86,10 +86,6 @@
 		display : inline-block;
 	}
 	
-	.m_body > input{
-		border : 1px solid black;
-	}
-	
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
@@ -101,6 +97,14 @@
 	
 	#prodModal{
 		cursor : pointer;
+	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
 	}
 </style>    
        
@@ -116,7 +120,7 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
-				                <input type="text" id="prodCodeInput">
+				                <input type="text" id="prodCodeInput" placeholder="검색어를 선택하세요">
 				                <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
 				                <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 				                <br>
@@ -209,6 +213,10 @@
 		        perPage: 10
 		    },
 		    columns: [
+		    	{
+		            header: '반제품 LOT',
+		            name: 'semiLot'
+		        },
 		        {
 		            header: '반제품코드',
 		            name: 'prodCode',
@@ -220,6 +228,16 @@
 		            header: '생산공정',
 		            name: 'prcsIngCode'
 		        }, {
+		            header: '입고일자',
+		            name: 'semiInd',
+		            editor: {
+		                type: 'datePicker',
+		                options: {
+		                    language: 'ko'
+		                }
+		            },
+		            className: 'yellow-background'
+		        },{
 		            header: '입고량',
 		            name: 'semiInAmt',
 		            formatter(e) {
@@ -230,20 +248,7 @@
 		                    return val;
 		                }
 		            }
-		        }, {
-		            header: '반제품 LOT',
-		            name: 'semiLot'
-		        }, {
-		            header: '입고일자',
-		            name: 'semiInd',
-		            editor: {
-		                type: 'datePicker',
-		                options: {
-		                    language: 'ko'
-		                }
-		            },
-		            className: 'yellow-background'
-		        }, {
+		        },   {
 		            header: '유통기한',
 		            name: 'semiExd',
 		            editor: {
@@ -253,13 +258,13 @@
 		                }
 		            },
 		            className: 'yellow-background'
-		        }, {
-		            header: '담당자명',
-		            name: 'empName'
-		        }, {
+		        },  {
 		            header: '사용여부',
 		            name: 'useYn'
 		        }, {
+		            header: '담당자',
+		            name: 'empName'
+		        },{
 		            header: '담당자코드',
 		            name: 'empCode',
 		            hidden: true
@@ -383,7 +388,7 @@
 		    // 수정된게 없으면 바로 빠져나감
 	
 		    if (!inGrid.isModified()) {
-		        swal("", "변경사항이 없습니다", "warning");
+		        swal("경고", "변경사항이 없습니다", "warning");
 		        return false;
 		    }
 	
@@ -429,7 +434,7 @@
 		            }
 		        })
 		    } else {
-		        swal("", "값이 입력되지 않았습니다", "warning");
+		        swal("경고", "값이 입력되지 않았습니다", "warning");
 		    }
 	
 		}
@@ -661,13 +666,22 @@
 		        let testAmt = testGrid.getValue(rowKey, 'testAmt');
 	
 		        testGrid.removeRow(rowKey);
-	
+				
+		        let now = new Date(); // 현재 날짜 및 시간
+		        let year = now.getFullYear();
+		        let month = ('0' + (
+		            now.getMonth() + 1
+		        )).substr(-2);
+		        let day = ('0' + now.getDate()).substr(-2);
+		        let semiInd = year + "-" + month + "-" + day;
+		        
 		        testGrid.blur();
 		        inGrid.appendRow({
 		            'prcsIngCode': prcsIngCode,
 		            'prodCode': prodCode,
 		            'prodName': prodName,
 		            'semiInAmt': testAmt,
+		            'semiInd' : semiInd,
 		            'empCode': `${user.id}`,
 		            'empName': `${user.empName}`
 		        }, {at: 0});

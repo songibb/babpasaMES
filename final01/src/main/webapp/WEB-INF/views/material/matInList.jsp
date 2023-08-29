@@ -81,11 +81,7 @@
 	.m_body > p{
 		display : inline-block;
 	}
-	
-	.m_body > input{
-		border : 1px solid black;
-	}
-	
+
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
@@ -97,6 +93,14 @@
 	
 	#matModal{
 		cursor : pointer;
+	}
+	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
 	}
 </style>    
        
@@ -112,12 +116,12 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
-                				<p>업체명</p>
-                				<input type="text" id="actCodeInput">
+                				<p>거래처</p>
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -281,7 +285,7 @@
 		            actName: inputContent
 		        }
 		        $.ajax({
-		            url: 'getActModalSearch',
+		            url: 'getActMatModalSearch',
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
@@ -425,7 +429,12 @@
 		        perPage: 10
 		    },
 		    columns: [
-	
+		    	{
+		            header: '자재 LOT',
+		            name: 'matLot',
+		            width: 150
+		        }, 
+		        
 		        {
 		            header: '자재명',
 		            name: 'matName'
@@ -436,9 +445,15 @@
 		            header: '규격',
 		            name: 'matStd'
 		        }, {
-		            header: '업체명',
+		            header: '거래처',
 		            name: 'actName'
-		        }, {
+		        },		        
+		        {
+		            header: '입고일자',
+		            name: 'matInd',
+		            className: 'yellow-background'
+		        },
+		        {
 		            header: '입고량',
 		            name: 'matInAmt',
 		            formatter(e) {
@@ -447,14 +462,6 @@
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
 		            }
-		        }, {
-		            header: '자재 LOT',
-		            name: 'matLot',
-		            width: 150
-		        }, {
-		            header: '입고일자',
-		            name: 'matInd',
-		            className: 'yellow-background'
 		        }, {
 		            header: '유통기한',
 		            name: 'matExd',

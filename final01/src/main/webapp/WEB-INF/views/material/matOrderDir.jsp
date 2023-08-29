@@ -91,11 +91,7 @@
 		display : inline-block;
 	}
 	
-	.m_body > input{
-		border : 1px solid black;
-	}
-	
-	
+
 	#customtemplateSearchAndButton p{
 		width : 100px;
 	}
@@ -199,6 +195,14 @@
 		cursor : pointer;
 	}
 	
+	#modalSearch{
+		width: 30%;
+	  	padding: 6px;
+	  	margin-bottom: 15px;
+	  	border: 1px solid #ccc;
+	  	border-radius: 4px;	
+	}
+	
 /*모달끝*/
 	
 </style>    
@@ -218,12 +222,12 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
-                				<p>업체명</p>
-                				<input type="text" id="actCodeInput">
+                				<p>거래처</p>
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -242,7 +246,7 @@
                 				</button>
                 				
                 				<br>
-                				<p>등록 업체명</p>
+                				<p>등록 거래처</p>
                   				<input type="text" id="selectActCodeInput">
                     			<i class="bi bi-search" id="selectActModal"></i>
                     		
@@ -325,7 +329,7 @@
 	
 		    //등록 거래처가 없으면 행추가를 못함
 		    if ($('#selectActNameFix').val().length === 0) {
-		        swal("", "업체를 먼저 등록해주세요.", "warning");
+		        swal("경고", "거래처를 먼저 등록해주세요.", "warning");
 		    } else {
 		        //거래처가 등록되어 있을 경우 행추가 허용
 		        let now = new Date(); // 현재 날짜 및 시간
@@ -391,12 +395,20 @@
 		            name: 'matOdCd',
 		            width: 150
 		        }, {
+		            header: '발주일자',
+		            name: 'matOdRq',
+		            className: 'yellow-background'
+		        },{
+		            header: '거래처',
+		            name: 'actName'
+		        }, {
 		            header: '자재명',
 		            name: 'matName',
 		            editor: 'text'
 		        }, {
 		            header: '자재코드', // [필수] 컬럼 이름
-		            name: 'matCode' // [선택] 숨김 여부
+		            name: 'matCode', // [선택] 숨김 여부
+		            hidden: true
 		        }, {
 		            header: '단위',
 		            name: 'matUnit'
@@ -449,18 +461,11 @@
 		                }
 		            },
 		            width: 120
-		        }, {
-		            header: '업체명',
-		            name: 'actName'
-		        }, {
+		        },  {
 		            header: '업체코드', // [필수] 컬럼 이름
 		            name: 'actCode', // [필수] 컬럼 매핑 이름 값
 		            hidden: true // [선택] 숨김 여부
-		        }, {
-		            header: '발주일자',
-		            name: 'matOdRq',
-		            className: 'yellow-background'
-		        }, {
+		        },  {
 		            header: '납기요청일',
 		            name: 'matOdAcp',
 		            editor: {
@@ -490,7 +495,7 @@
 		            }
 	
 		        }, {
-		            header: '담당자명', // [필수] 컬럼 이름
+		            header: '담당자', // [필수] 컬럼 이름
 		            name: 'empName' // [필수] 컬럼 매핑 이름 값                    [선택] 숨김 여부
 		        }
 		    ]
@@ -518,7 +523,7 @@
 		    // 수정된게 없으면 바로 빠져나감
 	
 		    if (!orderGrid.isModified()) {
-		        swal("", "변경사항이 없습니다", "warning");
+		        swal("경고", "변경사항이 없습니다", "warning");
 		        return false;
 		    }
 	
@@ -562,7 +567,7 @@
 		            }
 		        })
 		    } else {
-		        swal("", "값이 입력되지 않았습니다", "warning");
+		        swal("경고", "값이 입력되지 않았습니다", "warning");
 		    }
 	
 		}
@@ -794,7 +799,7 @@
 		            actName: inputContent
 		        }
 		        $.ajax({
-		            url: 'getActModalSearch',
+		            url: 'getActMatModalSearch',
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {

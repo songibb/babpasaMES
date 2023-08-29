@@ -16,10 +16,10 @@ import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.in.service.MatModalVO;
+import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
-import co.yedam.app.sales.order.service.OrderService;
 
 @Controller
 public class MatInController {
@@ -29,7 +29,7 @@ public class MatInController {
 	
 	//거래처 모달
 	@Autowired
-	OrderService orderService;
+	MatOrderDeService mods;
 	
 	//자재목록 모달
 	@Autowired
@@ -43,7 +43,7 @@ public class MatInController {
 	@GetMapping("matInList")
 	public String getMatInList(Model model) {
 		model.addAttribute("inList", mis.selectMatInList());
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		return "material/matInList";
 	}
@@ -69,7 +69,7 @@ public class MatInController {
 	@GetMapping("matInDir")
 	public String getMatInDir(Model model) {
 		model.addAttribute("inList", mis.selectMatInList());
-		model.addAttribute("actList", orderService.actAllList());
+		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		model.addAttribute("testList", mis.selectMatTestFinishList());
 		return "material/matInDir";
