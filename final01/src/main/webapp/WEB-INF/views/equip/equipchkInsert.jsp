@@ -175,7 +175,8 @@
          columns: [
             {
                header: '설비점검코드',
-               name: 'eqChkCode'
+               name: 'eqChkCode',
+               width: 'auto'
             },
             {
                header: '설비코드',

@@ -55,4 +55,9 @@ public class OneChkServiceImpl implements OneChkService {
 		return result;
 	}
 
+	//검사번호 검색
+	@Override
+	public List<OneChkVO> searchOneChk(String testNum){
+		return oneChkMapper.searchOneChk(testNum);
+	}
 }

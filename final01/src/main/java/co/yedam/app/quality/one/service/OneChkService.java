@@ -18,4 +18,7 @@ public interface OneChkService {
 	//조회페이지
 	//모든 마지막 공정 조회
 	public List<OneChkVO> selectAllLastPrcs();
+	
+	//검사번호 검색
+	public List<OneChkVO> searchOneChk(String testNum);
 }

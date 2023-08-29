@@ -94,12 +94,6 @@
 			
 						</div>	
 					</form>
-					
-					<!-- <div style="display: flex; justify-content: flex-end;">
-
-							<button id="save" class="btn btn-info btn-icon-text">저장</button>          	
-	            	</div>
-	            	 -->
 					<div id="grid"></div>	
 
                 </div>
@@ -126,63 +120,7 @@
 
 	
 	<script>
-	
-	//저장
-	//document.getElementById('save').addEventListener('click', saveServer);
-
-	//저장
-     function saveServer() {	
-    	let rowKey = grid.getFocusedCell();
-    	let codeValue = grid.getValue(rowKey, 'eqCode');
-    	
-		if(eqCode =! null){
-
-			ChkequipUpdate();
-
-		}
-
-	}; 
-	
-			
-	     function ChkequipUpdate(){
-	 		//alert 표시를 위한 변수
-	 		var updateOk;
-	 		
-	 		//생산계획 -> update
-	 		let rowKey = grid.getFocusedCell().rowKey;
-	 		let columnName = grid.getFocusedCell().columnName;
-	 		//편집종료
-	 		grid.finishEditing(rowKey, columnName);
-
-	 		let list = grid.getData();
-	 		console.log(list);
-
-	 		$.ajax({
-	 			url : 'updateChkEquip',
-	 			method : 'POST',
-	 			data : JSON.stringify(list),
-	 			contentType : 'application/json',
-	 			async : false,  //data 모두 수신 후 변수 updateOk에 담기 위해 동기방식으로 처리
-	 			success : function(data){	
-	 				updateOk = data;
-
-	 				//수정 후 그리드 내용 지우고, 행추가
-	 				grid.clear();
-	 				grid.appendRow();
-	 			},
-	 			error : function(reject){
-	 	 			console.log(reject);
-	 	 		}		
-	 		})
-	 		
-	 		if(updateOk > 0){
-	 			alert('정보가 업데이트 되었습니다.')
-	 			/* swal("정보가 업데이트 되었습니다.","","success"); */
-			}
-	     }
-	     
-	     
-	     
+    
 	   //점검 설비 grid
 	     var grid = new tui.Grid({
 	         el: document.getElementById('grid'),

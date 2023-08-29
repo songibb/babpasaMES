@@ -97,11 +97,11 @@
                 	<div class="card">
 		        		<div class="card-body" id="offcontainer">
 		            		<div class="table-responsive pt-3">
-								<form id="insertForm"> 
 									<div style="display: flex; justify-content: space-between;" >
 										<h2>비가동 등록</h2>
 										<button class="btn btn-info btn-icon-text" id="actModal">설비조회</button>
 									</div>
+								<form id="insertForm"> 
 							     	<br>
 								    <div id="input-container">
 									      
@@ -123,11 +123,11 @@
 
 									         <label>비가동시작시간</label>
 									         	<input type="text" name="offStime" id="offStime">
-									         	 <input type="button" value="시작" onclick="setCurrentTime()" />
+									         	 <input type="button" class="btn btn-info btn-icon-text" value="시작" onclick="setCurrentTime()" />
 									         	<br>
 									         <label>비가동종료시간</label>
 									         	<input type="text" name="offEtime" id="offEtime">
-									         	 <input type="button" value="종료" onclick="setCurrentTime2()" />   
+									         	 <input type="button" class="btn btn-info btn-icon-text"  value="종료" onclick="setCurrentTime2()" />   
 									      
 								   </div>
 						  
@@ -168,10 +168,6 @@
                 
             
        </div>
-           
-               
-	
-
 
 	<script>
 		function setCurrentTime() { //시작시간
@@ -286,11 +282,11 @@
 		 	    ]
 		      });
 			
-	setDisabled();
+	/* setDisabled(); */
 	
 	
 	
-	//비활성화
+	/* //비활성화
 	function setDisabled(){
 		$.each(grid.getData(), function(idx, obj){
 			
@@ -299,7 +295,7 @@
 			
 			}
 		})
-	}
+	} */
 			
 		    var Grid;
 		    $("#actModal").click(function(){
@@ -514,9 +510,7 @@ $("#insertForm").on('submit', function(e){
 		let offStime = grid.getValue(rowKey, 'offStime');
 		let offEtime = grid.getValue(rowKey, 'offEtime');
 
-		if(offEtime != null){
-			$('#input-container input[type="text"]').val('');
-		}else{
+		
 	
 		$("#offNo").val(offNo);
 		$("#offCode").val(offCode);
@@ -526,7 +520,7 @@ $("#insertForm").on('submit', function(e){
 		$("#offInfo").val(offInfo);
 		$("#offStime").val(offStime);
 		$("#offEtime").val(offEtime);
-		}
+		
 	});
 
 	</script>

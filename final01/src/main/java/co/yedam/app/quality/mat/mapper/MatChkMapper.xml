@@ -19,7 +19,7 @@
   				,find_cdnm('ERR-TYPE', err_code) AS err_code_name 
   		FROM mat_test t JOIN mat_order_de o
   			ON(o.mat_od_de_cd = t.mat_od_de_cd)
-  		ORDER BY t.mat_test_code
+  		ORDER BY t.mat_test_code DESC
   	</select>
   	
   	<!-- 자재 상세 발주 조회(모달) test - x인 애들만  -->
