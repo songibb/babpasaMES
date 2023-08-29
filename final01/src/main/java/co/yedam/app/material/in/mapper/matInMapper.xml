@@ -103,6 +103,7 @@
 	        									LEFT JOIN com_act e
 	        										ON(f.act_code = e.act_code)
 		WHERE b.mat_test_code IS NULL
+		AND a.mat_yamt > 0
 		ORDER BY mat_test_date
 	</select>
 	
