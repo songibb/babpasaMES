@@ -68,4 +68,11 @@ public class OneChkController {
 		return oneChkService.OneChkUpdate(oneChkReqVO);
 	}
 	
+	//검사번호 검색
+	@GetMapping("/searchOneChk")
+	@ResponseBody
+	public List<OneChkVO> searchOneChk(@RequestParam String testNum){
+		List<OneChkVO> vo = oneChkService.searchOneChk(testNum);
+		return vo;
+	}
 }

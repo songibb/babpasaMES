@@ -60,6 +60,8 @@
 	#save, #delete{
 		float : right;
 	}
+	
+
 </style>    
        
 </head>
@@ -92,11 +94,11 @@
             		<button id="matDeModal" class="btn btn-info btn-icon-text">주문서조회</button>
                 	
             		</div>
+            		
+				</div>
 		            <div id="matgrid"></div>
             		<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
             		<button class="btn btn-info btn-icon-text" id="save">저장</button>
-            		
-				</div>
 			</div>
 		</div>
 	</div> 
@@ -136,6 +138,7 @@
 	        scrollY: false,
 	        minBodyHeight: 150,
 	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+	        pagination: true,
 			pageOptions: {
 				useClient: true,
 		        perPage: 10
@@ -287,7 +290,30 @@
 					contentType : 'application/json',
 					success : function(data){
 						swal("성공", "등록이 완료되었습니다.", "success");
-						//selectAjax();
+						
+						//공통코드 조회 ajax
+						$.ajax({
+							url : 'ajaxMatQualList',
+							method : 'GET',
+							success : function(result){
+								console.log(result);
+								matgrid.resetData(result);
+								
+								 $.each(data, function(i, objDe){
+									let td = data[i]['matTestDate'];
+									
+									data[i]['matTestDate'] = getDate(td);
+								})
+								
+								setDisabled();
+	
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+						});
+						
+						
 					},
 					error : function(reject){
 						console.log(reject);
@@ -297,6 +323,8 @@
 		} else {
 			swal("", "값이 입력되지 않았습니다", "warning");
 		}
+		
+		
 
 	}
 	
@@ -580,15 +608,14 @@
  		   success : function(data){
  			   
 			  $.each(data, function(i, objDe){
-					let td = data[i]['makeDate'];
-					let td2 = data[i]['buyDate'];
+					let td = data[i]['matTestDate'];
 					
-					data[i]['makeDate'] = getDate(td);
-					data[i]['buyDate'] = getDate(td2);
+					data[i]['matTestDate'] = getDate(td);
 
 				})
  				
  			   matgrid.resetData(data);
+				setDisabled();
  		   },
  		   error : function(reject){
  			   console.log(reject);

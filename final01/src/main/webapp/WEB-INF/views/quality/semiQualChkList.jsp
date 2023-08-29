@@ -21,6 +21,26 @@
 		h1, h2{
 			font-weight: 800;
 		}
+		
+		#customtemplateSearchAndButton input[type="text"],
+		select {
+		  width: 230px;
+		  padding: 6px;
+		  margin-bottom: 15px;
+		  border: 1px solid #ccc;
+		  border-radius: 4px;
+		}
+		
+		#customtemplateSearchAndButton p{
+		width: 90px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	
+		.yellow-background {
+	        background-color: rgb(255,253,235);
+		}
+	
 	</style>
 </head>
 <body>
@@ -30,18 +50,30 @@
       <div class="card">
          <div class="card-body">
             <div class="table-responsive pt-3">
-                  
-                  <div style="display: flex; justify-content: flex-end;">
-
-                  </div>
-               </div>
-               <div id="container" style="display: flex; justify-content: center;" >
-               			
+                  	<div id="customtemplateSearchAndButton">
+        				<div style="display: flex; justify-content: space-between;">
+            				<div style="flex: 1; margin-left: 10px; margin-top : 20px;">
+                				<p>검사번호</p>
+	  							<input type="text" placeholder="검색어를 입력하세요" id="matSearch">
+								<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+									<i class="fas fa-search"></i>검색
+								</button>
+								<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+                    				초기화
+                				</button>
+                				<br>
+            				</div>
+        				</div>
+	    			</div>
+	    			</div>
+               
+               <div id="container" style="display: flex; justify-content: center;" >			
                        <div id="grid" style="width: 700px; margin-right: 20px"><h2>반제품 품질 검사 목록</h2></div>
                        <div id="grid2" style="width: 800px;"><h2>상세 품질 검사 조회</h2></div>
                </div>
          </div> 
       </div> 
+      </div>
    </div>
   
    <div>
@@ -78,7 +110,7 @@
          pagination: true,
          pageOptions: {
             useClient: true,
-            perPage: 10,
+            perPage: 5,
          },
          columns: [
             {
@@ -110,7 +142,8 @@
             },
             {
                header : '검사날짜',
-               name :'testDate'
+               name :'testDate',
+		 	  className: 'yellow-background'
             }
             
          ]
@@ -220,7 +253,31 @@
           $("#testNum").val(testNum);
           
       });
- 
+      
+    //검색
+      $('#searchBtn').on('click', searchProdIn);
+      function searchProdIn(e){
+   	   let content = $('#matSearch').val();
+   	   let search = { testNum : content };
+   	   $.ajax({
+   		   url : 'searchSemiChk',
+   		   method : 'GET',
+   		   data : search ,
+   		   success : function(data){
+   			   
+  			  $.each(data, function(i, objDe){
+  					let td = data[i]['testDate'];
+  					
+  					data[i]['testDate'] = getDate(td);
+  				})		
+   			   grid.resetData(data);
+  				setDisabled();
+   		   },
+   		   error : function(reject){
+   			   console.log(reject);
+   		   }
+   	   })
+      }
 
    </script>
 </body>

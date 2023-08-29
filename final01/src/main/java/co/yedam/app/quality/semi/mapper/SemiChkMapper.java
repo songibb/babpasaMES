@@ -26,4 +26,6 @@ public interface SemiChkMapper {
 	//모든 공정 진행중 클릭 시 검사 진행 조회 테이블(상세)
 	public List<SemiChkVO> selectAllSemiChkList(String testNum);
  
+	//검사번호 검색
+	public List<SemiChkVO> searchSemiChk(String testNum);
 }

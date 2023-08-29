@@ -71,7 +71,7 @@
    //저장버튼
    document.getElementById('save').addEventListener('click', commSave);
    
-      //공통코드 조회 ajax
+      //반제품 품질 검사 조회
       $.ajax({
          url : 'ajaxPrcsIngChkList',
          method : 'GET',
@@ -198,12 +198,18 @@
       if(change.columnName == 'testResult'){
          if(rowData.testResult != null && rowData.testResult != ""){
             let passYn;
+            let passYn2;
+            
             if(rowData.testResult < rowData.passValue){
                passYn = 'Y';
+               passYn2 = '합격';
+               
             } else if(rowData.testResult >= rowData.passValue){
                passYn = 'N';
+               passYn2 = '불합격';
             }
             grid2.setValue(change.rowKey, 'passYn', passYn);
+            grid2.setValue(change.rowKey, 'passYn2', passYn2);
          }
       }
       });
@@ -286,6 +292,20 @@
                success : function(data){
             	   
                   swal("성공", data+"건이 처리되었습니다","success");
+                  
+                  $.ajax({
+                      url : 'ajaxPrcsIngChkList',
+                      method : 'GET',
+                      success : function(result){
+                         console.log(result);
+                         grid.resetData(result);
+                         grid2.resetData(result);
+                      },
+                      error : function(reject){
+                         console.log(reject);
+                      }
+                   });
+                  
                },
                error : function(reject){
                   console.log(reject);

@@ -44,6 +44,14 @@ public class MatChkController {
 		
 	}
 	
+	//ajax
+	@GetMapping("/ajaxMatQualList")
+	@ResponseBody
+	public List<MatChkVO> ajaxMatQualList(){
+		List<MatChkVO> matqualList = matChkService.selectMatChkList();
+		return matqualList;
+	}
+	
 	//자재 상세 발주 조회 (모달)
 	@GetMapping("notChkMatList")
 	@ResponseBody

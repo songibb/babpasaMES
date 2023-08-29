@@ -21,7 +21,11 @@
 <meta charset="EUC-KR">
 <title>설비 등록 페이지</title>
 <style>
-
+		
+		#actModal{
+			 margin-left: 13px;
+		}
+		
 		h1{
 			font-weight : 800;
 		}
@@ -47,9 +51,11 @@
         }
 
         table {
-            width: 80%;
-            border-collapse: collapse;
-            margin-top: 20px;           
+            width: 1200px;
+            height: 400px;
+            border-collapse: collapse; 
+            margin-left: 10px;
+    		margin-top: 30px;         
             
         }
 
@@ -90,7 +96,23 @@
             max-height: 100px;
         }
        
-
+       .card-body{
+       		height : 600px;
+       }
+       
+       .card{
+       		width : 1300px;
+       }
+		
+		form .buttons{
+			margin-top: 30px;
+	   	 	margin-left: 900px
+		}
+		
+		.footer{
+			padding-top: 50px;
+    		border-top-width: 0px;
+		}
     </style>
 
 </head>
@@ -153,22 +175,27 @@
       </tr>
    </table>
    <br>
+   
    <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
+   
+   <div class="buttons">
+   <div>
    <button type="submit" id="insert">등록</button>
    <button type="button" id="update">수정</button>
    <button type="button" id="deleteEq">삭제</button>
    <button type="button" onclick="location.href='EquipList'">목록</button>
+   </div>
+   </div>
 </form>   
 </div>
 </div>
 
    
 <div class="modal">
-   
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
-            <div class="modal_title"><h3>설비 목록</h3></div>
+            <div class="modal_title"><h3>설비목록</h3></div>
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">

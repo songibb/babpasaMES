@@ -21,4 +21,7 @@ public interface OneChkMapper {
 	//조회페이지
 	//모든 마지막 공정 조회 (품질검사 처리 완료된 것들도 포함)
 	public List<OneChkVO> selectAllLastPrcs();
+	
+	//검사번호 검색
+	public List<OneChkVO> searchOneChk(String testNum);
 }

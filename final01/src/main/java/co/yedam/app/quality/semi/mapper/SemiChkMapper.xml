@@ -46,8 +46,9 @@
 		  ON (b.prcs_code = c.prcs_code)
 		  
 		WHERE c.semi_yn = 'Y'
+		AND test_date IS NOT NULL
 		  
-		ORDER BY prcs_ing_code
+		ORDER BY TEST_DATE DESC
 	</select>
 	
   	<!-- 검사 실시 리스트(클릭 상세)  -->
@@ -86,6 +87,33 @@
   			,#{prcsIngCode}
   			)
   		}
-  	
+   
   	</update>
+  	
+  	<!-- 검사번호 검색 -->
+   <select id="searchSemiChk" resultType="SemiChkVO">
+   		SELECT A.TEST_NUM
+  			   ,A.TEST_DATE
+  			   ,B.PRCS_ING_CODE
+  			   ,B.PRCS_CODE
+  			   ,B.PRCS_AMT
+  			   ,A.PASS_AMT
+  			   ,A.NON_PASS_AMT
+  			   ,c.semi_yn 
+  			   
+		FROM prod_quality a 
+
+		JOIN prcs_ing b
+		  ON (a.prcs_ing_code = b.prcs_ing_code)
+		  
+		JOIN prcs_manage c
+		  ON (b.prcs_code = c.prcs_code)
+		  
+		WHERE c.semi_yn = 'Y'
+		AND test_date IS NOT NULL
+		AND LOWER(A.TEST_NUM) LIKE '%' || LOWER(#{testNum}) || '%'
+		ORDER BY TEST_DATE DESC
+   
+   
+   </select>
   </mapper>

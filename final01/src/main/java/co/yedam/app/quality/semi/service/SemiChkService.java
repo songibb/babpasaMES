@@ -19,4 +19,7 @@ public interface SemiChkService {
 	//조회 페이지
 	//모든 공정 진행 조회
 	public List<SemiChkVO> selectAllPrcsIng();
+	
+	//검사번호 검색
+	public List<SemiChkVO> searchSemiChk(String testNum);
 }

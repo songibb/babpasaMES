@@ -52,6 +52,12 @@ public class SemiChkServiceImpl implements SemiChkService {
 		return result;
 			
 		}
+	
+	//검사번호 검색
+	@Override
+	public List<SemiChkVO> searchSemiChk(String testNum){
+		return semiChkMapper.searchSemiChk(testNum);
 	}
+}
 	 
 

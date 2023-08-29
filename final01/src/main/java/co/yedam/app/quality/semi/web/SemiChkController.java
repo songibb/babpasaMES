@@ -70,4 +70,12 @@ public class SemiChkController {
 		return semiChkService.SemiChkUpdate(semiChkReqVO);
 	}
 	
+	//검사번호 검색
+	@GetMapping("/searchSemiChk")
+	@ResponseBody
+	public List<SemiChkVO> searchSemiChk(@RequestParam String testNum){
+		List<SemiChkVO> vo = semiChkService.searchSemiChk(testNum);
+		return vo;
+	}
+	
 }
