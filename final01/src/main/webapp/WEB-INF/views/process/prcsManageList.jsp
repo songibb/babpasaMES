@@ -170,7 +170,7 @@ h2{
 		let modifyGrid = grid.getModifiedRows();
 
 		if(!grid.isModified()){
-			swal("변경사항이 없습니다.", "", "warning");
+			swal("경고", "변경사항이 없습니다.", "warning");
 			return false;
 		}
 		
@@ -211,11 +211,11 @@ h2{
 				},
 				error : function(reject){		
 					console.log(reject);
-					swal("실패", "", "error");
+					swal("실패", "처리되지 않았습니다.", "error");
 				}
 			})
 		} else {
-			swal("", "모든 값이 입력되지 않았습니다.", "warning");
+			swal("경고", "모든 값이 입력되지 않았습니다.", "warning");
 		}
 	
 	}

@@ -15,6 +15,9 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>   
     
 <style type="text/css">
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
 #btnContainer{
 	display: flex;
 	justify-content: end;
@@ -46,8 +49,11 @@
 	justify-content: space-between;
 }
 
-.yellow-background {
-	background-color: rgb(255,253,235);
+input[type="text"] {
+  padding: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 h1{
@@ -103,12 +109,18 @@ h1, h2{
 	           			<div class="leftGrid">
 	           				<div class="leftGridHeader">
 				            	<h2>공정별 자재 소모량</h2>
+				            	<div>         					
+		           					<input type="text" name="prodName" id="prodName" readonly>
+		           				</div>	
 							</div>
 		           			<div id="bomGrid"></div>
 	           			</div>
 	           			<div class="rightGrid">
 	           				<div class="rightGridHeader">
 		           				<h2>자재별 LOT 재고</h2>
+		           				<div>         					
+		           					<input type="text" name="matName" id="matName" readonly>
+		           				</div>	
 		      				</div>
 		           			<div id="matLotGrid"></div>
 	           			</div>
@@ -265,7 +277,7 @@ h1, h2{
 				contentType : 'application/json',
 				async : false, 
 				success : function(data){									
-					swal("등록이 완료되었습니다.", "", "success");
+					swal("성공", "등록이 완료되었습니다.", "success");
 				},
 				error : function(reject){
 		 			console.log(reject);
@@ -453,10 +465,11 @@ h1, h2{
         minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
         columns: [
-//           {
-//             header: '자재명',
-//             name: 'matName'
-//           },
+          {
+            header: '자재명',
+            name: 'matName',
+            hidden: true
+          },
           {
             header: 'LOT번호',
             name: 'matLot'
@@ -480,7 +493,9 @@ h1, h2{
     	//클릭한 상세생산지시의 BOM 목록 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let prodCode = dirDeGrid.getValue(rowKey, 'prodCode');
+    	let prodName = dirDeGrid.getValue(rowKey, 'prodName');
     	let dirAmt = dirDeGrid.getValue(rowKey, 'prcsDirAmt');
+    	$('#prodName').val(prodName);
 		
     	if(prodCode != null){
     		$.ajax({
@@ -505,6 +520,9 @@ h1, h2{
     	//클릭한 BOM의 자재 LOT 가져오기
     	let rowKey = bomGrid.getFocusedCell().rowKey;
     	let matCode = bomGrid.getValue(rowKey, 'mpCode');
+    	let matName = bomGrid.getValue(rowKey, 'matName');
+    	$('#matName').val(matName);
+    	console.log(matCode);
     	$.ajax({
 			url : 'matLotStockList',  
 			method : 'GET',

@@ -162,10 +162,10 @@
 		  				     ON dd.prcs_dir_code = d.prcs_dir_code
 		<where>
 			<if test="searchPrcsCode != null and !searchPrcsCode.equals('')">
-					AND l.prcs_code LIKE '%' || #{searchPrcsCode} || '%'
+				AND l.prcs_code LIKE '%' || #{searchPrcsCode} || '%'
 			</if>
 			<if test="searchProdCode != null and !searchProdCode.equals('')">
-					AND l.prod_code LIKE '%' || #{searchProdCode} || '%'
+				AND l.prod_code LIKE '%' || #{searchProdCode} || '%'
 			</if>
 			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(d.prcs_dir_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
@@ -175,7 +175,7 @@
 			</if>
 			
 		</where>
-		 ORDER BY prcs_list_code
+		 ORDER BY prcs_list_code DESC
 	</select>
 	
 	
