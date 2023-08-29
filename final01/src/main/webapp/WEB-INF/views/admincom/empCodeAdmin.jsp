@@ -294,13 +294,13 @@
 		if(userObj.empCode != ''){
 			e.preventDefault();
 			if(userObj.empName == '' || userObj.empTel == ''){
-				swal("정보입력필요", "필요정보를 모두 입력해 주세요", "warning")
+				swal("경고", "모든값이 입력되지 않았습니다", "warning")
 			}else{
 				if(userObj.empPw !='' || userObj.empBeforePw !=''){
 					if(userObj.empPw == userObj.empBeforePw){
 						requestUpdateUser(userObj);
 					}else{
-						swal("비밀번호확인필요", "비밀번호를 동일하게 입력해 주세요", "warning")
+						swal("경고", "비밀번호를 동일하게 입력해 주세요", "warning")
 					}
 				}else{
 					requestUpdateUser(userObj);
@@ -310,12 +310,12 @@
 		}else{
 			e.preventDefault();
 			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == ''){
-				swal("정보입력필요", "필요정보를 모두 입력해 주세요", "warning")
+				swal("경고", "필요정보를 모두 입력해 주세요", "warning")
 			}else{
 				if(userObj.empPw == userObj.empBeforePw){
 					requestInsertUser(userObj);
 				}else{
-					swal("비밀번호확인필요", "비밀번호를 동일하게 입력해 주세요", "warning")
+					swal("경고", "비밀번호를 동일하게 입력해 주세요", "warning")
 				}
 			
 			}
@@ -332,7 +332,7 @@
 			method : 'post',
 			data : userObj,
 			success : function(result){
-				swal("등록성공", "등록되었습니다", "success")
+				swal("성공", "사원 정보등록이 정상적으로 처리되었습니다", "success")
 				$('#userInsertForm')[0].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
@@ -355,7 +355,7 @@
 			   })
 			},
 			error : function(reject){
-				swal("등록실패", "", "error")
+				swal("실패", "등록처리가 실패되었습니다", "error")
 			}
 		})
 	}
@@ -374,7 +374,7 @@
 		})
 		.done(data => {
 			if(data > 0){
-				swal("수정성공", "수정되었습니다", "success");
+				swal("성공", "사원 정보수정이 정상적으로 처리되었습니다", "success");
 				$('#userInsertForm')[0].reset();
 				 let content = $('#empSearch').val();
 				  let search = { empName : content};
@@ -395,7 +395,7 @@
 			   })
 				
 			}else{
-				swal("수정실패", "", "error")
+				swal("실패", "수정처리가 실패되었습니다", "error")
 			}
 		})
 		.fail(reject => console.log(reject));

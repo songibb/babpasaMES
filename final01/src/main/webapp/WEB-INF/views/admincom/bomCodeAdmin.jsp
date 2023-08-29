@@ -326,13 +326,13 @@
 		})	 */
 		if(flagIn){
 			if(!bomgrid.isModified()){
-				swal("변경사항이 없습니다","","warning");
+				swal("경고","변경사항이 없습니다","warning");
 				return false;
 			}
 			
 			bomUpdate();
 		}else{
-			swal("수정값이 모두 입력되지 않았습니다.","","warning");
+			swal("경고","모든 값이 입력되지 않았습니다","warning");
 		}
 	
 	};
@@ -389,14 +389,14 @@
 		 				deBomgrid.clear()
 						deBomgrid.appendRow();
 		 				
-		                swal("등록이 완료되었습니다.","","success");
+		                swal("성공","BOM 등록이 정상적으로 처리되었습니다","success");
 		            },
 		            error: function(reject) {
 		                console.log(reject);
 		            }
 		        });
 			}else{
-				 swal("오류","모든값이 입력되지 않았거나 정보 타입을 확인해 주세요","warning"); 
+				 swal("경고","모든값이 입력되지 않았거나 정보 타입을 확인해 주세요","warning"); 
 
 				
 			} 
@@ -496,7 +496,7 @@
 		 data : JSON.stringify(list),
 		success : function(data){	
 			if(data>1){
-				swal("수정이 완료되었습니다.","","success");
+				swal("성공","BOM 정보수정이 정상적으로 처리되었습니다","success");
 			}
 			//deBomgrid.clear();
 			stopEdit();
@@ -538,7 +538,7 @@
 						contentType : 'application/json',
 						data : JSON.stringify(checkedBom),
 						success : function(result){
-								swal("BOM 삭제가 완료되었습니다", {icon: "success",});
+								swal("성공","BOM 삭제가 정상적으로 처리되었습니다", {icon: "success",});
 								   let content = $('#bomSearch').val();
 								   let search = { prodName : content };
 								   $.ajax({
@@ -864,14 +864,14 @@
 		          ],
 			   scrollX: false,
 		       scrollY: false,
-		       minBodyHeight: 30,
+		       minBodyHeight: 320,
 		       rowHeaders: ['rowNum'],
 		       selectionUnit: 'row',
 		       pagination: true,
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		         useClient: true,
-		         perPage: 10
+		         perPage: 8
 		       },
 		       columns: [
 		    	     {
@@ -1017,14 +1017,14 @@
 		          ],
 			   scrollX: false,
 		       scrollY: false,
-		       minBodyHeight: 30,
+		       minBodyHeight: 320,
 		       rowHeaders: ['rowNum'],
 		       selectionUnit: 'row',
 		       pagination: true,
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		         useClient: true,
-		         perPage: 10
+		         perPage: 8
 		       },
 		       columns: [
 		    	     {
@@ -1064,7 +1064,7 @@
 		          ],
 			   scrollX: false,
 		       scrollY: false,
-		       minBodyHeight: 30,
+		       minBodyHeight: 320,
 		       rowHeaders: ['rowNum'],
 		       selectionUnit: 'row',
 		       pagination: true,
@@ -1114,14 +1114,14 @@
 		          ],
 			   scrollX: false,
 		       scrollY: false,
-		       minBodyHeight: 30,
+		       minBodyHeight: 320,
 		       rowHeaders: ['rowNum'],
 		       selectionUnit: 'row',
 		       pagination: true,
 		       pageOptions: {
 		       //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		         useClient: true,
-		         perPage: 10
+		         perPage: 8
 		       },
 		       columns: [
 		    	     {

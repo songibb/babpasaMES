@@ -154,12 +154,12 @@
 			let modifyGridInfo = grid.getModifiedRows();
 			
 			if(!grid.isModified()){
-				swal("변경사항이 없습니다","","warning");
+				swal("경고","변경사항이 없습니다","","warning");
 				return false;
 			}
 			
 			if(!grid.isModified()){
-				swal("값이 모두 입력되지 않았습니다","success");
+				swal("경고","모든 값이 입력되지 않았습니다","warning");
 				return false;
 			}
 			
@@ -217,8 +217,8 @@
 						let success = grid.getModifiedRows().deletedRows.length;
 						console.log(success);
 						let total = data.success;
-						let message = success-errCount+total +"건 수정진행완료" + errCount +"건이 실패되었습니다"
-						swal(message, "","success");
+						let message = success-errCount+total +"건 저장완료 \n" + errCount +"건 저장실패 \n (사용중인 자재는 삭제되지 않습니다)"
+						swal("성공", message,"success");
 						
 						
 						$.ajax({
@@ -237,7 +237,7 @@
 					}
 				})
 			}else{
-				swal('실패','필요한 모든 값이 입력되지 않았거나 \n 입력 형식이 올바른지 확인해 주세요','error');
+				swal('경고','모든값이 입력되지 않았거나 정보 타입을 확인해 주세요','warning');
 			}
 			
 		}
