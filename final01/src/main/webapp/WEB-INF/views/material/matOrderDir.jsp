@@ -60,7 +60,7 @@
 	}
 	
 	#searchP p{
-		width: 100px;
+		width: 120px;
 		display: inline-block;
 		font-size: 20px;
 	}
@@ -246,7 +246,7 @@
                 				</button>
                 				
                 				<br>
-                				<p>등록 거래처</p>
+                				<p>등록용 거래처</p>
                   				<input type="text" id="selectActCodeInput">
                     			<i class="bi bi-search" id="selectActModal"></i>
                     		
@@ -952,8 +952,9 @@
 		//초기화
 		$('#searchResetBtn').on('click', resetInput);
 		function resetInput(e) {
-		    $('searchP input').each(function (idx, obj) {
+		    $('#searchP input').each(function (idx, obj) {
 		        obj.value = '';
+		        obj.checked = false;
 		    })
 		}
 	
@@ -1088,13 +1089,13 @@
 		        el: document.getElementById('modal_label3'),
 		        scrollX: true,
 		        scrollY: true,
-		        minBodyHeight: 260,
+		        minBodyHeight: 220,
 		        rowHeaders: ['rowNum'],
 		        pagination: true,
 		        pageOptions: {
 		            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
 		            useClient: true,
-		            perPage: 6
+		            perPage: 5
 		        },
 		        columns: [
 		            {
