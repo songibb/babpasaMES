@@ -380,12 +380,28 @@ h1, h2{
           },
           {
             header: '생산계획량',
-            name: 'prcsPlanAmt'
+            name: 'prcsPlanAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '지시수량',
             name: 'prcsDirAmt',
-            editor: 'text'
+            editor: 'text',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           },
           {
             header: '생산시작일자',
@@ -447,7 +463,15 @@ h1, h2{
           },
           {
             header: '자재소모량',
-            name: 'bomAmt'
+            name: 'bomAmt',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           }
           
 //           {
@@ -476,7 +500,15 @@ h1, h2{
           },
           {
        	  	header: '재고량',
-            name: 'lotStock'
+            name: 'lotStock',
+            formatter(e) {
+            	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+            	}
+            }
           }
 
         ]
