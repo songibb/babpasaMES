@@ -736,6 +736,7 @@ form {
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     // 						disGrid.resetData(data);
+                    searchOrderList();
                 },
                 error: function (reject) {
                     console.log(reject);

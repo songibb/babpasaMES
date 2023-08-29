@@ -511,22 +511,10 @@ form {
         let sd = $('#startDate').val();
         let ed = $('#endDate').val();
 
-        let before = '1';
-        let comple = '1';
-        let beforeCheck = document.getElementById('before');
-        let compleCheck = document.getElementById('comple');
-        if (beforeCheck.checked && !compleCheck.checked) {
-            comple = '2';
-        } else if (!beforeCheck.checked && compleCheck.checked) {
-            before = '2';
-        }
-
         let search = {
             prodCode: prodInsert,
             startDate: sd,
             endDate: ed,
-            before: before,
-            comple: comple
         };
         $.ajax({
             url: 'inListFilter',

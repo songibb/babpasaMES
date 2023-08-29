@@ -5,27 +5,21 @@
   <mapper namespace="co.yedam.app.sales.rt.mapper.RtMapper">
   <!-- 전체조회 -->
   <select id="selectRtAllList" resultType="RtVO">
-	SELECT r.sales_rt_date sales_rt_date
-			, p.prod_name prod_name
-			, a.act_name act_name
-			, o.sales_out_amt sales_out_amt
-			, r.sales_rt_amt sales_rt_amt
+   	SELECT r.sales_rt_code
+			, r.prod_lot
+			, r.prod_code
+			, r.sales_out_code
+			, r.sales_rt_amt
+			, o.sales_out_amt
 			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
-			, r.sales_rt_code sales_rt_code
-			, r.prod_lot prod_lot
-			, r.sales_out_code sales_out_code
-			, r.sales_rt_amt sales_rt_amt
-			, r.sales_rt_date sales_rt_date
-			, r.sales_rt_why sales_rt_why
-			, r.emp_code emp_code
-			, r.prod_code prod_code
-			, o.sales_out_amt sales_out_amt
-	FROM sales_rt r JOIN com_prod p
-					ON (r.prod_code = p.prod_code)
-					JOIN sales_out o
-					ON (r.sales_out_code = o.sales_out_code)
-					JOIN com_act a
-					ON ( o.act_code = a.act_code)	
+			, r.sales_rt_date
+			, r.sales_rt_why
+			, r.emp_code
+			, e.emp_name
+	FROM sales_rt r left JOIN sales_out o
+                    ON (r.sales_out_code = o.sales_out_code)
+                    JOIN com_emp e
+                    ON (r.emp_code = e.emp_code)
 	ORDER BY sales_rt_code DESC
   </select>
   
@@ -39,7 +33,7 @@
   	
   	<!-- 검색 -->
   <select id="selectAllRt" resultType="RtVO">
- SELECT r.sales_rt_code
+		   	SELECT r.sales_rt_code
 			, r.prod_lot
 			, r.prod_code
 			, r.sales_out_code
@@ -50,8 +44,8 @@
 			, r.sales_rt_why
 			, r.emp_code
 			, e.emp_name
-	FROM sales_rt r JOIN sales_out o
-                    ON (r.prod_lot = o.prod_lot)
+	FROM sales_rt r left JOIN sales_out o
+                    ON (r.sales_out_code = o.sales_out_code)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
 	<where>
@@ -81,8 +75,8 @@
 			, r.sales_rt_why
 			, r.emp_code
 			, e.emp_name
-	FROM sales_rt r JOIN sales_out o
-                    ON (r.prod_lot = o.prod_lot)
+	FROM sales_rt r left JOIN sales_out o
+                    ON (r.sales_out_code = o.sales_out_code)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
 	ORDER BY sales_rt_code DESC
