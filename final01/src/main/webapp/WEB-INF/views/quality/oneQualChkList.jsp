@@ -130,15 +130,33 @@
 	            },
 	            {
 	               header: '생산량',
-	               name: 'prcsAmt'
+	               name: 'prcsAmt',
+	               formatter(e) {
+		                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+	            	}
 	            },
 	            {
 	               header: '합격량',
-	               name: 'passAmt'
+	               name: 'passAmt',
+	               formatter(e) {
+		                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+	            	}
 	            },
 	            {
 	               header: '불합격량',
-	               name: 'nonPassAmt'
+	               name: 'nonPassAmt',
+	               formatter(e) {
+		                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+	            	}
 	            },
 	            {
 	               header : '검사날짜',

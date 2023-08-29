@@ -111,7 +111,15 @@
             },
             {
                header: '생산량',
-               name: 'prcsAmt'
+               name: 'prcsAmt',
+	 		 	formatter(e) {
+               	if (e['value'] != null){
+   	                val = e['value']
+   	                    .toString()
+   	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+   	                return val;
+                   	}
+   	            }
             }
             
          ]

@@ -50,7 +50,7 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        table {
+        #equipTable{
             width: 1200px;
             height: 400px;
             border-collapse: collapse; 
@@ -59,13 +59,13 @@
             
         }
 
-        th, td {
+        #equipTable th, td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
-        th {
+        #equipTable th {
             background-color: #f2f2f2;
         }
 
@@ -113,6 +113,7 @@
 			padding-top: 50px;
     		border-top-width: 0px;
 		}
+		
     </style>
 
 </head>
@@ -123,7 +124,7 @@
 <div class="card">
 <div class="card-body">
 <form name="insertForm" action="equipInsert" method="post">
-   <table>
+   <table id="equipTable">
    <button type="button" id="actModal">설비조회</button>
       <tr>
          <th>설비코드</th>
@@ -141,7 +142,9 @@
 			</select>
          </td>
          <th>거래처</th>
-         <td><input type="text" name="actCode" id="actCode"><button type="button" id="actModal2" style="margin-left: 10px;">거래처조회</button></td>
+         <td><input type="text" name="actCode" id="actCode">
+         <button type="button" id="actModal2" style="margin-left: 10px;">거래처조회</button>
+         </td>
       
       </tr>
       <tr>
@@ -290,6 +293,7 @@
            let rowKey = Grid.getFocusedCell().rowKey;
            let actCode = Grid.getValue(rowKey, 'actCode');
            let actName = Grid.getValue(rowKey, 'actName');
+           
           $("#actCode").val(actCode);
           $("#actName").val(actName);
           //모달창 닫기

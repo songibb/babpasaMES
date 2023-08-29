@@ -7,6 +7,7 @@
   <select id="selectEquipAllList" resultType="EquipVO"> 
   	SELECT EQ_CODE
   			,ACT_CODE
+  			,FIND_ACT_NAME(ACT_CODE) AS ACT_NAME
   			,EQ_NAME
   			,MODEL_NAME
   			,MAKE_DATE
