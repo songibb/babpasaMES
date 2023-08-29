@@ -384,14 +384,6 @@ form {
                 header: '출고코드',
                 name: 'salesOutCode'
             }, {
-                header: '제품LOT',
-                name: 'prodLot',
-                editor: 'text',
-                value: '${out.prodLot}'
-            }, {
-                header: '제품명',
-                name: 'prodName'
-            }, {
                 header: '상세주문코드',
                 name: 'salesOrdDeCode',
                 editor: 'text',
@@ -401,13 +393,37 @@ form {
                 name: 'actName',
                 value: '${out.actName}'
             }, {
+                header: '제품LOT',
+                name: 'prodLot',
+                editor: 'text',
+                value: '${out.prodLot}'
+            }, {
+                header: '제품명',
+                name: 'prodName'
+            }, {
                 header: '재고량',
                 name: 'prodSaveAmt',
-                editor: 'text'
+                editor: 'text',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
-                editor: 'text'
+                editor: 'text',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '출고일자',
                 name: 'salesOutDate',
@@ -510,13 +526,13 @@ form {
                 let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
                 console.log(prodLot);
                 console.log(prodCode);
-                console.log(prodCode);
                 console.log(prodName);
+                console.log(prodSaveAmt);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                 outGrid.setValue(rowKey, 'prodLot', prodLot);
                 outGrid.setValue(rowKey, 'prodCode', prodCode);
-                outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
                 outGrid.setValue(rowKey, 'prodName', prodName);
+                outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -619,7 +635,33 @@ form {
                 method: 'GET',
                 data: modalSearchData,
                 success: function (data) {
+                	
+                	 $.each(data, function (idx, obj) {
+                     	
+                         let date = new Date(obj['ordDate']);
+                         let year = date.getFullYear(); //0000년 가져오기
+                         let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                         let day = date.getDate(); //일자 가져오기
+                         obj['ordDate'] = year + "-" + (
+                             ("00" + month.toString()).slice(-2)
+                         ) + "-" + (
+                             ("00" + day.toString()).slice(-2)
+                         );
+                         
+                         date = new Date(obj['devDate']);
+                         year = date.getFullYear(); //0000년 가져오기
+                         month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                         day = date.getDate(); //일자 가져오기
+                         obj['devDate'] = year + "-" + (
+                             ("00" + month.toString()).slice(-2)
+                         ) + "-" + (
+                             ("00" + day.toString()).slice(-2)
+                         );
+                         
+                     })
+                	
                     Grid.resetData(data);
+                    
                 },
                 error: function (reject) {
                     console.log(reject);
@@ -666,7 +708,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -684,10 +726,26 @@ form {
                     className: 'yellow-background'
                 }, {
                     header: '입고량',
-                    name: 'salesInAmt'
+                    name: 'salesInAmt',
+                    formatter(e) {
+                    	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                    	}
+    	            }
                 }, {
                     header: '재고량',
-                    name: 'prodSaveAmt'
+                    name: 'prodSaveAmt',
+                    formatter(e) {
+                    	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                    	}
+    	            }
                 }, {
                     header: '유통기한',
                     name: 'salesInExd',
@@ -766,10 +824,18 @@ form {
                     }
                 }, {
                     header: '제품명',
-                    name: 'prodName',
+                    name: 'prodName'
                 }, {
                     header: '주문량',
                     name: 'prcsRqAmt',
+                    formatter(e) {
+                    	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                    	}
+    	            }
                 }, {
                     header: '납기일자',
                     name: 'devDate',
@@ -834,7 +900,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -880,7 +946,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -936,6 +1002,7 @@ form {
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
+                	
                     let date = new Date(obj['salesOutDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -945,7 +1012,7 @@ form {
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
-
+                    
                 })
                 outGrid.resetData(data2);
             },
@@ -960,6 +1027,7 @@ form {
     function resetInput(e) {
         $('input').each(function (idx, obj) {
             obj.value = '';
+            obj.checked = false;
         })
     }
 

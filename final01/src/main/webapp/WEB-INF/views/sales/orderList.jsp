@@ -482,7 +482,7 @@ form {
             pageOptions: {
                 //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
                 useClient: true,
-                perPage: 10
+                perPage: 8
             },
             columns: [
                 {
@@ -553,7 +553,15 @@ form {
                 name: 'prodName'
             }, {
                 header: '주문량',
-                name: 'prcsRqAmt'
+                name: 'prcsRqAmt',
+                formatter(e) {
+                	if (e['value'] != null){
+	                val = e['value']
+	                    .toString()
+	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	                return val;
+                	}
+	            }
             }, {
                 header: '납기일자',
                 name: 'devDate',
@@ -675,6 +683,7 @@ form {
     function resetInput(e) {
         $('input').each(function (idx, obj) {
             obj.value = '';
+            obj.checked = false;
         })
     }
 
