@@ -58,4 +58,6 @@ public class OutVO {
 	private String actKind;
 	
 	private String prcsDirSts;
+	
+	private String salesRtCode;
 }

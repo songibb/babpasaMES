@@ -126,7 +126,7 @@ body {
 
 .modal_content {
 	/*모달창 크기 조절*/
-	width: 1000px;
+	width: 1300px;
 	height: 600px;
 	background: #fff;
 	border-radius: 10px;
@@ -135,7 +135,7 @@ body {
 	top: 33%;
 	left: 45%;
 	margin-top: -100px;
-	margin-left: -200px;
+	margin-left: -550px;
 	text-align: center;
 	box-sizing: border-box;
 	line-height: 23px;
@@ -1082,6 +1082,7 @@ form {
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     console.log(data);
+                    searchOrderList();
                 },
                 error: function (reject) {
                     swal("실패", "작업을 실패했습니다.", "error");

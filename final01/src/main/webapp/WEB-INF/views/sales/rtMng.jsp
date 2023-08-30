@@ -116,7 +116,7 @@ body {
 
 .modal_content {
 	/*모달창 크기 조절*/
-	width: 900px;
+	width: 1200px;
 	height: 600px;
 	background: #fff;
 	border-radius: 10px;
@@ -125,7 +125,7 @@ body {
 	top: 33%;
 	left: 45%;
 	margin-top: -100px;
-	margin-left: -300px;
+	margin-left: -500px;
 	text-align: center;
 	box-sizing: border-box;
 	line-height: 23px;
@@ -778,6 +778,7 @@ form {
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     // 						rtGrid.resetData(data);
+                    searchOrderList();
                 },
                 error: function (reject) {
                     console.log(reject);

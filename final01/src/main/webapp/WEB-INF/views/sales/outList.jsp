@@ -523,7 +523,8 @@ form {
                 empCode: "${out.empCode}",
                 empName: "${out.empName}",
                 prodSaveAmt: "${out.prodSaveAmt}",
-                prodName: "${out.prodName}"
+                prodName: "${out.prodName}",
+                salesRtCode: "${out.salesRtCode}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -598,6 +599,10 @@ form {
                 header: '출고여부',
                 name: 'prodCode',
                 hidden: true
+            }, {
+                header: '반품코드',
+                name: 'salesRtCode',
+                hidden: true
             }
         ]
 
@@ -610,6 +615,8 @@ form {
 
             if (obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)) {
                 grid.disableRow(obj['rowKey']);
+            }else if(obj['salesOutCode'] != null && (obj['salesRtCode'] != null)){
+            	grid.disableRow(obj['rowKey']);
             }
         })
     }
