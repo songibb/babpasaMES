@@ -389,16 +389,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 
@@ -437,13 +440,20 @@ form {
         columns: [
         	 {
                  header: '폐기코드',
-                 name: 'salesDpCode'
+                 name: 'salesDpCode',
+                 sortable: true,
+                 sortingType: 'asc',
+                 align: 'center'
              }, {
                  header: '검수코드',
-                 name: 'testNum'
+                 name: 'testNum',
+                 sortable: true,
+                 sortingType: 'asc',
+                 align: 'center'
              }, {
                  header: '제품코드',
-                 name: 'prodCode'
+                 name: 'prodCode',
+                 align: 'center'
              }, {
                  header: '제품명',
                  name: 'prodName'
@@ -457,11 +467,15 @@ form {
  	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
  	                return val;
                  	}
- 	            }
+ 	            },
+ 	           align: 'right'
              }, {
                  header: '폐기일자',
                  name: 'salesDpDate',
-                 className: 'yellow-background'
+                 className: 'yellow-background',
+                 sortable: true,
+                 sortingType: 'asc',
+                 align: 'center'
              }, {
                  header: '담당자',
                  name: 'empName'

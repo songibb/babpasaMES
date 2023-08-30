@@ -26,292 +26,292 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
 <style>
 h1 {
-	font-weight: 700;
-	margin-left: 15px;
+   font-weight: 700;
+   margin-left: 15px;
 }
 
 h2 {
-	clear: both;
-	font-weight: 700;
-	display: inline-block;
+   clear: both;
+   font-weight: 700;
+   display: inline-block;
 }
 
 body {
-	font-family: 'Nanum Gothic', sans-serif;
-	font-family: 'Noto Sans KR', sans-serif;
+   font-family: 'Nanum Gothic', sans-serif;
+   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .m_body>p {
-	display: inline-block;
+   display: inline-block;
 }
 
 .m_body>input {
-	border: 1px solid black;
+   border: 1px solid black;
 }
 
 .search-container {
-	display: flex;
-	align-items: center;
-	background-color: #fff;
-	border-radius: 8px;
-	padding: 5px 10px;
-	margin-bottom: 10px;
+   display: flex;
+   align-items: center;
+   background-color: #fff;
+   border-radius: 8px;
+   padding: 5px 10px;
+   margin-bottom: 10px;
 }
 
 .search-icon {
-	margin-right: 10px;
-	color: #888;
+   margin-right: 10px;
+   color: #888;
 }
 
 .search-input {
-	border: none;
-	outline: none;
-	font-size: 16px;
-	width: 100%;
-	padding: 5px;
+   border: none;
+   outline: none;
+   font-size: 16px;
+   width: 100%;
+   padding: 5px;
 }
 
 .col-lg-12 stretch-card {
-	margin-top: 30px;
+   margin-top: 30px;
 }
 
 #customtemplateSearchAndButton {
-	margin-bottom: 80px;
-	float: left;
+   margin-bottom: 80px;
+   float: left;
 }
 
 #customtemplateSearchAndButton input, #modalTitle input {
-	border: 1px solid black;
-	display: inline-block;
+   border: 1px solid black;
+   display: inline-block;
 }
 
 #customtemplateSearchAndButton p, #modalTitle p {
-	display: inline-block;
-	padding-bottom: 10px;
-	padding-right: 10px;
+   display: inline-block;
+   padding-bottom: 10px;
+   padding-right: 10px;
 }
 
 #customtemplateSearchAndButton .blackcolorInputBox {
-	background-color: #868e96;
+   background-color: #868e96;
 }
 
 .btn-icon-text {
-	margin: 5px;
-	padding: 7px;
-	border-radius: 9px;
-	height: 33px;
+   margin: 5px;
+   padding: 7px;
+   border-radius: 9px;
+   height: 33px;
 }
 
 .excelDownload {
-	float: right;
+   float: right;
 }
 
 /*모달시작*/
 #actModal, #prodModal {
-	cursor: pointer;
+   cursor: pointer;
 }
 
 .modal {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.8);
-	top: 0;
-	left: 0;
-	display: none;
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.8);
+   top: 0;
+   left: 0;
+   display: none;
 }
 
 .modal_content {
-	/*모달창 크기 조절*/
-	width: 600px;
-	height: 600px;
-	background: #fff;
-	border-radius: 10px;
-	/*모달창 위치 조절*/
-	position: relative;
-	top: 33%;
-	left: 45%;
-	margin-top: -100px;
-	margin-left: -200px;
-	text-align: center;
-	box-sizing: border-box;
-	line-height: 23px;
+   /*모달창 크기 조절*/
+   width: 600px;
+   height: 600px;
+   background: #fff;
+   border-radius: 10px;
+   /*모달창 위치 조절*/
+   position: relative;
+   top: 33%;
+   left: 45%;
+   margin-top: -100px;
+   margin-left: -200px;
+   text-align: center;
+   box-sizing: border-box;
+   line-height: 23px;
 }
 
 .m_head {
-	height: 10%;
-	margin: 0;
-	/*제목 높낮이 조절*/
-	padding: 17px;
-	display: flex;
-	justify-content: space-between;
-	background-color: rgb(232, 143, 33);
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
+   height: 10%;
+   margin: 0;
+   /*제목 높낮이 조절*/
+   padding: 17px;
+   display: flex;
+   justify-content: space-between;
+   background-color: rgb(232, 143, 33);
+   border-top-left-radius: 10px;
+   border-top-right-radius: 10px;
 }
 
 .close_btn {
-	font-size: 20px;
-	color: black;
-	font-weight: 900;
-	cursor: pointer;
+   font-size: 20px;
+   color: black;
+   font-weight: 900;
+   cursor: pointer;
 }
 
 .modal_btn {
-	width: 80px;
-	height: 30px;
-	border-radius: 5px;
-	text-align: center;
-	font-size: 14px;
-	font-weight: bolder;
-	padding-top: 5px;
-	margin-left: 5px;
-	font-family: sans-serif;
+   width: 80px;
+   height: 30px;
+   border-radius: 5px;
+   text-align: center;
+   font-size: 14px;
+   font-weight: bolder;
+   padding-top: 5px;
+   margin-left: 5px;
+   font-family: sans-serif;
 }
 
 .m_head {
-	height: 10%;
-	padding: 20px;
-	display: flex;
-	justify-content: space-between;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	font-family: sans-serif;
+   height: 10%;
+   padding: 20px;
+   display: flex;
+   justify-content: space-between;
+   border-top-left-radius: 10px;
+   border-top-right-radius: 10px;
+   font-family: sans-serif;
 }
 
 .m_body {
-	height: 80%;
-	padding: 20px;
+   height: 80%;
+   padding: 20px;
 }
 
 .m_footer {
-	height: 10%;
-	padding: 15px;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
-	display: flex;
-	justify-content: end;
+   height: 10%;
+   padding: 15px;
+   border-bottom-left-radius: 10px;
+   border-bottom-right-radius: 10px;
+   display: flex;
+   justify-content: end;
 }
 
 .cancle {
-	background-color: black;
-	color: white;
+   background-color: black;
+   color: white;
 }
 
 .save {
-	background-color: black;
-	color: white;
+   background-color: black;
+   color: white;
 }
 /*모달끝*/
 
 input[type="text"], select {
-	width: 15%;
-	padding: 6px;
-	margin-bottom: 15px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+   width: 15%;
+   padding: 6px;
+   margin-bottom: 15px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
 }
 
 input[type="date"], select {
-	width: 15%;
-	padding: 5px;
-	margin-bottom: 15px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+   width: 15%;
+   padding: 5px;
+   margin-bottom: 15px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
 }
 
 select {
-	background-color: white;
+   background-color: white;
 }
 
 form p {
-	width: 80px;
-	display: inline-block;
-	font-size: 20px;
+   width: 80px;
+   display: inline-block;
+   font-size: 20px;
 }
 
 form {
-	margin-bottom: 35px;
+   margin-bottom: 35px;
 }
 
 .yellow-background {
-	background-color: rgb(255, 253, 235);
+   background-color: rgb(255, 253, 235);
 }
 
 #prodNameFix, #actNameFix {
-	background-color: #868e96;
-	border-color: #868e96;
+   background-color: #868e96;
+   border-color: #868e96;
 }
 
 #grid{
-	display: inline-block;
+   display: inline-block;
 }
 </style>
 </head>
 <body>
-	<div class="black_bg"></div>
-	<h1>주문 조회</h1>
-	<div class="col-lg-12 stretch-card">
-		<div class="card">
-			<div class="card-body">
-				<div class="table-responsive pt-3">
-					<form>
-						<p>제품명</p>
-						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
-						<i class="bi bi-search" id="prodModal"></i>
-						<!-- 돋보기 아이콘 -->
-						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
-						<br>
-						<p>거래처</p>
-						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
-						<i class="bi bi-search" id="actModal"></i> 
-						<input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
-						<br>
-						<p>주문일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
-						<br>
-						<p>출고상태</p>
-						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
-						<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
-						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-							<i class="fas fa-search"></i> 검색
-						</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
-					</form>
-					<div id="grid" style="width: 600px; margin-right: 50px; display: inline-block;">
-						<h2>주문 목록</h2>
-						<button type="button" class="btn btn-info btn-icon-text excelDownload">
-							Excel <i class="bi bi-printer"></i>
-						</button>
-					</div>
-					<div id="grid2" style="width: 1000px;"></div>
-				</div>
-			</div>
-		</div>
-	</div>
+   <div class="black_bg"></div>
+   <h1>주문 조회</h1>
+   <div class="col-lg-12 stretch-card">
+      <div class="card">
+         <div class="card-body">
+            <div class="table-responsive pt-3">
+               <form>
+                  <p>제품명</p>
+                  <input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
+                  <i class="bi bi-search" id="prodModal"></i>
+                  <!-- 돋보기 아이콘 -->
+                  <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
+                  <br>
+                  <p>거래처</p>
+                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
+                  <i class="bi bi-search" id="actModal"></i> 
+                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
+                  <br>
+                  <p>주문일자</p>
+                  <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
+                  <br>
+                  <p>출고상태</p>
+                  <label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
+                  <label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+                     <i class="fas fa-search"></i> 검색
+                  </button>
+                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
+               </form>
+                <div id="container" style="display: flex; justify-content: center;">
+                       <div id="grid" style="width: 700px; margin-right: 50px"><h2>주문 목록</h2></div>
+                       <div id="grid2" style="width: 800px;"><h2>주문 상세 목록</h2></div>
+                       <button type="button" class="btn btn-info btn-icon-text excelDownload">
+                     Excel <i class="bi bi-printer"></i>
+                  </button>
+                  </div>
+            </div>
+         </div>
+      </div>
+   </div>
 
 
-	<div class="modal">
-		<div class="modal_content">
-			<div class="m_head">
-				<div class="modal_title">
-					<h3>목록</h3>
-				</div>
-				<div class="close_btn" id="close_btn">X</div>
-			</div>
-			<div class="m_body">
-				<p>이름</p>
-				<input type="text" id="modalSearch">
-				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
-				<div id="modal_label"></div>
-			</div>
-			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
-			</div>
-		</div>
-	</div>
+   <div class="modal">
+      <div class="modal_content">
+         <div class="m_head">
+            <div class="modal_title">
+               <h3>목록</h3>
+            </div>
+            <div class="close_btn" id="close_btn">X</div>
+         </div>
+         <div class="m_body">
+            <p>이름</p>
+            <input type="text" id="modalSearch">
+            <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+            <div id="modal_label"></div>
+         </div>
+         <div class="m_footer">
+            <div class="modal_btn cancle close_btn">CANCLE</div>
+         </div>
+      </div>
+   </div>
 
-	<script>
+   <script>
 
     //거래처 리스트 모달 시작
     var Grid;
@@ -446,16 +446,20 @@ form {
             columns: [
                 {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    align: 'center'
                 }, {
                     header: '거래처명',
-                    name: 'actName'
+                    name: 'actName',
+                    align: 'left'
                 }, {
                     header: '거래상태',
-                    name: 'actSts'
+                    name: 'actSts',
+                    align: 'center'
                 }, {
                     header: '거래처구분',
-                    name: 'actKind'
+                    name: 'actKind',
+                    align: 'center'
                 }
             ]
 
@@ -492,16 +496,20 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
-                    name: 'prodName'
+                    name: 'prodName',
+                    align: 'left'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 
@@ -515,7 +523,7 @@ form {
         el: document.getElementById('grid'),
         data: [<c:forEach items="${ordHeaderList}" var="order" varStatus="status">
             {
-            	ordCode: "${order.ordCode}",
+               ordCode: "${order.ordCode}",
                 ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
                 actName: "${order.actName}",
                 ordSts: "${order.ordSts}",
@@ -523,6 +531,7 @@ form {
                 empName: "${order.empName}",
                 actCode: "${order.actCode}",
                 prcsPlanCode: "${order.prcsPlanCode}",
+                devYn: "${order.devYn}",
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -540,16 +549,23 @@ form {
         columns: [
             {
                 header: '주문코드',
-                name: 'ordCode'
+                name: 'ordCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '주문날짜',
                 name: 'ordDate',
                 value: '${order.ordDate}',
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '거래처',
                 name: 'actName',
-                value: '${order.actName}'
+                value: '${order.actName}',
+                align: 'left'
             }, {
                 header: '생산계획상태',
                 name: 'ordSts',
@@ -575,6 +591,10 @@ form {
                 header: '직원코드',
                 name: 'empCode',
                 hidden: true
+            }, {
+                header: '직원코드',
+                name: 'devYn',
+                hidden: true
             }
         ]
 
@@ -586,11 +606,11 @@ form {
         el: document.getElementById('grid2'),
         data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
             {
-            	salesOrdDeCode: "${order.salesOrdDeCode}",
-            	ordCode: "${order.ordCode}",
-            	prodCode: "${order.prodCode}",
-            	prodName: "${order.prodName}",
-            	prcsRqAmt: "${order.prcsRqAmt}",
+               salesOrdDeCode: "${order.salesOrdDeCode}",
+               ordCode: "${order.ordCode}",
+               prodCode: "${order.prodCode}",
+               prodName: "${order.prodName}",
+               prcsRqAmt: "${order.prcsRqAmt}",
                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
                 devYn: "${order.devYn}",
             }<c:if test="${not status.last}">,</c:if>
@@ -610,12 +630,14 @@ form {
         columns: [
             {
                 header: '주문상세코드',
-                name: 'salesOrdDeCode'
+                name: 'salesOrdDeCode',
+                align: 'center'
             }, {
                 header: '납기일자',
                 name: 'devDate',
                 value: '${order.devDate}',
-                className: 'yellow-background'
+                className: 'yellow-background',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -629,10 +651,18 @@ form {
                 hidden: true
             }, {
                 header: '주문량',
-                name: 'prcsRqAmt'
+                name: 'prcsRqAmt',
+                align: 'right'
             }, {
                 header: '출고여부',
-                name: 'devYn'
+                name: 'devYn',
+                formatter: function (e) {
+                    if (e.value == 'Y') {
+                        return "출고완료";
+                    } else if (e.value == 'N') {
+                        return "출고전";
+                    }
+                }
             }
         ]
 
@@ -640,43 +670,43 @@ form {
     setDisabled();  
     
     //Header항목선택 -> Detail
-	grid.on('click', () => {
-		let rowKey = grid.getFocusedCell().rowKey;
-    	let ordCode = grid.getValue(rowKey, 'ordCode');
-    	
-    	console.log(ordCode);
-    	
-    	$.ajax({
-    		url : 'ajaxOrdDetailList',
-			method : 'GET',
-			data : { ordCode : ordCode },
-			success : function(data){
-				 for (let i of data) {
-	                    let date = new Date(i.devDate);
-	                    let year = date.getFullYear(); //0000년 가져오기
-	                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-	                    let day = date.getDate(); //일자 가져오기
-	                    i.devDate = year + "-" + (
-	                        ("00" + month.toString()).slice(-2)
-	                    ) + "-" + (
-	                        ("00" + day.toString()).slice(-2)
-	                    );
-	                }
-				
- 				grid2.resetData(data);
- 		    },
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-    	})
-    	
-	});
+   grid.on('click', () => {
+      let rowKey = grid.getFocusedCell().rowKey;
+       let ordCode = grid.getValue(rowKey, 'ordCode');
+       
+       console.log(ordCode);
+       
+       $.ajax({
+          url : 'ajaxOrdDetailList',
+         method : 'GET',
+         data : { ordCode : ordCode },
+         success : function(data){
+             for (let i of data) {
+                       let date = new Date(i.devDate);
+                       let year = date.getFullYear(); //0000년 가져오기
+                       let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                       let day = date.getDate(); //일자 가져오기
+                       i.devDate = year + "-" + (
+                           ("00" + month.toString()).slice(-2)
+                       ) + "-" + (
+                           ("00" + day.toString()).slice(-2)
+                       );
+                   }
+            
+             grid2.resetData(data);
+           },
+         error : function(reject){
+             console.log(reject);
+          }
+       })
+       
+   });
 
     //비활성화
     function setDisabled() {
         $.each(grid.getData(), function (idx, obj) {
 
-            if (obj['salesOrdDeCode'] != null && (obj['devYn'] == 'Y')) {
+            if (obj['ordCode'] != null && (obj['devYn'] == 'Y')) {
                 grid.disableRow(obj['rowKey']);
             }
         })
@@ -781,6 +811,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+   </script>
 </body>
 </html>

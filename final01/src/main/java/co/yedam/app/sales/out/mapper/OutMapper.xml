@@ -178,20 +178,28 @@
     SELECT i.*, p.prod_name
    FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
-    WHERE prod_save_amt <![CDATA[>]]> 0
-     ORDER BY prod_lot DESC
+                   JOIN sales_out o
+                   ON (i.prod_code = o.prod_code)
+                   JOIN sales_ord_de d
+                   ON (o.prod_code = d.prod_code)
+    WHERE i.prod_save_amt <![CDATA[>]]> 0
+     ORDER BY i.prod_lot DESC
      </select>
      
    <!-- 모달검색 - lot -->
    <select id="selectLotSearchList" resultType="OutVO">
-    SELECT i.*, p.prod_name
+      SELECT i.*, p.prod_name
    FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
+                   JOIN sales_out o
+                   ON (i.prod_code = o.prod_code)
+                   JOIN sales_ord_de d
+                   ON (o.prod_code = d.prod_code)
     <if test="prodName != null and !prodName.equals('')">
    WHERE p.prod_name LIKE '%' || #{prodName} || '%'
    </if>
     AND i.prod_save_amt <![CDATA[>]]> 0
-     ORDER BY prod_lot DESC
+     ORDER BY i.prod_lot DESC
    </select>
      
      <!-- orderde list -->
@@ -208,6 +216,7 @@
          , e.emp_code
          , e.emp_name
          , r.prcs_dir_sts
+         , d.prod_code
    FROM sales_ord o JOIN sales_ord_de d
                 ON (o.ord_code = d.ord_code)
                 JOIN com_prod p
