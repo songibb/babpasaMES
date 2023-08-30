@@ -204,7 +204,7 @@
 	}
 	
 /*모달끝*/
-	
+	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>    
        
 </head>
@@ -1016,6 +1016,15 @@
 		            success: function (data) {
 		                Grid3 = createPrcsNewPlanAmtGrid(planAmt);
 		                Grid3.resetData(data);
+		                var gridData = Grid3.getData();
+		                
+		    		    $.each(gridData, function (idx, obj) {
+		    	
+		    		        if (Number(obj['matStock']) <= Number(obj['bomAmt'])) {
+		    		            let rowKey2 = obj['rowKey'];
+		    		            Grid3.addCellClassName(rowKey2, 'my-styled-cell');
+		    		        }
+		    		    }) 	
 		            },
 		            error: function (reject) {
 		                console.log(reject);
@@ -1113,7 +1122,14 @@
 		                }
 		            }, {
 		                header: '현재고량',
-		                name: 'matStock'
+		                name: 'matStock',
+		                formatter(e) {
+		                    value = e['value']
+		                    val = value
+		                        .toString()
+		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                    return val;
+		                }
 		            }
 		        ]
 		    });

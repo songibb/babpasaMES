@@ -40,4 +40,10 @@ public interface MatOrderDeMapper {
 	
 	//자재 거래처 모달 검색
 	public List<OrderVO> selectActMatModalSearch(String actName);
+	
+	//헤더 그리드
+	public List<MatOrderDeVO> selectMatListPageOrderList();
+	
+	//상세 그리드
+	public List<MatOrderDeVO> selectMatListPageOrderDeList(String matOdCd);
 }

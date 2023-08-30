@@ -32,11 +32,18 @@ public class MatOrderDeController {
 	//전체조회
 	@GetMapping("matOrderList")
 	public String getMatOrderList(Model model) {
-		List<MatOrderDeVO> mo = mods.selectMatOrderList();
-		model.addAttribute("matOrderList", mo);
+		
+		model.addAttribute("matOrderList", mods.getMatListPageOrderList());
 		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		return "material/matOrderList";
+	}
+	
+	//상세 그리드
+	@GetMapping("getMatOrderDeList")
+	@ResponseBody
+	public List<MatOrderDeVO> getMatOrderDeList(String matOdCd) {
+		return mods.getMatListPageOrderDeList(matOdCd);
 	}
 	
 	//검색 ajax

@@ -29,4 +29,10 @@ public interface MatOrderDeService {
 	
 	//자재 거래처 모달 검색
 	public List<OrderVO> getActMatModalSearch(String actName);
+	
+	//헤더 그리드
+	public List<MatOrderDeVO> getMatListPageOrderList();
+	
+	//상세 그리드
+	public List<MatOrderDeVO> getMatListPageOrderDeList(String matOdCd);
 }

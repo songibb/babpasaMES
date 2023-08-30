@@ -85,4 +85,16 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		return modm.selectActMatModalSearch(actName);
 	}
 
+	@Override
+	public List<MatOrderDeVO> getMatListPageOrderList() {
+		
+		return modm.selectMatListPageOrderList();
+	}
+
+	@Override
+	public List<MatOrderDeVO> getMatListPageOrderDeList(String matOdCd) {
+		
+		return modm.selectMatListPageOrderDeList(matOdCd);
+	}
+
 }
