@@ -31,6 +31,9 @@
 	    Grid = createOrderGrid();
 	});
 	
+
+	
+	
 	//save버튼 클릭 후 그리드 내용 지우고 모달창에서 선택한 데이터 넣은 후
     $('#save_btn').click(function(){
     	
@@ -39,13 +42,6 @@
     		this.reset();
     	})
     	 
-    	
-		planGrid.clear();
-    	planGrid.appendRow({'empCode' : ${user.id}, 'empName' : `${user.empName}`});
-		planDeGrid.clear();
-		planDeGrid.appendRow();
-		
-		
 		//체크박스 체크한 주문서 데이터
 		let checkList = Grid.getCheckedRows();
 
@@ -55,7 +51,6 @@
 			deObj['ordCode'] = checkList[i]['ordCode'];			
 			deList.push(deObj);
 		})
-		
 		
 		//모달창 닫기
 		if(deList != null){
@@ -68,6 +63,23 @@
     			data : JSON.stringify(deList),
     			contentType : 'application/json',
     			success : function(data){
+    				console.log(data);
+    				//현재 날짜 구하기
+    				function getDate(){
+    					var today = new Date();
+    					
+    					var year = today.getFullYear();
+    					var month = ('0' + (today.getMonth() + 1)).substr(-2);
+    					var day = ('0' + today.getDate()).substr(-2);
+    				
+    					return year + '-' + month  + '-' + day;		
+    				}
+    				
+    				planGrid.clear();
+    		    	planGrid.appendRow({'prcsPlanDate': getDate(), 'empCode' : ${user.id}, 'empName' : `${user.empName}`});
+    				planDeGrid.clear();
+    				planDeGrid.appendRow();
+    				
     	          	//체크박스 체크한 주문서의 상세 내역(제품코드, 주문수량) 그리드에 가져오기
     	          	planDeGrid.resetData(data);
     	          	
@@ -104,15 +116,26 @@
 	            {
 	                header: '주문코드',
 	                name: 'ordCode',
+	                align: 'center'
 	            },
 	            {
 	                header: '주문일자',
-	                name: 'ordDate'
+	                name: 'ordDate',
+	                sortable: true,
+	                sortingType: 'asc',
+	                align: 'center'
 	            },
 	            {
 	                header: '거래처명',
 	                name: 'actName'
-	            }
+	            },
+	            {
+	                header: '납기일자',
+	                name: 'devDate',
+	                sortable: true,
+	                sortingType: 'asc',
+	                align: 'center'
+	            },
 	        ]       
 	    });
 		
@@ -123,7 +146,9 @@
 		    	//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
 					let od = data[i]['ordDate'];
+					let dd = data[i]['devDate'];
 					data[i]['ordDate'] = getDate(od);
+					data[i]['devDate'] = getDate(dd);
 				})
 		    	orderGrid.resetData(data);
 		    },

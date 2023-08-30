@@ -49,7 +49,9 @@ h2{
 	justify-content: space-between;
 }
 
-
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>
 </head>
 <body>
@@ -197,7 +199,6 @@ h2{
 			})
 		}
 		
-		console.log(modifyGrid);
 		if(flag){
 			$.ajax({
 				url : 'updatePrcsManage',
@@ -205,9 +206,8 @@ h2{
 				data : JSON.stringify(modifyGrid),
 				contentType : 'application/json',
 				success : function(data){
-					console.log(data);
 					swal("성공", data +"건이 처리되었습니다.", "success");
-					selectListAjax();
+					searchPrcsManageList();
 				},
 				error : function(reject){		
 					console.log(reject);
@@ -247,6 +247,7 @@ h2{
           {
             header: '공정코드',
             name: 'prcsCode',
+            align: 'center'
           },
           {
             header: '공정구분',
@@ -264,7 +265,7 @@ h2{
     					</c:forEach>
                     ]
                 }
-            } 
+            }
           },
   
           {
@@ -288,11 +289,23 @@ h2{
     					</c:forEach>
                     ]
                 }
-            } 
+            },
+            align: 'center'
           }		          
         ]
-      })  
+	})  
 
+    
+    grid.on('click', () => {	
+		//선택한 행 색깔 바꾸기
+		let selectKey = grid.getFocusedCell().rowKey;
+		grid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	grid.on('focusChange', () => {
+    		grid.removeRowClassName(selectKey, 'selected-cell');
+	    })	
+	})
+    
 
 	</script>
 </body>

@@ -61,6 +61,9 @@ h1{
 h1, h2{
 	font-weight: 800;
 }
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>
 </head>
 <body>
@@ -153,7 +156,8 @@ h1, h2{
         columns: [
           {
             header: '제품코드',
-            name: 'prodCode'
+            name: 'prodCode',
+            align: 'center'
           },
           {
             header: '제품명',
@@ -239,7 +243,8 @@ h1, h2{
         columns: [
           {
             header: '공정코드',
-            name: 'prcsCode'
+            name: 'prcsCode',
+            align: 'center'
           },
           {
         	header: '공정이름',
@@ -249,13 +254,25 @@ h1, h2{
           {
             header: '공정순서',
             name: 'prcsSeq',
-            editor: 'text'
+            editor: 'text',
+            align: 'center',
+            sortable: true,
+            sortingType: 'asc'
           }		          
         ]
     })  
     
 	//제품 클릭시 해당 제품의 공정목록 조회
 	grid.on('click', () => {
+		
+		//선택한 행 색깔 바꾸기
+		let selectKey = grid.getFocusedCell().rowKey;
+		grid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	grid.on('focusChange', () => {
+    		grid.removeRowClassName(selectKey, 'selected-cell');
+	    })	
+		
     	//클릭한 제품의 제품코드 가져오기
     	let rowKey = grid.getFocusedCell().rowKey;
     	let prodCode = grid.getValue(rowKey, 'prodCode');

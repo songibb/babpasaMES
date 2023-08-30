@@ -73,6 +73,10 @@
  h1, h2{ 
  	font-weight: 800; 
  } 
+ 
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>
 
 </head>
@@ -163,7 +167,7 @@
 			url : 'searchPlanList',
 			method : 'GET',
 			data : { searchPlanName : planName, startDate : sd , endDate : ed },
-			success : function(data){				
+			success : function(data){		
 				//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
 					let ppd = data[i]['prcsPlanDate'];
@@ -301,7 +305,7 @@
 		//빈 데이터 있는지 체크
 		$.each(list, function(i, obj){
 			for(let field in obj){
-				console.log(field+'-'+obj[field]);
+				//console.log(field+'-'+obj[field]);
 				if(obj['prcsPlanName'] == null || obj['empCode'] == null || obj['prcsStartDate'] == null || obj['prcsEndDate'] == null){
 					flag = false;
 				}
@@ -432,11 +436,10 @@
             name: 'prcsPlanName',
             editor: 'text'
           },
-//           {
-//             header: '계획일자',
-//             name: 'prcsPlanDate',
-//             hidden:  true
-//           },
+          {
+            header: '계획일자',
+            name: 'prcsPlanDate'
+          },
 		  {
             header: '담당자코드',
             name: 'empCode',
@@ -458,7 +461,8 @@
             editor: {
   		      type: 'datePicker',
   		      options: {
-  		    	  language: 'ko'
+  		    	  language: 'ko',
+  		    	  selectableRanges: [[new Date(), new Date(2099,1,1)]]
   		      }
   		    },
   		  	className: 'yellow-background'
@@ -469,7 +473,8 @@
             editor: {
   		      type: 'datePicker',
   		      options: {
-  		    	  language: 'ko'
+  		    	  language: 'ko',
+				  selectableRanges: [[new Date(), new Date(2099,1,1)]]
   		      }
   		    },
   		  	className: 'yellow-background'
@@ -540,8 +545,20 @@
 			{
 				header: '우선순위',
 				name: 'prcsPrio',
-				editor: 'text'
-
+				formatter: 'listItemText',
+				editor: {
+					type: 'select',
+					options: {
+						listItems: [
+	                    	<c:forEach items="${prcsPrio}" var="p">
+	                    	 {
+	                             text: '${p.commdeName}',
+	                             value: '${p.commdeCode}'
+	                           }, 
+	    					</c:forEach>
+	                    ]
+					}		
+				}
 			},
 // 			{
 // 				header: '지시수량',
@@ -568,6 +585,20 @@
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
 	planGrid.on('click', () => {
 		
+		//선택한 행 색깔 바꾸기
+		let selectKey = planGrid.getFocusedCell().rowKey;
+    	planGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	planGrid.on('focusChange', () => {
+    		planGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+	    
+	    //이벤트 걸린 행에 prcsPlanCode가 없는 경우 등록 모드이므로 행 색깔 바꾸기X
+	    let prcsPlanCode = planGrid.getValue(selectKey, 'prcsPlanCode');
+	    if (prcsPlanCode == null) {
+	    	planGrid.removeRowClassName(selectKey, 'selected-cell');  
+		}
+		
 		//조건별 검색을 통한 조회일때 사용 (주문서 조회 적용시 -> 생산계획 그리드 클릭시 사용 안돼야함)
 		if(gridClick == 'Y'){
 	    	//클릭한 계획의 계획코드 가져오기
@@ -579,6 +610,7 @@
 				method : 'GET',
 				data : { prcsPlanCode : planCode },
 				success : function(data){
+				
 					planDeGrid.resetData(data);
 					
 					//지시완료는 수정, 삭제 불가
@@ -613,7 +645,16 @@
 		})
 	}
 	
-
+	//이전 날짜 선택불가
+    $('#startDate').on('change', function() {
+		$('#endDate').attr('min', $('#startDate').val());
+    });
+	//이후날짜 선택불가
+    $('#endDate').on('change', function() {
+		$('#startDate').attr('max', $('#endDate').val());
+	});
+	
+	
     </script>
     
 	
