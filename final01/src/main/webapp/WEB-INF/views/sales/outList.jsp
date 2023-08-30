@@ -613,10 +613,11 @@ form {
     function setDisabled() {
         $.each(grid.getData(), function (idx, obj) {
 
-            if (obj['salesOutCode'] != null && (obj['prodSaveAmt'] < 1)) {
-                grid.disableRow(obj['rowKey']);
-            }else if(obj['salesOutCode'] != null && (obj['salesRtCode'] != null)){
+            if(obj['salesOutCode'] != null && obj['salesRtCode'] != ""){
             	grid.disableRow(obj['rowKey']);
+            }
+            if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
+                grid.disableRow(obj['rowKey']);
             }
         })
     }

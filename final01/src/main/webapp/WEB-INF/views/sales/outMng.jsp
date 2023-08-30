@@ -360,7 +360,8 @@ form {
                 empCode: "${out.empCode}",
                 empName: "${out.empName}",
                 prodSaveAmt: "${out.prodSaveAmt}",
-              	prodName: "${out.prodName}"
+              	prodName: "${out.prodName}",
+              	salesRtCode: "${out.salesRtCode}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -449,9 +450,28 @@ form {
                 header: '출고여부',
                 name: 'prodCode',
                 hidden: true
+            }, {
+                header: '반품코드',
+                name: 'salesRtCode',
+                hidden: true
             }
         ]
     });
+    setDisabled();
+
+    //비활성화
+    function setDisabled() {
+        $.each(outGrid.getData(), function (idx, obj) {
+
+            if(obj['salesOutCode'] != null && obj['salesRtCode'] != ""){
+            	outGrid.disableRow(obj['rowKey']);
+            }
+            if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
+            	outGrid.disableRow(obj['rowKey']);
+            }
+        })
+    }
+    
 
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
