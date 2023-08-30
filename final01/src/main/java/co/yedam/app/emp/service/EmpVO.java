@@ -1,10 +1,11 @@
 package co.yedam.app.emp.service;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import lombok.Data;
 @Data
-public class EmpVO {
+public class EmpVO implements Serializable{
 	private String id;
 	private String empName;
 	private Date empDate;
