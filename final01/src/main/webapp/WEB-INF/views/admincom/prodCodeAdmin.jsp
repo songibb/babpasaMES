@@ -225,23 +225,23 @@
           {
             header: '제품코드',
             name: 'prodCode',
-            filter: 'text'
+            align: 'center',
+            sortable: true,
+            sortingType: 'asc'
           },
           {
             header: '제품명',
-            name: 'prodName',
-            filter: 'text'
+            name: 'prodName'
           },
           {
             header: '반/완제품구분',
             name: 'prodKind',
-            filter: 'select',
             hidden:true
           },
           {
             header: '반/완제품구분',
             name: 'kindName',
-            filter: 'select'
+            align: 'center'
             },
           {
             header: '단위',
@@ -484,7 +484,7 @@
 		            }); 
 		            
 				}else{
-					swal("경고","선택된 체크박스가 없습니다","","warning");
+					swal("경고","선택된 체크박스가 없습니다","warning");
 				}
 		        
 		    

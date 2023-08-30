@@ -173,7 +173,8 @@
 			columns: [
 				{
 					header: '공통코드',
-					name: 'commCode'
+					name: 'commCode',
+					align: 'center'
 				},
 				{
 					header: '공통코드명',
@@ -203,12 +204,14 @@
 				{
 					header: '공통상세코드넘버',
 					name: 'commDeNo',
+					align: 'center',
 					hidden :true
 				},
 				{
 					header: '공통상세코드',
 					name: 'commdeCode',
-					editor : 'text'
+					editor : 'text',
+					 align: 'center'
 				},
 				{
 					header: '공통코드',
@@ -228,6 +231,7 @@
 				{
 					header: '사용여부',
 					name: 'commdeUse',
+					align: 'center',
 					formatter: 'listItemText',
 					editor: {
 		                type: 'select',

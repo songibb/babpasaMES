@@ -146,31 +146,35 @@
 		},
         columns: [
           {
-            header: '거래처',
+            header: '거래처코드',
             name: 'actCode',
-            filter: 'text'
+            align: 'center',
+            sortable: true,
+	        sortingType: 'asc'
           },
           {
             header: '거래처명',
-            name: 'actName',
-            filter: 'text'
+            name: 'actName'
           },
           {
             header: '사업자번호',
-            name: 'actNum'
+            name: 'actNum',
+            align: 'center'
           },
           {
             header: '연락처',
-            name: 'actTel'
+            name: 'actTel',
+            align: 'center'
           },
           {
             header: '거래여부',
-            name: 'sts'
+            name: 'sts',
+            align: 'center'
           },
           {
               header: '거래처구분',
               name: 'kind',
-              filter: 'select'
+              align: 'center'
             },
         ]
       })  

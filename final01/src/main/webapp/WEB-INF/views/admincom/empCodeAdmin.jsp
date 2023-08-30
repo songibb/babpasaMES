@@ -238,15 +238,20 @@
 	       columns: [
 	         {
 	           header: '사원번호',
-	           name: 'empCode'
+	           name: 'empCode',
+	           align: 'center'
 	         },
 	         {
 	           header: '사원명',
-	           name: 'empName'
+	           name: 'empName',
+	           align: 'center'
 	         },
 	         {
 	           header: '입사일',
 	           name: 'empDate',
+	           align: 'center',
+	           sortable: true,
+	           sortingType: 'asc',
 	           className: 'yellow-background'
 	         },
 	         {
@@ -256,7 +261,8 @@
 		      },
 	         {
 	           header: '직급정보',
-	           name: 'empRoleName'
+	           name: 'empRoleName',
+	           align: 'center'
 	         },
 	         {
 	           header: '부서명',
@@ -265,11 +271,13 @@
 	         },
 	         {
 	           header: '부서명',
-	           name: 'deptcodeName'
+	           name: 'deptcodeName',
+	           align: 'center'
 	         },
 	         {
 	           header: '연락처',
-	           name: 'empTel'
+	           name: 'empTel',
+	           align: 'center'
 	         }
 	       ]
 	      

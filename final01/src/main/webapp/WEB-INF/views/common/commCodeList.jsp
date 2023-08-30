@@ -136,7 +136,8 @@ label {
 			columns: [
 				{
 					header: '공통코드',
-					name: 'commCode'
+					name: 'commCode',
+					align: 'center'
 				},
 				{
 					header: '공통코드명',
@@ -170,7 +171,8 @@ label {
 				},
 				{
 					header: '공통상세코드',
-					name: 'commdeCode'
+					name: 'commdeCode',
+					align: 'center'
 				},
 				{
 					header: '공통코드',
@@ -187,7 +189,8 @@ label {
 				},
 				{
 					header: '사용여부',
-					name: 'useName'
+					name: 'useName',
+					align: 'center'
 				}
 			]
 			

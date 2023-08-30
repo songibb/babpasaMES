@@ -150,23 +150,23 @@ function searchProdIn(e){
        {
          header: '제품코드',
          name: 'prodCode',
-         filter: 'text'
+         align: 'center',
+         sortable: true,
+         sortingType: 'asc'
        },
        {
          header: '제품명',
-         name: 'prodName',
-         filter: 'text'
+         name: 'prodName'
        },
        {
          header: '반/완제품구분',
          name: 'prodKind',
-         filter: 'select',
          hidden:true
        },
        {
          header: '반/완제품구분',
          name: 'kindName',
-         filter: 'select'
+         align: 'center'
          },
        {
          header: '단위',
