@@ -180,13 +180,17 @@
             },
             {
                header: '설비코드',
-               name: 'eqCode',
-               editor: 'text'
+               name: 'eqCode'
             },
             {
                header: '점검일',
                name: 'chkDate',
-               editor: 'text'
+               editor: {
+	 	  		      type: 'datePicker',
+	 	  		      options: {
+	 	  		    	  language: 'ko'
+	 	  		      }
+            }
             },
             {
                header: '차기점검일',

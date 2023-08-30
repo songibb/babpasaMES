@@ -43,6 +43,8 @@
       	//matgrid.appendRows(checkList);
       	$.each(checkList, function(idx,obj){
       		matgrid.appendRow(obj, {at: 0});
+      		matgrid.setColumnValues('empCode', ${user.id});
+			matgrid.setColumnValues('empName',`${user.empName}`);
       		
       		
       	})

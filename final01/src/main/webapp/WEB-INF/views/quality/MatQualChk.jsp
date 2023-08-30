@@ -61,6 +61,7 @@
 		float : right;
 	}
 	
+	.my-styled-cell {background-color: rgb(255, 229, 229)}
 
 </style>    
        
@@ -120,11 +121,13 @@
 	           	{
 	           		matTestCode : "${matChk.matTestCode}",
 	           		matOdDeCd : "${matChk.matOdDeCd}",
+	           		matCode : "${matChk.matCode}",
 	           		matName : "${matChk.matName}",
 	           		matAmt : "${matChk.matAmt}",
 	           		matYamt : "${matChk.matYamt}",
 	           		matNamt : "${matChk.matNamt}",
 	           		empCode : "${matChk.empCode}",
+	           		empName : "${matChk.empName}",
 	           		matTestDate : `<fmt:formatDate value="${matChk.matTestDate}" pattern="yyyy-MM-dd"/>`,
 	           		errCode : "${matChk.errCode}",
 	           		errCodeName : "${matChk.errCodeName}",
@@ -197,8 +200,13 @@
 	              {
 	            	  	header: '담당자',
 			 		 	name: 'empCode',
-			 		 	editor: 'text'
+			 		 	editor: 'text',
+			 		 	hidden : true
 	              },
+	              {
+		  				header: '담당자',
+		  				name :'empName'
+	  			  },
 	              {
 		 	 	        header: '검수일자',
 		 	 	        name: 'matTestDate',
@@ -241,7 +249,25 @@
 	
 	setDisabled();
 	
-	
+	//불량수량, 반품 있는 셀 - 빨간색으로 변경
+	matgrid.on('onGridMounted', function (e) {
+	    let data = matgrid.getData();
+
+	    $.each(data, function (idx, obj) {
+
+	        if (obj['errRtStsName'] == '반품요청완료' || obj['errRtStsName'] == '반품요청전') {
+	            let rowKey = obj['rowKey'];
+	            matgrid.addRowClassName(rowKey, 'my-styled-cell');
+	        }
+	    })
+	    
+	    $.each(data, function (idx, obj) {
+		    if (obj['matNamt'] != '0') {
+		            let rowKey = obj['rowKey'];
+		            matgrid.addRowClassName(rowKey,'my-styled-cell');
+		        }
+	   	})
+	});
 
 	matgrid.on('afterChange', (ev) => {
 		
@@ -323,12 +349,7 @@
 								console.log(result);
 								matgrid.resetData(result);
 								
-								 $.each(data, function(i, objDe){
-									let td = data[i]['matTestDate'];
-									
-									data[i]['matTestDate'] = getDate(td);
-								})
-								
+							 
 								setDisabled();
 	
 							},
