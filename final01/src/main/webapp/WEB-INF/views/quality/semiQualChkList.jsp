@@ -96,6 +96,17 @@
 
 				})
              grid.resetData(result);
+        	 
+        	//안전재고량 > 현재고
+ 		    let data = grid.getData();
+          
+ 		    $.each(data, function (idx, obj) {
+ 	
+ 		        if (obj['nonPassAmt'] != '0') {
+ 		            let rowKey = obj['rowKey'];
+ 		           grid.addCellClassName(rowKey, 'nonPassAmt', 'my-styled-cell');
+ 		        }
+ 		    })
          },
          error : function(reject){
             console.log(reject);
@@ -175,8 +186,7 @@
          ]
          
       })
-      
-
+ 
       //상세공통코드 가져오기
       var grid2 = new tui.Grid({
          el: document.getElementById('grid2'),

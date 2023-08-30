@@ -43,6 +43,8 @@
 	.yellow-background {
         background-color: rgb(255,253,235);
 	}
+	
+	.my-styled-cell {background-color: rgb(255, 229, 229)}
 	</style> 
 </head>
 <body>
@@ -94,6 +96,18 @@
 
 			})
 				 grid.resetData(result);
+			
+			//안전재고량 > 현재고
+ 		    let data = grid.getData();
+          
+ 		    $.each(data, function (idx, obj) {
+ 	
+ 		        if (obj['nonPassAmt'] != '0') {
+ 		            let rowKey = obj['rowKey'];
+ 		           grid.addRowClassName(rowKey,'my-styled-cell');
+ 		        }
+ 		    })
+ 		    
 			},
 			error : function(reject){
 				console.log(reject);
@@ -259,8 +273,21 @@
     		url : 'ajaxOneChkList',
 			method : 'GET',
 			data : { testNum : testNum },
-			success : function(data){
- 				grid2.resetData(data);
+			success : function(result){
+ 				grid2.resetData(result);
+ 				
+			//안전재고량 > 현재고
+   		    let data = grid2.getData();
+            
+   		    $.each(data, function (idx, obj) {
+   	
+   		        if (Number(obj['passValue']) < Number(obj['testResult'])) {
+   		            let rowKey = obj['rowKey'];
+   		            grid2.addCellClassName(rowKey, 'passYn2', 'my-styled-cell');
+   		        }
+   		    })
+ 				
+ 				
  		    },
 			error : function(reject){
 	 			console.log(reject);
