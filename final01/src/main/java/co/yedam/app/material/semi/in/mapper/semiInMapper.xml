@@ -85,16 +85,14 @@
 	<!-- 검수완료된 반제품 목록 -->
 	<select id="selectTestFinishList" resultType="SemiInVO">
 		SELECT a.prcs_ing_code
-			 , a.prod_code
+             , c.mp_code
 			 , c.prod_name
 			 , a.test_amt
 			 , a.test_date
-		FROM prod_quality a
-			LEFT JOIN semi_in b
-				ON(a.prcs_ing_code = b.prcs_ing_code)
-					LEFT JOIN com_prod c
-						ON(a.prod_code = c.prod_code)
-		WHERE b.prcs_ing_code IS NULL
+        FROM prod_quality a JOIN prcs_ing b ON (a.prcs_ing_code = b.prcs_ing_code)
+                            JOIN v_semi_all c ON (b.prod_code = c.prod_code AND b.prcs_code = c.prcs_code)
+                            LEFT JOIN semi_in d	ON (a.prcs_ing_code = d.prcs_ing_code)
+        WHERE d.prcs_ing_code IS NULL
 			AND a.total_test_yn = 'Y'
 			AND a.test_semi_yn = 'S'
 		ORDER BY a.test_date
