@@ -69,6 +69,9 @@ h1{
 h1, h2{
 	font-weight: 800;
 }
+.selected-cell{
+	background-color: #ffd09e;
+}
 
 </style>
 
@@ -184,7 +187,8 @@ h1, h2{
           {
             header: '계획코드',
             name: 'prcsPlanCode',
-            width: 'auto'
+            width: 'auto',
+            align: 'center'
           },
           {
             header: '계획명',
@@ -192,7 +196,8 @@ h1, h2{
           },
           {
             header: '계획일자',
-            name: 'prcsPlanDate'
+            name: 'prcsPlanDate',
+            align: 'center'
           },
 //           {
 //             header: '담당자코드',
@@ -205,16 +210,19 @@ h1, h2{
           {
             header: '예상생산시작일',
             name: 'prcsStartDate',
-            className: 'yellow-background'
+            className: 'yellow-background',
+            align: 'center'
           },
           {
             header: '예상생산종료일',
             name: 'prcsEndDate',
-            className: 'yellow-background'
+            className: 'yellow-background',
+            align: 'center'
           },
           {
        	    header: '생산지시여부',
-            name: 'prcsDirYn'
+            name: 'prcsDirYn',
+            align: 'center'
           }
         ]
       })  
@@ -236,7 +244,8 @@ h1, h2{
           {
             header: '상세계획코드',
             name: 'prcsPlanDeCode',
-            width: 'auto'
+            width: 'auto',
+            align: 'center'
           },
 //           {
 //             header: '계획코드',
@@ -261,7 +270,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '상세계획량',
@@ -273,11 +283,13 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '우선순위',
-            name: 'prcsPrio'
+            name: 'prcsPrio',
+            align: 'center'
           },
 //           {
 //             header: '지시수량',
@@ -285,7 +297,8 @@ h1, h2{
 //           },
           {
             header: '지시상태',
-            name: 'prcsDirSts'
+            name: 'prcsDirSts',
+            align: 'center'
           }
 //           ,
 //           {
@@ -298,6 +311,15 @@ h1, h2{
 	
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
     planGrid.on('click', () => {
+    	
+		//선택한 행 색깔 바꾸기
+		let selectKey = planGrid.getFocusedCell().rowKey;
+    	planGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	planGrid.on('focusChange', () => {
+    		planGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+
     	//클릭한 계획의 계획코드 가져오기
     	let rowKey = planGrid.getFocusedCell().rowKey;
     	let planCode = planGrid.getValue(rowKey, 'prcsPlanCode');
@@ -337,8 +359,6 @@ h1, h2{
 
 // 	updatePlanDirStsAjax();
 
-	
-	
  	
  	
 	//이전 날짜 선택불가

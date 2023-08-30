@@ -55,6 +55,9 @@
 	display: flex; 
 	justify-content: flex-end;
 }
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>
 <body>
 
@@ -141,6 +144,7 @@
 	            {
 	                header: '설비코드',
 	                name: 'eqCode',
+	                align: 'center'
 	            },
 	            {
 	                header: '설비명',
@@ -188,6 +192,7 @@
 	            {
 	                header: '설비코드',
 	                name: 'eqCode',
+	                align: 'center'
 	            },
 	            {
 	                header: '설비명',
@@ -211,6 +216,11 @@
 		    data : { prcsDirDeCode : prcsDirDeCode , prcsCode : prcsCode },
 		    success : function(data){
 		    	selEqGrid.resetData(data);
+		    	
+		    	//선택된 설비는 파란색 row로 변경
+		    	let rowKey = data[0]['rowKey'];
+		    	selEqGrid.addRowClassName(rowKey, 'selected-cell');
+		    	
 		    },
 		    error : function(reject){
 		        console.log(reject);
@@ -254,7 +264,8 @@
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                 	}
-                }
+                },
+                align: 'right'
               }
 //               {
 //                 header: '단위',
@@ -305,6 +316,15 @@
 	
 	
     ingGrid.on('click', () => {
+    	
+    	//선택한 행 색깔 바꾸기
+		let selectKey = ingGrid.getFocusedCell().rowKey;
+		ingGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	ingGrid.on('focusChange', () => {
+    		ingGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+    	
 		$(".modal").fadeIn();   
 
 		//모달창에 공정명, 투입량 정보 가져오기
@@ -346,7 +366,18 @@
 					
 					//설비, bom 그리드 생성
 					eqGridFn = createEqGrid();
-					prcsBomGridFn = createPrcsBomGrid();				
+					prcsBomGridFn = createPrcsBomGrid();	
+					
+					//선택한 행 색깔 바꾸기
+					eqGridFn.on('click', () => {
+						let rowKey = eqGridFn.getFocusedCell().rowKey;
+						//선택된 설비 색깔 변경
+				    	eqGridFn.addRowClassName(rowKey, 'selected-cell');
+						//다른 행 선택시 기존에 클릭했던 행은 class제거
+				    	eqGridFn.on('focusChange', () => {
+					    	eqGridFn.removeRowClassName(rowKey, 'selected-cell');
+					    })
+					})
 					
 					//input태그 값 지우기(update된 해당 정보를 조회해서 불러올 것이므로)
 			    	$('#empCode').val('');
@@ -615,8 +646,13 @@
    	
     //닫기 버튼 
 	$("#close_btn").click(function(){
+		let rowKey1 = dirGrid.getFocusedCell().rowKey;
+		let rowKey2 = dirDeGrid.getFocusedCell().rowKey;
+		let rowKey3 = ingGrid.getFocusedCell().rowKey;
+
+		
 		$(".modal").fadeOut();			
-	 	eqGridFn.destroy();
+	 	eqGridFn.destroy(
 	 	prcsBomGridFn.destroy();
 	 
 	 	//공정진행관리 조회해서 정보 update
@@ -640,12 +676,17 @@
 // 						ingGrid.setColumnValues(columnName, columnValue, checkCellState)
 // 					}
 				})
+				
+				//조회하면서 focus 해제된 부분 다시 focus하고 색깔 채우기
+				ingGrid.focus(rowKey3, 'prcsIngCode');
+				let selectKey = ingGrid.getFocusedCell().rowKey;
+				ingGrid.addRowClassName(selectKey, 'selected-cell');
  		    },
 			error : function(reject){
 	 			console.log(reject);
 	 		}	
 		})
-			
+		
 		//상세생산지시 조회해서 정보 update
 		let rowKey = dirGrid.getFocusedCell().rowKey;
     	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
@@ -654,18 +695,49 @@
 			method : 'GET',
 			data : { prcsDirCode : dirCode },
 			success : function(data){
+				dirDeGrid.resetData(data);
+				
+				//공정상태 정보 update
 				let deRowKey = dirDeGrid.getFocusedCell().rowKey;
 				$.each(data,function(i, obj){
 					if(i == deRowKey){
 						dirDeGrid.setValue(i, 'prcsIngSts', obj['prcsIngSts']);
 					}
 				})
+				
+				//조회하면서 focus 해제된 부분 다시 focus하고 색깔 채우기
+				dirDeGrid.focus(rowKey2, 'prcsDirDeCode');
+				let selectKey = dirDeGrid.getFocusedCell().rowKey;
+				dirDeGrid.addRowClassName(selectKey, 'selected-cell');
  		    },
 			error : function(reject){
 	 			console.log(reject);
 	 		}	
 		})
 		
+		//생산지시 조회해서 '공정진행중' 정보 update
+		$.ajax({
+			url : 'selectPrcsDirList',
+			method : 'GET',
+			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let psd = data[i]['prcsStartDate'];
+					data[i]['prcsStartDate'] = getDate(psd);
+				})
+				
+				dirGrid.resetData(data);
+				
+				//조회하면서 focus 해제된 부분 다시 focus하고 색깔 채우기
+				dirGrid.focus(rowKey1, 'prcsDirCode');
+				let selectKey = dirGrid.getFocusedCell().rowKey;
+				dirGrid.addRowClassName(selectKey, 'selected-cell');
+				
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
 
 	});	
    

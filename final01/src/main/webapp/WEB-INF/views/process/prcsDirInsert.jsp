@@ -62,6 +62,10 @@ h1{
 h1, h2{
 	font-weight: 800;
 }
+
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>    
     
 </head>
@@ -305,27 +309,31 @@ h1, h2{
 //           },
           {
             header: '계획코드',
-            name: 'prcsPlanCode'
+            name: 'prcsPlanCode',
+            align: 'center'
           },
           {
             header: '지시명',
             name: 'prcsDirName',
             editor: 'text'
           },
-//           {
-//             header: '지시등록일자',
-//             name: 'prcsDirDate',
-//           },
+          {
+            header: '지시등록일자',
+            name: 'prcsDirDate',
+            align: 'center'
+          },
           {
 			header: '생산시작일자',
             name: 'prcsStartDate',
             editor: {
    		      type: 'datePicker',
    		      options: {
-   		    	  language: 'ko'
+   		    	  language: 'ko',
+   		    	  selectableRanges: [[new Date(), new Date(2099,1,1)]]
    		      }
    		    },
-   		 	className: 'yellow-background'
+   		 	className: 'yellow-background',
+   		 	align: 'center'
           },
 //           {
 //             header: '생산종료일자',
@@ -343,7 +351,8 @@ h1, h2{
           {
             header: '담당자',
             name: 'empName',
-            editor: 'text'
+            editor: 'text',
+            align: 'center'
           }
         ]
 	});
@@ -388,7 +397,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '지시수량',
@@ -401,7 +411,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '생산시작일자',
@@ -409,10 +420,12 @@ h1, h2{
             editor: {
    		      type: 'datePicker',
    		      options: {
-   		    	  language: 'ko'
+   		    	  language: 'ko',
+   		    	  selectableRanges: [[new Date(), new Date(2099,1,1)]]
    		      }
    		    },
-   		 	className: 'yellow-background'
+   		 	className: 'yellow-background',
+   		 	align: 'center'
           },
 //           {
 //             header: '생산마감일자',
@@ -430,7 +443,8 @@ h1, h2{
           {
             header: '담당자',
             name: 'empName',
-            editor: 'text'
+            editor: 'text',
+            align: 'center'
           },
         ]
       });
@@ -471,7 +485,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           }
           
 //           {
@@ -496,7 +511,8 @@ h1, h2{
           },
           {
             header: 'LOT번호',
-            name: 'matLot'
+            name: 'matLot',
+            align: 'center'
           },
           {
        	  	header: '재고량',
@@ -508,7 +524,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           }
 
         ]
@@ -521,6 +538,14 @@ h1, h2{
 	
 	//상세 생산지시 클릭시 해당 제품의 BOM 조회 
 	dirDeGrid.on('click', () => {
+		
+		//선택한 행 색깔 바꾸기
+		let selectKey = dirDeGrid.getFocusedCell().rowKey;
+		dirDeGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	dirDeGrid.on('focusChange', () => {
+    		dirDeGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
 		
     	//클릭한 상세생산지시의 BOM 목록 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
@@ -548,6 +573,15 @@ h1, h2{
 	
 	//BOM 클릭시 해당 자재의 LOT 조회 
 	bomGrid.on('click', () => {
+		
+		//선택한 행 색깔 바꾸기
+		let selectKey = bomGrid.getFocusedCell().rowKey;
+		bomGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	bomGrid.on('focusChange', () => {
+    		bomGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+		
 		
     	//클릭한 BOM의 자재 LOT 가져오기
     	let rowKey = bomGrid.getFocusedCell().rowKey;

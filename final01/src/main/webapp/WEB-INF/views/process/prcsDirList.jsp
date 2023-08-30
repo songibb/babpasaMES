@@ -67,7 +67,9 @@ h1, h2{
 	font-weight: 800;
 }
 
-.my-styled-cell {background-color: rgb(255, 229, 229)}
+.my-styled-cell{
+	background-color: rgb(255, 229, 229);
+}
 </style>
 </head>
 <body>
@@ -78,7 +80,7 @@ h1, h2{
 			<div class="card-body">
 				<div class="table-responsive pt-3">	
 					<form>
-						<p>생산 시작일자</p>
+						<p>생산시작일자</p>
 						<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
 
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -263,11 +265,13 @@ h1, h2{
         columns: [
           {
             header: '지시코드',
-            name: 'prcsDirCode'
+            name: 'prcsDirCode',
+            align: 'center'
           },
           {
             header: '계획코드',
-            name: 'prcsPlanCode'
+            name: 'prcsPlanCode',
+            align: 'center'
           },
           {
             header: '지시명',
@@ -276,11 +280,13 @@ h1, h2{
           {
             header: '생산시작일자',
             name: 'prcsStartDate',
-            className: 'yellow-background'
+            className: 'yellow-background',
+            align: 'center'
           },
           {
             header: '지시상태',
-            name: 'prcsDirSts'
+            name: 'prcsDirSts',
+            align: 'center'
           },
           {
             header: '담당자코드',
@@ -289,7 +295,8 @@ h1, h2{
           },
           {
             header: '담당자',
-            name: 'empName'
+            name: 'empName',
+            align: 'center'
           },
         ]
       })  
@@ -311,7 +318,8 @@ h1, h2{
           {
             header: '상세지시코드',
             name: 'prcsDirDeCode',
-            width: 'auto'
+            width: 'auto',
+            align: 'center'
           },
           {
             header: '제품코드',
@@ -332,7 +340,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '지시수량',
@@ -344,7 +353,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
 //           {
 //             header: '생산시작일자',
@@ -356,7 +366,8 @@ h1, h2{
 //           },
           {
             header: '공정진행상태',
-            name: 'prcsIngSts'
+            name: 'prcsIngSts',
+            align: 'center'
           },
           {
             header: '담당자코드',
@@ -365,7 +376,8 @@ h1, h2{
           },
           {
             header: '담당자',
-            name: 'empName'
+            name: 'empName',
+            align: 'center'
           },
           {
             header: '재지시여부',
@@ -391,7 +403,8 @@ h1, h2{
         columns: [
           {
             header: '진행공정관리코드',
-            name: 'prcsIngCode'
+            name: 'prcsIngCode',
+            align: 'center'
           },
           {
             header: '상세지시코드',
@@ -418,7 +431,8 @@ h1, h2{
           },
           {
             header: '공정순서',
-            name: 'prcsSeq'
+            name: 'prcsSeq',
+            align: 'center'
           },
           {
             header: '투입량',
@@ -430,7 +444,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '불량량',
@@ -442,7 +457,8 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '생산량',
@@ -454,11 +470,13 @@ h1, h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '공정상태',
-            name: 'prcsDirIngSts'
+            name: 'prcsDirIngSts',
+            align: 'center'
           }
         ]
       })  
@@ -466,6 +484,15 @@ h1, h2{
 	
 	//생산지시 클릭시 해당 지시의 상세 생산지시 조회
     dirGrid.on('click', () => {
+    	
+    	//선택한 행 색깔 바꾸기
+		let selectKey = dirGrid.getFocusedCell().rowKey;
+    	dirGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	dirGrid.on('focusChange', () => {
+    		dirGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+	    
     	//클릭한 지시의 지시코드 가져오기
     	let rowKey = dirGrid.getFocusedCell().rowKey;
     	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
@@ -504,6 +531,15 @@ h1, h2{
 	
   	//상세 생산지시 클릭시 해당 지시의 진행 공정 조회
     dirDeGrid.on('click', () => {
+    	
+    	//선택한 행 색깔 바꾸기
+		let selectKey = dirDeGrid.getFocusedCell().rowKey;
+		dirDeGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	dirDeGrid.on('focusChange', () => {
+    		dirDeGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })
+    	
     	//클릭한 상세 지시의 상세지시코드, 제품코드 가져오기
     	let rowKey = dirDeGrid.getFocusedCell().rowKey;
     	let dirDeCode = dirDeGrid.getValue(rowKey, 'prcsDirDeCode');
@@ -517,11 +553,9 @@ h1, h2{
 			success : function(result){
 				ingGrid.resetData(result);
 				
-				//셀 빨간색으로 바꾸는거 (AJAX안에 넣는 버전)
-	   		    let data = ingGrid.getData();
-	            
-	   		    $.each(data, function (idx, obj) {
-	   	
+				//품질검사 부적합시 row 빨간색으로 변경 
+	   		    let noPass = ingGrid.getData();	            
+	   		    $.each(noPass, function (idx, obj) {	   	
 	   		        if (obj['prcsDirIngSts'] == '품질검사부적합') {
 	   		            let rowKey = obj['rowKey'];
 	   		        	ingGrid.addRowClassName(rowKey, 'my-styled-cell');

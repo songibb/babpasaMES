@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.common.comm.service.CommCodeService;
 import co.yedam.app.common.emp.service.EmpInfoService;
 import co.yedam.app.common.emp.service.EmpInfoVO;
 import co.yedam.app.prcs.plan.service.PrcsPlanReqVO;
@@ -28,6 +29,9 @@ public class PrcsPlanController {
 	
 	@Autowired
 	EmpInfoService empInfoService;
+	
+	@Autowired
+	CommCodeService commCodeService;
 	
 	//생산계획 조회
 	@GetMapping("prcsPlanList")
@@ -65,7 +69,8 @@ public class PrcsPlanController {
 	
 	//생산계획 + 상세생산계획 등록 - 페이지 호출
 	@GetMapping("prcsPlanInsert")
-	public String getPrcsPlanInsert(){
+	public String getPrcsPlanInsert(Model model){
+		model.addAttribute("prcsPrio", commCodeService.searchCommCodeUse("0Z"));
 		return "process/prcsPlanInsert";
 	}
 	

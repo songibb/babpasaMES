@@ -62,6 +62,10 @@ h2{
 	margin-top : 0;
 	float : right;
 }
+
+.selected-cell{
+	background-color: #ffd09e;
+}
 </style>  
 </head>
 <body>
@@ -153,11 +157,13 @@ h2{
         columns: [
           {
             header: '공정실적관리코드',
-            name: 'prcsListCode'
+            name: 'prcsListCode',
+            align: 'center'
           },
           {
             header: '상세지시코드',
-            name: 'prcsDirDeCode'
+            name: 'prcsDirDeCode',
+            align: 'center'
           },
           {
             header: '제품명',
@@ -181,7 +187,8 @@ h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '불량량',
@@ -193,7 +200,8 @@ h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '생산량',
@@ -205,25 +213,29 @@ h2{
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
             	}
-            }
+            },
+            align: 'right'
           },
           {
             header: '작업시작시간',
             name: 'prcsStartTime',
             className: 'yellow-background',
-            width: 'auto'
+            width: 'auto',
+            align: 'center'
           },
           {
             header: '작업종료시간',
             name: 'prcsEndTime',
             className: 'yellow-background',
-            width: 'auto'
+            width: 'auto',
+            align: 'center'
           },
           {
              header: '지시등록일자',
              name: 'prcsDirDate',
              className: 'yellow-background',
-             width: 'auto'
+             width: 'auto',
+             align: 'center'
           },
         ]
 	})  
@@ -246,8 +258,16 @@ h2{
  		}
 	});
 
- 	
- 	
+	
+	resultGrid.on('click', () => {	
+		//선택한 행 색깔 바꾸기
+		let selectKey = resultGrid.getFocusedCell().rowKey;
+		resultGrid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	resultGrid.on('focusChange', () => {
+    		resultGrid.removeRowClassName(selectKey, 'selected-cell');
+	    })	
+	})
  	
 	//엑셀 다운로드
 	const excelDownload = document.querySelector('.excelDownload');

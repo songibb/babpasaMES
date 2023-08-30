@@ -26,11 +26,13 @@ public class PrcsPlanVO {
 	private String prodCode;						//제품코드
 	private int prcsRqAmt;							//주문수량
 	private int prcsPlanAmt;						//생산계획량
-	private int prcsPrio;							//우선순위
+	private String prcsPrio;						//우선순위
 	private int prcsDirAmt;							//지시수량
 	private String prcsDirSts;						//지시상태
 	private String prcsAmt;							//생산량
 	
+	//주문서 조회용
+	private String devDate;							//납기일자
 	//주문서 수정용
 	private String ordCode;
 	

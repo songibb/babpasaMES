@@ -82,7 +82,7 @@
 										, prod_code
 										, prcs_rq_amt
 										, prcs_plan_amt
-										<if test="prcsPrio > 0">
+										<if test="prcsPrio != null">
 										, prcs_prio
 										</if>
 								 )
@@ -92,7 +92,7 @@
 							, #{prodCode}
 							, #{prcsRqAmt}
 							, #{prcsPlanAmt}
-							<if test="prcsPrio > 0">
+							<if test="prcsPrio != null">
 							, #{prcsPrio} 
 							</if>
 						)
@@ -134,7 +134,7 @@
 			<if test="prcsPlanAmt >= 0">
 				prcs_plan_amt = #{prcsPlanAmt},
 			</if>
-			<if test="prcsPrio >= 0">
+			<if test="prcsPrio != null">
 				prcs_prio = #{prcsPrio}
 			</if>
 		</set>
@@ -151,12 +151,14 @@
 	
 	<!-- 미계획 주문서 조회 -->
 	<select id="selectNotPlanOrderList" resultType="OrderVO">
-		SELECT s.ord_code,
+		SELECT s.ord_code, 
 			   s.ord_date, 
-			   a.act_name
-		  FROM sales_ord s JOIN com_act a 
-							 ON s.act_code = a.act_code
+			   find_act_name(s.act_code) AS act_name, 
+			   d.dev_date
+		  FROM sales_ord s JOIN sales_ord_de d 
+		  					 ON s.ord_code = d.ord_code
 		 WHERE s.ord_sts = 'P1'
+		 ORDER BY d.dev_date
 	</select>
 	
 	<!-- 미계획 상세 주문서 조회 -->
