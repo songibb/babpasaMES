@@ -105,7 +105,7 @@
        
 </head>
 <body>
-   <h1>자재 폐기 조회</h1>
+   <h1>자재/반제품 폐기 조회</h1>
    <div class="col-lg-12 stretch-card">
        <div class="card">
            <div class="card-body">

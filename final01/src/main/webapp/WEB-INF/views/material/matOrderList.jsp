@@ -105,6 +105,28 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	 #planContainer{ 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
+ #leftGrid{ 
+     width: 500px; 
+     margin-right: 20px; 
+ } 
+ #leftGridHeader{ 
+ 	height: 45px; 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
+ #rightGrid{ 
+     width: 1000px; 
+ } 
+ #rightGridHeader{ 
+ 	height: 45px; 
+ 	display: flex; 
+ 	justify-content: space-between; 
+ } 
 </style>    
        
 </head>
@@ -144,16 +166,33 @@
                 				</button>
             				</div>
         				</div>
-	    			
+	    			<div id="planContainer">
+					<div id="leftGrid">
+						<div id="leftGridHeader">
+							<h2>발주 목록</h2>	
+						<button type="button"
+						class="btn btn-info btn-icon-text excelDownload">
+						Excel <i class="bi bi-printer"></i>
+						</button>	            	
+							
+						</div>
+		           		<div id="grid2"></div>					
+					</div>
+					<div id="rightGrid">
+						<div id="rightGridHeader">
+							<h2>상세 발주 조회</h2>
+						<button type="button"
+						class="btn btn-info btn-icon-text excelDownload2">
+						Excel <i class="bi bi-printer"></i>
+						</button>
+										
+						</div>		
+	           			<div id="grid"></div>
+					</div>
+				</div>
 		            
 		           
-		            <div id="grid">
-		            	<h2>발주 목록</h2>
-		            	<button type="button" class="btn btn-info btn-icon-text excelDownload">
-                      	 Excel
-                      	<i class="bi bi-printer"></i>                                                                              
-                   	</button>
-		            </div>
+		            
 				</div>
 			</div>
 		</div>
@@ -451,33 +490,19 @@
 		    })
 		}
 	
-		//엑셀 다운로드
-		const excelDownload = document.querySelector('.excelDownload');
-	
-		document.addEventListener('DOMContentLoaded', () => {
-		    excelDownload.addEventListener('click', function (e) {
-		        grid.export('xlsx');
-		    })
-		})
-	
-		//전체조회 그리드
-		var grid = new tui.Grid({
-		    el: document.getElementById('grid'),
+		
+		
+		//헤더 조회 그리드
+		var grid2 = new tui.Grid({
+		    el: document.getElementById('grid2'),
 		    data: [<c:forEach items="${matOrderList}" var="mat" varStatus="status">
 		        {
 		            matOdCd: "${mat.matOdCd}",
-		            matName: "${mat.matName}",
-		            matUnit: "${mat.matUnit}",
-		            matStd: "${mat.matStd}",
-		            matPrice: "${mat.matPrice}",
-		            matAmt: "${mat.matAmt}",
-		            matTotalPrice: "${mat.matPrice * mat.matAmt}",
 		            actName: "${mat.actName}",
 		            empName: "${mat.empName}",
-		            matOdDeCd: "${mat.matOdDeCd}",
-		            matTestYn: "${mat.matTestYn}",
-		            matOdRq: `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`,
-		            matOdAcp: `<fmt:formatDate value="${mat.matOdAcp}" pattern="yyyy-MM-dd"/>`
+		           
+		            matOdRq: `<fmt:formatDate value="${mat.matOdRq}" pattern="yyyy-MM-dd"/>`
+		            
 		        }<c:if test="${not status.last}">,</c:if>
 		    </c:forEach>
 		        ],
@@ -503,6 +528,65 @@
 		        }, {
 		            header: '거래처',
 		            name: 'actName'
+		        }, {
+		            header: '담당자',
+		            name: 'empName'
+		        }
+		    ]
+	
+		});
+		
+		grid2.on('dblclick', event => {
+	        let rowKey = grid2.getFocusedCell().rowKey;
+	        let matOdCd = grid2.getValue(rowKey, 'matOdCd');
+	        
+	        //선택시 모달창 닫기
+	        if (rowKey != null && rowKey >= 0) {
+	           	$.ajax({
+	           		url: 'getMatOrderDeList',
+	           		method : 'GET',
+	           		data : { matOdCd : matOdCd },
+	           		success: function(result){
+	           			$.each(result, function(idx, obj){
+	           				obj['matTotalPrice'] = obj['matAmt'] * obj['matPrice'];
+	           				let date = new Date(obj['matOdAcp']);
+			                let year = date.getFullYear(); //0000년 가져오기
+			                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+			                let day = date.getDate(); //일자 가져오기
+			                obj['matOdAcp'] = year + "-" + (
+			                    ("00" + month.toString()).slice(-2)
+			                ) + "-" + (
+			                    ("00" + day.toString()).slice(-2)
+			                );
+	           			})
+	           			grid.resetData(result);
+	           		},
+	           		error : function(reject){
+	           			console.log(reject);
+	           		}
+	           	})
+	        }
+
+	    });
+		
+		//상세 조회 그리드
+		var grid = new tui.Grid({
+		    el: document.getElementById('grid'),
+		    scrollX: false,
+		    scrollY: false,
+		    minBodyHeight: 400,
+		    rowHeaders: ['rowNum'],
+		    pagination: true,
+		    pageOptions: {
+		        //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		        useClient: true,
+		        perPage: 10
+		    },
+		    columns: [
+		        {
+		            header: '발주상세코드',
+		            name: 'matOdDeCd',
+		            width: 150
 		        }, {
 		            header: '자재명',
 		            name: 'matName'
@@ -535,20 +619,19 @@
 		            header: '총액',
 		            name: 'matTotalPrice',
 		            formatter(e) {
-		                val = e['value']
+		            	
+		            		val = e['value']
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                return val + "원";
+		                	return val + "원";
+		            	
+		                
 		            },
 		            width: 120
 		        },   {
 		            header: '납기요청일',
 		            name: 'matOdAcp',
 		            className: 'yellow-background'
-		        }, {
-		            header: '발주상세코드',
-		            name: 'matOdDeCd',
-		            hidden: true
 		        }, {
 		            header: '검수여부',
 		            name: 'matTestYn',
@@ -559,9 +642,6 @@
 		                    return "검수전";
 		                }
 		            }
-		        }, {
-		            header: '담당자',
-		            name: 'empName'
 		        }
 		    ]
 	
@@ -595,6 +675,22 @@
 		$('#endDate').on('change', function () {
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
+		
+		//엑셀 다운로드
+		
+		const excelDownload = document.querySelector('.excelDownload');
+		document.addEventListener('DOMContentLoaded', () => {
+		    excelDownload.addEventListener('click', function (e) {
+		        grid2.export('xlsx');
+		    })
+		})
+		
+		const excelDownload2 = document.querySelector('.excelDownload2');
+		document.addEventListener('DOMContentLoaded', () => {
+		    excelDownload2.addEventListener('click', function (e) {
+		        grid.export('xlsx');
+		    })
+		})
    
 
 	</script>

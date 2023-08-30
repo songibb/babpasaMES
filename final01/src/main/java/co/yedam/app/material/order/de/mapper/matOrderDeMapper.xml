@@ -28,8 +28,28 @@
             				ON (b.emp_code = d.emp_code)
             					LEFT JOIN com_mat e
             						ON (a.mat_code = e.mat_code)
-		ORDER BY b.mat_od_rq
+		ORDER BY b.mat_od_rq 
 	</select>
+	
+	<!-- 조회 페이지에서 헤더 그리드 -->
+	<select id="selectMatListPageOrderList" resultType="MatOrderDeVO">
+		SELECT a.mat_od_cd, a.emp_code, b.emp_name, a.act_code, c.act_name, a.mat_od_rq
+		FROM mat_order a JOIN com_emp b
+		ON(a.emp_code = b.emp_code)
+		JOIN com_act c
+		ON(a.act_code = c.act_code)
+		ORDER BY mat_od_rq
+	</select>
+	
+	<!--  조회 페이지에서 상세 그리드 -->
+	<select id="selectMatListPageOrderDeList" resultType="MatOrderDeVO">
+		SELECT a.mat_od_de_cd, a.mat_amt, a.mat_code, b.mat_name, b.mat_unit, b.mat_std, a.mat_test_yn, a.mat_price, a.mat_od_acp
+		FROM mat_order_de a JOIN com_mat b
+		ON(a.mat_code = b.mat_code)
+		WHERE mat_od_cd = #{matOdCd}
+		ORDER BY mat_od_acp
+	</select>
+	
 	<!-- 전체조회에서 검색 -->
 	<select id="selectMatOrderSearch" resultType="MatOrderDeVO">
 		SELECT a.mat_od_cd
