@@ -66,6 +66,8 @@ h1{
 h1, h2{
 	font-weight: 800;
 }
+
+.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>
 </head>
 <body>
@@ -159,6 +161,10 @@ h1, h2{
 		//체크한 행들에서 품질검사부적합이 있는지 체크할 변수
 		let nonPassCk = 0;
 		
+		
+		//반제품 품질검사부적합
+		
+		//완제품 품질검사부적합
 		$.each(checkList, function(i, obj){
 			//담당자는 재지시 버튼 누르는 사람으로 바뀌어야하므로 다시 지정
 			checkList[i]['empCode'] = ${user.id};
@@ -508,8 +514,19 @@ h1, h2{
 			url : 'prcsIngList',
 			method : 'GET',
 			data : { prcsDirDeCode : dirDeCode, prodCode : prodCode },
-			success : function(data){
-				ingGrid.resetData(data);
+			success : function(result){
+				ingGrid.resetData(result);
+				
+				//셀 빨간색으로 바꾸는거 (AJAX안에 넣는 버전)
+	   		    let data = ingGrid.getData();
+	            
+	   		    $.each(data, function (idx, obj) {
+	   	
+	   		        if (obj['prcsDirIngSts'] == '품질검사부적합') {
+	   		            let rowKey = obj['rowKey'];
+	   		        	ingGrid.addRowClassName(rowKey, 'my-styled-cell');
+	   		        }
+	   		    })
  		    },
 			error : function(reject){
 	 			console.log(reject);
