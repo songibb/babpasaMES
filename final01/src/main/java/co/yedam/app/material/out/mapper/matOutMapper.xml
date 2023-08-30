@@ -16,6 +16,7 @@
 			 , d.emp_name
 			 , a.mat_outd
 			 , a.mat_exd 
+			 , a.mat_out_code
 		FROM mat_out a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_act c

@@ -3,8 +3,6 @@ package co.yedam.app.material.order.de.service;
 import java.util.List;
 
 import co.yedam.app.common.grid.service.GridVO;
-import co.yedam.app.material.in.service.MatInVO;
-import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 
@@ -19,10 +17,8 @@ public interface MatOrderDeService {
 	public int modifyMatOrder(GridVO<MatOrderDeVO> data);
 	
 	//신규생산계획 조회
-	public List<PrcsPlanVO> getNewPrcsPlan();
-	
-	//해당 계획 소모 자재
-	public List<MatInVO> getNewPlanUseAmt(String prodCode);
+	public List<MatOrderDeVO> getNewPrcsPlan();
+
 	
 	//자재 거래처 모달
 	public List<OrderVO> getActMatModal();
@@ -32,6 +28,7 @@ public interface MatOrderDeService {
 	
 	//헤더 그리드
 	public List<MatOrderDeVO> getMatListPageOrderList();
+	public List<MatOrderDeVO> getMatListPageOrderListSearch(String accountCode, String startDate, String endDate);
 	
 	//상세 그리드
 	public List<MatOrderDeVO> getMatListPageOrderDeList(String matOdCd);

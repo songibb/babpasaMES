@@ -23,4 +23,5 @@ public class MatOutVO {
 	
 	private String matUnit;
 	private String matStd;
+	private String matOutCode;
 }

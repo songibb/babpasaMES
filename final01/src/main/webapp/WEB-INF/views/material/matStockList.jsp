@@ -250,7 +250,8 @@
 		            matUnit: "${stock.matUnit}",
 		            matStd: "${stock.matStd}",
 		            totalStock: "${stock.totalStock}",
-		            matSafe: "${stock.matSafe}"
+		            matSafe: "${stock.matSafe}",
+		            willUseAmt: "${stock.willUseAmt}"
 		        },
 		    </c:forEach>
 		        ],
@@ -267,16 +268,20 @@
 		    columns: [
 		        {
 		            header: '자재코드',
-		            name: 'matCode'
+		            name: 'matCode',
+		            align: 'center'
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '현재고',
 		            name: 'totalStock',
@@ -285,7 +290,8 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '안전재고',
 		            name: 'matSafe',
@@ -294,7 +300,18 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
+		        }, {
+		        	header: '소모예정량',
+		            name: 'willUseAmt',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            },
+		            align: 'right'
 		        }
 		    ]
 		});
@@ -329,13 +346,16 @@
 		        columns: [
 		            {
 		                header: '자재 LOT',
-		                name: 'matLot'
+		                name: 'matLot',
+			            align: 'center'
 		            }, {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: 'LOT 재고',
 		                name: 'lotStock',
@@ -344,11 +364,13 @@
 		                        .toString()
 		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    return val;
-		                }
+		                },
+			            align: 'right'
 		            }, {
 		                header: '유통기한',
 		                name: 'matExd',
-		                className: 'yellow-background'
+		                className: 'yellow-background',
+			            align: 'center'
 		            }
 		        ]
 		    });
@@ -483,16 +505,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	

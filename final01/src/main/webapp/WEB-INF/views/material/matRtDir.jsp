@@ -224,37 +224,47 @@
 		    columns: [
 		        {
 		            header: '자재반품코드',
-		            name: 'matRtCode'
+		            name: 'matRtCode',
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, {
 		            header: '자재검수코드',
 		            name: 'matTestCode',
-		            hidden: true
+		            hidden: true,
+		            align: 'center'
 		        }, {
 		            header: '발주상세코드',
-		            name: 'matOdDeCd'
+		            name: 'matOdDeCd',
+		            align: 'center'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: "업체코드",
 		            name: 'actCode',
 		            hidden: true
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '불량내용',
-		            name: 'errInfo'
+		            name: 'errInfo',
+		            align: 'left'
 		        }, {
 		            header: '반품수량',
 		            name: 'matRtAmt',
@@ -266,15 +276,18 @@
 		                    return val;
 		                }
 		            },
-		            editor: 'text'
+		            editor: 'text',
+		            align: 'right'
 		        }, {
 		            header: '불량수량',
-		            name: 'matRtTotalAmt'
+		            name: 'matRtTotalAmt',
+		            align: 'right'
 	
 		        }, {
 		            header: '검사일자',
 		            name: 'matTestDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '반품요청일',
 		            name: 'matRtDate',
@@ -284,7 +297,8 @@
 		                    language: 'ko'
 		                }
 		            },
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '반품상태',
 		            name: 'matRtSts',
@@ -305,14 +319,16 @@
 		                        }
 		                    ]
 		                }
-		            }
+		            },
+		            align: 'left'
 		        }, {
 		            header: '담당자코드',
 		            name: 'empCode',
 		            hidden: true
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	
@@ -357,7 +373,8 @@
 		            hidden: true
 		        }, {
 		            header: '자재발주상세코드',
-		            name: 'matOdDeCd'
+		            name: 'matOdDeCd',
+		            align: 'center'
 		        }, {
 		            header: '발주량',
 		            name: 'matAmt',
@@ -366,27 +383,32 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '업체코드',
 		            name: 'actCode',
 		            hidden: true
 		        }, {
 		            header: '업체명',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '합격량',
 		            name: 'matYamt',
@@ -395,7 +417,8 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '불합격량',
 		            name: 'matNamt',
@@ -404,18 +427,21 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '불량코드',
 		            name: 'errCode',
 		            hidden: true
 		        }, {
 		            header: '불량내용',
-		            name: 'errInfo'
+		            name: 'errInfo',
+		            align: 'left'
 		        }, {
 		            header: '검수일자',
 		            name: 'matTestDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 	
 		        }
 		    ]
@@ -689,16 +715,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -779,16 +809,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	

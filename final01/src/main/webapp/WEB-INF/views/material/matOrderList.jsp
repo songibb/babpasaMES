@@ -47,7 +47,7 @@
 	#searchP input[type="date"] {
 	  width: 15%;
 	  padding: 5px;
-	  margin-bottom: 15px;
+	  margin-bottom: 35px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
@@ -141,11 +141,7 @@
                   	
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
-                				<p>자재명</p>
-                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
-                				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
-                				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
-                				<br>
+                				
                 				<p>거래처</p>
                 				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
                 				<i class="bi bi-search" id="actModal"></i>
@@ -153,10 +149,7 @@
                 				<br>
                 				<p>발주일자</p>
                 				<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
-                				<br>
-                				<p>검수상태</p>
-                				<label for="before"><input type="checkbox" id="before" value="before">검수전</label>
-                				<label for="comple"><input type="checkbox" id="comple" value="comple">검수완료</label>
+                				
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -315,16 +308,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -361,16 +358,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -421,46 +422,25 @@
 		//검색
 		$('#searchBtn').on('click', searchMatIn);
 		function searchMatIn(e) {
-		    let mat = $('#matCodeInput').val();
+		    
 		    let act = $('#actCodeInput').val();
 		    let sd = $('#startDate').val();
 		    let ed = $('#endDate').val();
-		    let before = '1';
-		    let comple = '1';
-		    let beforeCheck = document.getElementById('before');
-		    let compleCheck = document.getElementById('comple');
-	
-		    if (beforeCheck.checked && !compleCheck.checked) {
-		        comple = '2';
-		    } else if (!beforeCheck.checked && compleCheck.checked) {
-		        before = '2';
-		    }
+		   
 	
 		    let search = {
-		        materialCode: mat,
+		        
 		        accountCode: act,
 		        startDate: sd,
-		        endDate: ed,
-		        before: before,
-		        comple: comple
+		        endDate: ed
 		    };
 		    $.ajax({
-		        url: 'getMatOrderFilter',
+		        url: 'getMatOrderListFilter',
 		        method: 'GET',
 		        data: search,
 		        success: function (data) {
 	
 		            for (let i of data) {
-		                let date = new Date(i.matOdAcp);
-		                let year = date.getFullYear(); //0000년 가져오기
-		                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-		                let day = date.getDate(); //일자 가져오기
-		                i.matOdAcp = year + "-" + (
-		                    ("00" + month.toString()).slice(-2)
-		                ) + "-" + (
-		                    ("00" + day.toString()).slice(-2)
-		                );
-	
 		                date = new Date(i.matOdRq);
 		                year = date.getFullYear();
 		                month = date.getMonth() + 1;
@@ -470,10 +450,10 @@
 		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
 		                );
-	
-		                i.matTotalPrice = i.matPrice * i.matAmt;
 		            }
-		            grid.resetData(data);
+		            grid2.resetData(data);
+		            let matOdCd;
+		            resetOrderDeGrid(matOdCd);
 		        },
 		        error: function (reject) {
 		            console.log(reject);
@@ -520,17 +500,23 @@
 		        {
 		            header: '발주코드',
 		            name: 'matOdCd',
-		            width: 150
+		            width: 150,
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, {
 		            header: '발주일자',
 		            name: 'matOdRq',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	
@@ -542,32 +528,36 @@
 	        
 	        //선택시 모달창 닫기
 	        if (rowKey != null && rowKey >= 0) {
-	           	$.ajax({
-	           		url: 'getMatOrderDeList',
-	           		method : 'GET',
-	           		data : { matOdCd : matOdCd },
-	           		success: function(result){
-	           			$.each(result, function(idx, obj){
-	           				obj['matTotalPrice'] = obj['matAmt'] * obj['matPrice'];
-	           				let date = new Date(obj['matOdAcp']);
-			                let year = date.getFullYear(); //0000년 가져오기
-			                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-			                let day = date.getDate(); //일자 가져오기
-			                obj['matOdAcp'] = year + "-" + (
-			                    ("00" + month.toString()).slice(-2)
-			                ) + "-" + (
-			                    ("00" + day.toString()).slice(-2)
-			                );
-	           			})
-	           			grid.resetData(result);
-	           		},
-	           		error : function(reject){
-	           			console.log(reject);
-	           		}
-	           	})
+	        	resetOrderDeGrid(matOdCd);
 	        }
 
 	    });
+		
+		function resetOrderDeGrid(matOdCd){
+			$.ajax({
+           		url: 'getMatOrderDeList',
+           		method : 'GET',
+           		data : { matOdCd : matOdCd },
+           		success: function(result){
+           			$.each(result, function(idx, obj){
+           				obj['matTotalPrice'] = obj['matAmt'] * obj['matPrice'];
+           				let date = new Date(obj['matOdAcp']);
+		                let year = date.getFullYear(); //0000년 가져오기
+		                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+		                let day = date.getDate(); //일자 가져오기
+		                obj['matOdAcp'] = year + "-" + (
+		                    ("00" + month.toString()).slice(-2)
+		                ) + "-" + (
+		                    ("00" + day.toString()).slice(-2)
+		                );
+           			})
+           			grid.resetData(result);
+           		},
+           		error : function(reject){
+           			console.log(reject);
+           		}
+           	})
+		}
 		
 		//상세 조회 그리드
 		var grid = new tui.Grid({
@@ -586,16 +576,20 @@
 		        {
 		            header: '발주상세코드',
 		            name: 'matOdDeCd',
-		            width: 150
+		            width: 150,
+		            align: 'center'
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '단가(원)',
 		            name: 'matPrice',
@@ -605,7 +599,8 @@
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val + "원";
 		            },
-		            width: 120
+		            width: 120,
+		            align: 'right'
 		        }, {
 		            header: '발주량',
 		            name: 'matAmt',
@@ -614,7 +609,8 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '총액',
 		            name: 'matTotalPrice',
@@ -627,11 +623,13 @@
 		            	
 		                
 		            },
-		            width: 120
+		            width: 120,
+		            align: 'right'
 		        },   {
 		            header: '납기요청일',
 		            name: 'matOdAcp',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '검수여부',
 		            name: 'matTestYn',
@@ -641,7 +639,8 @@
 		                } else if (e.value == 'N') {
 		                    return "검수전";
 		                }
-		            }
+		            },
+		            align: 'left'
 		        }
 		    ]
 	

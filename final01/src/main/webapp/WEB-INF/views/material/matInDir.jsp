@@ -233,7 +233,10 @@
 		    	{
 		            header: '자재 LOT',
 		            name: 'matLot',
-		            width: 150
+		            width: 150,
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        },
 		        {
 		            header: '자재코드',
@@ -241,16 +244,20 @@
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        },
 		        {
 		            header: '입고일자',
@@ -261,7 +268,8 @@
 		                    language: 'ko'
 		                }
 		            },
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        },{
 		            header: '입고량',
 		            name: 'matInAmt',
@@ -272,7 +280,8 @@
 		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    return val;
 		                }
-		            }
+		            },
+		            align: 'right'
 		        },
 		        {
 		            header: '유통기한',
@@ -283,22 +292,26 @@
 		                    language: 'ko'
 		                }
 		            },
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        },
 		         {
 		            header: '업체코드', // [필수] 컬럼 이름
 		            name: 'actCode', // [필수] 컬럼 매핑 이름 값
-		            hidden: true, // [선택] 숨김 여부
+		            hidden: true // [선택] 숨김 여부
 		        }, {
 		            header: '자재검수코드',
 		            name: 'matTestCode',
-		            width: 150
+		            width: 150,
+		            align: 'center'
 		        },  {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }, {
 		            header: '사용여부',
-		            name: 'useYn'
+		            name: 'useYn',
+		            align: 'left'
 		        }, {
 		            header: '담당자코드', // [필수] 컬럼 이름
 		            name: 'empCode', // [필수] 컬럼 매핑 이름 값
@@ -359,7 +372,8 @@
 		            hidden: true
 		        }, {
 		            header: '자재발주상세코드',
-		            name: 'matOdDeCd'
+		            name: 'matOdDeCd',
+		            align: 'center'
 		        }, {
 		            header: '발주량',
 		            name: 'matAmt',
@@ -368,27 +382,32 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '업체코드',
 		            name: 'actCode',
 		            hidden: true
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '합격량',
 		            name: 'matYamt',
@@ -397,7 +416,8 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '불합격량',
 		            name: 'matNamt',
@@ -406,18 +426,21 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '불량코드',
 		            name: 'errCode',
 		            hidden: true
 		        }, {
 		            header: '불량내용',
-		            name: 'errInfo'
+		            name: 'errInfo',
+		            align: 'left'
 		        }, {
 		            header: '검수일자',
 		            name: 'matTestDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }
 		    ]
 	
@@ -676,16 +699,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -750,16 +777,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	
