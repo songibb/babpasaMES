@@ -28,7 +28,24 @@ public class OrderController {
 		model.addAttribute("orderNList", orderService.getNoPlan());
 		model.addAttribute("actList", orderService.actAllList());
 		model.addAttribute("prodList", orderService.prodAllList());
+		model.addAttribute("ordHeaderList", orderService.ordHeaderList());
 		return "sales/orderList";
+	}
+	
+	//조회페이지 ajax 목록조회 -> 주문header
+	@GetMapping("/ajaxOrdHeaderList")
+	@ResponseBody
+	public List<OrderVO> ajaxOrdHeaderList(){
+		List<OrderVO> ordHeaderList = orderService.ordHeaderList();
+		return ordHeaderList;
+	}
+	
+	//조회페이지 ajax 목록조회 -> 주문detail
+	@GetMapping("/ajaxOrdDetailList")
+	@ResponseBody
+	public List<OrderVO> ajaxOrdDetailList(@RequestParam(value = "ordCode", required = false) String ordCode){
+		List<OrderVO> ordDetailList = orderService.ordDetailList(ordCode);
+		return ordDetailList;
 	}
 
 	// 검색 ajax

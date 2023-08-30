@@ -40,4 +40,8 @@ public interface OrderMapper {
 	
 	//모달 검색 - 거래처
 	public List<OutVO> selectActSearchList(String actName);
+	//주문order 그리드
+	public List<OrderVO> ordHeaderList();
+	//주문detail 그리드
+	public List<OrderVO> ordDetailList(String ordCode);
 }

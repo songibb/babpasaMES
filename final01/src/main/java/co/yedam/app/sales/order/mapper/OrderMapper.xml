@@ -62,11 +62,11 @@
 			<!-- AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD') -->
 			<!-- </if> -->
 			<if test="startDate != null and startDate != ''">
-				AND TO_CHAR(o.ord_date, 'YYYY-MM-DD') <![CDATA[>=]]>
+				AND TO_CHAR(o.salesOutDate, 'YYYY-MM-DD') <![CDATA[>=]]>
 				#{startDate}
 			</if>
 			<if test="endDate != null and endDate != ''">
-				AND TO_CHAR(o.ord_date, 'YYYY-MM-DD') <![CDATA[<=]]>
+				AND TO_CHAR(o.salesOutDate, 'YYYY-MM-DD') <![CDATA[<=]]>
 				#{endDate}
 			</if>
 			<if test="before==2">
@@ -76,7 +76,7 @@
 				AND d.dev_yn != 'Y'
 			</if>
 		</where>
-		ORDER BY d.dev_date, o.ord_code DESC
+		ORDER BY o.ord_date, o.ord_code DESC
 	</select>
 
 	<!-- 거래처 목록 -->
@@ -227,4 +227,37 @@
 	AND act_kind = 'ACT-TYPE1'
 	ORDER BY act_code DESC
 </select>
+
+<!-- 주문header그리드 -->
+<select id="ordHeaderList" resultType="OrderVO">
+	SELECT
+	    o.ord_code,
+	    o.ord_date,
+	    o.act_code,
+	    o.emp_code,
+	    o.ord_sts,
+	    a.act_name,
+	    e.emp_name,
+	    o.prcs_plan_code
+	FROM sales_ord o
+	    JOIN com_act a ON ( o.act_code = a.act_code )
+	    JOIN com_emp e ON ( o.emp_code = e.emp_code )
+	ORDER BY o.ord_date, o.ord_code DESC
+ </select>
+ 
+<!-- 주문detail그리드 -->
+<select id="ordDetailList" resultType="OrderVO">
+	SELECT
+	    d.sales_ord_de_code,
+	    d.ord_code,
+	    d.prod_code,
+	    d.prcs_rq_amt,
+	    d.dev_date,
+	    d.dev_yn,
+	    p.prod_name
+	FROM sales_ord_de d
+	    JOIN com_prod p ON ( d.prod_code = p.prod_code )
+	 WHERE d.ord_code = #{ordCode}
+	 ORDER BY d.sales_ord_de_code DESC
+ </select>
 </mapper>

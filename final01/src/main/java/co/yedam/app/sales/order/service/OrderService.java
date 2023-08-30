@@ -22,5 +22,8 @@ public interface OrderService {
 	public List<OrderVO> prodSearchList(String prodName);
 	//모달 검색 - 거래처
 	public List<OutVO> actSearchList(String actName);
-
+	//주문order 그리드
+	public List<OrderVO> ordHeaderList();
+	//주문detail 그리드
+	public List<OrderVO> ordDetailList(String ordCode);
 }

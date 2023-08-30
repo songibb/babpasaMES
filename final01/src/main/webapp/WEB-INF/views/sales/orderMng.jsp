@@ -805,6 +805,7 @@ form {
 
                 })
                 orderGrid.resetData(data2);
+                setDisabled();
             },
             error: function (reject) {
                 console.log(reject);
@@ -877,6 +878,7 @@ form {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     // 						orderGrid.resetData(data);
                     searchOrderList();
+                    setDisabled();
                     
                 },
                 error: function (reject) {

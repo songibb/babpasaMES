@@ -459,19 +459,6 @@ form {
     });
     setDisabled();
 
-    //비활성화
-    function setDisabled() {
-        $.each(outGrid.getData(), function (idx, obj) {
-
-            if(obj['salesOutCode'] != null && obj['salesRtCode'] != ""){
-            	outGrid.disableRow(obj['rowKey']);
-            }
-            if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
-            	outGrid.disableRow(obj['rowKey']);
-            }
-        })
-    }
-    
 
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
@@ -1022,6 +1009,7 @@ form {
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
+                	console.log(obj);
                 	
                     let date = new Date(obj['salesOutDate']);
                     let year = date.getFullYear(); //0000년 가져오기
@@ -1035,6 +1023,7 @@ form {
                     
                 })
                 outGrid.resetData(data2);
+                setDisabled();
             },
             error: function (reject) {
                 console.log(reject);
@@ -1103,6 +1092,7 @@ form {
                     swal("성공", "작업이 성공하였습니다.", "success");
                     console.log(data);
                     searchOrderList();
+                    setDisabled();
                 },
                 error: function (reject) {
                     swal("실패", "작업을 실패했습니다.", "error");
@@ -1176,6 +1166,23 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
+    
+
+    //비활성화
+    function setDisabled() {
+        $.each(outGrid.getData(), function (idx, obj) {
+
+            if(obj['salesOutCode'] != null && (obj['salesRtCode'] != "" && obj['salesRtCode'] != null)){
+            	outGrid.disableRow(obj['rowKey']);
+            }
+            if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
+            	outGrid.disableRow(obj['rowKey']);
+            }
+        })
+    }
+    
+    
+    
 	</script>
 </body>
 </html>

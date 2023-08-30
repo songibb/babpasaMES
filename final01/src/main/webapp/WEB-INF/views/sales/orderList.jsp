@@ -242,6 +242,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+#grid{
+	display: inline-block;
+}
 </style>
 </head>
 <body>
@@ -274,12 +278,13 @@ form {
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
 					</form>
-					<div id="grid">
+					<div id="grid" style="width: 600px; margin-right: 50px; display: inline-block;">
 						<h2>주문 목록</h2>
 						<button type="button" class="btn btn-info btn-icon-text excelDownload">
 							Excel <i class="bi bi-printer"></i>
 						</button>
 					</div>
+					<div id="grid2" style="width: 1000px;"></div>
 				</div>
 			</div>
 		</div>
@@ -505,22 +510,19 @@ form {
         return prodGrid;
     }
 
-    //전체 주문 목록 조회 그리드
+    //주문Header 그리드
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${orderNList}" var="order" varStatus="status">
+        data: [<c:forEach items="${ordHeaderList}" var="order" varStatus="status">
             {
-                salesOrdDeCode: "${order.salesOrdDeCode}",
+            	ordCode: "${order.ordCode}",
                 ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
                 actName: "${order.actName}",
                 ordSts: "${order.ordSts}",
-                prodName: "${order.prodName}",
-                prcsRqAmt: "${order.prcsRqAmt}",
-                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-                devYn: "${order.devYn}",
                 empCode: "${order.empCode}",
                 empName: "${order.empName}",
-                ordCode: "${order.ordCode}"
+                actCode: "${order.actCode}",
+                prcsPlanCode: "${order.prcsPlanCode}",
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -549,38 +551,15 @@ form {
                 name: 'actName',
                 value: '${order.actName}'
             }, {
-                header: '제품명',
-                name: 'prodName'
-            }, {
-                header: '주문량',
-                name: 'prcsRqAmt',
-                formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            }
-            }, {
-                header: '납기일자',
-                name: 'devDate',
-                className: 'yellow-background'
-            }, {
-                header: '출고여부',
-                name: 'devYn',
-                value: '${order.devYn}',
+                header: '생산계획상태',
+                name: 'ordSts',
                 formatter: function (e) {
-                    if (e.value == 'Y') {
-                        return "출고완료";
-                    } else if (e.value == 'N') {
-                        return "출고전";
+                    if (e.value == 'P1') {
+                        return "계획전";
+                    } else if (e.value == 'P2') {
+                        return "계획완료";
                     }
                 }
-            }, {
-                header: '주문코드',
-                name: 'ordCode',
-                hidden: true
             }, {
                 header: '거래처코드',
                 name: 'actCode',
@@ -593,10 +572,6 @@ form {
                 name: 'prcsPlanCode',
                 hidden: true
             }, {
-                header: '제품코드',
-                name: 'prodCode',
-                hidden: true
-            }, {
                 header: '직원코드',
                 name: 'empCode',
                 hidden: true
@@ -605,6 +580,97 @@ form {
 
     });
     setDisabled();
+    
+  //주문 Detail 그리드
+    var grid2 = new tui.Grid({
+        el: document.getElementById('grid2'),
+        data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
+            {
+            	salesOrdDeCode: "${order.salesOrdDeCode}",
+            	ordCode: "${order.ordCode}",
+            	prodCode: "${order.prodCode}",
+            	prodName: "${order.prodName}",
+            	prcsRqAmt: "${order.prcsRqAmt}",
+                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
+                devYn: "${order.devYn}",
+            }<c:if test="${not status.last}">,</c:if>
+        </c:forEach>
+            ],
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 400,
+        rowHeaders: ['rowNum'],
+        selectionUnit: 'row',
+        pagination: true,
+        pageOptions: {
+            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+            useClient: true,
+            perPage: 10
+        },
+        columns: [
+            {
+                header: '주문상세코드',
+                name: 'salesOrdDeCode'
+            }, {
+                header: '납기일자',
+                name: 'devDate',
+                value: '${order.devDate}',
+                className: 'yellow-background'
+            }, {
+                header: '제품명',
+                name: 'prodName'
+            }, {
+                header: '생산계획상태',
+                name: 'prodCode',
+                hidden: true
+            }, {
+                header: '거래처코드',
+                name: 'ordCode',
+                hidden: true
+            }, {
+                header: '주문량',
+                name: 'prcsRqAmt'
+            }, {
+                header: '출고여부',
+                name: 'devYn'
+            }
+        ]
+
+    });
+    setDisabled();  
+    
+    //Header항목선택 -> Detail
+	grid.on('click', () => {
+		let rowKey = grid.getFocusedCell().rowKey;
+    	let ordCode = grid.getValue(rowKey, 'ordCode');
+    	
+    	console.log(ordCode);
+    	
+    	$.ajax({
+    		url : 'ajaxOrdDetailList',
+			method : 'GET',
+			data : { ordCode : ordCode },
+			success : function(data){
+				 for (let i of data) {
+	                    let date = new Date(i.devDate);
+	                    let year = date.getFullYear(); //0000년 가져오기
+	                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+	                    let day = date.getDate(); //일자 가져오기
+	                    i.devDate = year + "-" + (
+	                        ("00" + month.toString()).slice(-2)
+	                    ) + "-" + (
+	                        ("00" + day.toString()).slice(-2)
+	                    );
+	                }
+				
+ 				grid2.resetData(data);
+ 		    },
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+    	})
+    	
+	});
 
     //비활성화
     function setDisabled() {
@@ -615,6 +681,7 @@ form {
             }
         })
     }
+    
     //검색 버튼
     $('#searchBtn').on('click', searchOrderList);
     function searchOrderList(e) {
