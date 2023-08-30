@@ -147,7 +147,7 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 
 	
-	//재지시 등록 (상세생산지시)
+	//재지시 등록 - 완제품 (상세생산지시)
 	@Override
 	public int insertReDirDe(List<PrcsDirVO> reDirList) {
 		int result = 0;

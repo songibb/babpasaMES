@@ -39,7 +39,7 @@ public interface PrcsDirService {
 	public int updateDirPrcsSts(List<PrcsDirVO> dirList);
 	
 	
-	//재지시 등록 (상세생산지시)
+	//재지시 등록 - 완제품 (상세생산지시)
 	public int insertReDirDe(List<PrcsDirVO> reDirList);
 	
 	
