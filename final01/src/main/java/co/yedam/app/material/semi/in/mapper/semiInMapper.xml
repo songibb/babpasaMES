@@ -85,7 +85,7 @@
 	<!-- 검수완료된 반제품 목록 -->
 	<select id="selectTestFinishList" resultType="SemiInVO">
 		SELECT a.prcs_ing_code
-             , c.mp_code
+             , c.mp_code prod_code
 			 , c.prod_name
 			 , a.test_amt
 			 , a.test_date
