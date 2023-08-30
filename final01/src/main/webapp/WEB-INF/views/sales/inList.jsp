@@ -393,16 +393,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 
@@ -442,14 +445,20 @@ form {
         columns: [
             {
                 header: '제품LOT',
-                name: 'prodLot'
+                name: 'prodLot',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
             }, {
                 header: '입고일자',
                 name: 'salesInDate',
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '입고량',
                 name: 'salesInAmt',
@@ -460,7 +469,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '재고량',
                 name: 'prodSaveAmt',
@@ -471,11 +481,15 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '유통기한',
                 name: 'salesInExd',
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '직원코드', // [필수] 컬럼 이름
                 name: 'empCode', // [필수] 컬럼 매핑 이름 값

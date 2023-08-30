@@ -383,12 +383,18 @@ form {
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
                 header: '출고코드',
-                name: 'salesOutCode'
+                name: 'salesOutCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '상세주문코드',
                 name: 'salesOrdDeCode',
                 editor: 'text',
-                value: '${out.salesOrdDeCode}'
+                value: '${out.salesOrdDeCode}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '거래처',
                 name: 'actName',
@@ -397,7 +403,10 @@ form {
                 header: '제품LOT',
                 name: 'prodLot',
                 editor: 'text',
-                value: '${out.prodLot}'
+                value: '${out.prodLot}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -412,7 +421,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
@@ -424,7 +434,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '출고일자',
                 name: 'salesOutDate',
@@ -434,7 +445,10 @@ form {
                         language: 'ko'
                     }
                 },
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '담당자',
                 name: 'empName'
@@ -529,7 +543,6 @@ form {
                     .rowKey;
                 let prodLot = Grid.getValue(rowKey2, 'prodLot');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
-                let prodName = Grid.getValue(rowKey2, 'prodName');
                 let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
                 console.log(prodLot);
                 console.log(prodCode);
@@ -538,7 +551,6 @@ form {
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                 outGrid.setValue(rowKey, 'prodLot', prodLot);
                 outGrid.setValue(rowKey, 'prodCode', prodCode);
-                outGrid.setValue(rowKey, 'prodName', prodName);
                 outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
@@ -560,15 +572,21 @@ form {
                 let actName = Grid.getValue(rowKey2, 'actName');
                 let actCode = Grid.getValue(rowKey2, 'actCode');
                 let prcsRqAmt = Grid.getValue(rowKey2, 'prcsRqAmt');
+                let prodCode = Grid.getValue(rowKey2, 'prodCode');
+                let prodName = Grid.getValue(rowKey2, 'prodName');
                 console.log(salesOrdDeCode);
                 console.log(actName);
                 console.log(actCode);
                 console.log(prcsRqAmt);
+                console.log(prodCode);
+                console.log(prodName);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                     outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
                     outGrid.setValue(rowKey, 'actName', actName);
                     outGrid.setValue(rowKey, 'actCode', actCode);
                     outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
+                    outGrid.setValue(rowKey, 'prodCode', prodCode);
+                    outGrid.setValue(rowKey, 'prodName', prodName);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -720,17 +738,20 @@ form {
             columns: [
                 {
                     header: '제품LOT',
-                    name: 'prodLot'
+                    name: 'prodLot',
+                    align: 'center'
                 }, {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '입고날짜',
                     name: 'salesInDate',
-                    className: 'yellow-background'
+                    className: 'yellow-background',
+                    align: 'center'
                 }, {
                     header: '입고량',
                     name: 'salesInAmt',
@@ -741,7 +762,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '재고량',
                     name: 'prodSaveAmt',
@@ -752,14 +774,17 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '유통기한',
                     name: 'salesInExd',
-                    className: 'yellow-background'
+                    className: 'yellow-background',
+                    align: 'center'
                 }, {
                     header: '품질검사번호',
-                    name: 'testNum'
+                    name: 'testNum',
+                    align: 'center'
                 }
             ]
 
@@ -785,7 +810,7 @@ form {
                     devYn: "${order.devYn}",
                     empCode: "${order.empCode}",
                     empName: "${order.empName}",
-                    prodName: "${order.prodName}",
+                    prodCode: "${order.prodCode}",
                     prcsDirSts: "${order.prcsDirSts}"
                 }
                 <c:if test="${not status.last}">,</c:if>
@@ -805,18 +830,21 @@ form {
             columns: [
                 {
                     header: '주문상세코드',
-                    name: 'salesOrdDeCode'
+                    name: 'salesOrdDeCode',
+                    align: 'center'
                 }, {
                     header: '주문날짜',
                     name: 'ordDate',
-                    className: 'yellow-background'
+                    className: 'yellow-background',
+                    align: 'center'
                 }, {
                     header: '거래처명',
                     name: 'actName',
                     value: '${order.actName}'
                 }, {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    align: 'center'
                 }, {
                     header: '생산상태',
                     name: 'prcsDirSts',
@@ -842,7 +870,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '납기일자',
                     name: 'devDate',
@@ -856,7 +885,8 @@ form {
                         } else if (e.value == 'N') {
                             return "출고전";
                         }
-                    }
+                    },
+                    align: 'center'
                 }, {
                     header: '주문코드',
                     name: 'ordCode',
@@ -912,16 +942,19 @@ form {
             columns: [
                 {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    align: 'center'
                 }, {
                     header: '거래처명',
                     name: 'actName'
                 }, {
                     header: '거래상태',
-                    name: 'actSts'
+                    name: 'actSts',
+                    align: 'center'
                 }, {
                     header: '거래처구분',
-                    name: 'actKind'
+                    name: 'actKind',
+                    align: 'center'
                 }
             ]
 
@@ -958,16 +991,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 

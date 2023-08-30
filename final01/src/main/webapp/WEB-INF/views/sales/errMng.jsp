@@ -356,14 +356,21 @@ form {
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
                 header: '폐기코드',
-                name: 'salesDpCode'
+                name: 'salesDpCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '검수코드',
                 name: 'testNum',
-                editor : 'text'
+                editor : 'text',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품코드',
-                name: 'prodCode'
+                name: 'prodCode',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -378,7 +385,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '폐기일자',
                 name: 'salesDpDate',
@@ -388,7 +396,10 @@ form {
                         language: 'ko'
                     }
                 },
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '담당자',
                 name: 'empName'
@@ -500,17 +511,20 @@ form {
             columns: [
                 {
                     header: '검수코드',
-                    name: 'testNum'
+                    name: 'testNum',
+                    align: 'center'
                 }, {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '검수날짜',
                     name: 'testDate',
-                    className: 'yellow-background'
+                    className: 'yellow-background',
+                    align: 'center'
                 }, {
                     header: '검수량',
                     name: 'testAmt',
@@ -521,7 +535,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '합격량',
                     name: 'passAmt',
@@ -532,7 +547,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '불합격량',
                     name: 'nonPassAmt',
@@ -543,7 +559,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'center'
                 }
             ]
 
@@ -629,16 +646,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 

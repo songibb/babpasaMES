@@ -13,7 +13,7 @@
 				, i.sales_in_exd sales_in_exd
 		FROM sales_in i JOIN com_prod p
 						ON (i.prod_code = p.prod_code)
-		ORDER BY prod_lot DESC
+		ORDER BY i.prod_lot DESC
 	</select>
 
 <!-- 검색 -->
@@ -34,13 +34,13 @@
 					ON (i.prod_code = p.prod_code)
 	<where>
 			<if test="prodCode != null and prodCode != ''">
-				AND prod_code LIKE '%' || #{prodCode} || '%'
+				AND i.prod_code LIKE '%' || #{prodCode} || '%'
 			</if>
 			<if test="startDate != null and startDate != ''">
-            	AND TO_CHAR(sales_in_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+            	AND TO_CHAR(i.sales_in_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
          	</if>
          	<if test="endDate != null and endDate != ''">
-           		AND TO_CHAR(sales_in_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+           		AND TO_CHAR(i.sales_in_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
          	</if>
          	<if test="before==2">
 				AND o.sales_out_code = null
@@ -49,7 +49,7 @@
 				AND o.sales_out_code != null
 			</if>
 	</where>					
-	ORDER BY prod_lot DESC
+	ORDER BY i.prod_lot DESC
 	</select>
 	
 	<!-- 제품목록 -->
@@ -76,7 +76,7 @@
 					ON (i.emp_code = e.emp_code) 
 					JOIN com_prod p
 					ON (i.prod_code = p.prod_code)
-	ORDER BY prod_lot DESC
+	ORDER BY i.prod_lot DESC
 	</select>
 	
 	<!-- 검수완료된 완제품 목록  -->

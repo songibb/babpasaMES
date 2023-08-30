@@ -445,16 +445,19 @@ form {
             columns: [
                 {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    align: 'center'
                 }, {
                     header: '거래처명',
                     name: 'actName'
                 }, {
                     header: '거래상태',
-                    name: 'actSts'
+                    name: 'actSts',
+                    align: 'center'
                 }, {
                     header: '거래처구분',
-                    name: 'actKind'
+                    name: 'actKind',
+                    align: 'center'
                 }
             ]
 
@@ -491,16 +494,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 
@@ -542,18 +548,27 @@ form {
         columns: [
             {
                 header: '출고코드',
-                name: 'salesOutCode'
+                name: 'salesOutCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품LOT',
                 name: 'prodLot',
-                value: '${out.prodLot}'
+                value: '${out.prodLot}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
             }, {
                 header: '상세주문코드',
                 name: 'salesOrdDeCode',
-                value: '${out.salesOrdDeCode}'
+                value: '${out.salesOrdDeCode}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '거래처',
                 name: 'actName',
@@ -568,7 +583,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
@@ -579,11 +595,15 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '출고일자',
                 name: 'salesOutDate',
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '담당자',
                 name: 'empName'

@@ -359,22 +359,32 @@ form {
             {
                 header: '반품코드',
                 name: 'salesRtCode',
-                value: '${rt.salesRtCode}'
+                value: '${rt.salesRtCode}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '출고코드',
                 name: 'salesOutCode',
                 editor: 'text',
-                value: '${rt.salesOutCode}'
+                value: '${rt.salesOutCode}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
 
             }, {
                 header: '제품LOT',
                 name: 'prodLot',
                 editor: 'text',
-                value: '${rt.prodLot}'
+                value: '${rt.prodLot}',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품코드',
                 name: 'prodCode',
-                value: '${rt.prodCode}'
+                value: '${rt.prodCode}',
+                align: 'center'
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
@@ -386,7 +396,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '반품량',
                 name: 'salesRtAmt',
@@ -398,7 +409,8 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            align: 'right'
             }, {
                 header: '반품일자',
                 name: 'salesRtDate',
@@ -408,7 +420,10 @@ form {
                         language: 'ko'
                     }
                 },
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '반품사유',
                 name: 'salesRtWhy',
@@ -530,13 +545,16 @@ form {
             columns: [
                 {
                     header: '출고코드',
-                    name: 'salesOutCode'
+                    name: 'salesOutCode',
+                    align: 'center'
                 },{
                     header: '상세주문코드',
-                    name: 'salesOrdDeCode'
+                    name: 'salesOrdDeCode',
+                    align: 'center'
                 }, {
                     header: '제품LOT',
-                    name: 'prodLot'
+                    name: 'prodLot',
+                    align: 'center'
                 }, {
                     header: '제품코드',
                     name: 'prodCode',
@@ -554,7 +572,8 @@ form {
                 }, {
                     header: '출고일자',
                     name: 'salesOutDate',
-                    className: 'yellow-background'
+                    className: 'yellow-background',
+                    align: 'center'
                 }, {
                     header: '출고량',
                     name: 'salesOutAmt',
@@ -565,7 +584,8 @@ form {
     	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     	                return val;
                     	}
-    	            }
+    	            },
+    	            align: 'right'
                 }, {
                     header: '담당자',
                     name: 'empCode',
@@ -658,16 +678,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 

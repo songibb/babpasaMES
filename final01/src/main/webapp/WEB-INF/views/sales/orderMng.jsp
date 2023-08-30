@@ -392,7 +392,10 @@ form {
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
                 header: '주문코드',
-                name: 'ordCode'
+                name: 'ordCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '주문날짜',
                 name: 'ordDate',
@@ -401,7 +404,9 @@ form {
                     type: 'datePicker',
                     options: {
                         language: 'ko'
-                    }
+                    },
+               sortable: true,
+               sortingType: 'asc'
                 },
                 className: 'yellow-background'
             }, {
@@ -434,7 +439,10 @@ form {
 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	                return val;
                 	}
-	            }
+	            },
+	            sortable: true,
+                sortingType: 'asc',
+                align: 'right'
             }, {
                 header: '납기일자',
                 name: 'devDate',
@@ -444,7 +452,10 @@ form {
                         language: 'ko'
                     }
                 },
-                className: 'yellow-background'
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '출고여부',
                 name: 'devYn',
@@ -686,16 +697,19 @@ form {
             columns: [
                 {
                     header: '거래처코드',
-                    name: 'actCode'
+                    name: 'actCode',
+                    align: 'center'
                 }, {
                     header: '거래처명',
                     name: 'actName'
                 }, {
                     header: '거래상태',
-                    name: 'actSts'
+                    name: 'actSts',
+                    align: 'center'
                 }, {
                     header: '거래처구분',
-                    name: 'actKind'
+                    name: 'actKind',
+                    align: 'center'
                 }
             ]
 
@@ -732,16 +746,19 @@ form {
             columns: [
                 {
                     header: '제품코드',
-                    name: 'prodCode'
+                    name: 'prodCode',
+                    align: 'center'
                 }, {
                     header: '제품명',
                     name: 'prodName'
                 }, {
                     header: '제품단위',
-                    name: 'prodUnit'
+                    name: 'prodUnit',
+                    align: 'center'
                 }, {
                     header: '제품규격',
-                    name: 'prodStd'
+                    name: 'prodStd',
+                    align: 'center'
                 }
             ]
 
