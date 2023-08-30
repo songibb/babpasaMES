@@ -291,7 +291,10 @@
 		        columns: [
 		        	  {
 			 	 	        header: '자재코드',
-			 	 	        name: 'matCode'
+			 	 	        name: 'matCode',
+		 	 	            align: 'center',
+			 	 	        sortable: true,
+		 	 	            sortingType: 'asc'
 		 	 	      },
 		 	 	      {
 			 	 	        header: '자재명',
@@ -302,6 +305,7 @@
 		 	 	      {
 				 			header: '단위',
 				 		 	name: 'matUnit',
+		 	 	            align: 'center',
 				 		 	formatter: 'listItemText',
 				            editor: {
 				                type: 'select',
@@ -327,6 +331,7 @@
 		              {
 			 	 	        header: '안전재고량',
 			 	 	        name: 'matSafe',
+		 	 	            align: 'right',
 			 	 	        editor : 'text',
 			 	 	      validation: {
 			 	 	        dataType: 'number',

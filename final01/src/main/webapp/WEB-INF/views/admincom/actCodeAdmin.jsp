@@ -225,25 +225,29 @@
 		          {
 		            header: '거래처코드',
 		            name: 'actCode',
-		            filter: 'text'
+		            align: 'center',
+		            sortable: true,
+	 	 	        sortingType: 'asc'
 		          },
 		          {
 		            header: '거래처명',
-		            name: 'actName',
-		            filter: 'text'
+		            name: 'actName'
 		          },
 		          {
 		            header: '사업자번호',
-		            name: 'actNum'
+		            name: 'actNum',
+		            align: 'center'
 		          },
 		          {
 		            header: '연락처',
-		            name: 'actTel'
+		            name: 'actTel',
+		            align: 'center'
 		          },
 		          {
 		        	//codeName
 		            header: '거래여부',
-		            name: 'sts'
+		            name: 'sts',
+		            align: 'center'
 		          },
 		          {
 		        	  //code 값 가져오기위한 것
@@ -255,7 +259,7 @@
 			        	  //codeName
 		              header: '거래처구분',
 		              name: 'kind',
-		              filter: 'select'
+		              align: 'center'
 		            },
 		            {
 		            	 //code값 가져오기위한 것

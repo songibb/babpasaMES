@@ -193,11 +193,26 @@
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
+            <div class="modal_title"><h3>공정 목록</h3></div>
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
             <div id="modal_label_one"></div>
+       </div>
+       <div class="m_footer">
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="prodModal">
+  <div class="modal_content" 
+       title="클릭하면 창이 닫힙니다.">
+          <div class="m_head">
+            <div class="modal_title"><h3>BOM 등록안된 제품 목록</h3></div>
+            <div class="close_btn" id="close_btn">X</div>
+       </div>
+       <div class="m_body">
+            <div id="modal_label_prod"></div>
        </div>
        <div class="m_footer">
     </div>
@@ -209,7 +224,7 @@
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
-            <div class="modal_title"><h3>목록</h3></div>
+            <div class="modal_title"><h3>자재/반제품 목록</h3></div>
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
@@ -525,67 +540,71 @@
 				let obj = {bomNo:bomNo};
 				checkedBom.push(obj);
 			});
+			
+			swal({
+				  title: "정말삭제하시겠습니까?",
+				  text: "",
+				  icon: "warning",
+				  buttons: true,
+				  dangerMode: true,
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+						$.ajax({
+							url :'bomDelete',
+							type : 'POST',
+							contentType : 'application/json',
+							data : JSON.stringify(checkedBom),
+							success : function(result){
+									swal("성공","BOM 삭제가 정상적으로 처리되었습니다", {icon: "success",});
+									   $('form')[0].reset();
+									   let content = $('#bomSearch').val();
+									   let search = { prodName : content };
+									   $.ajax({
+										   url : 'bomSearch',
+										   method : 'GET',
+										   data : search ,
+										   success : function(data){
+											   bomgrid.resetData(data);
+											   deBomgrid.clear();
+											   stopEdit();
+											   //수정시 사용할 그리드
+											    bomgrid.on('click', () => {
+											    	//클릭한 제품 BOM가져오기
+											    	let rowKey = bomgrid.getFocusedCell().rowKey;
+											    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
+
+											    	$.ajax({
+														url : 'bomDecodeList',
+														method : 'GET',
+														data : { bomNo : bomNo },
+														success : function(data){
+															deBomgrid.resetData(data);
+															stopEdit();
+											 		    },
+														error : function(reject){
+												 			console.log(reject);
+												 		}	
+													})
+											  	});
+										   },
+										   error : function(reject){
+											   console.log(reject);
+										   }
+									   })
+									
+							}
+						})
+				    
+				  } else {
+				    swal("삭제가 취소되었습니다","",{icon: "warning",});
+				  }
+				});
+		}else{
+			swal("경고","선택된 체크박스가 없습니다","warning");
 		}
 		
-		swal({
-			  title: "정말삭제하시겠습니까?",
-			  text: "",
-			  icon: "warning",
-			  buttons: true,
-			  dangerMode: true,
-			})
-			.then((willDelete) => {
-			  if (willDelete) {
-					$.ajax({
-						url :'bomDelete',
-						type : 'POST',
-						contentType : 'application/json',
-						data : JSON.stringify(checkedBom),
-						success : function(result){
-								swal("성공","BOM 삭제가 정상적으로 처리되었습니다", {icon: "success",});
-								   $('form')[0].reset();
-								   let content = $('#bomSearch').val();
-								   let search = { prodName : content };
-								   $.ajax({
-									   url : 'bomSearch',
-									   method : 'GET',
-									   data : search ,
-									   success : function(data){
-										   bomgrid.resetData(data);
-										   deBomgrid.clear();
-										   stopEdit();
-										   //수정시 사용할 그리드
-										    bomgrid.on('click', () => {
-										    	//클릭한 제품 BOM가져오기
-										    	let rowKey = bomgrid.getFocusedCell().rowKey;
-										    	let bomNo = bomgrid.getValue(rowKey, 'bomNo');
-
-										    	$.ajax({
-													url : 'bomDecodeList',
-													method : 'GET',
-													data : { bomNo : bomNo },
-													success : function(data){
-														deBomgrid.resetData(data);
-														stopEdit();
-										 		    },
-													error : function(reject){
-											 			console.log(reject);
-											 		}	
-												})
-										  	});
-									   },
-									   error : function(reject){
-										   console.log(reject);
-									   }
-								   })
-								
-						}
-					})
-			    
-			  } else {
-			    swal("삭제가 취소되었습니다","",{icon: "warning",});
-			  }
-			});
+		
 
 	}
 	
@@ -607,10 +626,14 @@
           {
             header: 'NO',
             name: 'bomNo',
+            align: 'center',
+            sortable: true,
+	        sortingType: 'asc'
           },
           {
               header: '제품코드',
-              name: 'prodCode'
+              name: 'prodCode',
+              align: 'center'
             },
           {
               header: '제품명',
@@ -619,6 +642,7 @@
           {
             header: '사용여부',
             name: 'bomYn',
+            align: 'center',
             formatter: 'listItemText',
             editor: {
                 type: 'select',
@@ -636,7 +660,8 @@
           },
           {
             header: '공정사용여부',
-            name: 'bomPrcsYnName'
+            name: 'bomPrcsYnName',
+            align: 'center'
           }
     
         ]
@@ -654,14 +679,17 @@
           {
             header: 'NO',
             name: 'bomNo',
+            align: 'center'
           },
           {
               header: 'BOM코드',
               name: 'bomCode',
+              align: 'center'
             },
           {
                 header: '공정코드',
-                name: 'prcsCode'
+                name: 'prcsCode',
+                align: 'center'
             },
             {
                 header: '공정명',
@@ -686,6 +714,7 @@
           {
             header: '단위',
             name: 'bomUnit',
+            align: 'center',
             formatter: 'listItemText',
             editor: {
                 type: 'select',
@@ -704,6 +733,7 @@
           {
             header: '사용량',
             name: 'bomAmt',
+            align: 'right',
             editor: 'text',
             validation: {
  	 	        dataType: 'number',
@@ -811,7 +841,7 @@
 	$("#prodListModal").click(function(){
 		
     	
-    		$("#oneModal").fadeIn();
+    		$("#prodModal").fadeIn();
   	       Grid = createProdGrid();
   	       
   	       Grid.on('dblclick', () => {
@@ -826,7 +856,7 @@
 	        	bomgrid.setValue([0], 'prodName', prodName); 	        	
  	        	if(prodCode != null && prodName != null){
  	        		
- 	        		$("#oneModal").fadeOut();
+ 	        		$("#prodModal").fadeOut();
 	        		Grid.destroy();
 	        		deleteBom.style.display = 'none';
 	        		deAdd.style.display = 'inline-block';
@@ -856,7 +886,7 @@
 			})
 		
 		var pordGrid = new tui.Grid({
-			el: document.getElementById('modal_label_one'),
+			el: document.getElementById('modal_label_prod'),
 		       data: [
 		    	   <c:forEach items="${prodNoBomList}" var="p" varStatus="status">
 		          	{

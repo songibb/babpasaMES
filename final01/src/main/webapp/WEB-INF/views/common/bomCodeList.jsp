@@ -132,35 +132,44 @@
           {
             header: 'NO',
             name: 'bomNo',
-            filter: 'text'
+            align: 'center',
+            sortable: true,
+	        sortingType: 'asc'
           },
           {
               header: '제품코드',
               name: 'prodCode',
-              filter: 'text'
+              align: 'center'
             },
           {
               header: '제품명',
-              name: 'prodName',
-              filter: 'text'
+              name: 'prodName'
             },
           {
             header: '등록날짜',
             name: 'bomWdate',
+            align: 'center',
+            sortable: true,
+	          sortingType: 'asc',
 		    className: 'yellow-background'
           },
           {
             header: '수정날짜',
             name: 'bomUdate',
+            align: 'center',
+            sortable: true,
+	          sortingType: 'asc',
 		    className: 'yellow-background'
           },
           {
             header: '사용여부',
-            name: 'bomYn'
+            name: 'bomYn',
+            align: 'center'
           },
           {
             header: '공정사용여부',
-            name: 'bomPrcsYn'
+            name: 'bomPrcsYn',
+            align: 'center'
           }
         ]
       })  
@@ -183,10 +192,12 @@
           {
             header: 'NO',
             name: 'bomNo',
+            align: 'center'
           },
           {
               header: 'BOM코드',
               name: 'bomCode',
+              align: 'center'
             },
           {
                 header: '공정명',
@@ -195,6 +206,7 @@
           {
             header: '자재/반제품구분',
             name: 'kindName',
+            align: 'center'
           },
           {
             header: '자재/반제품명',
@@ -202,11 +214,13 @@
           },
           {
             header: '단위',
-            name: 'bomUnit'
+            name: 'bomUnit',
+            align: 'center'
           },
           {
             header: '사용량',
             name: 'bomAmt',
+            align: 'right',
             formatter(e) {
                 val = e['value']
                     .toString()

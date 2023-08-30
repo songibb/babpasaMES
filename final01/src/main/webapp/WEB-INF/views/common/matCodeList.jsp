@@ -149,7 +149,10 @@ label {
 		        columns: [
 		        	  {
 			 	 	        header: '자재코드',
-			 	 	        name: 'matCode'
+			 	 	        name: 'matCode',
+		 	 	            align: 'center',
+			 	 	     	sortable: true,
+		 	 	          	sortingType: 'asc'
 		 	 	      },
 		 	 	      {
 			 	 	        header: '자재명',
@@ -158,7 +161,8 @@ label {
 			 	 	  },
 		 	 	      {
 				 			header: '단위',
-				 		 	name: 'matUnit'
+				 		 	name: 'matUnit',
+				 		 	align: 'center',
 				 	  },
 				 	  
 				 	 
@@ -169,6 +173,7 @@ label {
 		              {
 			 	 	        header: '안전재고량',
 			 	 	        name: 'matSafe',
+			 	 	        align: 'right',
 			 	 	      formatter(e) {
 				                val = e['value']
 				                    .toString()
