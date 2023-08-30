@@ -15,4 +15,5 @@ public class SemiOutVO {
 	private String empName;
 	private Date semiOutDate;
 	private Date semiExd;
+	private String semiOutCode;
 }

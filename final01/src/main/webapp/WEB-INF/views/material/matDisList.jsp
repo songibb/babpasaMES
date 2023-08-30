@@ -232,16 +232,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -297,11 +301,11 @@
 		                let year = date.getFullYear(); //0000년 가져오기
 		                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
 		                let day = date.getDate(); //일자 가져오기
-		                i.matDpDate = year + "년 " + (
+		                i.matDpDate = year + "-" + (
 		                    ("00" + month.toString()).slice(-2)
-		                ) + "월 " + (
+		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
-		                ) + "일";
+		                );
 		            }
 		            grid.resetData(data);
 		        },
@@ -361,24 +365,30 @@
 		        {
 		            header: '자재폐기코드',
 		            name: 'matDpCode',
-		            hidden: true
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, {
 		            header: '자재 LOT / 발주상세코드',
 		            name: 'matIdentiCode',
-		            width: 200
+		            width: 200,
+		            align: 'center'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '폐기수량',
 		            name: 'matDpAmt',
@@ -387,22 +397,26 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '폐기일자',
 		            name: 'matDpDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '담당자코드',
 		            name: 'empCode',
 		            hidden: true
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }, {
 		            header: '비고',
 		            name: 'matDpInfo',
-		            width: 400
+		            width: 400,
+		            align: 'left'
 		        }
 	
 		    ]

@@ -41,6 +41,27 @@
 		ORDER BY mat_od_rq
 	</select>
 	
+	<!-- 조회페이지에서 검색 -->
+	<select id="selectMatListPageOrderListSearch" resultType="MatOrderDeVO">
+		SELECT a.mat_od_cd, a.emp_code, b.emp_name, a.act_code, c.act_name, a.mat_od_rq
+		FROM mat_order a JOIN com_emp b
+		ON(a.emp_code = b.emp_code)
+		JOIN com_act c
+		ON(a.act_code = c.act_code)
+		<where>
+			<if test="accountCode != null and !accountCode.equals('')">
+				AND a.act_code LIKE '%' || #{accountCode} || '%'
+			</if>
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(a.mat_od_rq, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(a.mat_od_rq, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		ORDER BY mat_od_rq
+	</select>
+	
 	<!--  조회 페이지에서 상세 그리드 -->
 	<select id="selectMatListPageOrderDeList" resultType="MatOrderDeVO">
 		SELECT a.mat_od_de_cd, a.mat_amt, a.mat_code, b.mat_name, b.mat_unit, b.mat_std, a.mat_test_yn, a.mat_price, a.mat_od_acp
@@ -160,38 +181,6 @@
 	</delete>
 	
 	
-	<!-- 신규 생산 계획 조회 -->
-	<select id="selectNewPrcsPlan" resultType="PrcsPlanVO">
-		SELECT prcs_plan_name
-			 , a.prod_code
-			 , b.prcs_plan_date
-			 , c.prod_name
-			 , prcs_plan_amt
-		FROM prcs_plan_de a LEFT JOIN prcs_plan b 
-			ON(a.prcs_plan_code = b.prcs_plan_code)
-				LEFT JOIN com_prod c
-					ON(a.prod_code = c.prod_code)
-		WHERE prcs_dir_yn = 'N'
-		ORDER BY b.prcs_plan_date
-	</select>
-	
-	<!-- 해당 계획 자재 소모량 -->
-	<select id="selectNewPlanUseAmt" resultType="MatInVO">
-		SELECT mp_code mat_code
-			 , find_mat_name(mp_code) AS mat_name
-			 , SUM(bom_amt) AS bom_amt
-			 , NVL(mat_stock,0) AS mat_stock
-		FROM V_MAT_BOM a
-			LEFT JOIN (SELECT mat_code
-			 			    , SUM(mat_stock) AS mat_stock
-		           	   FROM mat_in
-		               GROUP BY mat_code) b
-				ON (a.mp_code = b.mat_code)
-		WHERE PROD_CODE = #{prodCode}
-			AND bom_yn='O'
-		group by find_mat_name(mp_code), mp_code, mat_stock
-	</select>
-	
 	<!-- 거래처 목록 -->
 	<select id="selectActMatModal" resultType="OrderVO">
 		SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
@@ -211,5 +200,40 @@
 		</if>
 		AND act_kind = 'ACT-TYPE2'
 		ORDER BY act_code DESC
+	</select>
+	
+	<!-- 관리페이지 신규 생산계획 자재 소모량 -->
+	<select id="selectNewPrcsPlan" resultType="MatOrderDeVO">
+		SELECT f.*
+			 , g.mat_name
+			 , g.mat_unit
+			 , g.mat_std
+			 , NVL(h.mat_stock,0) mat_stock
+        FROM
+                    (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
+                     				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
+                    			END) AS bom_amt
+                    	  , CASE WHEN c.mp_kind='P' THEN e.mp_code
+                    			 WHEN c.mp_kind='M' THEN c.mp_code
+                    			 END AS mat_code
+        			 FROM prcs_plan_de a
+	        			 JOIN bom_header b
+	        			 ON(a.prod_code = b.prod_code)
+	        			 RIGHT JOIN bom_detail c
+	        			 ON(b.bom_no = c.bom_no)
+	        			 LEFT JOIN(SELECT * FROM bom_header WHERE bom_yn = 'O') d
+	        			 ON(c.mp_code = d.prod_code)
+	        			 LEFT JOIN bom_detail e
+	        			 ON(d.bom_no = e.bom_no)
+        			 WHERE prcs_dir_sts= 'T1'
+        			 	AND b.bom_yn = 'O'
+        			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
+                     			   WHEN c.mp_kind='M' THEN c.mp_code
+                     			   END) f
+		JOIN com_mat g
+        ON(f.mat_code = g.mat_code)
+        LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
+        ON(f.mat_code = h.mat_code)
+        ORDER BY f.mat_code
 	</select>
 </mapper>

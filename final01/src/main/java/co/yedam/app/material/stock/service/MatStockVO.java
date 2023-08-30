@@ -13,6 +13,7 @@ public class MatStockVO {
 	private String matStd;
 	private Integer totalStock;
 	private Integer matSafe;
+	private Integer willUseAmt;
 	
 	//제품의 Lot별 재고(모달창)
 	

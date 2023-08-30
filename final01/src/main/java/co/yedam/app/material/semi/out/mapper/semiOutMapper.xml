@@ -12,7 +12,8 @@
 			 , a.prcs_ing_code
 			 , c.emp_name
 			 , a.semi_out_date
-			 , a.semi_exd 
+			 , a.semi_exd
+			 , a.semi_out_code
 		FROM semi_out a JOIN com_prod b
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c

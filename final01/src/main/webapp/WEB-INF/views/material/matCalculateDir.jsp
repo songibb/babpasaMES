@@ -297,16 +297,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+		                align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+		                align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+		                align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+		                align: 'left'
 		            }
 		        ]
 	
@@ -356,7 +360,9 @@
 		        {
 		            header: '정산 코드',
 		            name: 'calCode',
-		            hidden: true
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, {
 		            header: '정산구분',
 		            name: 'calCategory',
@@ -374,24 +380,29 @@
 		                        }
 		                    ]
 		                }
-		            }
+		            },
+		              align: 'center'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		              align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		              align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		              align: 'left'
 		        }, {
 		            header: '자재 LOT',
 		            name: 'matLot',
-		            width: 150
+		            width: 150,
+		              align: 'center'
 		        }, {
 		            header: '기존수량',
 		            name: 'calBamt',
@@ -402,7 +413,8 @@
 		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    return val;
 		                }
-		            }
+		            },
+		              align: 'right'
 		        }, {
 		            header: '정산수량',
 		            name: 'calAmt',
@@ -418,11 +430,13 @@
 		            validation: {
 		                dataType: 'number',
 		                required: true
-		            }
+		            },
+		              align: 'right'
 		        }, {
 		            header: '정산일자',
 		            name: 'calDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		              align: 'center'
 		        }, {
 		            header: '최종수량',
 		            name: 'finalAmt',
@@ -433,10 +447,12 @@
 		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                    return val;
 		                }
-		            }
+		            },
+		              align: 'right'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		              align: 'center'
 		        }, {
 		            header: '담당자코드',
 		            name: 'empCode',
@@ -618,19 +634,24 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+		                align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+		                align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+		                align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+		                align: 'left'
 		            }, {
 		                header: '자재 LOT',
-		                name: 'matLot'
+		                name: 'matLot',
+		                align: 'center'
 		            }, {
 		                header: '현재고량',
 		                name: 'matStock',
@@ -641,7 +662,8 @@
 		                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                        return val;
 		                    }
-		                }
+		                },
+		                align: 'right'
 		            }
 		        ]
 	

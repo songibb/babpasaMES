@@ -336,16 +336,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -382,16 +386,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 		    });
@@ -432,26 +440,34 @@
 		    	{
 		            header: '자재 LOT',
 		            name: 'matLot',
-		            width: 150
+		            width: 150,
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, 
 		        
 		        {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        },		        
 		        {
 		            header: '입고일자',
 		            name: 'matInd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        },
 		        {
 		            header: '입고량',
@@ -461,17 +477,21 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '유통기한',
 		            name: 'matExd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '사용여부',
-		            name: 'useYn'
+		            name: 'useYn',
+		            align: 'left'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	

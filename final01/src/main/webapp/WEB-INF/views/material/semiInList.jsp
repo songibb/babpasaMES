@@ -235,10 +235,12 @@
 		        columns: [
 		            {
 		                header: '반제품코드',
-		                name: 'prodCode'
+		                name: 'prodCode',
+			            align: 'center'
 		            }, {
 		                header: '반제품명',
-		                name: 'prodName'
+		                name: 'prodName',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -308,16 +310,21 @@
 		    columns: [
 		    	{
 		            header: '반제품 LOT',
-		            name: 'semiLot'
+		            name: 'semiLot',
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        },
 		        {
 		            header: '반제품명',
-		            name: 'prodName'
+		            name: 'prodName',
+		            align: 'left'
 		        },
 		        {
 		            header: '입고일자',
 		            name: 'semiInd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        },
 		        {
 		            header: '입고량',
@@ -327,17 +334,21 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        },   {
 		            header: '유통기한',
 		            name: 'semiExd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '사용여부',
-		            name: 'useYn'
+		            name: 'useYn',
+		            align: 'left'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	

@@ -222,10 +222,12 @@
 		        columns: [
 		            {
 		                header: '반제품코드',
-		                name: 'prodCode'
+		                name: 'prodCode',
+			            align: 'center'
 		            }, {
 		                header: '반제품명',
-		                name: 'prodName'
+		                name: 'prodName',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -279,7 +281,8 @@
 		            prcsIngCode: "${semi.prcsIngCode}",
 		            empName: "${semi.empName}",
 		            semiOutDate: `<fmt:formatDate value="${semi.semiOutDate}" pattern="yyyy-MM-dd"/>`,
-		            semiExd: `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`
+		            semiExd: `<fmt:formatDate value="${semi.semiExd}" pattern="yyyy-MM-dd"/>`,
+		            semiOutCode : "${semi.semiOutCode}"
 		        },
 		    </c:forEach>
 		        ],
@@ -294,15 +297,26 @@
 		        perPage: 10
 		    },
 		    columns: [
+		    	{
+		    		header: '출고코드',
+		    		name: 'semiOutCode',
+		    		
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
+		    	},
 		        {
 		            header: '반제품 LOT',
-		            name: 'semiLot'
+		            name: 'semiLot',
+		            align: 'center'
 		        }, {
 		            header: '반제품코드',
-		            name: 'prodCode'
+		            name: 'prodCode',
+		            align: 'center'
 		        }, {
 		            header: '반제품명',
-		            name: 'prodName'
+		            name: 'prodName',
+		            align: 'left'
 		        }, {
 		            header: '출고량',
 		            name: 'semiOutAmt',
@@ -311,21 +325,26 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '출고일자',
 		            name: 'semiOutDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '유통기한',
 		            name: 'semiExd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '생산공정코드',
-		            name: 'prcsIngCode'
+		            name: 'prcsIngCode',
+		            align: 'center'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 	
 		    ]

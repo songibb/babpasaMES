@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
-import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 public interface MatOrderDeMapper {
@@ -30,10 +29,8 @@ public interface MatOrderDeMapper {
 	public int deleteMatOrderDeList(MatOrderDeVO vo);
 	
 	//신규생산계획
-	public List<PrcsPlanVO> selectNewPrcsPlan();
+	public List<MatOrderDeVO> selectNewPrcsPlan();
 	
-	//해당 계획 소모 자재
-	public List<MatInVO> selectNewPlanUseAmt(String prodCode);
 	
 	//자재 거래처 모달
 	public List<OrderVO> selectActMatModal();
@@ -43,6 +40,9 @@ public interface MatOrderDeMapper {
 	
 	//헤더 그리드
 	public List<MatOrderDeVO> selectMatListPageOrderList();
+	
+	//헤더에서 검색
+	public List<MatOrderDeVO> selectMatListPageOrderListSearch(@Param("accountCode")String accountCode, @Param("startDate")String startDate, @Param("endDate")String endDate);
 	
 	//상세 그리드
 	public List<MatOrderDeVO> selectMatListPageOrderDeList(String matOdCd);

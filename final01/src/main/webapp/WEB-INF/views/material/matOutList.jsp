@@ -262,16 +262,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -308,16 +312,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -436,7 +444,8 @@
 		var grid = new tui.Grid({
 		    el: document.getElementById('grid'),
 		    data: [<c:forEach items="${outList}" var="mat">
-		        {
+		        {	
+		        	matOutCode : "${mat.matOutCode}",
 		            matLot: "${mat.matLot}",
 		            matCode: "${mat.matCode}",
 		            matName: "${mat.matName}",
@@ -462,25 +471,37 @@
 		        perPage: 10
 		    },
 		    columns: [
+		    	{
+		    		header : '출고코드',
+		    		name: 'matOutCode',
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
+		    	},
 		        {
 		            header: '자재 LOT',
-		            name: 'matLot'
+		            name: 'matLot',
+		            align: 'center'
 		        }, {
 		            header: '자재코드',
 		            name: 'matCode',
 		            hidden: true
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '출고량',
 		            name: 'matOutAmt',
@@ -489,21 +510,26 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '출고일자',
 		            name: 'matOutd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '유통기한',
 		            name: 'matExd',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '생산 상세지시코드',
-		            name: 'prcsDirDeCode'
+		            name: 'prcsDirDeCode',
+		            align: 'center'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	

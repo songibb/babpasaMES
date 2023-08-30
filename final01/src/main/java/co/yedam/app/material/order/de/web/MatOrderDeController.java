@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
-import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
@@ -54,6 +53,14 @@ public class MatOrderDeController {
 		return vo;
 	}
 	
+	//조회 페이지 검색 ajax
+	@GetMapping("getMatOrderListFilter")
+	@ResponseBody
+	public List<MatOrderDeVO> getMatListPageOrderListSearch(@RequestParam(value="accountCode", required=false) String accountCode, @RequestParam(value="startDate", required=false) String startDate, @RequestParam(value="endDate", required=false) String endDate) {
+		List<MatOrderDeVO> vo = mods.getMatListPageOrderListSearch(accountCode, startDate, endDate);
+		return vo;
+	}
+	
 	//관리페이지
 	@GetMapping("matOrderDir")
 	public String getMatOrderDir(Model model) {
@@ -73,11 +80,11 @@ public class MatOrderDeController {
 		 return mods.modifyMatOrder(data); 
 	} 
 	
-	//해당 계획 자재 소모량
-	@GetMapping("getNewPrcsPlanUseAmt")
+	//plan Grid 데이터 리셋
+	@GetMapping("getResetPlanGridData")
 	@ResponseBody
-	public List<MatInVO> getNewPrcsPlanUseAmt(String prodCode){
-		return mods.getNewPlanUseAmt(prodCode);
+	public List<MatOrderDeVO> getResetPlanGridData(){
+		return mods.getNewPrcsPlan();
 	}
 	
 	//거래처 목록 모달 ajax(검색용)

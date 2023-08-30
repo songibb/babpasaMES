@@ -123,60 +123,7 @@
 	.m_body > input{
 		border : 1px solid black;
 	}
-	
-	/* 2번째 모달 */
-	.modal2{ 
-		position:fixed; width:100%; height:100%; background: rgba(0,0,0,0.8); top:0; left:0; bottom: 0; right: 0;display:none;
-	}
-	  
-	.modal_content2{
-		  /*모달창 크기 조절*/
-		  width:1000px; height:750px;
-		  background:#fff; border-radius:10px;
-		  /*모달창 위치 조절*/
-		  position:relative; top:26%; left:32%;
-		  margin-top:-100px; margin-left:-200px;
-		  text-align:center;
-		  box-sizing:border-box;
-		  line-height:23px;
-	}
-	
-	
-	     
-	.close_btn2{
-		font-size: 20px;
-		color: black;
-		font-weight: 900;
-		cursor: pointer;
-	}
-	
-	.modal_btn2{
-		width: 80px;
-		height: 30px;
-		border-radius: 5px;
-		text-align: center;
-		font-size: 14px;
-		font-weight: bolder;
-		padding-top: 5px;
-		margin-left: 5px;
-		font-family: sans-serif;
-	}
-	.m_head2{
-		height: 7%;
-		margin : 0;
-		/*제목 높낮이 조절*/
-		padding: 17px;
-		display: flex;
-		justify-content: space-between;
-		background-color:rgb(232, 143, 33);
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
-	}
-	
-	.m_body2{
-		height: 80%;
-		padding: 20px;
-	}
+
 	
 	#customtemplateSearchAndButton p{
 		width : 100px;
@@ -214,11 +161,6 @@
        <div class="card">
            <div class="card-body">
                <div class="table-responsive pt-3">
-               		
-                	<button type="button" class="btn btn-info btn-icon-text" id="newPrcsPlanView">
-                    	신규생산계획
-                	</button>
-                  	
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
@@ -244,17 +186,14 @@
                 				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
                     				초기화
                 				</button>
-                				
-                				<br>
-                				<p>등록용 거래처</p>
-                  				<input type="text" id="selectActCodeInput">
-                    			<i class="bi bi-search" id="selectActModal"></i>
-                    		
-                  				<input type="text" class="blackcolorInputBox" id="selectActNameFix" readonly>
-                			
             				</div>
         				</div>
-	    			
+                	<h2>신규 생산계획 자재 소모량</h2>
+		        	<br>
+		            <div id="grid2">
+		            	
+		            
+		            </div>
 		            
 		            
 		            <div id="grid">
@@ -287,23 +226,134 @@
     		</div>
   		</div>
 	</div>
-	<div class="modal modal2" id="modal2">
-   		<div class="modal_content modal_content2">
-        	<div class="m_head2">
-            	<div class="modal_title2"><h3>신규 생산계획 목록</h3></div>
-            	<div class="close_btn2" id="close_btn2">X</div>
-       		</div>
-       		<div class="m_body2">
-       			<h3>신규 생산 계획</h3>
-            	<div id="modal_label2"></div>
-            	<h3>해당 생산 계획 자재 소모량</h3>
-            	<div id="modal_label3"></div>
-       		</div>
-  		</div>
-	</div>
 
 
 	<script>
+		//그리드2 생성
+		var planGrid = new tui.Grid({
+		    el: document.getElementById('grid2'),
+		    data: [<c:forEach items="${planList}" var="plan" varStatus="status">
+		        {
+		        	bomAmt: "${plan.bomAmt}",
+		        	matCode: "${plan.matCode}",
+		        	matName: "${plan.matName}",
+		        	matUnit: "${plan.matUnit}",
+		        	matStd: "${plan.matStd}",
+		        	matStock : "${plan.matStock}"
+		        }
+		        <c:if test="${not status.last}">,</c:if>
+		    </c:forEach>
+		        ],
+		    scrollX: false,
+		    scrollY: false,
+		    minBodyHeight: 160,
+		    rowHeaders: [
+		        {
+		            type: 'rowNum'
+		        }, {
+		            type: 'checkbox'
+		        }
+		    ],
+		    pageOptions: {
+		        useClient: true,
+		        perPage: 4
+		    },
+		    columns: [
+		        {
+		            header: '자재명',
+		            name: 'matName',
+		            editor: 'text',
+		            align: 'left'
+		        }, {
+		            header: '자재코드', // [필수] 컬럼 이름
+		            name: 'matCode', // [선택] 숨김 여부
+		            hidden: true
+		        }, {
+		            header: '단위',
+		            name: 'matUnit',
+		            align: 'left'
+		        }, {
+		            header: '규격',
+		            name: 'matStd',
+		            align: 'left'
+		        }, {
+		            header: '소모량',
+		            name: 'bomAmt',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            },
+		            align: 'right'
+		            
+		        }, {
+		        	header: '현재고',
+		            name: 'matStock',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            },
+		            align: 'right'
+		        	
+		        }
+		    ]
+		});
+		
+		planGrid.on('dblclick', () => {
+		    let rowKey = planGrid
+		        .getFocusedCell()
+		        .rowKey;
+	
+		    if (rowKey != null && rowKey >= 0) {
+		        let matCode = planGrid.getValue(rowKey, 'matCode');
+		        let matName = planGrid.getValue(rowKey, 'matName');
+		        let matStd = planGrid.getValue(rowKey, 'matStd');
+		        let matUnit = planGrid.getValue(rowKey, 'matUnit');
+		        let matAmt = planGrid.getValue(rowKey, 'bomAmt');
+		        
+		      	//상단의 행 정보는 삭제 그리드에서 행 지움
+		        planGrid.removeRow(rowKey);
+		        //마우스 커서 없앰
+		        planGrid.blur();
+	
+		        let now = new Date(); // 현재 날짜 및 시간
+		        let year = now.getFullYear();
+		        let month = ('0' + (
+		            now.getMonth() + 1
+		        )).substr(-2);
+		        let day = ('0' + now.getDate()).substr(-2);
+		        let matOdRq = year + "-" + month + "-" + day;
+	
+		        orderGrid.appendRow({
+		            'matOdRq': matOdRq,
+		            'matCode': matCode,
+		            'matName': matName,
+		            'matStd': matStd,
+		            'matUnit': matUnit,
+		            'matAmt': matAmt,
+		            'empCode': `${user.id}`,
+		            'empName': `${user.empName}`
+		        }, {at: 0});
+		    }
+		});
+		
+		planGrid.on('onGridMounted', function (e) {
+		    let data = planGrid.getData();
+	
+		    $.each(data, function (idx, obj) {
+	
+		        if (Number(obj['matStock']) < Number(obj['bomAmt'])) {
+		            let rowKey = obj['rowKey'];
+		            planGrid.addCellClassName(rowKey, 'matStock', 'my-styled-cell');
+		        }
+		    })
+		});
+		
+		
+		
 
 		//삭제버튼
 		$('#delete').on("click", function () {
@@ -323,15 +373,8 @@
 		    .addEventListener('click', addDirRow);
 	
 		function addDirRow() {
-		    //등록 거래처명
-		    actName = $('#selectActNameFix').val();
-		    actCode = $('#selectActCodeInput').val();
-	
-		    //등록 거래처가 없으면 행추가를 못함
-		    if ($('#selectActNameFix').val().length === 0) {
-		        swal("경고", "거래처를 먼저 등록해주세요.", "warning");
-		    } else {
-		        //거래처가 등록되어 있을 경우 행추가 허용
+		    
+		        
 		        let now = new Date(); // 현재 날짜 및 시간
 		        let year = now.getFullYear();
 		        let month = ('0' + (
@@ -340,14 +383,11 @@
 		        let day = ('0' + now.getDate()).substr(-2);
 		        let matOdRq = year + "-" + month + "-" + day;
 		        orderGrid.appendRow({
-		            'actName': actName,
-		            'actCode': actCode,
 		            'matOdRq': matOdRq,
 		            'empCode': `${user.id}`,
 		            'empName': `${user.empName}`
 		        }, {at: 0});
-	
-		    }
+  
 		}
 	
 		//발주 form
@@ -393,28 +433,44 @@
 		        {
 		            header: '발주코드',
 		            name: 'matOdCd',
-		            width: 150
+		            width: 150,
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
 		        }, {
 		            header: '발주일자',
 		            name: 'matOdRq',
-		            className: 'yellow-background'
-		        },{
+		            className: 'yellow-background',
+		            align: 'center'
+		        },
+		        {
+		            header: '업체코드', // [필수] 컬럼 이름
+		            name: 'actCode',// [선택] 숨김 여부
+		            editor : 'text',
+		            align: 'center'
+		        },
+		        {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            editor : 'text',
+		            align: 'left'
 		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            editor: 'text'
+		            editor: 'text',
+		            align: 'left'
 		        }, {
 		            header: '자재코드', // [필수] 컬럼 이름
 		            name: 'matCode', // [선택] 숨김 여부
 		            hidden: true
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '단가(원)',
 		            name: 'matPrice',
@@ -431,7 +487,8 @@
 		            validation: {
 		                dataType: 'number',
 		                required: true
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '발주량',
 		            name: 'matAmt',
@@ -447,7 +504,8 @@
 		            validation: {
 		                dataType: 'number',
 		                required: true
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '총액',
 		            name: 'matTotalPrice',
@@ -460,12 +518,9 @@
 		                    return val + "원";
 		                }
 		            },
-		            width: 120
-		        },  {
-		            header: '업체코드', // [필수] 컬럼 이름
-		            name: 'actCode', // [필수] 컬럼 매핑 이름 값
-		            hidden: true // [선택] 숨김 여부
-		        },  {
+		            width: 120,
+		            align: 'right'
+		        },    {
 		            header: '납기요청일',
 		            name: 'matOdAcp',
 		            editor: {
@@ -474,7 +529,8 @@
 		                    language: 'ko'
 		                }
 		            },
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '발주상세코드',
 		            name: 'matOdDeCd',
@@ -492,11 +548,13 @@
 		                } else if (e.value == 'N') {
 		                    return "검수전";
 		                }
-		            }
+		            },
+		            align: 'left'
 	
 		        }, {
 		            header: '담당자', // [필수] 컬럼 이름
-		            name: 'empName' // [필수] 컬럼 매핑 이름 값                    [선택] 숨김 여부
+		            name: 'empName',
+		            align: 'center' // [필수] 컬럼 매핑 이름 값                    [선택] 숨김 여부
 		        }
 		    ]
 		});
@@ -560,6 +618,7 @@
 		            success: function (data) {
 		                swal("성공", data + "건이 처리되었습니다.", "success");
 		                selectAjax();
+		                resetPlanGrid();
 		            },
 		            error: function (reject) {
 		                console.log(reject);
@@ -570,6 +629,20 @@
 		        swal("경고", "값이 입력되지 않았습니다", "warning");
 		    }
 	
+		}
+		//두번째 그리드 데이터 리셋
+		function resetPlanGrid(){
+			$.ajax({
+		        url: 'getResetPlanGridData',
+		        method: 'GET',
+		        success: function(result) {
+		        	planGrid.resetData(result);
+		        },
+		        error : function(reject){
+		        	console.log(reject);
+		        }
+			})
+		        
 		}
 	
 		//검색
@@ -860,16 +933,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -987,167 +1064,7 @@
 		    })
 		})
 	
-		//2번째 모달창
-		var Grid2;
-		$("#newPrcsPlanView").click(function () {
-		    $("#modal2").fadeIn();
-		    preventScroll();
-		    Grid2 = createPrcsNewPlanGrid();
-	
-		    //첫번째 그리드 클릭시 두번째 그리드 생성
-		    Grid2.on('dblclick', () => {
-		        //클릭한 계획의 계획코드 가져오기
-		        let rowKey = Grid2
-		            .getFocusedCell()
-		            .rowKey;
-		        let prodCode = Grid2.getValue(rowKey, 'prodCode');
-		        let planAmt = Grid2.getValue(rowKey, 'prcsPlanAmt');
-		        if (rowKey >= 0) {
-		            if (Grid3 != null && Grid3.el != null) {
-		                Grid3.destroy();
-		            }
-		        }
-		        $.ajax({
-		            url: 'getNewPrcsPlanUseAmt',
-		            method: 'GET',
-		            data: {
-		                prodCode: prodCode
-		            },
-		            success: function (data) {
-		                Grid3 = createPrcsNewPlanAmtGrid(planAmt);
-		                Grid3.resetData(data);
-		                var gridData = Grid3.getData();
-		                
-		    		    $.each(gridData, function (idx, obj) {
-		    	
-		    		        if (Number(obj['matStock']) <= Number(obj['bomAmt'])) {
-		    		            let rowKey2 = obj['rowKey'];
-		    		            Grid3.addCellClassName(rowKey2, 'my-styled-cell');
-		    		        }
-		    		    }) 	
-		            },
-		            error: function (reject) {
-		                console.log(reject);
-		            }
-		        })
-		    })
-		});
-	
-		//신규 생산계획 그리드
-		function createPrcsNewPlanGrid() {
-		    var prcsNewPlanGrid = new tui.Grid({
-		        el: document.getElementById('modal_label2'),
-		        data: [<c:forEach items="${planList}" var="plan" varStatus="status">
-		            {
-		                prcsPlanName: "${plan.prcsPlanName}",
-		                prodName: "${plan.prodName}",
-		                prcsPlanAmt: "${plan.prcsPlanAmt}",
-		                prodCode: "${plan.prodCode}",
-		                prcsPlanDate: `<fmt:formatDate value="${plan.prcsPlanDate}" pattern="yyyy-MM-dd"/>`
-		            }
-		            <c:if test="${not status.last}">,</c:if>
-		        </c:forEach>
-		            ],
-		        scrollX: false,
-		        scrollY: false,
-		        minBodyHeight: 160,
-		        rowHeaders: ['rowNum'],
-		        selectionUnit: 'row',
-		        pagination: true,
-		        pageOptions: {
-		            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		            useClient: true,
-		            perPage: 4
-		        },
-		        columns: [
-		            {
-		                header: '계획명',
-		                name: 'prcsPlanName'
-		            }, {
-		                header: '제품명',
-		                name: 'prodName'
-		            }, {
-		                header: '제품코드',
-		                name: 'prodCode',
-		                hidden: true
-		            }, {
-		                header: '계획량',
-		                name: 'prcsPlanAmt',
-		                formatter(e) {
-		                    val = e['value']
-		                        .toString()
-		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                    return val;
-		                }
-		            }, {
-		                header: '계획날짜',
-		                name: 'prcsPlanDate',
-		                className: 'yellow-background'
-		            }
-		        ]
-	
-		    });
-	
-		    return prcsNewPlanGrid;
-		}
-	
-		//두번째 그리드 내용
-		var Grid3;
-		function createPrcsNewPlanAmtGrid(planAmt) {
-		    var prcsNewPlanAmtGrid = new tui.Grid({
-		        el: document.getElementById('modal_label3'),
-		        scrollX: true,
-		        scrollY: true,
-		        minBodyHeight: 220,
-		        rowHeaders: ['rowNum'],
-		        pagination: true,
-		        pageOptions: {
-		            //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-		            useClient: true,
-		            perPage: 5
-		        },
-		        columns: [
-		            {
-		                header: '자재명',
-		                name: 'matName'
-		            }, {
-		                header: '자재 소모량',
-		                name: 'bomAmt',
-		                formatter(e) {
-		                    value = e['value'] * planAmt
-		                    val = value
-		                        .toString()
-		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                    return val;
-		                }
-		            }, {
-		                header: '현재고량',
-		                name: 'matStock',
-		                formatter(e) {
-		                    value = e['value']
-		                    val = value
-		                        .toString()
-		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		                    return val;
-		                }
-		            }
-		        ]
-		    });
-	
-		    return prcsNewPlanAmtGrid;
-		}
-	
-		//2번째 모달창 닫기
-		$(".close_btn2").click(function () {
-		    $("#modal2").fadeOut();
-		    activeScroll();
-		    if (Grid2 != null && Grid2.el != null) {
-		        Grid2.destroy();
-		    }
-		    if (Grid3 != null && Grid3.el != null) {
-		        Grid3.destroy();
-		    }
-		});
+		
 	
 
     </script>

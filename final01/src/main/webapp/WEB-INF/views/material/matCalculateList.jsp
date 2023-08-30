@@ -247,16 +247,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+		                align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+		                align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+		                align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+		                align: 'left'
 		            }
 		        ]
 	
@@ -304,7 +308,9 @@
 		        {
 		            header: '정산 코드',
 		            name: 'calCode',
-		            hidden: true
+		            sortable: true,
+		            sortingType: 'asc',
+		              align: 'center'
 		        }, {
 		            header: '정산구분',
 		            name: 'calCategory',
@@ -314,36 +320,46 @@
 		                } else if (e.value == 'O') {
 		                    return "정산출고";
 		                }
-		            }
+		            },
+		              align: 'center'
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		              align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		              align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		              align: 'left'
 		        }, {
 		            header: '자재 LOT',
 		            name: 'matLot',
-		            width: 150
+		            width: 150,
+		              align: 'center'
 		        }, {
 		            header: '기존수량',
-		            name: 'calBamt'
+		            name: 'calBamt',
+		              align: 'right'
 		        }, {
 		            header: '정산수량',
-		            name: 'calAmt'
+		            name: 'calAmt',
+		              align: 'right'
 		        }, {
 		            header: '정산일자',
 		            name: 'calDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		              align: 'center'
 		        }, {
 		            header: '최종수량',
-		            name: 'finalAmt'
+		            name: 'finalAmt',
+		              align: 'right'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		              align: 'center'
 		        }
 		    ]
 	

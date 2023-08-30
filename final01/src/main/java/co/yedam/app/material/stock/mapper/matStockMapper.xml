@@ -5,21 +5,42 @@
 <mapper namespace="co.yedam.app.material.stock.mapper.MatStockMapper">
 	<!-- 전체조회 -->
 	<select id="selectMatStockList" resultType="MatStockVO">
-		SELECT a.mat_code
-			 , SUM(a.mat_stock) total_stock
-			 , b.mat_name
-			 , b.mat_std
-			 , b.mat_unit
-			 , b.mat_safe
-		FROM mat_in a LEFT JOIN com_mat b
-			ON(a.mat_code = b.mat_code)
-		<where>
-			<if test="materialCode != null and !materialCode.equals('')">
-				AND a.mat_code LIKE '%' || #{materialCode} || '%'
-			</if>
-		</where>
-		GROUP BY a.mat_code, b.mat_name, b.mat_std, b.mat_unit, b.mat_safe
-		ORDER BY a.mat_code
+		SELECT NVL(f.bom_amt, 0) will_use_amt
+                         , g.mat_name
+                         , g.mat_code
+                         , g.mat_unit
+                         , g.mat_std
+                         , g.mat_safe
+                         , NVL(h.mat_stock, 0) total_stock
+        FROM
+                    (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
+                     				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
+                    				 END) AS bom_amt
+                    	    , CASE WHEN c.mp_kind='P' THEN e.mp_code
+                    			   WHEN c.mp_kind='M' THEN c.mp_code
+                    			   END AS mat_code
+        			 FROM prcs_plan_de a
+	        			 JOIN bom_header b
+	        			 ON(a.prod_code = b.prod_code)
+	        			 RIGHT JOIN bom_detail c
+	        			 ON(b.bom_no = c.bom_no)
+	        			 LEFT JOIN(SELECT * FROM bom_header WHERE bom_yn = 'O') d
+	        			 ON(c.mp_code = d.prod_code)
+	        			 LEFT JOIN bom_detail e
+	        			 ON(d.bom_no = e.bom_no)
+        			 WHERE prcs_dir_sts= 'T1'
+        			 	AND b.bom_yn = 'O'
+						<if test="materialCode != null and !materialCode.equals('')">
+							AND g.mat_code LIKE '%' || #{materialCode} || '%'
+						</if>
+        			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
+                     			   WHEN c.mp_kind='M' THEN c.mp_code
+                     			   END) f
+		RIGHT JOIN com_mat g
+        ON(f.mat_code = g.mat_code)
+        LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
+        ON(f.mat_code = h.mat_code)
+        ORDER BY g.mat_code
 	</select>
 
 </mapper>

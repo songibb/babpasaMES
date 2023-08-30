@@ -270,16 +270,20 @@
 		        columns: [
 		            {
 		                header: '거래처코드',
-		                name: 'actCode'
+		                name: 'actCode',
+			            align: 'center'
 		            }, {
 		                header: '거래처명',
-		                name: 'actName'
+		                name: 'actName',
+			            align: 'left'
 		            }, {
 		                header: '거래상태',
-		                name: 'actSts'
+		                name: 'actSts',
+			            align: 'center'
 		            }, {
 		                header: '거래처구분',
-		                name: 'actKind'
+		                name: 'actKind',
+			            align: 'center'
 		            }
 		        ]
 	
@@ -316,16 +320,20 @@
 		        columns: [
 		            {
 		                header: '자재코드',
-		                name: 'matCode'
+		                name: 'matCode',
+			            align: 'center'
 		            }, {
 		                header: '자재명',
-		                name: 'matName'
+		                name: 'matName',
+			            align: 'left'
 		            }, {
 		                header: '단위',
-		                name: 'matUnit'
+		                name: 'matUnit',
+			            align: 'left'
 		            }, {
 		                header: '규격',
-		                name: 'matStd'
+		                name: 'matStd',
+			            align: 'left'
 		            }
 		        ]
 	
@@ -464,7 +472,8 @@
 		            empName: "${mat.empName}",
 		            matRtDate: `<fmt:formatDate value="${mat.matRtDate}" pattern="yyyy-MM-dd"/>`,
 		            matRtTotalAmt: "${mat.matRtTotalAmt}",
-		            matRtSts: "${mat.matRtSts}"
+		            matRtSts: "${mat.matRtSts}",
+		            matRtCode : "${mat.matRtCode}"
 		        },
 		    </c:forEach>
 		        ],
@@ -479,24 +488,37 @@
 		        perPage: 10
 		    },
 		    columns: [
+		    	{
+		    		header:'자재반품코드',
+		    		name:'matRtCode',
+		            sortable: true,
+		            sortingType: 'asc',
+		            align: 'center'
+		    	},
 		        {
 		            header: '발주상세코드',
-		            name: 'matOdDeCd'
+		            name: 'matOdDeCd',
+		            align: 'center'
 		        }, {
 		            header: '자재명',
-		            name: 'matName'
+		            name: 'matName',
+		            align: 'left'
 		        }, {
 		            header: '단위',
-		            name: 'matUnit'
+		            name: 'matUnit',
+		            align: 'left'
 		        }, {
 		            header: '규격',
-		            name: 'matStd'
+		            name: 'matStd',
+		            align: 'left'
 		        }, {
 		            header: '거래처',
-		            name: 'actName'
+		            name: 'actName',
+		            align: 'left'
 		        }, {
 		            header: '불량내용',
-		            name: 'errInfo'
+		            name: 'errInfo',
+		            align: 'left'
 		        }, {
 		            header: '반품수량',
 		            name: 'matRtAmt',
@@ -505,19 +527,23 @@
 		                    .toString()
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
-		            }
+		            },
+		            align: 'right'
 		        }, {
 		            header: '불량수량',
-		            name: 'matRtTotalAmt'
+		            name: 'matRtTotalAmt',
+		            align: 'right'
 	
 		        }, {
 		            header: '검사일자',
 		            name: 'matTestDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '반품요청일',
 		            name: 'matRtDate',
-		            className: 'yellow-background'
+		            className: 'yellow-background',
+		            align: 'center'
 		        }, {
 		            header: '반품상태',
 		            name: 'matRtSts',
@@ -529,10 +555,12 @@
 		                } else if (e.value == 'R6') {
 		                    return "반품실패";
 		                }
-		            }
+		            },
+		            align: 'left'
 		        }, {
 		            header: '담당자',
-		            name: 'empName'
+		            name: 'empName',
+		            align: 'center'
 		        }
 		    ]
 	
