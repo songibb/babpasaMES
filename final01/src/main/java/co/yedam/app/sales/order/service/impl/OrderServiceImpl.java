@@ -76,6 +76,16 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.selectActSearchList(actName);
 	}
 
+	@Override
+	public List<OrderVO> ordHeaderList() {
+		return orderMapper.ordHeaderList();
+	}
+
+	@Override
+	public List<OrderVO> ordDetailList(String ordCode) {
+		return orderMapper.ordDetailList(ordCode);
+	}
+
 }
 
 
