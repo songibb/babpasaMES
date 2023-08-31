@@ -114,11 +114,12 @@ label {
 //사원명/부서명/입사일자검색조회
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
-		   let inputDeptList = $('#inputDeptSearch').val();
+		let inputDeptList = $('#inputDeptSearch').val();
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
-		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
+		   let selectEmpIngSearch = $('#selectEmpIngSearch').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate, selectEmpIngSearch :selectEmpIngSearch };
 		   $.ajax({
 			   url : 'ajaxEmpList',
 			   method : 'GET',

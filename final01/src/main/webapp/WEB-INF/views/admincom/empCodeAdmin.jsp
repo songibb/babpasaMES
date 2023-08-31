@@ -127,10 +127,10 @@
 									<option value="${i.commdeCode }">${i.commdeName }</option>
 								</c:forEach>
 							</select>
-							<label id="empDateLa" >입사일</label>
-							<input id="empDate"  type="date">
+							<label id="empDateLa">입사일</label>
+							<input id="empDate"  name="empDate" type="date">
 							<label style="display: none;" id="empLeaveDateLa">퇴사일</label>
-							<input id="empLeaveDate"  type="date" style="display: none;">
+							<input id="empLeaveDate"  name="empLeaveDate" type="date" style="display: none;">
 							<div style="text-align: center; margin-bottom: 5px;">
 							<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
 							<button type="button" class="btn btn-info btn-icon-text" id="resetDate">취소</button>
@@ -160,7 +160,13 @@
 						<p>사원명</p>
 						 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" >
 							<br>
-							
+						<p>재직구분</p>
+                 			<select id="selectEmpIngSearch" name="selectEmpIngSearch">
+							<option value="">선택</option>
+							<option value="재직">재직자</option>
+							<option value="퇴사">퇴사자</option>
+						</select>
+							<br>
 						<p>입사일자</p> 
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-bottom: 35px">
 							<button type="button" style="margin-top: 0px" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -168,6 +174,8 @@
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset"  style="margin-top: 0px" class="btn btn-info btn-icon-text">초기화</button>
+							
+						
                </form>
                <h2>사원 목록</h2>
                <div id="grid"></div>
@@ -194,7 +202,8 @@
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
-		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
+		   let selectEmpIngSearch = $('#selectEmpIngSearch').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate, selectEmpIngSearch :selectEmpIngSearch };
 		   $.ajax({
 			   url : 'ajaxEmpList',
 			   method : 'GET',
@@ -228,7 +237,8 @@
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
-		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
+		   let selectEmpIngSearch = $('#selectEmpIngSearch').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate, selectEmpIngSearch :selectEmpIngSearch };
 	   $.ajax({
 		   url : 'ajaxEmpList',
 		   method : 'GET',
@@ -284,12 +294,12 @@
 	           className: 'yellow-background'
 	         },
 	         {
-		           header: '퇴사일',
-		           name: 'empLeaveDate',
-		           align: 'center',
-		           sortable: true,
-		           sortingType: 'asc',
-		           className: 'yellow-background'
+	           header: '퇴사일',
+	           name: 'empLeaveDate',
+	           align: 'center',
+	           sortable: true,
+	           sortingType: 'asc',
+	           className: 'yellow-background'
 			 },
 	         {
 	           header: '직급정보',
@@ -354,7 +364,7 @@
 			}
 		}else{
 			e.preventDefault();
-			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == '' || userObj.empDate == null){
+			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == '' || userObj.empDate == ''){
 				swal("경고", "필요정보를 모두 입력해 주세요", "warning")
 			}else{
 				if(userObj.empPw == userObj.empBeforePw){
@@ -428,6 +438,10 @@
 		.done(data => {
 			if(data > 0){
 				swal("성공", "사원 정보수정이 정상적으로 처리되었습니다", "success");
+				empDate.style.display = '';
+				empDateLa.style.display = '';
+				empLeaveDateLa.style.display='none';
+				empLeaveDate.style.display='none';
 				$('#userInsertForm')[0].reset();
 				$('form')[1].reset();
 				 let content = $('#empSearch').val();
@@ -471,6 +485,7 @@
 		let deptCode = grid.getValue(rowKey, 'deptCode');
 		let empTel = grid.getValue(rowKey, 'empTel');
 		
+		
 		$("#empCode").val(empCode);
 		$("#empName").val(empName);
 		$("#empTel").val(empTel);
@@ -484,11 +499,17 @@
 		grid.on('focusChange', () => {
 			grid.removeRowClassName(selectKey, 'selected-cell');
 		})
-		
+		if(rowKey>0){
 		empDate.style.display = 'none';
 		empDateLa.style.display = 'none';
 		empLeaveDateLa.style.display='';
 		empLeaveDate.style.display='';
+		}else{
+			empDate.style.display = '';
+			empDateLa.style.display = '';
+			empLeaveDateLa.style.display='none';
+			empLeaveDate.style.display='none';
+		}
 	})
 	
 	
@@ -502,6 +523,7 @@
 	} */
 	
 	$('#resetDate').on("click", function (){
+		$('form')[0].reset();
 		empDate.style.display = '';
 		empDateLa.style.display = '';
 		empLeaveDateLa.style.display='none';

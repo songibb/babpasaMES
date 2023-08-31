@@ -37,5 +37,11 @@ public class EmpInfoVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private String endDate;
 	
+	
+	
+	
+	//재직 퇴사자 구분
+	private String selectEmpIngSearch;
+	
 
 }
