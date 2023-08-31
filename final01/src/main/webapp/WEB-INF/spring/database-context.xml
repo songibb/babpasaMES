@@ -36,7 +36,8 @@
    		<constructor-arg ref="configurationEncryptor" />
    		<property name="locations">
 			<list>
-			  <value>classpath:config/db_${prop.type}.properties</value>
+<!-- 			  <value>classpath:config/db_${prop.type}.properties</value> -->
+			  <value>classpath:config/db.properties</value>
 			</list>
 		</property>
 	</bean>
