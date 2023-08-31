@@ -32,8 +32,9 @@ public interface OutMapper {
 	//삭제
 	public int deleteOut(OutVO vo);
 	
-	//lot list
-	public List<OutVO> selectLotList();
+//	//lot list
+//	public List<OutVO> selectLotList();
+	
 	//order detail list
 	public List<OutVO> selectOrderDeList();
 	
@@ -48,4 +49,8 @@ public interface OutMapper {
 	
 	//모달 검색 - 주문상세
 	public List<OutVO> selectOrdDeSearchList(String actName);
+	
+	//주문상세에서 해당하는 lot목록만 뜨도록 하는 ajax
+	public List<OutVO> getProdLotList(@Param("prodCode") String prodCode);
+	
 }

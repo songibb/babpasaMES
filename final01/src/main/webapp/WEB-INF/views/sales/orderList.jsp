@@ -246,6 +246,10 @@ form {
 #grid{
    display: inline-block;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 </head>
 <body>
@@ -450,8 +454,7 @@ form {
                     align: 'center'
                 }, {
                     header: '거래처명',
-                    name: 'actName',
-                    align: 'left'
+                    name: 'actName'
                 }, {
                     header: '거래상태',
                     name: 'actSts',
@@ -500,8 +503,7 @@ form {
                     align: 'center'
                 }, {
                     header: '제품명',
-                    name: 'prodName',
-                    align: 'left'
+                    name: 'prodName'
                 }, {
                     header: '제품단위',
                     name: 'prodUnit',
@@ -564,8 +566,7 @@ form {
             }, {
                 header: '거래처',
                 name: 'actName',
-                value: '${order.actName}',
-                align: 'left'
+                value: '${order.actName}'
             }, {
                 header: '생산계획상태',
                 name: 'ordSts',
@@ -582,7 +583,8 @@ form {
                 hidden: true
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }, {
                 header: '생산계획코드',
                 name: 'prcsPlanCode',
@@ -631,13 +633,16 @@ form {
             {
                 header: '주문상세코드',
                 name: 'salesOrdDeCode',
+                sortable: true,
+                sortingType: 'asc',
                 align: 'center'
             }, {
                 header: '납기일자',
                 name: 'devDate',
                 value: '${order.devDate}',
                 className: 'yellow-background',
-                align: 'center'
+                sortable: true,
+                sortingType: 'asc'
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -673,6 +678,13 @@ form {
    grid.on('click', () => {
       let rowKey = grid.getFocusedCell().rowKey;
        let ordCode = grid.getValue(rowKey, 'ordCode');
+     //선택한 행 색깔 바꾸기
+       let selectKey = grid.getFocusedCell().rowKey;
+       grid.addRowClassName(selectKey, 'selected-cell');
+       //다른 행 선택시 기존에 클릭했던 행은 class제거
+       grid.on('focusChange', () => {
+    	   grid.removeRowClassName(selectKey, 'selected-cell');
+       })
        
        console.log(ordCode);
        

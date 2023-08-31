@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.sales.order.service.OrderVO;
-import co.yedam.app.sales.out.service.OutVO;
 import co.yedam.app.sales.rt.service.RtService;
 import co.yedam.app.sales.rt.service.RtVO;
 
@@ -65,9 +64,9 @@ public class RtController {
 	}
 	
 	//모달 ajax(검색용) - 출고
-		@GetMapping("getOutModalSearch")
-		@ResponseBody
-		public List<RtVO> getOutModalSearch(String prodName){
-			return rtService.outSearchList(prodName);
-		}
+	@GetMapping("getOutModalSearch")
+	@ResponseBody
+	public List<RtVO> getOutModalSearch(String prodName){
+		return rtService.outSearchList(prodName);
+	}
 }

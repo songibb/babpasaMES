@@ -51,7 +51,6 @@ public class RtServiceImpl implements RtService {
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 			for(RtVO vo : data.getDeletedRows()) {
 				result += rtMapper.deleteRt(vo);
-			}
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
 			for(RtVO vo : data.getUpdatedRows()) {
@@ -60,7 +59,12 @@ public class RtServiceImpl implements RtService {
 		}
 		if(data.getCreatedRows() != null && data.getCreatedRows().size() > 0) {
 			for(RtVO vo : data.getCreatedRows()) {
-				result += rtMapper.insertRt(vo);
+				if(String.valueOf(vo.getSalesRtWhy()).equals("E")) {
+					result += rtMapper.insertRtE(vo);
+				} else if(String.valueOf(vo.getSalesRtWhy()).equals("J")) {
+					result += rtMapper.insertRt(vo);
+				}
+			}
 			}
 		}
 		return result;
@@ -80,7 +84,5 @@ public class RtServiceImpl implements RtService {
 	public List<RtVO> outSearchList(String prodName) {
 		return rtMapper.selectOutSearchList(prodName);
 	}
-
-
 
 }

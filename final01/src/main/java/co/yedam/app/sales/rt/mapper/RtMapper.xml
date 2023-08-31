@@ -75,19 +75,18 @@
 			, r.sales_rt_why
 			, r.emp_code
 			, e.emp_name
-	FROM sales_rt r left JOIN sales_out o
+	FROM sales_rt r LEFT JOIN sales_out o
                     ON (r.sales_out_code = o.sales_out_code)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
 	ORDER BY sales_rt_code DESC
 	</select>
 	
-	<!-- 등록 -->
+	<!-- 등록-단순변심 -->
 	<insert id="insertRt" parameterType="RtVO">
-	
+	{
 	CALL insert_sales_rt
 			 (
-<!-- 				get_primaryCode('salesRtCode') -->
 				 #{prodCode}
 				, #{salesOutCode}
 				, #{salesRtAmt}
@@ -97,14 +96,28 @@
 				, #{prodLot}
 				, #{salesOrdDeCode}
 			)
+			}
 	</insert>
 	
-	<!-- 수정 -->
-<!-- 	<update id="updateRt" parameterType="RtVO"> -->
-<!-- 			UPDATE sales_rt -->
-<!-- 			SET sales_in_date = #{salesInDate}, sales_in_exd = #{salesInExd} -->
-<!-- 			WHERE prod_lot = #{podLot} -->
-<!-- 	</update> -->
+	<!-- 등록-불량 -->
+	<insert id="insertRtE" parameterType="RtVO">
+	{
+	CALL insert_sales_rt_error
+			 (
+				 #{prodCode}
+				, #{salesOutCode}
+				, #{salesRtAmt}
+				, #{salesRtDate}
+				, #{salesRtWhy}
+				, #{empCode}
+				, #{prodLot}
+				, #{salesOrdDeCode}
+				, #{salesDpAmt}
+				, #{salesDpDate}
+				, #{testNum}
+			)
+			}
+	</insert>
 	
 	<!-- 삭제 -->
 	<delete id="deleteRt" parameterType="RtVO">
