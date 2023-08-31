@@ -72,8 +72,8 @@
 		
 	}
 	#userInsertForm label {
-		margin-top: 8px;
-		margin-bottom : 10px;
+		margin-top: 5px;
+		margin-bottom : 8px;
 		font-size: 20px;
 		font-weight: 400;
 	}
@@ -131,7 +131,7 @@
 							<input id="empDate"  name="empDate" type="date">
 							<label style="display: none;" id="empLeaveDateLa">퇴사일</label>
 							<input id="empLeaveDate"  name="empLeaveDate" type="date" style="display: none;">
-							<div style="text-align: center; margin-bottom: 5px;">
+							<div style="text-align: center; margin-bottom: 0px;">
 							<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
 							<button type="button" class="btn btn-info btn-icon-text" id="resetDate">취소</button>
 							</div>
@@ -174,8 +174,7 @@
 								<i class="fas fa-search"></i>검색
 							</button>
 							<button type="reset"  style="margin-top: 0px" class="btn btn-info btn-icon-text">초기화</button>
-							
-						
+
                </form>
                <h2>사원 목록</h2>
                <div id="grid"></div>
@@ -226,6 +225,8 @@
 					empDateLa.style.display = '';
 					empLeaveDateLa.style.display='none';
 					empLeaveDate.style.display='none';
+					
+					stopEdit();
 			   },
 			   error : function(reject){
 				   console.log(reject);
@@ -256,6 +257,7 @@
 					}
 					})
 			   grid.resetData(data);
+			   stopEdit();
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -410,6 +412,7 @@
 							})
 						
 						  grid.resetData(data);
+					   stopEdit();
 					   
 				   },
 				   error : function(reject){
@@ -463,6 +466,7 @@
 							}
 							})
 						grid.resetData(data);
+					   stopEdit();
 				   },
 				   error : function(reject){
 					   console.log(reject);
@@ -484,13 +488,8 @@
 		let empRole = grid.getValue(rowKey, 'empRole');
 		let deptCode = grid.getValue(rowKey, 'deptCode');
 		let empTel = grid.getValue(rowKey, 'empTel');
+		let empLeaveDateCheck = grid.getValue(rowKey, 'empLeaveDate');
 		
-		
-		$("#empCode").val(empCode);
-		$("#empName").val(empName);
-		$("#empTel").val(empTel);
-		$("#inputRoleList option[value='" + empRole + "']").prop("selected", true);
-		$("#inputDeptList option[value='" + deptCode + "']").prop("selected", true);
 		
 		//선택한 행 색깔 바꾸기
 		let selectKey = grid.getFocusedCell().rowKey;
@@ -499,11 +498,28 @@
 		grid.on('focusChange', () => {
 			grid.removeRowClassName(selectKey, 'selected-cell');
 		})
+		
+		
 		if(rowKey>0){
 		empDate.style.display = 'none';
 		empDateLa.style.display = 'none';
 		empLeaveDateLa.style.display='';
 		empLeaveDate.style.display='';
+		if(empLeaveDateCheck == "-"){
+			
+			$("#empCode").val(empCode);
+			$("#empName").val(empName);
+			$("#empTel").val(empTel);
+			$("#inputRoleList option[value='" + empRole + "']").prop("selected", true);
+			$("#inputDeptList option[value='" + deptCode + "']").prop("selected", true);
+			}else{
+				empDate.style.display = '';
+				empDateLa.style.display = '';
+				empLeaveDateLa.style.display='none';
+				empLeaveDate.style.display='none';
+				$('#userInsertForm')[0].reset();
+			}
+		
 		}else{
 			empDate.style.display = '';
 			empDateLa.style.display = '';
@@ -529,6 +545,17 @@
 		empLeaveDateLa.style.display='none';
 		empLeaveDate.style.display='none';
 	})
+	
+	
+	function stopEdit(){
+		$.each(grid.getData(), function(idx, obj){
+			
+			if(obj['empLeaveDate'] != '-'){
+				grid.disableRow(obj['rowKey']);
+			}
+		})
+	}
+	
 </script>
 </body>
 </html>

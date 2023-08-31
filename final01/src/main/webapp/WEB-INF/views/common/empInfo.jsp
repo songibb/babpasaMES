@@ -92,7 +92,14 @@ label {
 							<br>	
 						<p>사원명</p>
 						<input type="text" placeholder="검색어를 입력하세요" id="empSearch">
-						<br>	
+							<br>
+						<p>재직구분</p>
+                 			<select id="selectEmpIngSearch" name="selectEmpIngSearch">
+							<option value="">선택</option>
+							<option value="재직">재직자</option>
+							<option value="퇴사">퇴사자</option>
+						</select>
+							<br>
 						<p>입사일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-bottom: 35px">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-top: 0">
@@ -135,9 +142,13 @@ label {
 						}else{
 						data[i]['empLeaveDate'] = getDate(empLeaveDate);
 						}
+						  
 						})
 				   grid.resetData(data);
+				   stopEdit();
 				   $('#userInsertForm')[0].reset();
+				   
+				 
 			   },
 			   error : function(reject){
 				   console.log(reject);
@@ -145,11 +156,12 @@ label {
 		   })
 	}
 	//ajax 전체조회
-	  let inputDeptList = $('#inputDeptSearch').val();
+let inputDeptList = $('#inputDeptSearch').val();
 		   let empName = $('#empSearch').val();
 		   let startDate = $('#startDate').val();
 		   let endDate = $('#endDate').val();
-		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate };
+		   let selectEmpIngSearch = $('#selectEmpIngSearch').val();
+		   let search = { inputDeptList : inputDeptList, empName : empName, startDate : startDate, endDate : endDate, selectEmpIngSearch :selectEmpIngSearch };
 	   $.ajax({
 		   url : 'ajaxEmpList',
 		   method : 'GET',
@@ -167,6 +179,7 @@ label {
 					}
 					})
 			   grid.resetData(data);
+			   stopEdit();
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -243,7 +256,14 @@ var grid = new tui.Grid({
 	     });
 	
 	
-	
+	   function stopEdit(){
+			$.each(grid.getData(), function(idx, obj){
+				
+				if(obj['empLeaveDate'] != '-'){
+					grid.disableRow(obj['rowKey']);
+				}
+			})
+		}
 
 </script>
 </body>
