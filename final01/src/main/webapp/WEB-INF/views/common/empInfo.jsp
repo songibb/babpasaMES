@@ -127,7 +127,14 @@ label {
 				   $.each(data, function(i, objDe){
 						let empDate = data[i]['empDate'];
 						data[i]['empDate'] = getDate(empDate);
-					})
+						
+						let empLeaveDate = data[i]['empLeaveDate'];
+						if(empLeaveDate==null){
+							data[i]['empLeaveDate'] = "-";
+						}else{
+						data[i]['empLeaveDate'] = getDate(empLeaveDate);
+						}
+						})
 				   grid.resetData(data);
 				   $('#userInsertForm')[0].reset();
 			   },
@@ -150,7 +157,14 @@ label {
 			   $.each(data, function(i, objDe){
 					let empDate = data[i]['empDate'];
 					data[i]['empDate'] = getDate(empDate);
-				})
+					
+					let empLeaveDate = data[i]['empLeaveDate'];
+					if(empLeaveDate==null){
+						data[i]['empLeaveDate'] = "-";
+					}else{
+					data[i]['empLeaveDate'] = getDate(empLeaveDate);
+					}
+					})
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -189,6 +203,14 @@ var grid = new tui.Grid({
 	           sortingType: 'asc',
 	           className: 'yellow-background'
 	         },
+	         {
+	           header: '퇴사일',
+	           name: 'empLeaveDate',
+	           align: 'center',
+	           sortable: true,
+	           sortingType: 'asc',
+	           className: 'yellow-background'
+		         },
 	         {
 	           header: '직급정보',
 	           name: 'empRole',

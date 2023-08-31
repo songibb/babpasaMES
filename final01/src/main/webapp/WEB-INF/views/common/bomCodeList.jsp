@@ -53,6 +53,10 @@
 	h2{
 		display : inline-block;
 	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
     </style>
 </head>
 <body>
@@ -246,6 +250,14 @@
 			error : function(reject){
 	 			console.log(reject);
 	 		}	
+		})
+		
+		
+		let selectKey = grid.getFocusedCell().rowKey;
+		grid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+		grid.on('focusChange', () => {
+		grid.removeRowClassName(selectKey, 'selected-cell');
 		})
   	});
     

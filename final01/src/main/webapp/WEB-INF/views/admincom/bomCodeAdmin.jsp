@@ -128,6 +128,10 @@
 	.modal input{
 		 width: 60%;
 	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
 /*모달끝*/
 </style>
 <title>BOM관리</title>
@@ -1252,6 +1256,14 @@
 					error : function(reject){
 			 			console.log(reject);
 			 		}	
+				})
+				
+				
+				let selectKey = bomgrid.getFocusedCell().rowKey;
+		    	bomgrid.addRowClassName(selectKey, 'selected-cell');
+				//다른 행 선택시 기존에 클릭했던 행은 class제거
+				bomgrid.on('focusChange', () => {
+					bomgrid.removeRowClassName(selectKey, 'selected-cell');
 				})
 		  	});
 		    

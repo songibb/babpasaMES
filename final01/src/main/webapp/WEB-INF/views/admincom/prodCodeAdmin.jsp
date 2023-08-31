@@ -86,6 +86,10 @@
 	button {
 		margin-top: 0;
 	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
 </style>
 </head>
 <body>
@@ -413,6 +417,13 @@
 			$("#prodTypeList option[value='" + prodKind + "']").prop("selected", true);
 			$("#prodUnit").val(prodUnit);
 			$("#prodStd").val(prodStd);
+			
+			let selectKey = grid.getFocusedCell().rowKey;
+			grid.addRowClassName(selectKey, 'selected-cell');
+			//다른 행 선택시 기존에 클릭했던 행은 class제거
+			grid.on('focusChange', () => {
+			grid.removeRowClassName(selectKey, 'selected-cell');
+			})
 		});
 		
 		

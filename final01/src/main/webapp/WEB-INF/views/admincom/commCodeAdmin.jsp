@@ -60,7 +60,11 @@
 	#matSave, #delete, #matAdd{
 	
 	float : right;
-}
+	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
 
 	</style>
 </head>
@@ -150,6 +154,9 @@
 				data : search ,
 				success : function(data){
 					grid.resetData(data);
+					$("#commCode").val("");
+					grid2.clear();
+					
 				},
 				error : function(reject){
 					console.log(reject);
@@ -268,6 +275,13 @@
 	    	})
 	    	
 	    	$("#commCode").val(commCode);
+	    	
+	    	let selectKey = grid.getFocusedCell().rowKey;
+			grid.addRowClassName(selectKey, 'selected-cell');
+			//다른 행 선택시 기존에 클릭했던 행은 class제거
+			grid.on('focusChange', () => {
+				grid.removeRowClassName(selectKey, 'selected-cell');
+			})
 		});
 		
 		
@@ -308,8 +322,14 @@
 			}
 			
 			
+			
+			
 			//입력 빠뜨린곳 없으면 true
 			let flag = true;
+			//중복된 상세코드 있는 것 체크
+			let use = true;
+			
+			
 			
 			if(grid2.getModifiedRows().createdRows.length > 0 ){
 							
@@ -335,9 +355,16 @@
 				})
 				
 		}
+			$.each(grid2.getColumnValues('commdeCode'), function(i, obj3){
+				$.each(grid2.getColumnValues('commdeCode'), function(j, obj4){
+					if(i!=j && obj3==obj4){
+						use = false;
+						return false;
+					}
+				})
+			})
 			
-			
-			if(flag){
+			if(flag && use){
 				$.ajax({
 					url : 'updateCommCode',
 					method : 'POST',
@@ -346,28 +373,29 @@
 					success : function(data){
 						swal("성공", "저장되었습니다","success");
 						
-						$.ajax({
-							url : 'ajaxCommCodeList',
+				    	let commCode = $("#commCode").val();
+				    	
+				    	$.ajax({
+				    		url : 'ajaxCommDeCodeList',
 							method : 'GET',
-							success : function(result){
-								 grid.resetData(result);
-								 grid2.clear();
-								 $("#commCode").val("");
-								 $("#commSearch").val("");
-								 
-								 
-								 
-							},
+							data : { commCode : commCode },
+							success : function(data){
+				 				grid2.resetData(data);
+				 		    },
 							error : function(reject){
-								console.log(reject);
-							}
-						});
+					 			console.log(reject);
+					 		}
+				    	})
 					},
 					error : function(reject){
 						console.log(reject);
 					}
 				})
-		} else {
+		}else if(!flag && use){
+			swal('경고','모든값이 입력되지 않았습니다','warning');
+		}else if(flag && !use){
+			swal("경고","중복된 상세코드가 있습니다","warning");
+		}else{
 			swal('경고','모든값이 입력되지 않았습니다','warning');
 		}
 

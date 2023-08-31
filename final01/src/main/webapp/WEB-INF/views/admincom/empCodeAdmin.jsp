@@ -86,6 +86,9 @@
         background-color: rgb(255,253,235);
 	}
 	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>
 </head>
 <body>
@@ -124,9 +127,13 @@
 									<option value="${i.commdeCode }">${i.commdeName }</option>
 								</c:forEach>
 							</select>
+							<label id="empDateLa" >입사일</label>
+							<input id="empDate"  type="date">
+							<label style="display: none;" id="empLeaveDateLa">퇴사일</label>
+							<input id="empLeaveDate"  type="date" style="display: none;">
 							<div style="text-align: center; margin-bottom: 5px;">
 							<button type="submit" class="btn btn-info btn-icon-text" id="userInsertBtn">저장</button>
-							<button type="reset" class="btn btn-info btn-icon-text">취소</button>
+							<button type="button" class="btn btn-info btn-icon-text" id="resetDate">취소</button>
 							</div>
 						</form>
 						</div>
@@ -176,7 +183,11 @@
 	</div>
 <script>
 
+/* 	$('#empDate').val(new Date().toISOString().substring(0, 10)); */
+
+
 //사원명검색조회
+	
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
 		let inputDeptList = $('#inputDeptSearch').val();
@@ -192,9 +203,20 @@
 				   $.each(data, function(i, objDe){
 						let empDate = data[i]['empDate'];
 						data[i]['empDate'] = getDate(empDate);
-					})
+						
+						let empLeaveDate = data[i]['empLeaveDate'];
+						if(empLeaveDate==null){
+							data[i]['empLeaveDate'] = "-";
+						}else{
+						data[i]['empLeaveDate'] = getDate(empLeaveDate);
+						}
+						})
 				   grid.resetData(data);
 				   $('#userInsertForm')[0].reset();
+				   empDate.style.display = '';
+					empDateLa.style.display = '';
+					empLeaveDateLa.style.display='none';
+					empLeaveDate.style.display='none';
 			   },
 			   error : function(reject){
 				   console.log(reject);
@@ -215,7 +237,14 @@
 			   $.each(data, function(i, objDe){
 					let empDate = data[i]['empDate'];
 					data[i]['empDate'] = getDate(empDate);
-				})
+					
+					let empLeaveDate = data[i]['empLeaveDate'];
+					if(empLeaveDate==null){
+						data[i]['empLeaveDate'] = "-";
+					}else{
+					data[i]['empLeaveDate'] = getDate(empLeaveDate);
+					}
+					})
 			   grid.resetData(data);
 		   },
 		   error : function(reject){
@@ -254,6 +283,14 @@
 	           sortingType: 'asc',
 	           className: 'yellow-background'
 	         },
+	         {
+		           header: '퇴사일',
+		           name: 'empLeaveDate',
+		           align: 'center',
+		           sortable: true,
+		           sortingType: 'asc',
+		           className: 'yellow-background'
+			 },
 	         {
 	           header: '직급정보',
 	           name: 'empRole',
@@ -317,7 +354,7 @@
 			}
 		}else{
 			e.preventDefault();
-			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == ''){
+			if(userObj.empName == '' || userObj.empTel == '' || userObj.empPw == '' || userObj.empDate == null){
 				swal("경고", "필요정보를 모두 입력해 주세요", "warning")
 			}else{
 				if(userObj.empPw == userObj.empBeforePw){
@@ -353,7 +390,14 @@
 					   $.each(data, function(i, objDe){
 							let empDate = data[i]['empDate'];
 							data[i]['empDate'] = getDate(empDate);
-						})
+							
+							let empLeaveDate = data[i]['empLeaveDate'];
+							if(empLeaveDate==null){
+								data[i]['empLeaveDate'] = "-";
+							}else{
+							data[i]['empLeaveDate'] = getDate(empLeaveDate);
+							}
+							})
 						
 						  grid.resetData(data);
 					   
@@ -396,7 +440,14 @@
 					   $.each(data, function(i, objDe){
 							let empDate = data[i]['empDate'];
 							data[i]['empDate'] = getDate(empDate);
-						})
+							
+							let empLeaveDate = data[i]['empLeaveDate'];
+							if(empLeaveDate==null){
+								data[i]['empLeaveDate'] = "-";
+							}else{
+							data[i]['empLeaveDate'] = getDate(empLeaveDate);
+							}
+							})
 						grid.resetData(data);
 				   },
 				   error : function(reject){
@@ -412,6 +463,7 @@
 	}
 	
 	grid.on('click', ()=>{
+		
 		let rowKey = grid.getFocusedCell().rowKey;
 		let empCode =  grid.getValue(rowKey, 'empCode');
 		let empName = grid.getValue(rowKey, 'empName');
@@ -424,6 +476,36 @@
 		$("#empTel").val(empTel);
 		$("#inputRoleList option[value='" + empRole + "']").prop("selected", true);
 		$("#inputDeptList option[value='" + deptCode + "']").prop("selected", true);
+		
+		//선택한 행 색깔 바꾸기
+		let selectKey = grid.getFocusedCell().rowKey;
+		grid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+		grid.on('focusChange', () => {
+			grid.removeRowClassName(selectKey, 'selected-cell');
+		})
+		
+		empDate.style.display = 'none';
+		empDateLa.style.display = 'none';
+		empLeaveDateLa.style.display='';
+		empLeaveDate.style.display='';
+	})
+	
+	
+/* 	function dateUpdate(){
+		
+		empDate.style.display = '';
+		empDateLa.style.display = '';
+		empLeaveDateLa.style.display='none';
+		empLeaveDate.style.display='none';
+		
+	} */
+	
+	$('#resetDate').on("click", function (){
+		empDate.style.display = '';
+		empDateLa.style.display = '';
+		empLeaveDateLa.style.display='none';
+		empLeaveDate.style.display='none';
 	})
 </script>
 </body>

@@ -8,7 +8,8 @@
   	<select id="selectEmpInfoList" resultType="EmpInfoVO">
   		  		SELECT  emp_code,
 						emp_name,
-						emp_date
+						emp_date,
+						emp_leave_date,
 						emp_role,
 						find_cdnm('0B', emp_role) AS emp_role_name,
 						dept_code,
@@ -21,7 +22,8 @@
   	  	<select id="searchSelectEmp" resultType="EmpInfoVO">
 			SELECT  e.emp_code,
 					e.emp_name,
-					e.emp_date
+					e.emp_date,
+					e.emp_leave_date,
 					e.emp_role,
 					c.commde_name,
 					e.emp_tel
@@ -85,6 +87,7 @@
   		SELECT  emp_code,
 						emp_name,
 						emp_date,
+						emp_leave_date,
 						emp_role,
 						dept_code,
 						find_cdnm('0B', emp_role) AS emp_role_name,

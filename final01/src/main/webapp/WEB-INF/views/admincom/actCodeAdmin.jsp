@@ -81,6 +81,10 @@
 	h2{
 		display: inline-block;
 	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
 </style>
 </head>
 <body>
@@ -408,6 +412,15 @@
 				$("#actTel").val(actTel);
 				$("#inputActList option[value='" + actSts + "']").prop("selected", true);
 				$("#actTypeList option[value='" + actKind + "']").prop("selected", true);
+				
+				
+				let selectKey = grid.getFocusedCell().rowKey;
+				grid.addRowClassName(selectKey, 'selected-cell');
+				//다른 행 선택시 기존에 클릭했던 행은 class제거
+				grid.on('focusChange', () => {
+				grid.removeRowClassName(selectKey, 'selected-cell');
+				})
+				
 				});
 		    
 		    
