@@ -203,19 +203,21 @@
 	</select>
 	
 	<!-- 관리페이지 신규 생산계획 자재 소모량 -->
-	<select id="selectNewPrcsPlan" resultType="MatOrderDeVO">
-		SELECT f.*
-			 , g.mat_name
-			 , g.mat_unit
-			 , g.mat_std
-			 , NVL(h.mat_stock,0) mat_stock
+	<select id="selectNewPrcsPlan" resultType="MatStockVO">
+		SELECT NVL(f.bom_amt, 0) will_use_amt
+                         , g.mat_name
+                         , g.mat_code
+                         , g.mat_unit
+                         , g.mat_std
+                         , g.mat_safe
+                         , NVL(h.mat_stock, 0) total_stock
         FROM
                     (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
                      				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
-                    			END) AS bom_amt
-                    	  , CASE WHEN c.mp_kind='P' THEN e.mp_code
-                    			 WHEN c.mp_kind='M' THEN c.mp_code
-                    			 END AS mat_code
+                    				 END) AS bom_amt
+                    	    , CASE WHEN c.mp_kind='P' THEN e.mp_code
+                    			   WHEN c.mp_kind='M' THEN c.mp_code
+                    			   END AS mat_code
         			 FROM prcs_plan_de a
 	        			 JOIN bom_header b
 	        			 ON(a.prod_code = b.prod_code)
@@ -227,13 +229,37 @@
 	        			 ON(d.bom_no = e.bom_no)
         			 WHERE prcs_dir_sts= 'T1'
         			 	AND b.bom_yn = 'O'
+						<if test="materialCode != null and !materialCode.equals('')">
+							AND g.mat_code LIKE '%' || #{materialCode} || '%'
+						</if>
         			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
                      			   WHEN c.mp_kind='M' THEN c.mp_code
                      			   END) f
-		JOIN com_mat g
+		RIGHT JOIN com_mat g
         ON(f.mat_code = g.mat_code)
         LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
         ON(f.mat_code = h.mat_code)
-        ORDER BY f.mat_code
+        ORDER BY g.mat_code
+	</select>
+	
+	<!-- 해당 자재 거래처 찾기 -->
+	<select id="selectMatBuyAct" resultType="MatOrderDeVO">
+		SELECT c.act_code, d.act_name, c.act_count
+		FROM (SELECT act_code, COUNT(*) act_count
+			  FROM mat_order_de a LEFT JOIN mat_order b
+			  ON(a.mat_od_cd = b.mat_od_cd)
+			  WHERE mat_code = #{matCode}
+			  GROUP BY act_code) c JOIN com_act d
+		ON(c.act_code = d.act_code)
+		ORDER BY c.act_count DESC
+	</select>
+	
+	<!-- 해당 거래처 자재 찾기 -->
+	<select id="selectActSellMat">
+		SELECT mat_code
+		FROM mat_order_de a LEFT JOIN mat_order b
+		ON(a.mat_od_cd = b.mat_od_cd)
+		WHERE act_code = #{actCode}
+		GROUP BY mat_code
 	</select>
 </mapper>

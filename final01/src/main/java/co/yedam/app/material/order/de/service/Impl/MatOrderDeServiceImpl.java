@@ -9,6 +9,7 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.order.de.mapper.MatOrderDeMapper;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
+import co.yedam.app.material.stock.service.MatStockVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 @Service
@@ -59,7 +60,7 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	
 	//신규생산계획 조회
 	@Override
-	public List<MatOrderDeVO> getNewPrcsPlan() {
+	public List<MatStockVO> getNewPrcsPlan() {
 		
 		return modm.selectNewPrcsPlan();
 	}
@@ -93,6 +94,13 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	public List<MatOrderDeVO> getMatListPageOrderListSearch(String accountCode, String startDate, String endDate) {
 		
 		return modm.selectMatListPageOrderListSearch(accountCode, startDate, endDate);
+	}
+	
+	//해당자재 거래처 찾기
+	@Override
+	public List<MatOrderDeVO> getMatBuyAct(String matCode) {
+		
+		return modm.selectMatBuyAct(matCode);
 	}
 
 }

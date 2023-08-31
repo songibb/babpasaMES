@@ -36,7 +36,7 @@
 		display : inline-block;
 	}
 	
-	#searchP input[type="text"] {
+	#grid input[type="text"] ,#searchP input[type="text"] {
 	  width: 15%;
 	  padding: 6px;
 	  margin-bottom: 15px;
@@ -60,7 +60,7 @@
 	}
 	
 	#searchP p{
-		width: 120px;
+		width: 80px;
 		display: inline-block;
 		font-size: 20px;
 	}
@@ -102,6 +102,11 @@
 	#grid{
 		height: 700px;
 		
+	}
+	
+	#grid p{
+		margin-left : 400px;
+		display : inline-block;
 	}
 	
 	.modal_content{
@@ -188,23 +193,27 @@
                 				</button>
             				</div>
         				</div>
-                	<h2>신규 생산계획 자재 소모량</h2>
-		        	<br>
-		            <div id="grid2">
+		            <div id="container" style="display: flex;">
+		           		<div style="flex: 1;"><h2>현재 자재 재고</h2>
+			            <br>
+			            <div id="grid2" style="width: 730px;"></div></div>
+		           		<div style="flex: 1;"><h2>거래처 목록</h2>
+			            <br>
+			            <div id="grid3" style="width: 730px; margin-right: 20px"></div></div>
+	   				</div>
 		            	
 		            
 		            </div>
 		            
 		            
 		            <div id="grid">
-		            <h2>발주 목록</h2>
+		            <h2>발주 목록</h2>	<p>등록 거래처</p> <input type="text" id="matBuyActInput" readOnly><input type="hidden" id="matBuyActInputHidden">
 		            <button type="button" class="btn btn-info btn-icon-text excelDownload">
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
                    	</button>
                    	<button class="btn btn-info btn-icon-text" id="save">저장</button>
-                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
-                	<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button></div>
+                	<button class="btn btn-info btn-icon-text" id="delete">삭제</button></div>
 				</div>
 			</div>
 		</div>
@@ -232,14 +241,15 @@
 		//그리드2 생성
 		var planGrid = new tui.Grid({
 		    el: document.getElementById('grid2'),
-		    data: [<c:forEach items="${planList}" var="plan" varStatus="status">
+		    data: [<c:forEach items="${stockList}" var="stock" varStatus="status">
 		        {
-		        	bomAmt: "${plan.bomAmt}",
-		        	matCode: "${plan.matCode}",
-		        	matName: "${plan.matName}",
-		        	matUnit: "${plan.matUnit}",
-		        	matStd: "${plan.matStd}",
-		        	matStock : "${plan.matStock}"
+		        	matCode: "${stock.matCode}",
+		            matName: "${stock.matName}",
+		            matUnit: "${stock.matUnit}",
+		            matStd: "${stock.matStd}",
+		            totalStock: "${stock.totalStock}",
+		            matSafe: "${stock.matSafe}",
+		            willUseAmt: "${stock.willUseAmt}"
 		        }
 		        <c:if test="${not status.last}">,</c:if>
 		    </c:forEach>
@@ -250,8 +260,6 @@
 		    rowHeaders: [
 		        {
 		            type: 'rowNum'
-		        }, {
-		            type: 'checkbox'
 		        }
 		    ],
 		    pageOptions: {
@@ -259,15 +267,15 @@
 		        perPage: 4
 		    },
 		    columns: [
-		        {
+		    	{
+		            header: '자재코드',
+		            name: 'matCode',
+		            align: 'center',
+		            hidden: true
+		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            editor: 'text',
 		            align: 'left'
-		        }, {
-		            header: '자재코드', // [필수] 컬럼 이름
-		            name: 'matCode', // [선택] 숨김 여부
-		            hidden: true
 		        }, {
 		            header: '단위',
 		            name: 'matUnit',
@@ -277,8 +285,8 @@
 		            name: 'matStd',
 		            align: 'left'
 		        }, {
-		            header: '소모량',
-		            name: 'bomAmt',
+		            header: '현재고',
+		            name: 'totalStock',
 		            formatter(e) {
 		                val = e['value']
 		                    .toString()
@@ -286,10 +294,9 @@
 		                return val;
 		            },
 		            align: 'right'
-		            
 		        }, {
-		        	header: '현재고',
-		            name: 'matStock',
+		            header: '안전재고',
+		            name: 'matSafe',
 		            formatter(e) {
 		                val = e['value']
 		                    .toString()
@@ -297,10 +304,21 @@
 		                return val;
 		            },
 		            align: 'right'
-		        	
+		        }, {
+		        	header: '소모예정량',
+		            name: 'willUseAmt',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            },
+		            align: 'right'
 		        }
 		    ]
 		});
+		
+		
 		
 		planGrid.on('dblclick', () => {
 		    let rowKey = planGrid
@@ -314,8 +332,7 @@
 		        let matUnit = planGrid.getValue(rowKey, 'matUnit');
 		        let matAmt = planGrid.getValue(rowKey, 'bomAmt');
 		        
-		      	//상단의 행 정보는 삭제 그리드에서 행 지움
-		        planGrid.removeRow(rowKey);
+		      	
 		        //마우스 커서 없앰
 		        planGrid.blur();
 	
@@ -327,16 +344,31 @@
 		        let day = ('0' + now.getDate()).substr(-2);
 		        let matOdRq = year + "-" + month + "-" + day;
 	
-		        orderGrid.appendRow({
-		            'matOdRq': matOdRq,
-		            'matCode': matCode,
-		            'matName': matName,
-		            'matStd': matStd,
-		            'matUnit': matUnit,
-		            'matAmt': matAmt,
-		            'empCode': `${user.id}`,
-		            'empName': `${user.empName}`
-		        }, {at: 0});
+		        if(orderGrid.getModifiedRows().createdRows.length > 0){
+		        	orderGrid.appendRow({
+		        		'matOdRq': matOdRq,
+			            'matCode': matCode,
+			            'matName': matName,
+			            'matStd': matStd,
+			            'matUnit': matUnit,
+			            'matAmt': matAmt,
+			            'empCode': `${user.id}`,
+			            'empName': `${user.empName}`,
+			            'actCode': orderGrid.getModifiedRows().createdRows[0].actCode,
+		                'actName': orderGrid.getModifiedRows().createdRows[0].actName
+		            }, {at: 0});
+		        }else {
+		        	orderGrid.appendRow({
+			            'matOdRq': matOdRq,
+			            'matCode': matCode,
+			            'matName': matName,
+			            'matStd': matStd,
+			            'matUnit': matUnit,
+			            'matAmt': matAmt,
+			            'empCode': `${user.id}`,
+			            'empName': `${user.empName}`
+			        }, {at: 0});
+		        }
 		    }
 		});
 		
@@ -352,7 +384,71 @@
 		    })
 		});
 		
+		//거래처 그리드
+		var matActGrid = new tui.Grid({
+		    el: document.getElementById('grid3'),
+		    scrollX: false,
+		    scrollY: false,
+		    minBodyHeight: 160,
+		    rowHeaders: ['rowNum'],
+		    pagination: true,
+		    pageOptions: {
+		        //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+		        useClient: true,
+		        perPage: 4
+		    },
+		    columns: [
+		        {
+		        	header:'거래처코드',
+		        	name:'actCode'
+		        },
+		        {
+		        	header:'거래처명',
+		        	name:'actName'
+		        },
+		        {
+		        	header:'거래횟수',
+		        	name:'actCount'
+		        }
+		    ]
+	
+		});
 		
+		planGrid.on('click', event => {
+			let rowKey = event.rowKey;
+			let matCode = planGrid.getValue(rowKey, 'matCode');
+			
+			$.ajax({
+		        url: 'getMatBuyAct',
+		        method: 'GET',
+		        data : { matCode : matCode },
+		        success: function(result) {
+		        	matActGrid.resetData(result);
+		        },
+		        error : function(reject){
+		        	console.log(reject);
+		        }
+			})
+		})
+		
+		matActGrid.on('click', () => {
+        	let rowKey = matActGrid
+            						.getFocusedCell()
+            						.rowKey;
+        
+     		
+            let actCode = matActGrid.getValue(rowKey, 'actCode');
+            let actName = matActGrid.getValue(rowKey, 'actName');
+                
+            $('#matBuyActInput').val(actName);
+           	$('#matBuyActInputHidden').val(actCode);
+            let beforeAct = orderGrid.getModifiedRows().createdRows;
+            for(data of beforeAct){
+	        	orderGrid.setValue(data.rowKey, 'actCode', actCode);
+	            orderGrid.setValue(data.rowKey, 'actName', actName);
+            }
+
+    	});
 		
 
 		//삭제버튼
@@ -367,28 +463,8 @@
 		document
 		    .getElementById('save')
 		    .addEventListener('click', saveServer);
-		//행추가
-		document
-		    .getElementById('dirAdd')
-		    .addEventListener('click', addDirRow);
 	
-		function addDirRow() {
-		    
-		        
-		        let now = new Date(); // 현재 날짜 및 시간
-		        let year = now.getFullYear();
-		        let month = ('0' + (
-		            now.getMonth() + 1
-		        )).substr(-2);
-		        let day = ('0' + now.getDate()).substr(-2);
-		        let matOdRq = year + "-" + month + "-" + day;
-		        orderGrid.appendRow({
-		            'matOdRq': matOdRq,
-		            'empCode': `${user.id}`,
-		            'empName': `${user.empName}`
-		        }, {at: 0});
-  
-		}
+		
 	
 		//발주 form
 		var orderGrid = new tui.Grid({
@@ -437,7 +513,8 @@
 		            sortable: true,
 		            sortingType: 'asc',
 		            align: 'center'
-		        }, {
+		        },
+		        {
 		            header: '발주일자',
 		            name: 'matOdRq',
 		            className: 'yellow-background',
