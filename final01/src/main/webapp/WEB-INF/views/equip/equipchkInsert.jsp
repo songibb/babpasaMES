@@ -24,6 +24,8 @@
     	h2{
     		font-weight : 800;
     	}
+    	
+    	.selected-cell{background-color: #ffd09e;}
     </style>
 </head>
 <body>
@@ -246,7 +248,7 @@
       		
             {
                header: '비고',
-               name: 'chkNode',
+               name: 'chkNote',
                editor: 'text'
             }
          ]
@@ -255,6 +257,13 @@
 		var cycle;
       grid.on('click', () => {
     	  
+    	let selectKey = grid.getFocusedCell().rowKey;
+  		grid.addRowClassName(selectKey, 'selected-cell');
+  		//다른 행 선택시 기존에 클릭했던 행은 class제거
+  		grid.on('focusChange', () => {
+  			grid.removeRowClassName(selectKey, 'selected-cell');
+  		})
+  		
          let rowKey = grid.getFocusedCell().rowKey;
           let eqCode = grid.getValue(rowKey, 'eqCode');
         
@@ -343,8 +352,9 @@
              data : JSON.stringify(grid2.getModifiedRows()),
              contentType : 'application/json',
              success : function(data){
-          	   
+            	 
                 swal("성공", data+"건이 처리되었습니다","success");
+                
              },
              error : function(reject){
                 console.log(reject);

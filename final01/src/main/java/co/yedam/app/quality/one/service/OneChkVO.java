@@ -47,5 +47,5 @@ public class OneChkVO {
 	private String empName;
 	
 	private String passYn2;
-	
+	private String prodName;
 }

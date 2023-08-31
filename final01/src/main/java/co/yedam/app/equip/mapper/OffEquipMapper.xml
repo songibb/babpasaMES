@@ -18,7 +18,8 @@
 		        ,EQ_NAME
 		        ,FIND_CDNM('0L', EQ_STS) AS EQ_STS
 		FROM EQ_EQUIP
-		WHERE EQ_STS = 'W'
+		WHERE EQ_STS = 'W'  
+        OR EQ_STS = 'Y'
 		ORDER BY EQ_CODE ASC
   	</select>
   	

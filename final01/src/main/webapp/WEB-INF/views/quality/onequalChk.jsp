@@ -22,6 +22,8 @@
 		h1, h2{
 			font-weight: 800;
 		}
+		
+		.selected-cell{background-color: #ffd09e;}
     </style>   
 </head>
 <body>
@@ -106,8 +108,8 @@
 					name: 'prcsIngCode'
 				},
 				{
-					header: '생산코드',
-					name: 'prcsCode'
+					header: '제품명',
+					name: 'prodName'
 				},
 				{
 					header: '생산량',
@@ -216,6 +218,14 @@
 	      //끝
 	      
 		grid.on('click', () => {
+			
+			 let selectKey = grid.getFocusedCell().rowKey;
+	    	  grid.addRowClassName(selectKey, 'selected-cell');
+	    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+	    	  grid.on('focusChange', () => {
+	    		  grid.removeRowClassName(selectKey, 'selected-cell');
+	    	  })
+	    	  
 			let rowKey = grid.getFocusedCell().rowKey;
 	    	let testNum = grid.getValue(rowKey, 'testNum');
 	    	console.log(testNum);
@@ -290,7 +300,7 @@
 					swal("성공", data+"건이 처리되었습니다","success");
 					
 					$.ajax({
-	                      url : 'ajaxOneChkList',
+	                      url : 'ajaxLastPrcsList',
 	                      method : 'GET',
 	                      success : function(result){
 	                         console.log(result);
