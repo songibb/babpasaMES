@@ -234,6 +234,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 
 </head>
@@ -428,7 +432,23 @@ form {
                 header: '반품사유',
                 name: 'salesRtWhy',
                 editor: 'text',
-                value: '${rt.salesRtWhy}'
+                value: '${rt.salesRtWhy}',
+                editor: {
+	                type: 'select',
+	                options: {
+	                    listItems: [
+	                        {
+	                            text: '불량',
+	                            value: 'E'
+	                        }, {
+	                            text: '단순변심',
+	                            value: 'J'
+	                        }
+	                    ]
+	                }
+	            },
+	              align: 'center'
+                
             }, {
                 header: '직원코드',
                 name: 'empCode',
@@ -469,6 +489,15 @@ form {
     });
 
     rtGrid.on('click', () => {
+    	rtGrid.on('click', ()=>{
+    		    //선택한 행 색깔 바꾸기
+    		    	  let selectKey = rtGrid.getFocusedCell().rowKey;
+    		    	  rtGrid.addRowClassName(selectKey, 'selected-cell');
+    		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+    		    	  rtGrid.on('focusChange', () => {
+    		    		  rtGrid.removeRowClassName(selectKey, 'selected-cell');
+    		    	  	})
+    		   	  })
         let rowKey = rtGrid
             .getFocusedCell()
             .rowKey;

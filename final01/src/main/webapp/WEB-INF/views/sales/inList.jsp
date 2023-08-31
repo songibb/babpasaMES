@@ -241,6 +241,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 </head>
 <body>
@@ -507,6 +511,18 @@ form {
     });
 
     setDisabled();
+    
+    grid.on('click', ()=>{
+    //선택한 행 색깔 바꾸기
+    	  let selectKey = grid.getFocusedCell().rowKey;
+    	  grid.addRowClassName(selectKey, 'selected-cell');
+    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+    	  grid.on('focusChange', () => {
+    		  grid.removeRowClassName(selectKey, 'selected-cell');
+    	  	})
+   	  })
+    	  
+  
 
     //비활성화
     function setDisabled() {

@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
-import co.yedam.app.sales.order.service.OrderVO;
 import co.yedam.app.sales.out.service.OutService;
 import co.yedam.app.sales.out.service.OutVO;
-import co.yedam.app.sales.rt.service.RtVO;
 
 @Controller
 public class OutController {
@@ -56,7 +54,7 @@ public class OutController {
 		// 제품 목록 -> 모달
 		model.addAttribute("prodList", outService.prodAllList());
 		
-		model.addAttribute("lotList", outService.LotList());
+//		model.addAttribute("lotList", outService.LotList());
 		
 		model.addAttribute("orderDeList", outService.OrderDeList());
 		return "sales/outMng";
@@ -82,4 +80,12 @@ public class OutController {
 	public List<OutVO> getOrdDeModalSearch(String actName){
 		return outService.ordDeSearchList(actName);
 	}
+	
+	//주문상세에서 해당하는 lot목록만 뜨도록 하는 ajax
+	@GetMapping("getProdLotList")
+	@ResponseBody
+	public List<OutVO> getProdLotList(@RequestParam(value="prodCode", required=false) String prodCode){
+		return outService.getProdLotList(prodCode);
+	}
+	
 }

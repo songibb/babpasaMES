@@ -234,6 +234,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 
 </head>
@@ -439,6 +443,13 @@ form {
     });
 
     disGrid.on('click', () => {
+    	//선택한 행 색깔 바꾸기
+    	let selectKey = disGrid.getFocusedCell().rowKey;
+    	disGrid.addRowClassName(selectKey, 'selected-cell');
+    	//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	disGrid.on('focusChange', () => {
+    		disGrid.removeRowClassName(selectKey, 'selected-cell');
+    	})
         let rowKey = disGrid
             .getFocusedCell()
             .rowKey;

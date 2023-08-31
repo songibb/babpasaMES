@@ -174,15 +174,14 @@
      </delete>
      
      <!-- lot list -->
-     <select id="selectLotList" resultType="OutVO">
+     <select id="getProdLotList" resultType="OutVO">
     SELECT i.*, p.prod_name
    FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
-                   JOIN sales_out o
-                   ON (i.prod_code = o.prod_code)
-                   JOIN sales_ord_de d
-                   ON (o.prod_code = d.prod_code)
-    WHERE i.prod_save_amt <![CDATA[>]]> 0
+    <if test="prodCode != null and !prodCode.equals('')">
+		WHERE i.prod_code = #{prodCode}
+	</if>
+    AND i.prod_save_amt <![CDATA[>]]> 0
      ORDER BY i.prod_lot DESC
      </select>
      
@@ -191,10 +190,6 @@
       SELECT i.*, p.prod_name
    FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
-                   JOIN sales_out o
-                   ON (i.prod_code = o.prod_code)
-                   JOIN sales_ord_de d
-                   ON (o.prod_code = d.prod_code)
     <if test="prodName != null and !prodName.equals('')">
    WHERE p.prod_name LIKE '%' || #{prodName} || '%'
    </if>

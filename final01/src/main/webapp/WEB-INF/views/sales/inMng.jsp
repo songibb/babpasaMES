@@ -103,6 +103,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 
 </head>
@@ -273,6 +277,16 @@ form {
 
         ]
     });
+    
+    inGrid.on('click', ()=>{
+        //선택한 행 색깔 바꾸기
+        	  let selectKey = inGrid.getFocusedCell().rowKey;
+        	  inGrid.addRowClassName(selectKey, 'selected-cell');
+        	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+        	  inGrid.on('focusChange', () => {
+        		  inGrid.removeRowClassName(selectKey, 'selected-cell');
+        	  	})
+       	  })
 
     //test완료 목록 그리드
     var testGrid = new tui.Grid({
@@ -652,6 +666,13 @@ form {
 
     //상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
     testGrid.on('dblclick', () => {
+    	//선택한 행 색깔 바꾸기
+    	let selectKey = testGrid.getFocusedCell().rowKey;
+    	testGrid.addRowClassName(selectKey, 'selected-cell');
+    	//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	testGrid.on('focusChange', () => {
+    		testGrid.removeRowClassName(selectKey, 'selected-cell');
+    	})
         let rowKey = testGrid
             .getFocusedCell()
             .rowKey;

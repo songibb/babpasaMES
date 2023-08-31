@@ -248,6 +248,10 @@ form {
 	background-color: #868e96;
 	border-color: #868e96;
 }
+
+.selected-cell{
+   background-color: #ffd09e;
+}
 </style>
 
 </head>
@@ -526,6 +530,13 @@ form {
     });
 
     outGrid.on('click', () => {
+    	//선택한 행 색깔 바꾸기
+    	let selectKey = outGrid.getFocusedCell().rowKey;
+    	outGrid.addRowClassName(selectKey, 'selected-cell');
+    	//다른 행 선택시 기존에 클릭했던 행은 class제거
+    	outGrid.on('focusChange', () => {
+    		outGrid.removeRowClassName(selectKey, 'selected-cell');
+    	})
         let rowKey = outGrid
             .getFocusedCell()
             .rowKey;
@@ -546,7 +557,6 @@ form {
                 let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
                 console.log(prodLot);
                 console.log(prodCode);
-                console.log(prodName);
                 console.log(prodSaveAmt);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                 outGrid.setValue(rowKey, 'prodLot', prodLot);
@@ -706,7 +716,7 @@ form {
     });
 
     //prodLot modal
-    function createLotGrid() {
+    function createLotGrid(selectProdCode) {
         var odGrid = new tui.Grid({
             el: document.getElementById('modal_label'),
             data: [<c:forEach items="${lotList}" var="lot" varStatus="status">
@@ -789,6 +799,44 @@ form {
             ]
 
         });
+        
+        $.ajax({
+	        url: 'getProdLotList',
+	        method: 'GET',
+	        data: {
+	        	prodCode: selectProdCode
+	        },
+	        success: function (data) {
+	            console.log(data);
+	            $.each(data, function (idx, obj) {
+                 	
+                    let date = new Date(obj['salesInDate']);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    obj['salesInDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                    
+                    date = new Date(obj['salesInExd']);
+                    year = date.getFullYear(); //0000년 가져오기
+                    month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    day = date.getDate(); //일자 가져오기
+                    obj['salesInExd'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                    
+                })
+	            odGrid.resetData(data);
+	        },
+	        error: function (reject) {
+	            console.log(reject);
+	        }
+	    })
 
         return odGrid;
     }

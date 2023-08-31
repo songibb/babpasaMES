@@ -18,8 +18,8 @@ public interface OutService {
 	public List<OutVO> getOutNList();
 	//등록, 수정, 삭제
 	public int modifyOut(GridVO<OutVO> data);
-	//lot list
-	public List<OutVO> LotList();
+//	//lot list
+//	public List<OutVO> LotList();
 	//order detail list
 	public List<OutVO> OrderDeList();
 	//모달 검색 - 제품
@@ -30,4 +30,7 @@ public interface OutService {
 	public List<OutVO> lotSearchList(String prodName);
 	//모달 검색 - 상세주문
 	public List<OutVO> ordDeSearchList(String actName);
+	//주문상세에서 해당하는 lot목록만 뜨도록 하는 ajax
+	public List<OutVO> getProdLotList(String prodCode);
+	
 }
