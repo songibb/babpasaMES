@@ -25,7 +25,7 @@
 	justify-content: space-between;
 }
 .leftGrid{
-    width: 800px;
+    width: 700px;
     margin-right: 20px;
 }
 .leftGridHeader{
@@ -34,7 +34,7 @@
 	justify-content: space-between;
 }
 .rightGrid{
-    width: 800px;
+    width: 900px;
 }
 .rightGridHeader{
 	height: 45px;
@@ -163,10 +163,6 @@ h1, h2{
 		//체크한 행들에서 품질검사부적합이 있는지 체크할 변수
 		let nonPassCk = 0;
 		
-		
-		//반제품 품질검사부적합
-		
-		//완제품 품질검사부적합
 		$.each(checkList, function(i, obj){
 			//담당자는 재지시 버튼 누르는 사람으로 바뀌어야하므로 다시 지정
 			checkList[i]['empCode'] = ${user.id};
@@ -178,7 +174,6 @@ h1, h2{
 
 		})
 		
-		console.log(checkList);
 		if(nonPassCk == 0){
 			//체크한 리스트에 품질검사부적합이 없을시 경고창
 			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
@@ -188,6 +183,10 @@ h1, h2{
 			swal("경고", "체크사항을 다시 확인해주세요", "warning");
 			
 		} else{
+		
+			//반제품 품질검사부적합
+	
+			//완제품 품질검사부적합
 			$.ajax({
 				url : 'insertReDirDe',
 				method : 'POST',
@@ -266,11 +265,13 @@ h1, h2{
           {
             header: '지시코드',
             name: 'prcsDirCode',
+            width: 'auto',
             align: 'center'
           },
           {
             header: '계획코드',
             name: 'prcsPlanCode',
+            width: 'auto',
             align: 'center'
           },
           {
@@ -356,10 +357,13 @@ h1, h2{
             },
             align: 'right'
           },
-//           {
-//             header: '생산시작일자',
-//             name: 'prcsStartDeDate'
-//           },
+          {
+            header: '생산시작일자',
+            name: 'prcsStartDeDate',
+            className: 'yellow-background',
+            width: 'auto',
+            align: 'center'
+          },
 //           {
 //             header: '생산마감일자',
 //             name: 'prcsEndDeDate'

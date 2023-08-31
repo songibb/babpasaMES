@@ -448,7 +448,8 @@
           {
             header: '담당자',
             name: 'empName',
-            editor: 'text'
+            editor: 'text',
+            align: 'center'
           },
           {
 			header: '생산지시여부',

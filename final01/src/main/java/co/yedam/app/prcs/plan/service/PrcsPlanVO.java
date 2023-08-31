@@ -42,6 +42,7 @@ public class PrcsPlanVO {
 	//출력용
 	private String prodName;						//제품명
 	private String empName;							//담당자이름
+	private String prcsPrioKr;						
 	
 	
 	
