@@ -583,6 +583,8 @@
 		$('#empCode').val(empCode);
 		$('#empName').val(empName);
 		
+
+		
 		if($('#prcsStartTime').val() == '' || $('#prcsStartTime').val() == null){			
 			//작업시작시간에 값이 없다면 아직 작업을 시작 안한 것이므로 작동X
 			swal("경고", "아직 작업을 시작하지 않았습니다.", "warning");
@@ -598,8 +600,8 @@
    		} else{
 			//작업 종료 시간 입력
 			let endTime = getDateTime();
-			$('#prcsEndTime').val(endTime);
-					
+			$('#prcsEndTime').val(endTime);		
+			
 			//prcsDirDeCode 가져오기
 			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
 			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
@@ -615,8 +617,7 @@
 	
 			//empCode 가져오기
 			let empCode = document.getElementById('empCode').value;	
-			
-			
+		
 			//프로시저 매개변수에 필요한 값이 담긴 list 만들기
 			let endObj = {};
 			endObj['prcsDirDeCode'] = prcsDirDeCode;
@@ -652,7 +653,7 @@
 
 		
 		$(".modal").fadeOut();			
-	 	eqGridFn.destroy(
+	 	eqGridFn.destroy();
 	 	prcsBomGridFn.destroy();
 	 
 	 	//공정진행관리 조회해서 정보 update
@@ -695,6 +696,14 @@
 			method : 'GET',
 			data : { prcsDirCode : dirCode },
 			success : function(data){
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let psdd = data[i]['prcsStartDeDate'];
+					let pedd = data[i]['prcsEndDeDate'];
+					data[i]['prcsStartDeDate'] = getDate(psdd);
+					data[i]['prcsEndDeDate'] = getDate(pedd);
+				})
+				
 				dirDeGrid.resetData(data);
 				
 				//공정상태 정보 update
@@ -709,6 +718,14 @@
 				dirDeGrid.focus(rowKey2, 'prcsDirDeCode');
 				let selectKey = dirDeGrid.getFocusedCell().rowKey;
 				dirDeGrid.addRowClassName(selectKey, 'selected-cell');
+				
+				//재지시 완료된 행들은 사용불가
+				let dirDeList = dirDeGrid.getData();
+				$.each(dirDeList, function(i, obj){
+					if(dirDeList[i]['reDirCk'] == 'Y'){		
+						dirDeGrid.disableRow(obj['rowKey']);
+					}
+				});	
  		    },
 			error : function(reject){
 	 			console.log(reject);

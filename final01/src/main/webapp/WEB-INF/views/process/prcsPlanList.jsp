@@ -205,7 +205,8 @@ h1, h2{
 //           },
           {
             header: '담당자',
-            name: 'empName'
+            name: 'empName',
+            align: 'center'
           },
           {
             header: '예상생산시작일',

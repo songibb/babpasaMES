@@ -37,6 +37,7 @@
 			   prcs_rq_amt,
 			   prcs_plan_amt,
 			   prcs_prio,
+			   find_cdnm('0Z', prcs_prio) AS prcs_prio_kr,
 			   prcs_dir_amt,
 			   find_cdnm('0Q', prcs_dir_sts) AS prcs_dir_sts,
 			   prcs_amt
