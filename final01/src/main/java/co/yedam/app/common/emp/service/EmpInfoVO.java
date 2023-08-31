@@ -13,6 +13,8 @@ public class EmpInfoVO {
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date empDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date empLeaveDate;
 	private String empPw;
 	private String empRole;
 	private String deptCode;
