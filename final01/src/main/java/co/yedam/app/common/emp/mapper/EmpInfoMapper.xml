@@ -55,7 +55,7 @@
   		) VALUES (
   			get_primarycode('empCode')
   			, #{empName}
-  			, SYSDATE
+  			, #{empDate}
   			, #{empTel}
   			, #{empPw}
   			, #{empRole}
@@ -78,6 +78,9 @@
 						, emp_role = #{empRole}
 						<if test="deptCode != null and !deptCode.equals('')">
 						, dept_code = #{deptCode}
+						</if>
+						<if test="empLeaveDate != null and !empLeaveDate.equals('')">
+						,emp_leave_date = #{empLeaveDate}
 						</if>
 		WHERE	emp_code = #{empCode}	
   	</update>
@@ -107,6 +110,13 @@
 				<if test="endDate != null and endDate != ''">
 					AND TO_CHAR(emp_date, 'YYYY-MM-DD') <![CDATA[<=]]>#{endDate}
 				</if>
+				<if test="selectEmpIngSearch != '' and selectEmpIngSearch != null and selectEmpIngSearch.equals('재직')">
+					AND emp_leave_date is null
+				</if>
+				<if test="selectEmpIngSearch != '' and selectEmpIngSearch != null and selectEmpIngSearch.equals('퇴사')">
+					AND emp_leave_date is not null
+				</if>
+				
 			</where>
 		ORDER BY emp_code
   	</select>
