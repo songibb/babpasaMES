@@ -71,7 +71,7 @@
 	    	          	//선택한 계획의 내역(계획코드, 제품코드, 주문수량) 그리드에 가져오기
 	    	          	dirGrid.setColumnValues('prcsPlanCode', planCode);
 	    	          	dirGrid.setColumnValues('prcsStartDate', prcsStartDate);
-	    	          	
+	    	          	console.log(data);
 	    	          	dirDeGrid.resetData(data);
 	    	          	dirDeGrid.setColumnValues('empCode', ${user.id});
 	    	          	dirDeGrid.setColumnValues('empName', `${user.empName}`);
@@ -143,15 +143,7 @@
 	            	header: '생산예정일',
 	            	name: 'prcsStartDate',
 	            	align: 'center'
-	            },
-	            {
-	                header: '우선순위',
-	                name: 'prcsPrio',
-	                align: 'center',
-	                sortable: true,
-	                sortingType: 'asc'
-	            }
-	            
+	            }	            
 	        ]       
 	    });
 		

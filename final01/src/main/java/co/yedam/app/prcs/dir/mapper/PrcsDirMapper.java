@@ -51,4 +51,7 @@ public interface PrcsDirMapper {
 	
 	//재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정
 	public int updateReDirDe(PrcsDirVO prcsDirVO);
+	
+	//재지시 등록 - 반제품 (상세생산지시)
+	public int insertReDirDeSemi(PrcsDirVO prcsDirVO);
 }

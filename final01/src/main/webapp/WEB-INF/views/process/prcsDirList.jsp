@@ -157,82 +157,146 @@ h1, h2{
 	
 	//재지시 등록 (품질검사부적합시 사용)
 	function reDirInsert(){
-		//체크한 행들의 정보 가져오기
-		let checkList = dirDeGrid.getCheckedRows();
 
-		//체크한 행들에서 품질검사부적합이 있는지 체크할 변수
-		let nonPassCk = 0;
+
+// 		//체크한 행들에서 품질검사부적합이 있는지 체크할 변수
+// 		let nonPassCk = 0;		
+// 		$.each(checkList, function(i, obj){
+// 			//담당자는 재지시 버튼 누르는 사람으로 바뀌어야하므로 다시 지정
+// 			checkList[i]['empCode'] = ${user.id};
+
+// 			//품질검사부적합이 있을 때마다 1씩 증가
+// 			if(checkList[i]['prcsIngSts'] == '품질검사부적합'){
+// 				nonPassCk++;
+// 			}
+
+// 		})
 		
-		$.each(checkList, function(i, obj){
-			//담당자는 재지시 버튼 누르는 사람으로 바뀌어야하므로 다시 지정
-			checkList[i]['empCode'] = ${user.id};
-
-			//품질검사부적합이 있을 때마다 1씩 증가
-			if(checkList[i]['prcsIngSts'] == '품질검사부적합'){
-				nonPassCk++;
-			}
-
-		})
 		
-		if(nonPassCk == 0){
-			//체크한 리스트에 품질검사부적합이 없을시 경고창
-			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
-			
-		} else if(nonPassCk != checkList.length){
-			//체크한 리스트에 품질검사부적합이 없는 사항을 포함했을시 경고창
-			swal("경고", "체크사항을 다시 확인해주세요", "warning");
-			
-		} else{
-		
-			//반제품 품질검사부적합
-	
-			//완제품 품질검사부적합
-			$.ajax({
-				url : 'insertReDirDe',
-				method : 'POST',
-				data : JSON.stringify(checkList),
-				contentType : 'application/json',
-				success : function(data){	
-					console.log(data);
-					swal("성공", "등록이 완료되었습니다.", "success");
-					
-					//클릭한 지시의 지시코드 가져오기
-			    	let rowKey = dirGrid.getFocusedCell().rowKey;
-			    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
-
-			    	$.ajax({
-						url : 'prcsDirDeList',
-						method : 'GET',
-						data : { prcsDirCode : dirCode },
-						success : function(data){
-							//날짜 츨력 포맷 변경
-							$.each(data, function(i, objDe){
-								let psdd = data[i]['prcsStartDeDate'];
-								let pedd = data[i]['prcsEndDeDate'];
-								data[i]['prcsStartDeDate'] = getDate(psdd);
-								data[i]['prcsEndDeDate'] = getDate(pedd);
-							})
-							
-							dirDeGrid.resetData(data);
-							
-							//재지시 완료된 행들은 사용불가
-							$.each(checkList, function(idx, obj){
-								dirDeGrid.disableRow(obj['rowKey']);
-							});
-							
-			 		    },
-						error : function(reject){
-				 			console.log(reject);
-				 		}	
-					})
+		let getRowKey = dirDeGrid.getFocusedCell().rowKey;
+		let getPrcsIngSts = dirDeGrid.getValue(getRowKey, 'prcsIngSts');
+		//상세생산지시에서 품질검사부적합인지 판단
+		if(getPrcsIngSts == '품질검사부적합'){
+			let getIngData = ingGrid.getData();
+			$.each(getIngData, function(i, obj){
 				
-				},
-				error : function(reject){
-					console.log(reject);
-				}
-			});
+				if(obj['prcsDirIngSts'] == '품질검사부적합'){
+					
+					if(obj['semiYn'] == 'Y'){
+						//반제품 품질검사부적합
+						//var prcsCode = obj['prcsCode'];
+						
+						let dirDeList = dirDeGrid.getRow(getRowKey);
+						
+						$.ajax({
+							url : 'insertReDirDeSemi',
+							method : 'POST',
+							data : dirDeList,
+							contentType : 'application/json',
+							success : function(data){
+								console.log(data);
+								
+								//공정완료된 반제품 회색처리
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+						})
+						
+					} else{
+						//완제품 품질검사부적합
+						
+						//체크한 행들의 정보 가져오기
+						let checkList = dirDeGrid.getCheckedRows();
+						$.ajax({
+							url : 'insertReDirDe',
+							method : 'POST',
+							data : JSON.stringify(checkList),
+							contentType : 'application/json',
+							success : function(data){	
+								console.log(data);
+								swal("성공", "등록이 완료되었습니다.", "success");
+								
+								//클릭한 지시의 지시코드 가져오기
+						    	let rowKey = dirGrid.getFocusedCell().rowKey;
+						    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+	
+						    	$.ajax({
+									url : 'prcsDirDeList',
+									method : 'GET',
+									data : { prcsDirCode : dirCode },
+									success : function(data){
+										//날짜 츨력 포맷 변경
+										$.each(data, function(i, objDe){
+											let psdd = data[i]['prcsStartDeDate'];
+											let pedd = data[i]['prcsEndDeDate'];
+											data[i]['prcsStartDeDate'] = getDate(psdd);
+											data[i]['prcsEndDeDate'] = getDate(pedd);
+										})
+										
+										dirDeGrid.resetData(data);
+										
+										//재지시 완료된 행들은 사용불가
+										$.each(checkList, function(idx, obj){
+											dirDeGrid.disableRow(obj['rowKey']);
+										});
+										
+						 		    },
+									error : function(reject){
+							 			console.log(reject);
+							 		}	
+								})
+							
+							},
+							error : function(reject){
+								console.log(reject);
+							}
+						});
+					}			
+				} 
+			})
 
+		} else{
+			//선택한 행이 품질검사부적합이 아닐 경우 경고창
+			swal("경고", "재지시 등록 사항이 아닙니다.", "warning");
 		}
+		
+		
+		
+		
+		
+// 		if(nonPassCk == 0){
+// 			//체크한 리스트에 품질검사부적합이 없을시 경고창
+// 			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
+			
+// 		} else if(nonPassCk != checkList.length){
+// 			//체크한 리스트에 품질검사부적합이 없는 사항을 포함했을시 경고창
+// 			swal("경고", "체크사항을 다시 확인해주세요", "warning");
+			
+// 		} else{
+			//체크한 리스트의 각 진행공정관리 데이터에서 품질검사부적합이 반제품공정인지 아닌지 확인
+			
+// 			$.each()
+				
+// 				if(semiYn == 'Y'){
+// 					//반제품 품질검사부적합
+					
+// 				} else{
+// 					//완제품 품질검사부적합
+// 					
+					
+// 				}
+				
+// 			}
+			
+			
+			
+			
+			
+			
+			
+
+// 		}
 
 	}
 	
@@ -361,7 +425,6 @@ h1, h2{
             header: '생산시작일자',
             name: 'prcsStartDeDate',
             className: 'yellow-background',
-            width: 'auto',
             align: 'center'
           },
 //           {
@@ -481,7 +544,13 @@ h1, h2{
             header: '공정상태',
             name: 'prcsDirIngSts',
             align: 'center'
+          },
+          {
+            header: '반제품공정유무',
+            name: 'semiYn',
+            hidden: true
           }
+         
         ]
       })  
 	

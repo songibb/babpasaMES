@@ -42,7 +42,7 @@ public interface PrcsDirService {
 	//재지시 등록 - 완제품 (상세생산지시)
 	public int insertReDirDe(List<PrcsDirVO> reDirList);
 	
-	
-	
+	//재지시 등록 - 반제품 (상세생산지시)
+	public int insertReDirDeSemi(PrcsDirVO prcsDirVO);
 	
 }
