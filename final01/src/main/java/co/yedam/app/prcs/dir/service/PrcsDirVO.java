@@ -45,4 +45,7 @@ public class PrcsDirVO {
 	private String empName;
 	private String prodName;
 	
+	//우선순위 JOIN 
+	private String prcsPrio;			
+	
 }

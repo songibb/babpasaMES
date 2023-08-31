@@ -7,18 +7,19 @@
 
 	<!-- 진행 공정 조회 -->
 	<select id="selectPrcsIngList" resultType="PrcsIngVO">
-		SELECT prcs_ing_code,
-			   prcs_dir_de_code,
-			   prod_code,
-			   find_prod_name(prod_code) AS prod_name,
-			   prcs_code,
-        	   find_prcs_name(prcs_code) AS prcs_name,
-			   prcs_seq,
-			   input_amt,
-			   err_amt,
-			   prcs_amt,
-			   find_cdnm('0S', prcs_dir_ing_sts) AS prcs_dir_ing_sts
-		  FROM prcs_ing
+		SELECT i.prcs_ing_code,
+			   i.prcs_dir_de_code,
+			   i.prod_code,
+			   find_prod_name(i.prod_code) AS prod_name,
+			   i.prcs_code,
+        	   find_prcs_name(i.prcs_code) AS prcs_name,
+			   i.prcs_seq,
+			   i.input_amt,
+			   i.err_amt,
+			   i.prcs_amt,
+			   find_cdnm('0S', i.prcs_dir_ing_sts) AS prcs_dir_ing_sts,
+			   m.semi_yn
+		  FROM prcs_ing i JOIN prcs_manage m ON i.prcs_code = m.prcs_code
 		 WHERE prcs_dir_de_code = #{prcsDirDeCode} 
 		 	   AND prod_code = #{prodCode}
 		 ORDER BY prcs_seq

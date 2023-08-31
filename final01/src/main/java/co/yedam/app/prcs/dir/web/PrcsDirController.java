@@ -113,13 +113,19 @@ public class PrcsDirController {
 	}
 	
 	
-	//재지시 등록 (상세생산지시)
+	//재지시 등록 - 완제품 (상세생산지시)
 	@PostMapping("insertReDirDe")
 	@ResponseBody
 	public int insertReDirDe(@RequestBody List<PrcsDirVO> reDirList){
 		return prcsDirService.insertReDirDe(reDirList);
 	}
 	
+	//재지시 등록 - 반제품 (상세생산지시)
+	@PostMapping("insertReDirDeSemi")
+	@ResponseBody
+	public int insertReDirDeSemi(PrcsDirVO prcsDirVO){
+		return prcsDirService.insertReDirDeSemi(prcsDirVO);
+	}
 	
 	
 	

@@ -113,8 +113,7 @@
 			   p.prcs_plan_code, 
 			   p.prcs_plan_name,
 			   p.prcs_plan_date, 
-			   p.prcs_start_date,
-			   find_cdnm('0Z', d.prcs_prio) AS prcs_prio
+			   p.prcs_start_date
 		  FROM prcs_plan p JOIN prcs_plan_de d
                              ON p.prcs_plan_code = d.prcs_plan_code
          WHERE d.prcs_dir_sts = 'T1'
@@ -126,7 +125,8 @@
         SELECT d.prcs_plan_de_code,
                d.prod_code,
                find_prod_name(d.prod_code) AS prod_name,
-               d.prcs_plan_amt
+               d.prcs_plan_amt,
+               find_cdnm('0Z', d.prcs_prio) AS prcs_prio
 		  FROM prcs_plan p JOIN prcs_plan_de d
                              ON p.prcs_plan_code = d.prcs_plan_code
          WHERE d.prcs_plan_code = #{prcsPlanCode} AND d.prcs_dir_sts = 'T1' 
@@ -205,7 +205,19 @@
 	<!-- 재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정 -->
 	<update id="updateReDirDe" parameterType="PrcsDirVO">
 		UPDATE prcs_dir_de
-		SET re_dir_ck = 'Y'
-		WHERE prcs_dir_de_code = #{prcsDirDeCode}
+		   SET re_dir_ck = 'Y'
+		 WHERE prcs_dir_de_code = #{prcsDirDeCode}
 	</update>
+	
+	
+	<!-- 재지시 등록 - 반제품 (상세생산지시) -->
+	<insert id="insertReDirDeSemi" parameterType="PrcsDirVO">
+		{
+			CALL PR_SEMI_RE_DIR(
+				#{prcsDirDeCode},
+				#{empCode}
+			)
+		}
+	</insert>
+
 </mapper>

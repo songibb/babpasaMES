@@ -378,6 +378,11 @@ h1, h2{
 //             name: 'prcsPlanDeCode',
 //             hidden: false
 //           },
+		  {
+            header: '우선순위',
+            name: 'prcsPrio',
+            align: 'center'
+          },
        	  {
             header: '제품코드',
             name: 'prodCode',
