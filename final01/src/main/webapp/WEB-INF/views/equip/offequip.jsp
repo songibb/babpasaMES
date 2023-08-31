@@ -83,6 +83,8 @@
 		#offStime{
 			width:200px;
 		}
+		
+		.selected-cell{background-color: #ffd09e;}
     </style>
     
 </head>
@@ -114,7 +116,7 @@
 									         <label>설비명</label>
 									        	 <input type="text" name="eqName" id="eqName">
 												<br>
-									         <label>비가동구분</label>
+									         <label>비가동사유</label>
 									         	<input type="text" name="offType" id="offType">
 												<br>
 									         <label>작업내용</label>
@@ -257,7 +259,7 @@
 			 	    name: 'eqName'
 			 	  },
 		 	      {
-		 	        header: '비가동구분',
+		 	        header: '비가동사유',
 		 	        name: 'offType'
 		 	      },
 		 	      {
@@ -500,6 +502,14 @@ $("#insertForm").on('submit', function(e){
 	
 	//조회 그리드 행 클릭시 해당 행 정보 input박스에 채우기 
 	grid.on('click', () => {
+		
+		let selectKey = grid.getFocusedCell().rowKey;
+		grid.addRowClassName(selectKey, 'selected-cell');
+		//다른 행 선택시 기존에 클릭했던 행은 class제거
+		grid.on('focusChange', () => {
+			grid.removeRowClassName(selectKey, 'selected-cell');
+		})
+		
 		let rowKey = grid.getFocusedCell().rowKey;
 		let offNo = grid.getValue(rowKey, 'offNo');
 		let offCode = grid.getValue(rowKey, 'offCode');

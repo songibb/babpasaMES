@@ -47,7 +47,6 @@
   			,#{matAmt}
   			,#{matYamt}
   			,#{matNamt}
-  			,#{matTestDate}
   			,#{errCode}
   			,#{empCode}
   			,#{matOdDeCd}
@@ -61,7 +60,6 @@
   		UPDATE MAT_TEST
   		SET MAT_YAMT =#{matYamt}
   			,MAT_NAMT =#{matNamt}
-  			,MAT_TEST_DATE =#{matTestDate}
   			,ERR_CODE =#{errCode}
   			,EMP_CODE =#{empCode}
   			,ERR_RT_STS =#{errRtSts}

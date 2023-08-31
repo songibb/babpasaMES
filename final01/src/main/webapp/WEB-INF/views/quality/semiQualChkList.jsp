@@ -35,13 +35,15 @@
 		width: 90px;
 		display: inline-block;
 		font-size: 20px;
-	}
+		}
 	
 		.yellow-background {
 	        background-color: rgb(255,253,235);
 		}
 		
 		.my-styled-cell {background-color: rgb(255, 229, 229)}
+		
+		.selected-cell{background-color: #ffd09e;}
 	
 	</style>
 </head>
@@ -137,8 +139,8 @@
                width: 'auto'
             },
             {
-               header: '생산코드',
-               name: 'prcsCode',
+               header: '반제품명',
+               name: 'prodName',
                width: 'auto'
             },
             {
@@ -274,6 +276,12 @@
       
       grid.on('click', () => {
     	  
+    	  let selectKey = grid.getFocusedCell().rowKey;
+    	  grid.addRowClassName(selectKey, 'selected-cell');
+    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+    	  grid.on('focusChange', () => {
+    		  grid.removeRowClassName(selectKey, 'selected-cell');
+    	  })
     	  
          let rowKey = grid.getFocusedCell().rowKey;
           let testNum = grid.getValue(rowKey, 'testNum');

@@ -5,49 +5,37 @@
   <mapper namespace="co.yedam.app.quality.semi.mapper.SemiChkMapper">
   	<!-- 공정 진행중 조회 -->
   	<select id="selectPrcsIng" resultType="SemiChkVO">
-  		SELECT A.TEST_NUM
-  			   ,B.PRCS_ING_CODE
-  			   ,B.PRCS_CODE
-  			   ,B.PRCS_AMT
-  			   ,A.PASS_AMT
-  			   ,A.NON_PASS_AMT
-  			   ,c.semi_yn 
-		FROM prod_quality a 
-
-		JOIN prcs_ing b
-		  ON (a.prcs_ing_code = b.prcs_ing_code)
-		  
-		JOIN prcs_manage c
-		  ON (b.prcs_code = c.prcs_code)
-		  
-		WHERE b.prcs_dir_ing_sts = 'S3' 
-		  and c.semi_yn = 'Y'
-		  
-		ORDER BY prcs_ing_code
+  		SELECT a.test_num, 
+  				a.test_date, 
+  				a.prcs_ing_code, 
+  				b.prcs_code, 
+  				c.prod_name, 
+  				b.prcs_amt, 
+  				a.pass_amt, 
+  				a.non_pass_amt
+        FROM prod_quality a JOIN prcs_ing b ON a.prcs_ing_code = b.prcs_ing_code
+                            JOIN v_semi_all c ON b.prod_code = c.prod_code 
+                            					AND b.prcs_code = c.prcs_code
+                            
+		WHERE a.test_date IS NULL	  
+		ORDER BY TEST_DATE DESC
   	</select>
   
   <!-- 조회 페이지 : 모든 공정 진행 중 조회  -->
   <select id="selectAllPrcsIng" resultType="SemiChkVO">
-  		SELECT A.TEST_NUM
-  			   ,A.TEST_DATE
-  			   ,B.PRCS_ING_CODE
-  			   ,B.PRCS_CODE
-  			   ,B.PRCS_AMT
-  			   ,A.PASS_AMT
-  			   ,A.NON_PASS_AMT
-  			   ,c.semi_yn 
-  			   
-		FROM prod_quality a 
-
-		JOIN prcs_ing b
-		  ON (a.prcs_ing_code = b.prcs_ing_code)
-		  
-		JOIN prcs_manage c
-		  ON (b.prcs_code = c.prcs_code)
-		  
-		WHERE c.semi_yn = 'Y'
-		AND test_date IS NOT NULL
-		  
+  		SELECT a.test_num, 
+  				a.test_date, 
+  				a.prcs_ing_code, 
+  				b.prcs_code, 
+  				c.prod_name, 
+  				b.prcs_amt, 
+  				a.pass_amt, 
+  				a.non_pass_amt
+        FROM prod_quality a JOIN prcs_ing b ON a.prcs_ing_code = b.prcs_ing_code
+                            JOIN v_semi_all c ON b.prod_code = c.prod_code 
+                            					AND b.prcs_code = c.prcs_code
+                            
+		WHERE a.test_date IS NOT NULL	  
 		ORDER BY TEST_DATE DESC
 	</select>
 	

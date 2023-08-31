@@ -45,6 +45,8 @@
 	}
 	
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
+	
+	.selected-cell{background-color: #ffd09e;}
 	</style> 
 </head>
 <body>
@@ -138,8 +140,8 @@
 	               width: 'auto'
 	            },
 	            {
-	               header: '공정코드',
-	               name: 'prcsCode',
+	               header: '제품명',
+	               name: 'prodName',
 	               width: 'auto'
 	            },
 	            {
@@ -266,6 +268,14 @@
       //끝
 	      
 	grid.on('click', () => {
+		
+		 let selectKey = grid.getFocusedCell().rowKey;
+	   	  grid.addRowClassName(selectKey, 'selected-cell');
+	   	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+	   	  grid.on('focusChange', () => {
+	   		  grid.removeRowClassName(selectKey, 'selected-cell');
+	   	  })
+   	  
 		let rowKey = grid.getFocusedCell().rowKey;
     	let testNum = grid.getValue(rowKey, 'testNum');
     	console.log(testNum);
@@ -283,7 +293,7 @@
    	
    		        if (Number(obj['passValue']) < Number(obj['testResult'])) {
    		            let rowKey = obj['rowKey'];
-   		            grid2.addCellClassName(rowKey, 'passYn2', 'my-styled-cell');
+   		         	grid2.addRowClassName(rowKey,'my-styled-cell');
    		        }
    		    })
  				

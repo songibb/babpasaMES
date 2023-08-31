@@ -161,7 +161,7 @@
 			 	 		name : 'matName'
 		 	 	  },
 	 	 	      {
-			 			header: '자재전체투입량',
+			 			header: '전체자재량',
 			 		 	name: 'matAmt',
 			 		 	formatter(e) {
 	                    	if (e['value'] != null){
@@ -210,12 +210,6 @@
 	              {
 		 	 	        header: '검수일자',
 		 	 	        name: 'matTestDate',
-		 	 	      	editor: {
-		 	  		      type: 'datePicker',
-		 	  		      options: {
-		 	  		    	  language: 'ko'
-		 	  		      }
-		 	  		    },
 				 	  	className: 'yellow-background'
 		 	 	  },
 		 	 	  {
@@ -346,10 +340,24 @@
 							url : 'ajaxMatQualList',
 							method : 'GET',
 							success : function(result){
-								console.log(result);
-								matgrid.resetData(result);
 								
-							 
+							  $.each(result, function(i, objDe){
+				 					let td = result[i]['matTestDate'];
+				 					
+				 					result[i]['matTestDate'] = getDate(td);
+
+				 				}) 
+								
+								matgrid.resetData(result);
+
+							     $.each(result, function (idx, obj) {
+
+							        if (obj['errRtStsName'] == '반품요청완료' || obj['errRtStsName'] == '반품요청전') {
+							            let rowKey = obj['rowKey'];
+							            matgrid.addRowClassName(rowKey, 'my-styled-cell');
+							        }
+							    }) 
+							    	 
 								setDisabled();
 	
 							},
@@ -375,7 +383,7 @@
 	
 	//사원코드 - 행 클릭 모달
     var Grid;
-    matgrid.on('click', ev => {
+    matgrid.on('click', (ev) => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
    	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
@@ -464,7 +472,7 @@
 	
   //불량코드 - 행 클릭 모달
     var Grid;
-    matgrid.on('click', () => {
+    matgrid.on('click', (ev) => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
 	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
@@ -549,7 +557,7 @@
 	
 	//불량반품상태 - 행 클릭 모달
     var Grid;
-    matgrid.on('click', () => {
+    matgrid.on('click', (ev) => {
    	let rowKey = matgrid.getFocusedCell().rowKey;
    	let columnName = matgrid.getFocusedCell().columnName;
 	let errRtStsName = matgrid.getValue(rowKey, 'errRtStsName');
