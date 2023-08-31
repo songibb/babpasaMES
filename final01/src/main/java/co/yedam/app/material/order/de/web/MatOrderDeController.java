@@ -16,6 +16,7 @@ import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.in.service.MatModalService;
 import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
+import co.yedam.app.material.stock.service.MatStockVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 
@@ -69,7 +70,7 @@ public class MatOrderDeController {
 		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		//신규생산계획 조회
-		model.addAttribute("planList", mods.getNewPrcsPlan());
+		model.addAttribute("stockList", mods.getNewPrcsPlan());
 		return "material/matOrderDir";
 	}
 		
@@ -83,7 +84,7 @@ public class MatOrderDeController {
 	//plan Grid 데이터 리셋
 	@GetMapping("getResetPlanGridData")
 	@ResponseBody
-	public List<MatOrderDeVO> getResetPlanGridData(){
+	public List<MatStockVO> getResetPlanGridData(){
 		return mods.getNewPrcsPlan();
 	}
 	
@@ -92,6 +93,13 @@ public class MatOrderDeController {
 	@ResponseBody
 	public List<OrderVO> getActMatModalSearch(String actName){
 		return mods.getActMatModalSearch(actName);
+	}
+	
+	//해당 자재 거래처 찾기
+	@GetMapping("getMatBuyAct")
+	@ResponseBody
+	public List<MatOrderDeVO> getMatBuyAct(String matCode){
+		return mods.getMatBuyAct(matCode);
 	}
 	
 }

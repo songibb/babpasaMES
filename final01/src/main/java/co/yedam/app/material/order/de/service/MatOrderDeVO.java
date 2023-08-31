@@ -29,5 +29,5 @@ public class MatOrderDeVO {
 	private String matStd;
 	private Integer bomAmt;
 	private Integer matStock;
-	
+	private Integer actCount;
 }

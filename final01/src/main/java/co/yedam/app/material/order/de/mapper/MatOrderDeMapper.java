@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.order.de.service.MatOrderDeVO;
+import co.yedam.app.material.stock.service.MatStockVO;
 import co.yedam.app.sales.order.service.OrderVO;
 
 public interface MatOrderDeMapper {
@@ -29,7 +30,7 @@ public interface MatOrderDeMapper {
 	public int deleteMatOrderDeList(MatOrderDeVO vo);
 	
 	//신규생산계획
-	public List<MatOrderDeVO> selectNewPrcsPlan();
+	public List<MatStockVO> selectNewPrcsPlan();
 	
 	
 	//자재 거래처 모달
@@ -46,4 +47,7 @@ public interface MatOrderDeMapper {
 	
 	//상세 그리드
 	public List<MatOrderDeVO> selectMatListPageOrderDeList(String matOdCd);
+	
+	//해당 자재 거래처찾기
+	public List<MatOrderDeVO> selectMatBuyAct(String matCode);
 }
