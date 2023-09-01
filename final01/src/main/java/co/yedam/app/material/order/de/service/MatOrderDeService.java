@@ -18,7 +18,7 @@ public interface MatOrderDeService {
 	public int modifyMatOrder(GridVO<MatOrderDeVO> data);
 	
 	//신규생산계획 조회
-	public List<MatStockVO> getNewPrcsPlan();
+	public List<MatStockVO> getNewPrcsPlan(String materialName);
 
 	
 	//자재 거래처 모달

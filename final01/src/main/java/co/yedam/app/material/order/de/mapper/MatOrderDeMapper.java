@@ -30,7 +30,7 @@ public interface MatOrderDeMapper {
 	public int deleteMatOrderDeList(MatOrderDeVO vo);
 	
 	//신규생산계획
-	public List<MatStockVO> selectNewPrcsPlan();
+	public List<MatStockVO> selectNewPrcsPlan(String materialName);
 	
 	
 	//자재 거래처 모달

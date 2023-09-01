@@ -325,8 +325,9 @@
 		    let data = grid.getData();
 	
 		    $.each(data, function (idx, obj) {
+		    	
 	
-		        if (Number(obj['totalStock']) < Number(obj['matSafe'])) {
+		        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
 		            let rowKey = obj['rowKey'];
 		            grid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
 		        }
@@ -465,6 +466,15 @@
 		                grid2.destroy();
 		                grid2 = createGrid2();
 		            }
+		            
+		            
+		            $.each(data, function(idx, obj){
+		            	if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+				            let rowKey = obj['rowKey'];
+				            grid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
+				        }
+		            })
+
 	
 		        },
 		        error: function (reject) {

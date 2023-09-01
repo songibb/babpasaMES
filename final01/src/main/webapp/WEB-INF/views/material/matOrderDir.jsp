@@ -158,6 +158,28 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	#insertActInputBox{
+		display : inline-block;
+		margin-left : 400px;
+	}
+	
+	#searchGrid3Input, #searchGrid2Input{
+		width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	#searchGrid2, #searchGrid3{
+		display : inline-block;
+		margin-left : 290px;
+	}
+	
+	#matActGridTitle{
+		margin-bottom : 17px;
+	}
 /*모달끝*/
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>    
@@ -197,10 +219,16 @@
             				</div>
         				</div>
 		            <div id="container" style="display: flex;">
-		           		<div style="flex: 1;"><h2>현재 자재 재고</h2>
+		           		<div style="flex: 1;"><h2>현재 자재 재고</h2><p id="searchGrid2">자재명</p> <input type="text" id="searchGrid2Input">
+		           		<button type="button" class="btn btn-info btn-icon-text" id="searchBtn2">
+                    				<i class="fas fa-search"></i>
+                    					검색
+                				</button>
 			            <br>
 			            <div id="grid2" style="width: 730px;"></div></div>
-		           		<div style="flex: 1;"><h2>거래처 목록</h2>
+		           		<div style="flex: 1;"><h2 id="matActGridTitle">거래처 목록</h2><input type="hidden" id="searchGrid3Input">
+		           		
+                    				
 			            <br>
 			            <div id="grid3" style="width: 730px; margin-right: 20px"></div></div>
 	   				</div>
@@ -210,7 +238,7 @@
 		            
 		            
 		            <div id="grid">
-		            <h2>발주 목록</h2>	<p id="">등록 거래처</p> <input type="text" id="matBuyActInput" readOnly><input type="hidden" id="matBuyActInputHidden">
+		            <h2>발주 목록</h2>	<p id="insertActInputBox">등록 거래처</p> <input type="text" id="matBuyActInput" readOnly><input type="hidden" id="matBuyActInputHidden">
 		            <button type="button" class="btn btn-info btn-icon-text excelDownload">
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
@@ -321,6 +349,23 @@
 		    ]
 		});
 		
+		$('#searchBtn2').on('click', function(e){
+			
+			let materialName = $('#searchGrid2Input').val();
+			$.ajax({
+				url :'getResetPlanGridData',
+				method : 'GET',
+				data : { materialName : materialName },
+				success : function(result){
+					console.log(result);
+					planGrid.resetData(result);
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		})
+		
 		
 		
 		planGrid.on('dblclick', () => {
@@ -336,6 +381,9 @@
 		        let totalStock = planGrid.getValue(rowKey, 'totalStock');
 		        let matSafe = planGrid.getValue(rowKey, 'matSafe');
 		        let willUseAmt = planGrid.getValue(rowKey, 'willUseAmt');
+		        let actName = $('#matBuyActInput').val();
+	           	
+		        let actCode = $('#matBuyActInputHidden').val();
 		        
 		        let matAmt = Number(willUseAmt) + Number(matSafe) - Number(totalStock);
 		        if(matAmt < 0){
@@ -371,38 +419,53 @@
 		        		}
 		        	})
 		        }
+		       
+		        let totalPrice = Number(matPrice) * Number(matAmt);
 		        
+		        let isExist = false;
 		        
-		        if(orderGrid.getModifiedRows().createdRows.length > 0){
-		        	
-		        	
-		        	
-		        	orderGrid.appendRow({
-		        		'matOdRq': matOdRq,
-			            'matCode': matCode,
-			            'matName': matName,
-			            'matStd': matStd,
-			            'matUnit': matUnit,
-			            'matAmt': matAmt,
-			            'empCode': `${user.id}`,
-			            'empName': `${user.empName}`,
-			            'actCode': orderGrid.getModifiedRows().createdRows[0].actCode,
-		                'actName': orderGrid.getModifiedRows().createdRows[0].actName,
-		                'matPrice': matPrice
-		            }, {at: 0});
-		        }else {
-		        	orderGrid.appendRow({
-			            'matOdRq': matOdRq,
-			            'matCode': matCode,
-			            'matName': matName,
-			            'matStd': matStd,
-			            'matUnit': matUnit,
-			            'matAmt': matAmt,
-			            'empCode': `${user.id}`,
-			            'empName': `${user.empName}`,
-			            'matPrice' : matPrice
-			        }, {at: 0});
-		        }
+		        $.each(orderGrid.getModifiedRows().createdRows, function(idx,obj){
+	        		if(obj['matCode'] == matCode){
+	        			swal("경고", "이미 발주 등록한 자재입니다", "warning");
+	        			isExist = true;
+	        			return false;
+	        		}
+	        	})
+	        	
+	        	if(!isExist){
+	        		if(orderGrid.getModifiedRows().createdRows.length > 0){
+			        	orderGrid.appendRow({
+			        		'matOdRq': matOdRq,
+				            'matCode': matCode,
+				            'matName': matName,
+				            'matStd': matStd,
+				            'matUnit': matUnit,
+				            'matAmt': matAmt,
+				            'empCode': `${user.id}`,
+				            'empName': `${user.empName}`,
+				            'actCode': orderGrid.getModifiedRows().createdRows[0].actCode,
+			                'actName': orderGrid.getModifiedRows().createdRows[0].actName,
+			                'matPrice': matPrice,
+			                'matTotalPrice' : totalPrice
+			            }, {at: 0});
+			        }else {
+			        	orderGrid.appendRow({
+				            'matOdRq': matOdRq,
+				            'matCode': matCode,
+				            'matName': matName,
+				            'matStd': matStd,
+				            'matUnit': matUnit,
+				            'matAmt': matAmt,
+				            'empCode': `${user.id}`,
+				            'empName': `${user.empName}`,
+				            'matPrice' : matPrice,
+				            'actName' : actName,
+				            'actCode' : actCode,
+				            'matTotalPrice' : totalPrice
+				        }, {at: 0});
+			        }
+	        	}
+		        
 		    }
 		});
 		
@@ -465,20 +528,23 @@
 			let rowKey = event.rowKey;
 			let matCode = planGrid.getValue(rowKey, 'matCode');
 			
-			$.ajax({
-		        url: 'getMatBuyAct',
-		        method: 'GET',
-		        data : { matCode : matCode },
-		        success: function(result) {
-		        	matActGrid.resetData(result);
-		        },
-		        error : function(reject){
-		        	console.log(reject);
-		        }
-			})
+			if(rowKey != null && rowKey >= 0){
+				$.ajax({
+			        url: 'getMatBuyAct',
+			        method: 'GET',
+			        data : { matCode : matCode },
+			        success: function(result) {
+			        	matActGrid.resetData(result);
+			        },
+			        error : function(reject){
+			        	console.log(reject);
+			        }
+				})
+			}
+			
 		})
 		
-		matActGrid.on('click', () => {
+		matActGrid.on('dblclick', () => {
         	let rowKey = matActGrid
             						.getFocusedCell()
             						.rowKey;
@@ -705,8 +771,8 @@
 	
 		setDisabled();
 	
-		orderGrid.on('afterChange', (ev) => {
-	
+		orderGrid.on('afterChange', ev => {
+			
 		    let change = ev.changes[0];
 		    let rowData = orderGrid.getRow(change.rowKey);
 		    let totalPrice = rowData.matPrice * rowData.matAmt;
@@ -763,6 +829,9 @@
 		                swal("성공", data + "건이 처리되었습니다.", "success");
 		                selectAjax();
 		                resetPlanGrid();
+		                matActGrid.clear();
+		                $('#matBuyActInput').val("");
+				        $('#matBuyActInputHidden').val("");
 		            },
 		            error: function (reject) {
 		                console.log(reject);
@@ -780,7 +849,15 @@
 		        url: 'getResetPlanGridData',
 		        method: 'GET',
 		        success: function(result) {
+		        	
+		        	$.each(result, function (idx, obj) {
+		        		
 		        	planGrid.resetData(result);
+				        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+				            let rowKey = obj['rowKey'];
+				            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
+				        }
+				    })
 		        },
 		        error : function(reject){
 		        	console.log(reject);
@@ -788,6 +865,8 @@
 			})
 		        
 		}
+		
+		
 	
 		//검색
 		function selectAjax() {
@@ -843,6 +922,8 @@
 	
 		            })
 		            orderGrid.resetData(data2);
+		            resetPlanGrid();
+		            matActGrid.clear();
 		            setDisabled();
 		        }
 		    })
