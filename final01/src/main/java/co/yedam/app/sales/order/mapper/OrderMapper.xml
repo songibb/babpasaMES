@@ -27,7 +27,7 @@
       ORDER BY o.ord_code DESC
    </select>
 
-   <!-- 검색 -->
+   <!-- 주문조회 검색 -->
    <select id="selectAllOrder" resultType="OrderVO">
 	SELECT
 	    o.ord_code,
@@ -46,10 +46,10 @@
 	    JOIN sales_ord_de d ON ( o.ord_code = d.ord_code )
       <where>
          <if test="actCode != null and actCode != ''">
-            AND a.act_code LIKE '%' || #{actCode} || '%'
+            AND o.act_code LIKE '%' || #{actCode} || '%'
          </if>
          <if test="prodCode != null and prodCode != ''">
-            AND p.prod_code LIKE '%' || #{prodCode} || '%'
+            AND d.prod_code LIKE '%' || #{prodCode} || '%'
          </if>
          <!-- <if test="ordDate != null and ordDate != ''"> -->
          <!-- AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD') -->
@@ -69,7 +69,6 @@
             AND d.dev_yn != 'Y'
          </if>
       </where>
-	    
 	GROUP BY o.ord_code,
 	    o.ord_date,
 	    o.act_code,
@@ -79,7 +78,10 @@
 	    e.emp_name,
 	    o.prcs_plan_code,
 	    d.dev_yn
-      ORDER BY o.ord_date, o.ord_code DESC
+	ORDER BY
+	    o.ord_date,
+	    o.ord_code DESC
+
    </select>
 
    <!-- 거래처 목록 -->
@@ -134,7 +136,59 @@
       ON (o.emp_code = e.emp_code)
       JOIN com_act a
       ON (o.act_code = a.act_code)
-      ORDER BY o.ord_date, o.ord_code DESC
+      ORDER BY o.ord_date DESC, d.sales_ord_de_code DESC
+   </select>
+   
+   <!-- 주문관리검색 -->
+   <select id="selectAllOrderMng" resultType="OrderVO">
+	 SELECT
+      d.sales_ord_de_code
+      , d.ord_code
+      , p.prod_name
+      , d.prcs_rq_amt
+      , d.dev_date
+      , o.ord_sts
+      , e.emp_code
+      , e.emp_name
+      , d.dev_yn
+      , o.ord_date
+      , a.act_name
+      , o.act_code
+      , d.prod_code
+      FROM sales_ord_de d JOIN com_prod p
+      ON (d.prod_code = p.prod_code)
+      JOIN sales_ord o
+      ON (d.ord_code = o.ord_code)
+      JOIN com_emp e
+      ON (o.emp_code = e.emp_code)
+      JOIN com_act a
+      ON (o.act_code = a.act_code)
+      <where>
+         <if test="actCode != null and actCode != ''">
+            AND o.act_code LIKE '%' || #{actCode} || '%'
+         </if>
+         <if test="prodCode != null and prodCode != ''">
+            AND d.prod_code LIKE '%' || #{prodCode} || '%'
+         </if>
+         <!-- <if test="ordDate != null and ordDate != ''"> -->
+         <!-- AND o.ord_date <![CDATA[>=]]> TO_DATE(#{ordDate}, 'YYYY-MM-DD') -->
+         <!-- </if> -->
+         <if test="startDate != null and startDate != ''">
+            AND TO_CHAR(o.ord_date, 'YYYY-MM-DD') <![CDATA[>=]]>
+            #{startDate}
+         </if>
+         <if test="endDate != null and endDate != ''">
+            AND TO_CHAR(o.ord_date, 'YYYY-MM-DD') <![CDATA[<=]]>
+            #{endDate}
+         </if>
+         <if test="before==2">
+            AND d.dev_yn != 'N'
+         </if>
+         <if test="comple==2">
+            AND d.dev_yn != 'Y'
+         </if>
+      </where>
+	ORDER BY o.ord_date DESC, d.sales_ord_de_code DESC
    </select>
 
    <!-- 주문서 등록 -->

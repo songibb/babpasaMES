@@ -53,6 +53,7 @@ public class RtController {
 	@PostMapping("rtSave")
 	@ResponseBody
 	public int rtSave(@RequestBody GridVO<RtVO> data) {
+		System.out.println(data);
 		return rtService.modifyRt(data);
 	}	
 	

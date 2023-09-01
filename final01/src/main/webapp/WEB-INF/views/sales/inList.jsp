@@ -289,7 +289,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -500,7 +500,8 @@ form {
                 hidden: true
             }, {
                 header: '담당자', // [필수] 컬럼 이름
-                name: 'empName' // [필수] 컬럼 매핑 이름 값
+                name: 'empName',
+                align: 'center'// [필수] 컬럼 매핑 이름 값
             }, {
                 header: '검사번호', // [필수] 컬럼 이름
                 name: 'testNum', // [필수] 컬럼 매핑 이름 값

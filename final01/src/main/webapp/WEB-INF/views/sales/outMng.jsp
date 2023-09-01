@@ -309,7 +309,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -455,7 +455,8 @@ form {
                 align: 'center'
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }, {
                 header: '담당자',
                 name: 'empCode',
@@ -543,10 +544,19 @@ form {
         let columnName = outGrid
             .getFocusedCell()
             .columnName;
+        
+        let salesOutCode = outGrid.getValue(rowKey, 'salesOutCode');
+	    if (salesOutCode != null) {
+	            ev.stop();
+	            return false;
+	    }
+        
         if (columnName == "prodLot") {
+//         	var mainRowKey = ev.rowKey;
+        	var prodCode = outGrid.getValue(rowKey, 'prodCode');
+            Grid = createLotGrid(prodCode);
             $(".modal").fadeIn();
             preventScroll();
-            Grid = createLotGrid();
             $('.modal_title h3').text('제품LOT 목록');
             Grid.on('click', () => {
                 let rowKey2 = Grid
@@ -715,131 +725,6 @@ form {
         }
     });
 
-    //prodLot modal
-    function createLotGrid(selectProdCode) {
-        var odGrid = new tui.Grid({
-            el: document.getElementById('modal_label'),
-            data: [<c:forEach items="${lotList}" var="lot" varStatus="status">
-                {
-                    prodLot: "${lot.prodLot}",
-                    prodCode: "${lot.prodCode}",
-                    salesInDate: `<fmt:formatDate value="${lot.salesInDate}" pattern="yyyy-MM-dd"/>`,
-                    salesInAmt: "${lot.salesInAmt}",
-                    prodSaveAmt: "${lot.prodSaveAmt}",
-                    salesInExd: `<fmt:formatDate value="${lot.salesInExd}" pattern="yyyy-MM-dd"/>`,
-                    empCode: "${lot.empCode}",
-                    testNum: "${lot.testNum}",
-                    prodName: "${lot.prodName}"
-                }
-                <c:if test="${not status.last}">,</c:if>
-            </c:forEach>
-                ],
-            scrollX: false,
-            scrollY: false,
-            minBodyHeight: 320,
-            rowHeaders: ['rowNum'],
-            selectionUnit: 'row',
-            pagination: true,
-            pageOptions: {
-                //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
-                useClient: true,
-                perPage: 8
-            },
-            columns: [
-                {
-                    header: '제품LOT',
-                    name: 'prodLot',
-                    align: 'center'
-                }, {
-                    header: '제품코드',
-                    name: 'prodCode',
-                    align: 'center'
-                }, {
-                    header: '제품명',
-                    name: 'prodName'
-                }, {
-                    header: '입고날짜',
-                    name: 'salesInDate',
-                    className: 'yellow-background',
-                    align: 'center'
-                }, {
-                    header: '입고량',
-                    name: 'salesInAmt',
-                    formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
-                }, {
-                    header: '재고량',
-                    name: 'prodSaveAmt',
-                    formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
-                }, {
-                    header: '유통기한',
-                    name: 'salesInExd',
-                    className: 'yellow-background',
-                    align: 'center'
-                }, {
-                    header: '품질검사번호',
-                    name: 'testNum',
-                    align: 'center'
-                }
-            ]
-
-        });
-        
-        $.ajax({
-	        url: 'getProdLotList',
-	        method: 'GET',
-	        data: {
-	        	prodCode: selectProdCode
-	        },
-	        success: function (data) {
-	            console.log(data);
-	            $.each(data, function (idx, obj) {
-                 	
-                    let date = new Date(obj['salesInDate']);
-                    let year = date.getFullYear(); //0000년 가져오기
-                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                    let day = date.getDate(); //일자 가져오기
-                    obj['salesInDate'] = year + "-" + (
-                        ("00" + month.toString()).slice(-2)
-                    ) + "-" + (
-                        ("00" + day.toString()).slice(-2)
-                    );
-                    
-                    date = new Date(obj['salesInExd']);
-                    year = date.getFullYear(); //0000년 가져오기
-                    month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                    day = date.getDate(); //일자 가져오기
-                    obj['salesInExd'] = year + "-" + (
-                        ("00" + month.toString()).slice(-2)
-                    ) + "-" + (
-                        ("00" + day.toString()).slice(-2)
-                    );
-                    
-                })
-	            odGrid.resetData(data);
-	        },
-	        error: function (reject) {
-	            console.log(reject);
-	        }
-	    })
-
-        return odGrid;
-    }
 
     //salesOrdDeCode modal
     function createODGrid() {
@@ -961,6 +846,134 @@ form {
 
         return lotGrid;
     }
+    
+    //prodLot modal
+    function createLotGrid(prodCode) {
+        var odGrid = new tui.Grid({
+            el: document.getElementById('modal_label'),
+            data: [<c:forEach items="${lotList}" var="lot" varStatus="status">
+                {
+                    prodLot: "${lot.prodLot}",
+                    prodCode: "${lot.prodCode}",
+                    salesInDate: `<fmt:formatDate value="${lot.salesInDate}" pattern="yyyy-MM-dd"/>`,
+                    salesInAmt: "${lot.salesInAmt}",
+                    prodSaveAmt: "${lot.prodSaveAmt}",
+                    salesInExd: `<fmt:formatDate value="${lot.salesInExd}" pattern="yyyy-MM-dd"/>`,
+                    empCode: "${lot.empCode}",
+                    testNum: "${lot.testNum}",
+                    prodName: "${lot.prodName}"
+                }
+                <c:if test="${not status.last}">,</c:if>
+            </c:forEach>
+                ],
+            scrollX: false,
+            scrollY: false,
+            minBodyHeight: 320,
+            rowHeaders: ['rowNum'],
+            selectionUnit: 'row',
+            pagination: true,
+            pageOptions: {
+                //백엔드와 연동 없이 페이지 네이션 사용가능하게 만듦
+                useClient: true,
+                perPage: 8
+            },
+            columns: [
+                {
+                    header: '제품LOT',
+                    name: 'prodLot',
+                    align: 'center'
+                }, {
+                    header: '제품코드',
+                    name: 'prodCode',
+                    align: 'center'
+                }, {
+                    header: '제품명',
+                    name: 'prodName'
+                }, {
+                    header: '입고날짜',
+                    name: 'salesInDate',
+                    className: 'yellow-background',
+                    align: 'center'
+                }, {
+                    header: '입고량',
+                    name: 'salesInAmt',
+                    formatter(e) {
+                    	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                    	}
+    	            },
+    	            align: 'right'
+                }, {
+                    header: '재고량',
+                    name: 'prodSaveAmt',
+                    formatter(e) {
+                    	if (e['value'] != null){
+    	                val = e['value']
+    	                    .toString()
+    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    	                return val;
+                    	}
+    	            },
+    	            align: 'right'
+                }, {
+                    header: '유통기한',
+                    name: 'salesInExd',
+                    className: 'yellow-background',
+                    align: 'center'
+                }, {
+                    header: '품질검사번호',
+                    name: 'testNum',
+                    align: 'center'
+                }
+            ]
+
+        });
+        
+        $.ajax({
+	        url: 'getProdLotList',
+	        method: 'GET',
+	        data: {
+	        	prodCode : prodCode
+	        },
+	        success: function (data) {
+	            console.log(data);
+	            $.each(data, function (idx, obj) {
+                 	
+                    let date = new Date(obj['salesInDate']);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    obj['salesInDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                    
+                    date = new Date(obj['salesInExd']);
+                    year = date.getFullYear(); //0000년 가져오기
+                    month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    day = date.getDate(); //일자 가져오기
+                    obj['salesInExd'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                    
+                })
+                console.log(data);
+	            odGrid.resetData(data);
+	        },
+	        error: function (reject) {
+	            console.log(reject);
+	        }
+	    })
+
+        return odGrid;
+    }
+
 
     //거래처 모달 그리드
     function createActGrid() {

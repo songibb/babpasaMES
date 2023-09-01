@@ -297,7 +297,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -610,7 +610,8 @@ form {
                 align: 'center'
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }, {
                 header: '직원코드',
                 name: 'empCode',

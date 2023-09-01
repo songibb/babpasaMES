@@ -75,10 +75,13 @@
 			, r.sales_rt_why
 			, r.emp_code
 			, e.emp_name
+			, p.prod_name
 	FROM sales_rt r LEFT JOIN sales_out o
                     ON (r.sales_out_code = o.sales_out_code)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
+                    JOIN com_prod p
+                    ON (r.prod_code = p.prod_code)
 	ORDER BY sales_rt_code DESC
 	</select>
 	
@@ -114,7 +117,6 @@
 				, #{salesOrdDeCode}
 				, #{salesDpAmt}
 				, #{salesDpDate}
-				, #{testNum}
 			)
 			}
 	</insert>
@@ -126,7 +128,6 @@
 			#{salesRtCode}
 			, #{salesRtAmt}
 			, #{prodLot}
-<!-- 			, #{salesOrdDeCode} -->
 			)
 		
 	</delete>

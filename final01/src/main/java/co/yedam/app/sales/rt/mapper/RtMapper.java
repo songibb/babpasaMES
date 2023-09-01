@@ -21,6 +21,7 @@ public interface RtMapper {
 	public int insertRtList(@Param("rtList") List<RtVO> rtList);
 	//반품 등록 페이지 리스트
 	public List<RtVO> selectRtList();
+	
 	//등록 - 단순변심
 	public int insertRt(RtVO vo);
 	//등록 - 불량

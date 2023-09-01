@@ -62,6 +62,20 @@ public class OrderController {
 		return vo;
 	}
 	
+	// 검색 ajax
+	@GetMapping("/orderMngFilter")
+	@ResponseBody
+	public List<OrderVO> orderMngFilter(@RequestParam(value = "actCode", required = false) String actCode,
+			@RequestParam(value = "prodCode", required = false) String prodCode,
+			@RequestParam(value = "ordDate", required = false) String ordDate,
+			@RequestParam(value="startDate", required=false) String startDate, 
+			@RequestParam(value="endDate", required=false) String endDate,
+			@RequestParam(value="before", required=false) String before, 
+			@RequestParam(value="comple", required=false) String comple){
+		List<OrderVO> vo = orderService.selectAllOrderMng(actCode, prodCode, startDate, endDate, before, comple);
+		return vo;
+	}
+	
 	// 주문 관리 조회들
 	@GetMapping("/orderMng")
 	public String orderMngList(Model model) {

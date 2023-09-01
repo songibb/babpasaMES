@@ -285,7 +285,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -431,8 +431,7 @@ form {
             }, {
                 header: '반품사유',
                 name: 'salesRtWhy',
-                editor: 'text',
-                value: '${rt.salesRtWhy}',
+                formatter: 'listItemText',
                 editor: {
 	                type: 'select',
 	                options: {
@@ -456,10 +455,22 @@ form {
                 hidden: true
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }
         ]
     });
+    setDisabled();
+    
+  //비활성화
+    function setDisabled() {
+        $.each(rtGrid.getData(), function (idx, obj) {
+
+            if(obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")){
+            	rtGrid.disableRow(obj['rowKey']);
+            }
+        })
+    }
 
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
@@ -504,6 +515,13 @@ form {
         let columnName = rtGrid
             .getFocusedCell()
             .columnName;
+        
+        let salesRtCode = rtGrid.getValue(rowKey, 'salesRtCode');
+	    if (salesRtCode != null) {
+	            ev.stop();
+	            return false;
+	    }
+        
         if (columnName == 'salesOutCode') {
             $(".modal").fadeIn();
             preventScroll();
@@ -760,6 +778,7 @@ form {
                     obj['salesOutAmt'] = obj['salesOutAmt'];
                 })
                 rtGrid.resetData(data2);
+                setDisabled();
             },
             error: function (reject) {
                 console.log(reject);
