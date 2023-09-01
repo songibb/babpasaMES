@@ -215,7 +215,8 @@
 		{
 			CALL PR_SEMI_RE_DIR(
 				#{prcsDirDeCode},
-				#{empCode}
+				#{empCode},
+				#{originDirDeCode}
 			)
 		}
 	</insert>

@@ -508,6 +508,11 @@ h1, h2{
         scrollY: false,
         minBodyHeight: 200,
 		rowHeaders: ['rowNum'],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 5
+		},
         columns: [
           {
             header: '자재명',

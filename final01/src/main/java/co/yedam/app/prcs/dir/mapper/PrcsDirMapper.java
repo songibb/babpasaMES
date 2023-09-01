@@ -53,5 +53,5 @@ public interface PrcsDirMapper {
 	public int updateReDirDe(PrcsDirVO prcsDirVO);
 	
 	//재지시 등록 - 반제품 (상세생산지시)
-	public int insertReDirDeSemi(PrcsDirVO prcsDirVO);
+	public int insertReDirDeSemi(PrcsDirVO prcsDirVO, @Param("originDirDeCode") String originDirDeCode);
 }

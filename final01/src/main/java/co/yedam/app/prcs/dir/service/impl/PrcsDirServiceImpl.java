@@ -182,16 +182,21 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	//재지시 등록 - 반제품 (상세생산지시)
 	@Override
 	public int insertReDirDeSemi(PrcsDirVO prcsDirVO) {
+		//품질검사부적합 상태인 기존 상세생산지시코드를 담아놓음
+		String originDirDeCode = prcsDirVO.getPrcsDirDeCode();
+		
 		//재지시 등록시 해당 상세생산지시 재지시여부 'Y'로 수정
 		prcsDirMapper.updateReDirDe(prcsDirVO);
 		
 		//재지시 등록
 		prcsDirMapper.insertReDirDe(prcsDirVO);
 		
+		//재지시 등록하고 나면 prcsDirVO에 prcsDirDeCode가 selectKey값으로 새로 부여됨
 		
 		//진행 공정 등록,
 		//반제품 공정완료인 경우 진행공정관리 테이블 update,
 		//품질검사부적합 상태인 반제품 공정만 자재 출고 (프로시저)
+		prcsDirMapper.insertReDirDeSemi(prcsDirVO, originDirDeCode);
 		return 0;
 	}
 	

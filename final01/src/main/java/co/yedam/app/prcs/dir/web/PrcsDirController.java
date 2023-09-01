@@ -123,7 +123,7 @@ public class PrcsDirController {
 	//재지시 등록 - 반제품 (상세생산지시)
 	@PostMapping("insertReDirDeSemi")
 	@ResponseBody
-	public int insertReDirDeSemi(PrcsDirVO prcsDirVO){
+	public int insertReDirDeSemi(@RequestBody PrcsDirVO prcsDirVO){
 		return prcsDirService.insertReDirDeSemi(prcsDirVO);
 	}
 	
