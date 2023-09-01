@@ -24,6 +24,16 @@ public interface OrderMapper {
 	public List<OrderVO> selectProdAllList();
 	//주문 관리 - 미계획 주문 목록
 	public List<OrderVO> selectAllNoPlanList();
+	
+	//selectAllOrderMng
+	public List<OrderVO> selectAllOrderMng(@Param("actCode")String actCode
+			, @Param("prodCode")String prodCode
+			, @Param("startDate")String startDate
+			, @Param("endDate")String endDate
+			, @Param("before") String before
+			, @Param("comple") String comple);
+	//거래처 목록
+	
 	//등록
 	public int insertOrder(OrderVO vo);
 	public int insertOrderDe(OrderVO vo);

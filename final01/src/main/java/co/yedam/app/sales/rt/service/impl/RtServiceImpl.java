@@ -17,7 +17,7 @@ public class RtServiceImpl implements RtService {
 
 	@Autowired
 	RtMapper rtMapper;
-	
+
 	@Override
 	public List<RtVO> getRtList() {
 		return rtMapper.selectRtAllList();
@@ -29,8 +29,7 @@ public class RtServiceImpl implements RtService {
 	}
 
 	@Override
-	public List<RtVO> searchRtList(String prodCode, String startDate,
-			String outDate) {
+	public List<RtVO> searchRtList(String prodCode, String startDate, String outDate) {
 		return rtMapper.selectAllRt(prodCode, startDate, outDate);
 	}
 
@@ -41,16 +40,17 @@ public class RtServiceImpl implements RtService {
 
 	@Override
 	public List<RtVO> getAlreadyOutList() {
-		return rtMapper.selectRtAllList();
+		return rtMapper.selectRtList();
 	}
 
-	//등록, 수정, 삭제
+	// 등록, 수정, 삭제
 	@Override
 	public int modifyRt(GridVO<RtVO> data) {
 		int result = 0;
 		if(data.getDeletedRows() != null && data.getDeletedRows().size() > 0) {
 			for(RtVO vo : data.getDeletedRows()) {
 				result += rtMapper.deleteRt(vo);
+			}
 		}
 		if(data.getUpdatedRows() != null && data.getUpdatedRows().size() > 0) {
 			for(RtVO vo : data.getUpdatedRows()) {
@@ -64,7 +64,7 @@ public class RtServiceImpl implements RtService {
 				} else if(String.valueOf(vo.getSalesRtWhy()).equals("J")) {
 					result += rtMapper.insertRt(vo);
 				}
-			}
+			
 			}
 		}
 		return result;

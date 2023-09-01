@@ -308,7 +308,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -395,8 +395,8 @@ form {
         columns: [
             // header : [필수] 컬럼 이름 name : [필수] 컬럼 매핑 이름 값 hidden : [선택] 숨김 여부
             {
-                header: '주문코드',
-                name: 'ordCode',
+                header: '주문상세코드',
+                name: 'salesOrdDeCode',
                 sortable: true,
                 sortingType: 'asc',
                 align: 'center'
@@ -412,7 +412,8 @@ form {
                sortable: true,
                sortingType: 'asc'
                 },
-                className: 'yellow-background'
+                className: 'yellow-background',
+                align: 'center'
             }, {
                 header: '거래처',
                 name: 'actName',
@@ -481,7 +482,8 @@ form {
                 hidden: true
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }, {
                 header: '생산계획코드',
                 name: 'prcsPlanCode',
@@ -513,7 +515,7 @@ form {
     var Grid;
 
     //거래처 리스트 모달 시작
-    $("#actModal").click(function () {
+    $("#actModal").click(function (ev) {
         $(".modal").fadeIn();
         preventScroll();
         Grid = createActGrid();
@@ -560,7 +562,7 @@ form {
         });
     });
 
-    orderGrid.on('click', () => {
+    orderGrid.on('click', ev => {
     	//선택한 행 색깔 바꾸기
     	let selectKey = orderGrid.getFocusedCell().rowKey;
     	orderGrid.addRowClassName(selectKey, 'selected-cell');
@@ -574,6 +576,13 @@ form {
         let columnName = orderGrid
             .getFocusedCell()
             .columnName;
+        
+        let ordCode = orderGrid.getValue(rowKey, 'ordCode');
+	    if (ordCode != null) {
+	            ev.stop();
+	            return false;
+	    }
+	    
         if (columnName == "actName") {
             $(".modal").fadeIn();
             preventScroll();
@@ -805,7 +814,7 @@ form {
             comple: comple
         };
         $.ajax({
-            url: 'orderListFilter',
+            url: 'orderMngFilter',
             method: 'GET',
             data: search,
             success: function (data2) {
@@ -904,9 +913,10 @@ form {
                 contentType: 'application/json',
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
-                    // 						orderGrid.resetData(data);
+//                     orderGrid.resetData(data);
                     searchOrderList();
                     setDisabled();
+                    activeScroll();
                     
                 },
                 error: function (reject) {

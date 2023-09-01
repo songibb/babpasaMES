@@ -284,10 +284,11 @@ form {
                </form>
                 <div id="container" style="display: flex; justify-content: center;">
                        <div id="grid" style="width: 700px; margin-right: 50px"><h2>주문 목록</h2></div>
-                       <div id="grid2" style="width: 800px;"><h2>주문 상세 목록</h2></div>
+                       <div id="grid2" style="width: 800px;"><h2>주문 상세 목록</h2>
                        <button type="button" class="btn btn-info btn-icon-text excelDownload">
                      Excel <i class="bi bi-printer"></i>
                   </button>
+                     </div>
                   </div>
             </div>
          </div>
@@ -305,7 +306,7 @@ form {
          </div>
          <div class="m_body">
             <p>이름</p>
-            <input type="text" id="modalSearch">
+            <input type="text" id="modalSearch" style=" width: 164px;">
             <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
             <div id="modal_label"></div>
          </div>
@@ -642,7 +643,8 @@ form {
                 value: '${order.devDate}',
                 className: 'yellow-background',
                 sortable: true,
-                sortingType: 'asc'
+                sortingType: 'asc',
+                align: 'center'
             }, {
                 header: '제품명',
                 name: 'prodName'
@@ -706,6 +708,7 @@ form {
                    }
             
              grid2.resetData(data);
+             setDisabled();
            },
          error : function(reject){
              console.log(reject);

@@ -86,6 +86,12 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.ordDetailList(ordCode);
 	}
 
+	@Override
+	public List<OrderVO> selectAllOrderMng(String actCode, String prodCode, String startDate, String endDate,
+			String before, String comple) {
+		return orderMapper.selectAllOrderMng(actCode, prodCode, startDate, endDate, before, comple);
+	}
+
 }
 
 

@@ -285,7 +285,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch">
+				<input type="text" id="modalSearch" style=" width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -504,18 +504,46 @@ form {
             }, {
                 header: '반품사유',
                 name: 'salesRtWhy',
-                value: '${rt.salesRtWhy}'
+                formatter: 'listItemText',
+                editor: {
+	                type: 'select',
+	                options: {
+	                    listItems: [
+	                        {
+	                            text: '불량',
+	                            value: 'E'
+	                        }, {
+	                            text: '단순변심',
+	                            value: 'J'
+	                        }
+	                    ]
+	                }
+	            },
+	            align: 'center'
             }, {
                 header: '직원코드',
                 name: 'empCode',
                 hidden: true
             }, {
                 header: '담당자',
-                name: 'empName'
+                name: 'empName',
+                align: 'center'
             }
         ]
 
     });
+    setDisabled();
+    
+  //비활성화
+    function setDisabled() {
+        $.each(grid.getData(), function (idx, obj) {
+
+            if(obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")){
+            	grid.disableRow(obj['rowKey']);
+            }
+        })
+    }
+
     
     grid.on('click', ()=>{
         //선택한 행 색깔 바꾸기
