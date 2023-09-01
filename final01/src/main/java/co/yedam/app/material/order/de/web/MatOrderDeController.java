@@ -70,7 +70,7 @@ public class MatOrderDeController {
 		model.addAttribute("actList", mods.getActMatModal());
 		model.addAttribute("matList", mms.getMetList());
 		//신규생산계획 조회
-		model.addAttribute("stockList", mods.getNewPrcsPlan());
+		model.addAttribute("stockList", mods.getNewPrcsPlan(null));
 		return "material/matOrderDir";
 	}
 		
@@ -84,8 +84,8 @@ public class MatOrderDeController {
 	//plan Grid 데이터 리셋
 	@GetMapping("getResetPlanGridData")
 	@ResponseBody
-	public List<MatStockVO> getResetPlanGridData(){
-		return mods.getNewPrcsPlan();
+	public List<MatStockVO> getResetPlanGridData(String materialName){
+		return mods.getNewPrcsPlan(materialName);
 	}
 	
 	//거래처 목록 모달 ajax(검색용)
@@ -109,4 +109,6 @@ public class MatOrderDeController {
 	public MatOrderDeVO getActMatPrice(MatOrderDeVO vo){
 		return mods.getActMatPrice(vo);
 	}
+	
+	
 }

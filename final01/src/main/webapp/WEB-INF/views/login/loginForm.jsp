@@ -150,7 +150,7 @@ label{
   <h1><img src="/app/resources/img/babpasa_logo_01.png" alt="logo"></h1>
 
   <!-- Form -->
-  <form method="post" action="/login">
+  <form method="post" action="${pageContext.request.contextPath}/login">
     <!-- email input -->
     <div class="first-input input__block first-input__block">
        <label for="username"><p>아이디<p><input type="text" placeholder="Emp_Code" name="username" id="username"/></label>

@@ -229,9 +229,6 @@
 	        			 ON(d.bom_no = e.bom_no)
         			 WHERE prcs_dir_sts= 'T1'
         			 	AND b.bom_yn = 'O'
-						<if test="materialCode != null and !materialCode.equals('')">
-							AND g.mat_code LIKE '%' || #{materialCode} || '%'
-						</if>
         			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
                      			   WHEN c.mp_kind='M' THEN c.mp_code
                      			   END) f
@@ -239,8 +236,12 @@
         ON(f.mat_code = g.mat_code)
         LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
         ON(f.mat_code = h.mat_code)
+        <if test="materialName != null and !materialName.equals('')">
+			WHERE g.mat_name LIKE '%' || #{materialName} || '%'
+		</if>
         ORDER BY g.mat_code
 	</select>
+	
 	
 	<!-- 해당 자재 거래처 찾기 -->
 	<select id="selectMatBuyAct" resultType="MatOrderDeVO">

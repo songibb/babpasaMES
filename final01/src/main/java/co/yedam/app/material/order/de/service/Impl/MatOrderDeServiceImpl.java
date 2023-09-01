@@ -60,9 +60,9 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 	
 	//신규생산계획 조회
 	@Override
-	public List<MatStockVO> getNewPrcsPlan() {
+	public List<MatStockVO> getNewPrcsPlan(String materialName) {
 		
-		return modm.selectNewPrcsPlan();
+		return modm.selectNewPrcsPlan(materialName);
 	}
 
 
