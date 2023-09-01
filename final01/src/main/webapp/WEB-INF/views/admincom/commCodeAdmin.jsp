@@ -43,7 +43,7 @@
 	  background-color: white; 
 	}
 	form p{
-		width: 80px;
+		width: 100px;
 		display: inline-block;
 		font-size: 20px;
 	}
@@ -76,6 +76,9 @@
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>
+						<p>공통코드명</p> 
+						<input type="text" placeholder="검색어를 입력하세요" id="commNameSearch">
+						<br>
 						<p>공통코드</p> 
 						<input type="text" placeholder="검색어를 입력하세요" id="commSearch" style="margin-bottom: 35px">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" >
@@ -86,7 +89,6 @@
 		            
 	            	<div>
 	            		<h2 style="display : inline-block;">공통 코드 목록</h2>
-	            		
 		            	<button id="save" class="btn btn-info btn-icon-text" style="float : right;">저장</button>
 		            	<button id="delete" class="btn btn-info btn-icon-text" style="float : right;">삭제</button> 
 	            		<button id="commAdd" class="btn btn-info btn-icon-text" style="float : right;">추가</button>
@@ -146,8 +148,9 @@
 		//공통코드 검색 조회
 		$('#searchBtn').on('click', searchCommIn);
 		function searchCommIn(e){
-			let content = $('#commSearch').val();
-			let search = {commCode : content};
+			let commName = $("#commNameSearch").val();
+			let commCode = $('#commSearch').val();
+			let search = {commCode : commCode, commName : commName};
 			$.ajax({
 				url: 'commCodeSearch',
 				method : 'GET',

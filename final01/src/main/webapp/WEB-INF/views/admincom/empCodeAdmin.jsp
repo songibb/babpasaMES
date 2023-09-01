@@ -73,7 +73,7 @@
 	}
 	#userInsertForm label {
 		margin-top: 5px;
-		margin-bottom : 8px;
+		margin-bottom : 7.5px;
 		font-size: 20px;
 		font-weight: 400;
 	}
@@ -147,7 +147,9 @@
            <div class="card-body">
                <div class="table-responsive pt-3">
                    <form action="" method="get" name="formInfo">
-                  			
+                  		<p>사원명</p>
+						<input type="text" placeholder="검색어를 입력하세요" id="empSearch" >
+						<br>
                   		<p>부서명</p>
                   			<select id="inputDeptSearch" name="deptCode">
 								<option value="">선택</option>
@@ -155,11 +157,7 @@
 									<option value="${d.commdeCode }">${d.commdeName }</option>
 								</c:forEach>
 							</select>
-							<br>	
-							
-						<p>사원명</p>
-						 <input type="text" placeholder="검색어를 입력하세요" id="empSearch" >
-							<br>
+						<br>	
 						<p>재직구분</p>
                  			<select id="selectEmpIngSearch" name="selectEmpIngSearch">
 							<option value="">선택</option>
@@ -192,8 +190,15 @@
 
 /* 	$('#empDate').val(new Date().toISOString().substring(0, 10)); */
 
-
-//사원명검색조회
+		//이전 날짜 선택불가
+		$('#startDate').on('change', function () {
+		    $('#endDate').attr('min', $('#startDate').val());
+		});
+		//이후날짜 선택불가
+		$('#endDate').on('change', function () {
+		    $('#startDate').attr('max', $('#endDate').val());
+		});
+		//사원명검색조회
 	
 	$('#searchBtn').on('click', searchEmpIn);
 	function searchEmpIn(e){
@@ -500,7 +505,7 @@
 		})
 		
 		
-		if(rowKey>0){
+		if(rowKey>=0){
 		empDate.style.display = 'none';
 		empDateLa.style.display = 'none';
 		empLeaveDateLa.style.display='';

@@ -350,7 +350,7 @@
 						//form 비우기
 						 $('form')[0].reset();
 					} else{
-						swal('실패','거래처 등록처리가 실패되었습니다','error');
+						swal("실패","거래처 등록처리가 실패되었습니다","error");
 					}   	
 				})
 				.fail(reject => console.log(reject));
@@ -386,7 +386,7 @@
 						//form 비우기
 						 $('form')[0].reset();
 					} else{
-						swal('실패','거래처 정보 수정이 실패되었습니다.','error');
+						swal("실패","거래처 정보 수정이 실패되었습니다","error");
 					}   	
 				})
 				.fail(reject => console.log(reject));
@@ -484,7 +484,7 @@
 					                }
 					            })
 		      				}else {
-		      				    swal("삭제가 취소되었습니다","",{icon: "warning",});
+		      				    swal("삭제가 취소되었습니다","","warning");
 		      			  }
 		      			});
 		            	

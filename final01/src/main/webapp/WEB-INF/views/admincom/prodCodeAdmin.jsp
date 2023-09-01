@@ -119,8 +119,8 @@
 										<label>규격</label>
 										<input type="text" name="prodStd" id="prodStd" style="margin-bottom: 55px">
 										<div style="text-align: center;">
-											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">저장</button>
-											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 20px; margin-bottom: 10px">취소</button>
+											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 15px; margin-bottom: 10px">저장</button>
+											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 15px; margin-bottom: 10px">취소</button>
 										</div>
 								</form>
 							</div>
@@ -396,7 +396,7 @@
 					//form 비우기
 					 $('form')[0].reset();
 				} else{
-					swal("제품 정보 수정이 실패되었습니다","","error");
+					swal("실패","제품 정보 수정이 실패되었습니다","error");
 				}   	
 			})
 			.fail(reject => console.log(reject));
@@ -488,7 +488,7 @@
 					    		    })
 			      					
 			      				}else{
-			      					 swal("삭제가 취소되었습니다","",{icon: "warning",});
+			      					 swal("삭제가 취소되었습니다","","warning");
 			      				}
 		      				});
 		            	

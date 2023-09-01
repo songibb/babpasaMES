@@ -23,9 +23,9 @@ public class CommCodeServiceImpl implements CommCodeService {
 	}
 	
 	@Override
-	public List<CommCodeVO> searchCommCode(String commCode) {
+	public List<CommCodeVO> searchCommCode(CommCodeVO commCodeVO) {
 		
-		return commCodeMapper.searchCommCode(commCode);
+		return commCodeMapper.searchCommCode(commCodeVO);
 	}
 
 	@Override

@@ -154,7 +154,7 @@
 			let modifyGridInfo = grid.getModifiedRows();
 			
 			if(!grid.isModified()){
-				swal("경고","변경사항이 없습니다","","warning");
+				swal("경고","변경사항이 없습니다","warning");
 				return false;
 			}
 			
@@ -195,7 +195,7 @@
 						flag = false;
 						return false;
 					}
-					if(isNaN(obj2['matSafe'])==true){
+					if(isNaN(obj2['matSafe'])==true || obj2['matSafe']>999999999){
 						flag = false;
 						return false;
 					}
@@ -237,7 +237,7 @@
 					}
 				})
 			}else{
-				swal('경고','모든값이 입력되지 않았거나 정보 타입을 확인해 주세요','warning');
+				swal("경고","모든값이 입력되지 않았거나 정보 타입을 확인해 주세요","warning");
 			}
 			
 		}

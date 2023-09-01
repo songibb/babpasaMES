@@ -33,7 +33,14 @@
 							comm_name,
 							comm_info
 					FROM com_comm
-					WHERE comm_code LIKE '%' || #{commCode} || '%'
+					<where>
+						<if test="commCode != null and commCode != ''">
+							AND comm_code LIKE '%' || #{commCode} || '%'
+						</if>
+						<if test="commName != null and commName != ''">
+							AND comm_name LIKE '%' || #{commName} || '%'
+						</if>
+					</where>
 				ORDER BY comm_code
   	</select>
   	

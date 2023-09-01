@@ -12,7 +12,7 @@ public interface CommCodeService {
 	public List<CommCodeVO> selectCommCodeList();
 	
 	//공통코드 검색
-	public List<CommCodeVO> searchCommCode(String commCode);
+	public List<CommCodeVO> searchCommCode(CommCodeVO commCodeVO);
 		
 	//공통코드 클릭시 상세공통코드 조회 
 	public List<CommCodeVO> selectCommDeCodeList(String commCode);
