@@ -36,7 +36,7 @@
 		display : inline-block;
 	}
 	
-	#grid input[type="text"] ,#searchP input[type="text"] {
+	#matBuyActInputHidden, #matBuyActInput ,#searchP input[type="text"] {
 	  width: 15%;
 	  padding: 6px;
 	  margin-bottom: 15px;
@@ -104,7 +104,7 @@
 		
 	}
 	
-	#grid p{
+	#gridInsertAct{
 		margin-left : 400px;
 		display : inline-block;
 	}
@@ -155,6 +155,9 @@
 	  	border-radius: 4px;	
 	}
 	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 /*모달끝*/
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>    
@@ -207,7 +210,7 @@
 		            
 		            
 		            <div id="grid">
-		            <h2>발주 목록</h2>	<p>등록 거래처</p> <input type="text" id="matBuyActInput" readOnly><input type="hidden" id="matBuyActInputHidden">
+		            <h2>발주 목록</h2>	<p id="">등록 거래처</p> <input type="text" id="matBuyActInput" readOnly><input type="hidden" id="matBuyActInputHidden">
 		            <button type="button" class="btn btn-info btn-icon-text excelDownload">
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                              
@@ -349,8 +352,31 @@
 		        )).substr(-2);
 		        let day = ('0' + now.getDate()).substr(-2);
 		        let matOdRq = year + "-" + month + "-" + day;
-	
+				
+		        var matPrice = 0;
+		        if($('#matBuyActInputHidden').val() != null && $('#matBuyActInputHidden').val() != ""){
+		        	let actCode = $('#matBuyActInputHidden').val();
+		        	$.ajax({
+		        		url : 'getActMatPrice',
+		        		method : 'GET',
+		        		data : { matCode : matCode, actCode : actCode },
+		        		async : false,
+		        		success : function(result){
+		        			console.log(result);
+		        			
+		        			matPrice = result.matPrice;
+		        		},
+		        		error : function(reject){
+		        			console.log(reject);
+		        		}
+		        	})
+		        }
+		        
+		        
 		        if(orderGrid.getModifiedRows().createdRows.length > 0){
+		        	
+		        	
+		        	
 		        	orderGrid.appendRow({
 		        		'matOdRq': matOdRq,
 			            'matCode': matCode,
@@ -361,7 +387,8 @@
 			            'empCode': `${user.id}`,
 			            'empName': `${user.empName}`,
 			            'actCode': orderGrid.getModifiedRows().createdRows[0].actCode,
-		                'actName': orderGrid.getModifiedRows().createdRows[0].actName
+		                'actName': orderGrid.getModifiedRows().createdRows[0].actName,
+		                'matPrice': matPrice
 		            }, {at: 0});
 		        }else {
 		        	orderGrid.appendRow({
@@ -372,7 +399,8 @@
 			            'matUnit': matUnit,
 			            'matAmt': matAmt,
 			            'empCode': `${user.id}`,
-			            'empName': `${user.empName}`
+			            'empName': `${user.empName}`,
+			            'matPrice' : matPrice
 			        }, {at: 0});
 		        }
 		    }
@@ -463,6 +491,26 @@
            	$('#matBuyActInputHidden').val(actCode);
             let beforeAct = orderGrid.getModifiedRows().createdRows;
             for(data of beforeAct){
+            	
+            	var matPrice = 0;
+		        var matCode = orderGrid.getValue(data.rowKey, 'matCode', matCode);
+		        	
+		        	$.ajax({
+		        		url : 'getActMatPrice',
+		        		method : 'GET',
+		        		data : { matCode : matCode, actCode : actCode },
+		        		async : false,
+		        		success : function(result){
+		        			console.log(result);
+		        			
+		        			matPrice = result.matPrice;
+		        		},
+		        		error : function(reject){
+		        			console.log(reject);
+		        		}
+		        	})
+		        
+		        orderGrid.setValue(data.rowKey, 'matPrice', matPrice);
 	        	orderGrid.setValue(data.rowKey, 'actCode', actCode);
 	            orderGrid.setValue(data.rowKey, 'actName', actName);
             }
@@ -942,6 +990,36 @@
 		    }
 	
 		});
+		
+		orderGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = orderGrid.getFocusedCell().rowKey;
+		    	  orderGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  orderGrid.on('focusChange', () => {
+		    		  orderGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		planGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = planGrid.getFocusedCell().rowKey;
+		    	  planGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  planGrid.on('focusChange', () => {
+		    		  planGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		matActGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = matActGrid.getFocusedCell().rowKey;
+		    	  matActGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  matActGrid.on('focusChange', () => {
+		    		  matActGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
 	
 		//모달 검색
 		$('#modalSearchBtn').on('click', function (e) {

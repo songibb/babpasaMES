@@ -102,4 +102,11 @@ public class MatOrderDeController {
 		return mods.getMatBuyAct(matCode);
 	}
 	
+	//해당 자재 해당 거래처 가격 찾기
+	
+	@GetMapping("getActMatPrice")
+	@ResponseBody
+	public MatOrderDeVO getActMatPrice(MatOrderDeVO vo){
+		return mods.getActMatPrice(vo);
+	}
 }

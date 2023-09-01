@@ -104,6 +104,10 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -996,6 +1000,26 @@
 		$('#endDate').on('change', function () {
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
+		
+		rtGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = rtGrid.getFocusedCell().rowKey;
+		    	  rtGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  rtGrid.on('focusChange', () => {
+		    		  rtGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		testGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = testGrid.getFocusedCell().rowKey;
+		    	  testGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  testGrid.on('focusChange', () => {
+		    		  testGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
     
   
 	

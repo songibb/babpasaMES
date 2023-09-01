@@ -50,4 +50,6 @@ public interface MatOrderDeMapper {
 	
 	//해당 자재 거래처찾기
 	public List<MatOrderDeVO> selectMatBuyAct(String matCode);
+	//해당 자재 거래처 가격찾기
+	public MatOrderDeVO selectActMatPrice(MatOrderDeVO vo);
 }
