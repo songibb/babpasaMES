@@ -106,6 +106,10 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -389,6 +393,26 @@
 		    //마우스 커서 없앰
 		    inGrid.blur();
 		});
+		
+		inGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = inGrid.getFocusedCell().rowKey;
+		    	  inGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  inGrid.on('focusChange', () => {
+		    		  inGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		testGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = testGrid.getFocusedCell().rowKey;
+		    	  testGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  testGrid.on('focusChange', () => {
+		    		  testGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
 	
 		//저장버튼
 		document

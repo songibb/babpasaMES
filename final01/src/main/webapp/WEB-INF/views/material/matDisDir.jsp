@@ -102,6 +102,10 @@
 	  	border-radius: 4px;	
 	}
 	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
+	
 </style>    
        
 </head>
@@ -870,6 +874,37 @@
 		        }
 		    );
 		}
+		
+		grid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid.getFocusedCell().rowKey;
+		    	  grid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid.on('focusChange', () => {
+		    		  grid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		exdGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = exdGrid.getFocusedCell().rowKey;
+		    	  exdGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  exdGrid.on('focusChange', () => {
+		    		  exdGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  	})
+		   	 })
+		   	 
+		   	 
+		rtGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = rtGrid.getFocusedCell().rowKey;
+		    	  rtGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  rtGrid.on('focusChange', () => {
+		    		  rtGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  	})
+		   	 })
 	
 		//스크롤 활성화
 		function activeScroll() {

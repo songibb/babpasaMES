@@ -104,6 +104,10 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -579,6 +583,16 @@
 		        }
 		    );
 		}
+		
+		grid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid.getFocusedCell().rowKey;
+		    	  grid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid.on('focusChange', () => {
+		    		  grid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
 	
 		//스크롤 활성화
 		function activeScroll() {

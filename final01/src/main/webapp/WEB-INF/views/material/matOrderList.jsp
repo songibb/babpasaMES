@@ -127,6 +127,10 @@
  	display: flex; 
  	justify-content: space-between; 
  } 
+ 
+ .selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -689,6 +693,26 @@
 		    excelDownload2.addEventListener('click', function (e) {
 		        grid.export('xlsx');
 		    })
+		})
+		
+		grid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid.getFocusedCell().rowKey;
+		    	  grid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid.on('focusChange', () => {
+		    		  grid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		grid2.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid2.getFocusedCell().rowKey;
+		    	  grid2.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid2.on('focusChange', () => {
+		    		  grid2.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
 		})
    
 

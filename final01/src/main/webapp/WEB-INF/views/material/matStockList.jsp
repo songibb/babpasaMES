@@ -91,6 +91,10 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -526,7 +530,28 @@
 	
 		    return matGrid;
 		}
-	
+		
+		grid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid.getFocusedCell().rowKey;
+		    	  grid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid.on('focusChange', () => {
+		    		  grid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		grid2.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = grid2.getFocusedCell().rowKey;
+		    	  grid2.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  grid2.on('focusChange', () => {
+		    		  grid2.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		
 		//스크롤 막기
 		function preventScroll() {
 		    $('html, body').css({'overflow': 'hidden', 'height': '100%'}); // 모달팝업 중 html,body의 scroll을 hidden시킴

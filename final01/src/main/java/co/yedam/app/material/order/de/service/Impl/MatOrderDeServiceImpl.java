@@ -103,4 +103,10 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		return modm.selectMatBuyAct(matCode);
 	}
 
+	@Override
+	public MatOrderDeVO getActMatPrice(MatOrderDeVO vo) {
+		
+		return modm.selectActMatPrice(vo);
+	}
+
 }

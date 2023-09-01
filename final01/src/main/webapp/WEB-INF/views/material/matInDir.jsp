@@ -113,6 +113,10 @@
 	  	border: 1px solid #ccc;
 	  	border-radius: 4px;	
 	}
+	
+	.selected-cell{
+   		background-color: #ffd09e;
+	}
 </style>    
        
 </head>
@@ -888,7 +892,29 @@
 		        }
 		    );
 		}
-	
+		
+		
+		testGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = testGrid.getFocusedCell().rowKey;
+		    	  testGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  testGrid.on('focusChange', () => {
+		    		  testGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		inGrid.on('click', ()=>{
+		    //선택한 행 색깔 바꾸기
+		    	  let selectKey = inGrid.getFocusedCell().rowKey;
+		    	  inGrid.addRowClassName(selectKey, 'selected-cell');
+		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+		    	  inGrid.on('focusChange', () => {
+		    		  inGrid.removeRowClassName(selectKey, 'selected-cell');
+		    	  })
+		})
+		
+		
 		//스크롤 활성화
 		function activeScroll() {
 		    $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제

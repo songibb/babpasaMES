@@ -30,7 +30,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		request.getSession().setMaxInactiveInterval(3600);
 		
 		//사용자
-		response.sendRedirect("/app/");
+		response.sendRedirect(request.getContextPath());
 	}
 
 }

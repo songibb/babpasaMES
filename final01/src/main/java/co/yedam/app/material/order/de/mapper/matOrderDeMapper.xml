@@ -256,6 +256,21 @@
 		ORDER BY NVL(de.cnt,0) DESC
 	</select>
 	
+	<!-- 해당 자재 해당 거래처 가격찾기 -->
+	<select id="selectActMatPrice" resultType="MatOrderDeVO">
+		WITH DE AS (select act_code, max(a.mat_od_cd) mat_od_cd , count(mat_price) as cnt
+		FROM mat_order_de a JOIN mat_order b
+		ON(a.mat_od_cd = b.mat_od_cd)
+		WHERE  mat_code = #{matCode}
+		group by act_code)
+		SELECT c.act_code, c.act_name, NVL(de.cnt,0) as act_count,
+		NVL((SELECT mat_price FROM mat_order_de sde WHERE sde.mat_od_cd = de.mat_od_cd and mat_code = #{matCode} ), 0) as mat_price
+		FROM COM_ACT C LEFT OUTER JOIN DE ON(C.ACT_CODE = DE.ACT_CODE)
+		WHERE ACT_KIND = 'ACT-TYPE2'
+		AND c.ACT_CODE = #{actCode}
+		ORDER BY NVL(de.cnt,0) DESC
+	</select>
+	
 	<!-- 해당 거래처 자재 찾기 -->
 	<select id="selectActSellMat">
 		SELECT mat_code

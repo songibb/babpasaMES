@@ -36,4 +36,7 @@ public interface MatOrderDeService {
 	
 	//해당 자재 거래처 찾기
 	public List<MatOrderDeVO> getMatBuyAct(String matCode);
+	
+	//해당 자재 해당 거래처 가격 찾기
+	public MatOrderDeVO getActMatPrice(MatOrderDeVO vo);
 }
