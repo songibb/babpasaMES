@@ -113,7 +113,7 @@
      ],
    };
    const options = {
-      chart: { title: '제품별 판매량 (전일)', width:'auto',height: 'auto' }, 
+      chart: { title: '제품별 판매량 TOP5 (전일)', width:'auto',height: 'auto' }, 
       yAxis: {
   	    title: '판매량'
   	  },
@@ -161,7 +161,7 @@
             ],
           };
    const options = {
-      chart: { title: '제품별 재고량 (현재)', width:'auto',height: 'auto' }, 
+      chart: { title: '제품별 재고량 TOP5 (현재)', width:'auto',height: 'auto' }, 
       yAxis: {
     	    title: '재고량'
     	  },
@@ -211,7 +211,7 @@
                ],
              };
       const options = {
-         chart: { title: '제품별 생산량 (전일)', width:'auto',height: 'auto' }, 
+         chart: { title: '제품별 생산량 TOP5 (전일)', width:'auto',height: 'auto' }, 
          yAxis: {
      	    title: '생산량'
      	  },

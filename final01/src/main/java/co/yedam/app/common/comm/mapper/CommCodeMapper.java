@@ -13,7 +13,8 @@ public interface CommCodeMapper {
 	
 	
 	//공통코드 검색
-	public List<CommCodeVO> searchCommCode(String commCode);
+	public List<CommCodeVO> searchCommCode(CommCodeVO commCodeVO);
+	
 	public List<CommCodeVO> searchCommCodeUse(@Param("commCode") String code);
 	
 	//공통코드 클릭시 상세공통코드 조회 

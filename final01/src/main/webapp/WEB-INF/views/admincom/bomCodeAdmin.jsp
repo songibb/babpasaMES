@@ -133,6 +133,8 @@
 	   background-color: #ffd09e;
 	}
 /*모달끝*/
+
+.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>
 <title>BOM관리</title>
 <!-- 토스트 페이지 네이션 dd-->
@@ -309,8 +311,13 @@
 			
 		let noData = false;
 			
-			
-		if(bNoValue == null){
+
+		
+		//변경사항없으면 빠져나감
+		if(!bomgrid.isModified()){
+			swal("경고","변경사항이 없습니다","warning");
+			return false;
+		}else if(bNoValue == null){
 			bomInsert();
 			
 		}else{
@@ -386,7 +393,7 @@
 				if(field != 'bomCode' && field != 'bomNo' && objDe[field] == null){
 					flag = false;
 				}
-				 if(isNaN(objDe['bomAmt'])==true){
+				 if(isNaN(objDe['bomAmt'])==true || objDe['bomAmt']>999999999){
 					flag = false;
 					
 				} 
@@ -520,6 +527,24 @@
 		success : function(data){	
 			if(data>=1){
 				swal("성공","BOM 정보수정이 정상적으로 처리되었습니다","success");
+				$('form')[0].reset();
+				 let content = $('#bomSearch').val();
+				   let search = { prodName : content };
+				   $.ajax({
+					   url : 'bomSearch',
+					   method : 'GET',
+					   data : search ,
+					   success : function(data){
+						   bomgrid.resetData(data);
+						   deBomgrid.clear();
+						   stopEdit();
+						   deleteBom.style.display = 'inline-block';
+						   deAdd.style.display = 'none';
+					   },
+					   error : function(reject){
+						   console.log(reject);
+					   }
+				   })
 			}
 			//deBomgrid.clear();
 			stopEdit();
@@ -560,7 +585,7 @@
 							contentType : 'application/json',
 							data : JSON.stringify(checkedBom),
 							success : function(result){
-									swal("성공","BOM 삭제가 정상적으로 처리되었습니다", {icon: "success",});
+									swal("성공","BOM 삭제가 정상적으로 처리되었습니다", "success");
 									   $('form')[0].reset();
 									   let content = $('#bomSearch').val();
 									   let search = { prodName : content };
@@ -601,7 +626,7 @@
 						})
 				    
 				  } else {
-				    swal("삭제가 취소되었습니다","",{icon: "warning",});
+				    swal("삭제가 취소되었습니다","","warning");
 				  }
 				});
 		}else{
@@ -679,6 +704,11 @@
         scrollY: false,
         minBodyHeight: 400,
         rowHeaders: ['rowNum'],
+        pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 10,
+		},
         columns: [
           {
             header: 'NO',

@@ -49,8 +49,8 @@ public class CommCodeController {
 	//공통코드 검색 조회
 	@GetMapping("/commCodeSearch")
 	@ResponseBody
-	public List<CommCodeVO> commCodeSearch(@RequestParam String commCode){
-		List<CommCodeVO> vo = commCodeService.searchCommCode(commCode);
+	public List<CommCodeVO> commCodeSearch(CommCodeVO commCodeVO){
+		List<CommCodeVO> vo = commCodeService.searchCommCode(commCodeVO);
 		return vo;
 	}
 	
