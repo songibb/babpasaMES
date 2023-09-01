@@ -330,8 +330,14 @@
 		        let matName = planGrid.getValue(rowKey, 'matName');
 		        let matStd = planGrid.getValue(rowKey, 'matStd');
 		        let matUnit = planGrid.getValue(rowKey, 'matUnit');
-		        let matAmt = planGrid.getValue(rowKey, 'bomAmt');
+		        let totalStock = planGrid.getValue(rowKey, 'totalStock');
+		        let matSafe = planGrid.getValue(rowKey, 'matSafe');
+		        let willUseAmt = planGrid.getValue(rowKey, 'willUseAmt');
 		        
+		        let matAmt = Number(willUseAmt) + Number(matSafe) - Number(totalStock);
+		        if(matAmt < 0){
+		        	matAmt = 0;
+		        }
 		      	
 		        //마우스 커서 없앰
 		        planGrid.blur();
@@ -377,9 +383,9 @@
 	
 		    $.each(data, function (idx, obj) {
 	
-		        if (Number(obj['matStock']) < Number(obj['bomAmt'])) {
+		        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
 		            let rowKey = obj['rowKey'];
-		            planGrid.addCellClassName(rowKey, 'matStock', 'my-styled-cell');
+		            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
 		        }
 		    })
 		});
@@ -409,6 +415,19 @@
 		        {
 		        	header:'거래횟수',
 		        	name:'actCount'
+		        },
+		        {
+		        	header:'최근단가',
+		        	name:'matPrice',
+		        	formatter(e) {
+		        		if(e['value'] != null){
+		        			val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val + "원";
+		        		}
+		                
+	            	}
 		        }
 		    ]
 	
