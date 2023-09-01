@@ -559,7 +559,8 @@
 	    					</c:forEach>
 	                    ]
 					}		
-				}
+				},
+				align: 'center'
 			},
 // 			{
 // 				header: '지시수량',

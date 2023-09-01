@@ -183,20 +183,59 @@ h1, h2{
 				if(obj['prcsDirIngSts'] == '품질검사부적합'){
 					
 					if(obj['semiYn'] == 'Y'){
+	
 						//반제품 품질검사부적합
 						//var prcsCode = obj['prcsCode'];
 						
-						let dirDeList = dirDeGrid.getRow(getRowKey);
-						
+						let dirDeObj = dirDeGrid.getRow(getRowKey);
+						console.log(dirDeObj);
 						$.ajax({
 							url : 'insertReDirDeSemi',
 							method : 'POST',
-							data : dirDeList,
+							data : JSON.stringify(dirDeObj),
 							contentType : 'application/json',
 							success : function(data){
 								console.log(data);
+								swal("성공", "등록이 완료되었습니다.", "success");
 								
-								//공정완료된 반제품 회색처리
+								//클릭한 지시의 지시코드 가져오기
+						    	let rowKey = dirGrid.getFocusedCell().rowKey;
+						    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+	
+						    	$.ajax({
+									url : 'prcsDirDeList',
+									method : 'GET',
+									data : { prcsDirCode : dirCode },
+									success : function(data){
+										//날짜 츨력 포맷 변경
+										$.each(data, function(i, objDe){
+											let psdd = data[i]['prcsStartDeDate'];
+											let pedd = data[i]['prcsEndDeDate'];
+											data[i]['prcsStartDeDate'] = getDate(psdd);
+											data[i]['prcsEndDeDate'] = getDate(pedd);
+										})
+										
+										dirDeGrid.resetData(data);
+										
+										//재지시 완료된 행은 사용불가
+										//dirDeGrid.disableRow(dirDeObj['rowKey']);
+										//공정완료된 반제품 회색처리
+										//재지시 완료된 행들은 사용불가
+										$.each(data, function(i, obj){
+											if(data[i]['reDirCk'] == 'Y'){		
+												dirDeGrid.disableRow(obj['rowKey']);
+											}
+										});	
+										
+						 		    },
+									error : function(reject){
+							 			console.log(reject);
+							 		}	
+								})
+								
+							
+								
+								
 							},
 							error : function(reject){
 								console.log(reject);
@@ -373,7 +412,7 @@ h1, h2{
         scrollX: false,
         scrollY: false,
         minBodyHeight: 120,
-		rowHeaders: ['rowNum', 'checkbox'],
+		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
