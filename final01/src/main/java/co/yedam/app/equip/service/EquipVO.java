@@ -32,4 +32,6 @@ public class EquipVO {
 	private String chkNote;
 	
 	private String actName;
+	
+	private String result;
 }

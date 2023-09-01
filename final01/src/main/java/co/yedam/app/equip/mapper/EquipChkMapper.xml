@@ -103,17 +103,33 @@
   
   <!-- 검색 -->
   <select id="searchChkEquip" resultType="EquipChkVO">
-  SELECT B.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, B.*
-  				,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
+  	SELECT B.EQ_CODE, 
+  			A.EQ_NAME,
+  			A.EQ_TYPE,
+  			A.CHK_CYCLE,
+  			FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2,
+  			FIND_CDNM('0N', EQ_CHK_YN) AS EQ_CHK_YN2,
+  			FIND_EMP_NAME(EMP_CODE) AS EMP_NAME2,
+  			B.*,
+  			FIND_CDNM('0N', EQ_CHK_YN) AS EQ_CHK_YN
   	FROM EQ_EQUIP A LEFT JOIN EQ_CHK B
   		ON(A.EQ_CODE = B.EQ_CODE)
   	<where>
+  	<if test="eqName != null and eqName != ''">
+  		AND A.EQ_NAME LIKE '%' || #{eqName} || '%'
+  	</if>
   	<if test="startDate != null and startDate != ''">
       	AND TO_CHAR(B.CHK_DATE, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
    	</if>
    	<if test="endDate != null and endDate != ''">
    		AND TO_CHAR(B.CHK_DATE, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
    	</if>
+   	<if test="before==2">
+       AND EQ_CHK_YN != 'Y'
+    </if>
+    <if test="comple==2">
+       AND EQ_CHK_YN != 'N'
+    </if>
   	</where>
   	ORDER BY A.EQ_CODE ASC
   	</select>

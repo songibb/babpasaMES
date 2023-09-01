@@ -27,9 +27,11 @@ public class EquipServiceImpl implements EquipService {
 	@Override
 	//등록
 	public String insertEquipInfo(EquipVO equipVO) {
-		int result = equipMapper.insertEquipInfo(equipVO);
-		if(result == 1) {
-			return equipVO.getEqCode();
+		equipMapper.insertEquipInfo(equipVO);
+		String result = equipVO.getResult();
+		
+		if(result.equals("success")) {
+			return "등록성공";
 		}else {
 			return "등록실패";
 		}
@@ -78,8 +80,8 @@ public class EquipServiceImpl implements EquipService {
 
 	//설비 검색
 	@Override
-	public List<EquipVO> searchEquip(String eqName){
-		return equipMapper.searchEquip(eqName);
+	public List<EquipVO> searchEquip(EquipVO equipVO){
+		return equipMapper.searchEquip(equipVO);
 	}
 
 }

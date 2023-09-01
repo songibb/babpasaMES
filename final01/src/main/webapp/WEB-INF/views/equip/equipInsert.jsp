@@ -178,7 +178,6 @@
       </tr>
    </table>
    <br>
-   
    <!-- submit이 한페이지에 2개라 value값으로 지정을 해놓음  -->
    
    <div class="buttons">
@@ -394,7 +393,15 @@
 	      return actGrid;
 	   }
 	
-	
+	//$('#insert').on('click', alertInsert);
+	//function alertInsert(){
+		let msg = `${result}`;
+		console.log(msg);
+		if(msg == '등록성공'){
+			swal('등록 성공!', '설비 정보가 등록되었습니다.', 'success' );
+		}
+		
+	//}
 	
 	//수정
 	 $('#update').on('click',ajaxEquipUpdate);

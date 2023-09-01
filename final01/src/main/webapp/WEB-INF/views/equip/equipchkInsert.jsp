@@ -136,25 +136,30 @@
          columns: [
       		{
       			header: '설비코드',
-      			name :'eqCode'
+      			name :'eqCode',
+	            align: 'center'
       			
       		},
             {
                header: '설비명',
-               name: 'eqName'
+               name: 'eqName',
+	           align: 'center'
             },
             
             {
                header: '설비상태',
-               name: 'eqSts2'
+               name: 'eqSts2',
+	           align: 'center'
             },
             {
                header: '최근점검일',
-               name: 'chkDate'
+               name: 'chkDate',
+	           align: 'center'
             },
             {
             	header: '차기점검일',
-            	name : 'chkNextDate'
+            	name : 'chkNextDate',
+	            align: 'center'
             }
             
          ]
@@ -178,11 +183,13 @@
             {
                header: '설비점검코드',
                name: 'eqChkCode',
-               width: 'auto'
+               width: 'auto',
+	           align: 'center'
             },
             {
                header: '설비코드',
-               name: 'eqCode'
+               name: 'eqCode',
+	           align: 'center'
             },
             {
                header: '점검일',
@@ -219,6 +226,7 @@
             {
 	 			header: '점검판정',
 	             name: 'eqChkYn',
+	             align: 'center',
 	             formatter: 'listItemText',
 					editor: {
 		                type: 'select',
@@ -255,6 +263,7 @@
          
       });
 		var cycle;
+		
       grid.on('click', () => {
     	  
     	let selectKey = grid.getFocusedCell().rowKey;

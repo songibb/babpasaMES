@@ -247,16 +247,19 @@
 		        columns:  [
 	 	      {
 		 	        header: '비가동코드',
-		 	        name: 'offNo'
+		 	        name: 'offNo',
+			 	    align: 'center'
 		 	    
 		 	      },
 		 	      {
 		 	        header: '설비코드',
-		 	        name: 'eqCode'
+		 	        name: 'eqCode',
+			 	    align: 'center'
 		 	      },
 		 	      {
 			 	    header: '설비명',
-			 	    name: 'eqName'
+			 	    name: 'eqName',
+			 	    align: 'center'
 			 	  },
 		 	      {
 		 	        header: '비가동사유',
@@ -374,16 +377,19 @@ function createActGrid(){
 		      columns: [
 		    	      {
 			 	        header: '설비코드',
-			 	        name: 'eqCode'
+			 	        name: 'eqCode',
+				        align: 'center'
 			 	      
 			 	      },
 			 	      {
 			 	        header: '설비명',
-			 	        name: 'eqName'
+			 	        name: 'eqName',
+				        align: 'center'
 			 	      },
 			 	      {
 			 	    	  header : '설비상태',
-			 	    	  name : 'eqSts'		 	    	  
+			 	    	  name : 'eqSts',
+				          align: 'center'		 	    	  
 			 	      },
 			    ]
 		    })   
