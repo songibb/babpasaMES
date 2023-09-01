@@ -114,8 +114,11 @@ public class EquipChkController {
 	@GetMapping("/searchChkEquip")
 	@ResponseBody
 	public List<EquipChkVO> outListFilter(@RequestParam(value = "startDate", required = false) String startDate
-									, @RequestParam(value = "endDate", required = false) String endDate) {
-		List<EquipChkVO> vo = equipChkService.searchChkEquip(startDate, startDate);
+									, @RequestParam(value = "endDate", required = false) String endDate
+									, @RequestParam(value = "eqName", required = false) String eqName
+									, @RequestParam(value="before", required=false) String before 
+									, @RequestParam(value="comple", required=false) String comple) {
+		List<EquipChkVO> vo = equipChkService.searchChkEquip(startDate, startDate, eqName, before, comple);
 		return vo;
 	}
 }

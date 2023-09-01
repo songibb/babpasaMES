@@ -24,6 +24,6 @@ public interface EquipMapper {
 	public EquipVO selectEquipInfo(EquipVO equipVO);
 
 	//설비 검색
-	public List<EquipVO> searchEquip(String eqName);
+	public List<EquipVO> searchEquip(EquipVO equipVO);
 
 }

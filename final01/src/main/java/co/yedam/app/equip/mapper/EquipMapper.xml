@@ -24,7 +24,7 @@
   </select>
   	
   <!-- 설비등록 -->
-  <insert id="insertEquipInfo" parameterType="EquipVO">
+  <insert id="insertEquipInfo" statementType="CALLABLE" parameterType="EquipVO">
   	{
 		CALL INSERT_NEW_EQUIP(
 			#{actCode}
@@ -41,6 +41,7 @@
 			,#{empCode}
 			,#{chkType}
 			,#{chkNote}
+			,#{result, mode=OUT, jdbcType=VARCHAR}
 			
 		)
   	}
@@ -114,7 +115,14 @@
 	  			,HIGH_TEMP
 	  			,LOW_TEMP
 		FROM EQ_EQUIP
-		WHERE EQ_NAME LIKE '%' || #{eqName} || '%'
+		<where>
+			<if test="eqName != null and eqName != ''">
+				AND EQ_NAME LIKE '%' || #{eqName} || '%'
+			</if>
+			<if test="eqType != null and eqType != ''">
+				AND EQ_TYPE = #{eqType}
+			</if>
+		</where>
 	ORDER BY EQ_NAME
   </select>
   

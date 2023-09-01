@@ -51,12 +51,14 @@
 	
 	#customtemplateSearchAndButton input[type="text"],
 	select {
-	  width: 15%;
+	  width: 200px;
 	  padding: 6px;
 	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
 	}
+	
+	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>
 </head>
 <body>
@@ -68,32 +70,24 @@
             	<div class="table-responsive pt-3">
 	            	<form>
 	            		<div id="customtemplateSearchAndButton">
-	            			<!-- <p>설비구분</p>
-	            			<select name="job">
-							    <option value="">설비구분</option>
-							    <option value="증숙">증숙</option>
-							    <option value="혼합">혼합</option>
-							    <option value="냉동">냉동</option>
-							</select><br>
+							<br>
 							
-							<p>판정구분</p>
-							<select name="job">
-							    <option value="">판정구분</option>
-							    <option value="합격">합격</option>
-							    <option value="불합격">불합격</option>
-							    <option value="기타">기타</option>
-							</select> -->
-						
+	            			<p>설비명</p>
+	  						<input type="text" placeholder="설비명을 입력하세요." id="eqName">
 							<br>
 							<p>점검일자</p>
-							 <input type="date"> ~ <input type="date">
-							<button type="button" id="searchBtn" class="btn btn-info btn-icon-text">검색</button>
-							</div>
+							 <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+							 <button type="button" id="searchBtn" class="btn btn-info btn-icon-text">검색</button>
+							<div>
+							<p>점검판정</p>
+							<label for="before"><input type="checkbox" id="before" value="before"> 합격</label> 
+							<label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple"> 불합격</label>
 							
-
-			
+							</div>
+	
 						</div>	
 					</form>
+						</div>
 					<div id="grid"></div>	
 
                 </div>
@@ -152,32 +146,40 @@
 	         columns: [
 	           {
 	             header: '설비코드',
-	             name: 'eqCode'
+	             name: 'eqCode',
+	             align: 'center'
 	           },
 	           {
 		         header: '설비명',
-		         name: 'eqName'
+		         name: 'eqName',
+	             align: 'center'
 		       },
 		       {
 			     header: '설비구분',
-			     name: 'eqType2'
+			     name: 'eqType2',
+	             align: 'center'
 			   },
 	           {
 		         header: '점검주기(일)',
-		         name: 'chkCycle'
+		         name: 'chkCycle',
+	             align: 'right'
 		       },
 	           {
 	             header: '점검일자',
 	             name: 'chkDate',
-	           	 className: 'yellow-background'
+	           	 className: 'yellow-background',
+	             align: 'center'
 	           },
 	           {
 	               header: '차기점검일자',
-	               name: 'chkNextDate'
+	               name: 'chkNextDate',
+		           align: 'center',
+		           className: 'yellow-background'
 	           },
 	           {
 	 			header: '점검판정',
-	             name: 'eqChkYn2'
+	             name: 'eqChkYn2',
+	             align: 'center'
 	           },
 	           {
 	        	  header: '담당자코드',
@@ -187,7 +189,8 @@
 	           },	    
 	           {
 	        	  header: '담당자명',
-		 	      name: 'empName2'
+		 	      name: 'empName2',
+		          align: 'left'
 			 	      
 	           },
 	           {
@@ -224,25 +227,53 @@
 	             }
 	         }
 	     });
+	     
+	   //불량수량, 반품 있는 셀 - 빨간색으로 변경
+	 	grid.on('onGridMounted', function (e) {
+	 	    let data = grid.getData();
 
+	 	    $.each(data, function (idx, obj) {
+
+	 	        if (obj['eqChkYn2'] == '불합격') {
+	 	            let rowKey = obj['rowKey'];
+	 	           grid.addCellClassName(rowKey, 'eqChkYn2', 'my-styled-cell');
+	 	        }
+		    })	    
+	 	});
 	     
 	   //검색 버튼
 	        $('#searchBtn').on('click', searchChkEquip);
 	        function searchChkEquip(e) {
+	        	let eqName = $('#eqName').val();
+	        	
 	            let sd = $('#startDate').val();
 	            let ed = $('#endDate').val();
 
+	            let before = '1';
+	            let comple = '1';
+	            let beforeCheck = document.getElementById('before');
+	            let compleCheck = document.getElementById('comple');
+	            if (beforeCheck.checked && !compleCheck.checked) {
+	                comple = '2';
+	            } else if (!beforeCheck.checked && compleCheck.checked) {
+	                before = '2';
+	            }
+	            
 	            let search = {
 	                startDate: sd,
-	                endDate: ed
+	                endDate: ed,
+	                eqName: eqName,
+	                before: before,
+	                comple: comple
 	            };
 	            $.ajax({
 	                url: 'searchChkEquip',
 	                method: 'GET',
 	                data: search,
 	                success: function (data2) {
-
-	                    $.each(data2, function (idx, obj) {
+						
+	                	//날짜 형식 변환
+	                     $.each(data2, function (idx, obj) {
 	                        let date = new Date(obj['chkDate']);
 	                        let year = date.getFullYear(); //0000년 가져오기
 	                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -252,9 +283,33 @@
 	                        ) + "-" + (
 	                            ("00" + day.toString()).slice(-2)
 	                        );
+	                        
+	                        let date2 = new Date(obj['chkNextDate']);
+	                        let year2 = date2.getFullYear(); //0000년 가져오기
+	                        let month2 = date2.getMonth() + 1; //월은 0부터 시작하니 +1하기
+	                        let day2 = date2.getDate(); //일자 가져오기
+	                        obj['chkNextDate'] = year2 + "-" + (
+	                            ("00" + month2.toString()).slice(-2)
+	                        ) + "-" + (
+	                            ("00" + day2.toString()).slice(-2)
+	                        );
 
-	                    })
+	                    }) 
+
 	                    grid.resetData(data2);
+	                     
+	                     
+                   //셀 빨간색으로 바꾸는거 (AJAX안에 넣는 버전)
+            		let data = grid.getData();
+                     
+           		    $.each(data, function (idx, obj) {
+           	
+           		        if (obj['eqChkYn2'] == '불합격') {
+           		            let rowKey = obj['rowKey'];
+           		         	grid.addCellClassName(rowKey, 'eqChkYn2', 'my-styled-cell');
+           		        }
+           		    })
+	             
 	                },
 	                error: function (reject) {
 	                    console.log(reject);
@@ -262,7 +317,7 @@
 	            });
 	        }
 
-	        
+	      
 	        //이전 날짜 선택불가
 	        $('#startDate').on('change', function () {
 	            $('#endDate').attr('min', $('#startDate').val());

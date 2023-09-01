@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.yedam.app.common.act.service.ActCodeService;
 import co.yedam.app.common.act.service.ActCodeVO;
@@ -34,6 +35,7 @@ public class EquipController {
 	@GetMapping("/EquipList")
 	public String selectEquipAllList(Model model) {
 		model.addAttribute("EquipList", equipService.getEquipList());
+		model.addAttribute("EquipTypeList", commCodeService.selectEquipTypeList());
 		return "equip/EquipList";
 	}
 	
@@ -55,10 +57,17 @@ public class EquipController {
 		}
 		
 		//등록 처리
+//		@PostMapping("/equipInsert")
+//		public String equipInsertProcess(EquipVO equipVO) {
+//			equipService.insertEquipInfo(equipVO);
+//			return  "redirect:EquipList";
+//		}
 		@PostMapping("/equipInsert")
-		public String equipInsertProcess(EquipVO equipVO) {
-			equipService.insertEquipInfo(equipVO);
-			return  "redirect:EquipList";
+		public String equipInsertProcess(EquipVO equipVO, RedirectAttributes rtt) {
+			String result = equipService.insertEquipInfo(equipVO);
+			System.out.println(result);
+			rtt.addFlashAttribute("result", result);
+			return  "redirect:equipInsert";
 		}
 		
 		/*
@@ -97,8 +106,8 @@ public class EquipController {
 	//설비검색조회
 		@GetMapping("/searchEquip")
 		@ResponseBody
-		public List<EquipVO> SearchEquip(@RequestParam String eqName) {
-			List<EquipVO> vo = equipService.searchEquip(eqName);
+		public List<EquipVO> SearchEquip(EquipVO equipVO) {
+			List<EquipVO> vo = equipService.searchEquip(equipVO);
 			return vo;
 					
 		}

@@ -37,7 +37,7 @@
 		}
 		
 		#customtemplateSearchAndButton p{
-			width : 80px;
+			width : 100px;
 			font-size: 20px;
 		}
 	</style>
@@ -55,7 +55,15 @@
 	            		<div id="customtemplateSearchAndButton">
 							<p>설비명</p>
 	  							<input type="text" placeholder="검색어를 입력하세요" id="equipSearch">
-								<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+								<br>
+								<p>설비구분</p>
+									<select id="eqTypeSearch" name="eqType" style="margin-bottom: 35px">
+										<option value="">선택</option>
+										<c:forEach items="${EquipTypeList}" var="p">
+										<option value="${p.commdeCode }">${p.commdeName }</option>
+											</c:forEach>
+									</select>
+									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 									<i class="fas fa-search"></i>검색
 								</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>					
@@ -100,7 +108,8 @@
 			        columns:  [
 		 	      	  {
 			 	        header: '설비코드',
-			 	        name: 'eqCode'
+			 	        name: 'eqCode',
+			 	        align: 'center'
 			 	      
 			 	      },
 			 	     {
@@ -112,46 +121,56 @@
 			 	      },
 			 	      {
 			 	    	  header : '설비업체명',
-			 	    	  name : 'actName'
+			 	    	  name : 'actName',
+				          align: 'center'
 			 	    	  
 			 	      },
 			 	      {
 			 	        header: '설비명',
 			 	        name: 'eqName',
-			 	        filter: 'text'
+			 	        filter: 'text',
+			 	        align: 'center'
 			 	      },
 			 	      {
 			 	        header: '모델명',
-			 	        name: 'modelName'
+			 	        name: 'modelName',
+			 	        align: 'center'
 			 	      },
 			 	      {
 			 	    	  header :'제작일자',
-			 	    	  name : 'makeDate'
+			 	    	  name : 'makeDate',
+				 	      align: 'center'
 			 	      },
 			 	      {
 			 	    	  header :'구입일자',
-			 	    	  name : 'buyDate'
+			 	    	  name : 'buyDate',
+				 	      align: 'center'
 			 	      },
 			 	      {
 			 	    	  header : '점검주기',
-			 	    	  name : 'chkCycle'
+			 	    	  name : 'chkCycle',
+				 	      align: 'right'
 			 	      },
 			 	      
 			 	      {
 			 	        header: '설비상태',
-			 	        name: 'eqSts2'
+			 	        name: 'eqSts2',
+				 	    align: 'center'
 			 	      },
 			 	      {
 			 	        header: '설비구분',
-			 	        name: 'eqType2'
+			 	        name: 'eqType2',
+				 	    align: 'left'
 			 	      },
 			 	      {
 			 	    	 header : '최저온도',
-			 	    	 name : 'lowTemp'
+			 	    	 name : 'lowTemp',
+				 	     align: 'right'
 			 	      },
 			 	      {
 			 	    	  header :'최고온도',
-			 	    	  name : 'highTemp'
+			 	    	  name : 'highTemp',
+					 	  align: 'right'
 			 	      }
 			 	     
 			 	    ]
@@ -161,7 +180,9 @@
 		    $('#searchBtn').on('click', searchProdIn);
 		    function searchProdIn(e){
 		 	   let content = $('#equipSearch').val();
-		 	   let search = { eqName : content };
+		 	   let eqType = $('#eqTypeSearch').val();
+		 	   
+		 	   let search = { eqName : content, eqType : eqType };
 		 	   $.ajax({
 		 		   url : 'searchEquip',
 		 		   method : 'GET',

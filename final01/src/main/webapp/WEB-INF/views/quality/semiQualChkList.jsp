@@ -106,7 +106,7 @@
  	
  		        if (obj['nonPassAmt'] != '0') {
  		            let rowKey = obj['rowKey'];
- 		           grid.addCellClassName(rowKey, 'nonPassAmt', 'my-styled-cell');
+ 		           grid.addRowClassName(rowKey,'my-styled-cell');
  		        }
  		    })
          },
@@ -301,7 +301,7 @@
     	
     		        if (Number(obj['passValue']) < Number(obj['testResult'])) {
     		            let rowKey = obj['rowKey'];
-    		            grid2.addCellClassName(rowKey, 'passYn2', 'my-styled-cell');
+    		            grid2.addRowClassName(rowKey,'my-styled-cell');
     		        }
     		    }) 	
                 

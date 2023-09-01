@@ -149,11 +149,13 @@
 	        columns: [
 	        	  {
 	 	 	        header: '자재검수코드',
-	 	 	        name: 'matTestCode'
+	 	 	        name: 'matTestCode',
+		            align: 'center'
 	 	 	      },
 	 	 	      {
 		 	 	        header: '자재발주코드',
-		 	 	        name: 'matOdDeCd'
+		 	 	        name: 'matOdDeCd',
+			            align: 'center'
 		 	 	        
 		 	 	  },
 		 	 	  {
@@ -210,7 +212,8 @@
 	              {
 		 	 	        header: '검수일자',
 		 	 	        name: 'matTestDate',
-				 	  	className: 'yellow-background'
+				 	  	className: 'yellow-background',
+			            align: 'center'
 		 	 	  },
 		 	 	  {
 		 	 	        header: '불량코드',

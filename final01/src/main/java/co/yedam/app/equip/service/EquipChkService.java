@@ -26,5 +26,5 @@ public interface EquipChkService {
 	public int modifyEquipChk(GridVO<EquipChkVO> data);
 	
 	//검색
-	public List<EquipChkVO> searchChkEquip(String startDate, String outDate);
+	public List<EquipChkVO> searchChkEquip(String startDate, String endDate, String eqName,String before, String comple );
 }

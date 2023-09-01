@@ -31,5 +31,8 @@ public interface EquipChkMapper {
 	
 	//검색
 	public List<EquipChkVO> searchChkEquip(@Param("startDate")String startDate
-										 , @Param("endDate")String endDate);
+										 , @Param("endDate")String endDate
+										 , @Param("eqName") String eqName
+										 , @Param("before") String before
+										 , @Param("comple") String comple);
 }
