@@ -27,6 +27,7 @@
 			   prod_name
 		  FROM com_prod
 		 WHERE prod_kind = 'C'
+		 ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 제품별공정 등록 -->
@@ -54,11 +55,11 @@
 	<update id="updatePrcsProd" parameterType="PrcsProdVO">
 		UPDATE prcs_prod 
 		<set>
-			<if test="prcsName != null and !prcsName.equals('')">
-				prcs_Name = #{prcsCode},
+			<if test="prcsCode != null and !prcsCode.equals('')">
+				prcs_code = #{prcsCode},
 			</if>
-			<if test="semiYn != null and !semiYn.equals('')">
-				prcsSeq = #{prcsSeq}
+			<if test="prcsSeq != null and !prcsSeq.equals('')">
+				prcs_seq = #{prcsSeq}
 			</if>
 		</set> 
 	  	 WHERE prcs_prod_code = #{prcsProdCode}

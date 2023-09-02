@@ -24,17 +24,25 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	@Autowired
 	PrcsIngMapper prcsIngMapper;
 	
-	//생산지시 조회
+	//생산지시 조회 (아직 생산 완료 되지 않은 지시)
 	@Override
 	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO) {
 		return prcsDirMapper.selectPrcsDirList(prcsSearchVO);
 	}
 	
+	//생산지시 조회 (생산 완료된 지시)
+	@Override
+	public List<PrcsDirVO> selectPrcsEndDirList(PrcsSearchVO prcsSearchVO) {
+		return prcsDirMapper.selectPrcsEndDirList(prcsSearchVO);
+	}
+		
+		
 	//상세생산지시 조회
 	@Override
 	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode) {
 		return prcsDirMapper.selectPrcsDirDeList(prcsDirCode);
 	}
+	
 	
 	//생산지시 등록
 //	@Override
@@ -192,11 +200,15 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 		prcsDirMapper.insertReDirDe(prcsDirVO);
 		
 		//재지시 등록하고 나면 prcsDirVO에 prcsDirDeCode가 selectKey값으로 새로 부여됨
+		String newDirDeCode = prcsDirVO.getPrcsDirDeCode();
+		String empCode = prcsDirVO.getEmpCode();
 		
 		//진행 공정 등록,
 		//반제품 공정완료인 경우 진행공정관리 테이블 update,
 		//품질검사부적합 상태인 반제품 공정만 자재 출고 (프로시저)
-		prcsDirMapper.insertReDirDeSemi(prcsDirVO, originDirDeCode);
+		prcsDirMapper.insertReDirDeSemi(newDirDeCode, empCode, originDirDeCode);
+		
+		//반제품 출고
 		return 0;
 	}
 	

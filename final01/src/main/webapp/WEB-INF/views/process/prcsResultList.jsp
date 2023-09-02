@@ -54,7 +54,7 @@ h2{
 	justify-content: space-between;
 }
 
-#prodNameFix, #prcsNameFix {
+#prodNameFix, #prcsNameFix, #prcsDirNameFix{
 	background-color : #868e96;
 	border-color: #868e96;
 }
@@ -76,6 +76,11 @@ h2{
 			<div class="card-body">
 				<div class="table-responsive pt-3">
 					<form>	
+						<p>생산지시코드</p>
+           				<input type="text" id="searchPrcsDirCode">
+           				<i class="bi bi-search" id="prcsDirModal"></i> <!-- 돋보기 아이콘 -->
+           				<input type="text" class="blackcolorInputBox" id="prcsDirNameFix" readonly>
+						<br>
 						<p>제품명</p>
            				<input type="text" id="searchProdCode">
            				<i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
@@ -86,7 +91,7 @@ h2{
            				<i class="bi bi-search" id="prcsModal"></i> <!-- 돋보기 아이콘 -->
            				<input type="text" class="blackcolorInputBox" id="prcsNameFix" readonly>
            				<br>
-						<p>지시일자</p>
+						<p>생산시작일자</p>
                 		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 						
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
@@ -113,6 +118,7 @@ h2{
 	
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+		<jsp:include page="../comFn/prcsDirModal.jsp"></jsp:include>
 		<jsp:include page="../comFn/prodModal.jsp"></jsp:include>
 		<jsp:include page="../comFn/prcsModal.jsp"></jsp:include>
 	</div>
@@ -123,6 +129,7 @@ h2{
 	
 	function searchResultList(){
 		let searchObj = {};
+		searchObj['searchPrcsDirCode'] = $('#searchPrcsDirCode').val();
 		searchObj['searchProdCode'] = $('#searchProdCode').val();
 		searchObj['searchPrcsCode'] = $('#searchPrcsCode').val();
 		searchObj['startDate'] = $('#startDate').val();
@@ -133,7 +140,13 @@ h2{
 			method : 'GET',
 			data : searchObj,
 			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let pdd = data[i]['prcsDirDate'];
+					data[i]['prcsDirDate'] = getDate(pdd);
+				})
 				resultGrid.resetData(data);
+				
 			},
 			error : function(reject){
 				 console.log(reject);
@@ -220,21 +233,20 @@ h2{
             header: '작업시작시간',
             name: 'prcsStartTime',
             className: 'yellow-background',
-            width: 'auto',
+            width: '160',
             align: 'center'
           },
           {
             header: '작업종료시간',
             name: 'prcsEndTime',
             className: 'yellow-background',
-            width: 'auto',
+            width: '160',
             align: 'center'
           },
           {
              header: '지시등록일자',
              name: 'prcsDirDate',
              className: 'yellow-background',
-             width: 'auto',
              align: 'center'
           },
         ]
@@ -251,6 +263,11 @@ h2{
         method :"GET",
         data : searchObj,
         success : function(data){
+        	//날짜 츨력 포맷 변경
+			$.each(data, function(i, objDe){
+				let pdd = data[i]['prcsDirDate'];
+				data[i]['prcsDirDate'] = getDate(pdd);
+			})
         	resultGrid.resetData(data);
         },
         error : function(reject){

@@ -162,6 +162,9 @@
 		  				   JOIN prcs_dir d 
 		  				     ON dd.prcs_dir_code = d.prcs_dir_code
 		<where>
+			<if test="searchPrcsDirCode != null and !searchPrcsDirCode.equals('')">
+				AND d.prcs_dir_code LIKE '%' || #{searchPrcsDirCode} || '%'
+			</if>
 			<if test="searchPrcsCode != null and !searchPrcsCode.equals('')">
 				AND l.prcs_code LIKE '%' || #{searchPrcsCode} || '%'
 			</if>
