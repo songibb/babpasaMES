@@ -175,126 +175,134 @@ h1, h2{
 		
 		let getRowKey = dirDeGrid.getFocusedCell().rowKey;
 		let getPrcsIngSts = dirDeGrid.getValue(getRowKey, 'prcsIngSts');
+		let getreDirCk = dirDeGrid.getValue(getRowKey, 'reDirCk');
+		
 		//상세생산지시에서 품질검사부적합인지 판단
 		if(getPrcsIngSts == '품질검사부적합'){
-			let getIngData = ingGrid.getData();
-			$.each(getIngData, function(i, obj){
+			
+			if(getreDirCk == 'Y'){		
+				//벌써 재지시를 내린 경우
+				swal("경고", "이미 재지시 등록한 사항입니다.", "warning");
 				
-				if(obj['prcsDirIngSts'] == '품질검사부적합'){
+			} else{
+				let getIngData = ingGrid.getData();
+				$.each(getIngData, function(i, obj){
 					
-					if(obj['semiYn'] == 'Y'){
-	
-						//반제품 품질검사부적합
-						//var prcsCode = obj['prcsCode'];
-						
-						let dirDeObj = dirDeGrid.getRow(getRowKey);
-						console.log(dirDeObj);
-						$.ajax({
-							url : 'insertReDirDeSemi',
-							method : 'POST',
-							data : JSON.stringify(dirDeObj),
-							contentType : 'application/json',
-							success : function(data){
-								console.log(data);
-								swal("성공", "등록이 완료되었습니다.", "success");
-								
-								//클릭한 지시의 지시코드 가져오기
-						    	let rowKey = dirGrid.getFocusedCell().rowKey;
-						    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
-	
-						    	$.ajax({
-									url : 'prcsDirDeList',
-									method : 'GET',
-									data : { prcsDirCode : dirCode },
-									success : function(data){
-										//날짜 츨력 포맷 변경
-										$.each(data, function(i, objDe){
-											let psdd = data[i]['prcsStartDeDate'];
-											let pedd = data[i]['prcsEndDeDate'];
-											data[i]['prcsStartDeDate'] = getDate(psdd);
-											data[i]['prcsEndDeDate'] = getDate(pedd);
-										})
-										
-										dirDeGrid.resetData(data);
-										
-										//재지시 완료된 행은 사용불가
-										//dirDeGrid.disableRow(dirDeObj['rowKey']);
-										//공정완료된 반제품 회색처리
-										//재지시 완료된 행들은 사용불가
-										$.each(data, function(i, obj){
-											if(data[i]['reDirCk'] == 'Y'){		
-												dirDeGrid.disableRow(obj['rowKey']);
-											}
-										});	
-										
-						 		    },
-									error : function(reject){
-							 			console.log(reject);
-							 		}	
-								})
-								
-							
-								
-								
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						})
-						
-					} else{
-						//완제품 품질검사부적합
-						
-						//체크한 행들의 정보 가져오기
-						let checkList = dirDeGrid.getCheckedRows();
-						$.ajax({
-							url : 'insertReDirDe',
-							method : 'POST',
-							data : JSON.stringify(checkList),
-							contentType : 'application/json',
-							success : function(data){	
-								console.log(data);
-								swal("성공", "등록이 완료되었습니다.", "success");
-								
-								//클릭한 지시의 지시코드 가져오기
-						    	let rowKey = dirGrid.getFocusedCell().rowKey;
-						    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
-	
-						    	$.ajax({
-									url : 'prcsDirDeList',
-									method : 'GET',
-									data : { prcsDirCode : dirCode },
-									success : function(data){
-										//날짜 츨력 포맷 변경
-										$.each(data, function(i, objDe){
-											let psdd = data[i]['prcsStartDeDate'];
-											let pedd = data[i]['prcsEndDeDate'];
-											data[i]['prcsStartDeDate'] = getDate(psdd);
-											data[i]['prcsEndDeDate'] = getDate(pedd);
-										})
-										
-										dirDeGrid.resetData(data);
-										
-										//재지시 완료된 행들은 사용불가
-										$.each(checkList, function(idx, obj){
-											dirDeGrid.disableRow(obj['rowKey']);
-										});
-										
-						 		    },
-									error : function(reject){
-							 			console.log(reject);
-							 		}	
-								})
-							
-							},
-							error : function(reject){
-								console.log(reject);
-							}
-						});
-					}			
-				} 
-			})
+					if(obj['prcsDirIngSts'] == '품질검사부적합'){
 
+						if(obj['semiYn'] == 'Y'){
+							
+							//반제품 품질검사부적합
+							//var prcsCode = obj['prcsCode'];
+							
+							let dirDeObj = dirDeGrid.getRow(getRowKey);
+
+							$.ajax({
+								url : 'insertReDirDeSemi',
+								method : 'POST',
+								data : JSON.stringify(dirDeObj),
+								contentType : 'application/json',
+								success : function(data){
+									console.log(data);
+									swal("성공", "등록이 완료되었습니다.", "success");
+									
+									//클릭한 지시의 지시코드 가져오기
+							    	let rowKey = dirGrid.getFocusedCell().rowKey;
+							    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+		
+							    	$.ajax({
+										url : 'prcsDirDeList',
+										method : 'GET',
+										data : { prcsDirCode : dirCode },
+										success : function(data){
+											//날짜 츨력 포맷 변경
+											$.each(data, function(i, objDe){
+												let psdd = data[i]['prcsStartDeDate'];
+												let pedd = data[i]['prcsEndDeDate'];
+												data[i]['prcsStartDeDate'] = getDate(psdd);
+												data[i]['prcsEndDeDate'] = getDate(pedd);
+											})
+											
+											dirDeGrid.resetData(data);
+											
+											//재지시 완료된 행은 사용불가
+											//dirDeGrid.disableRow(dirDeObj['rowKey']);
+											//공정완료된 반제품 회색처리
+											//재지시 완료된 행들은 사용불가
+											$.each(data, function(i, obj){
+												if(data[i]['reDirCk'] == 'Y'){		
+													dirDeGrid.disableRow(obj['rowKey']);
+												}
+											});	
+											
+							 		    },
+										error : function(reject){
+								 			console.log(reject);
+								 		}	
+									})
+
+								},
+								error : function(reject){
+									console.log(reject);
+								}
+							})
+							
+						} else{
+							//완제품 품질검사부적합
+							//체크박스에 체크된 것 한번에 재지시하려고 list형태를 생각했으나, 반제품 품질검사부적합때문에 일단 선택한 행 하나씩 하는 걸로 변경
+							let dirDeObj = dirDeGrid.getRow(getRowKey);
+							let checkList = [];
+							checkList.push(dirDeObj);
+							$.ajax({
+								url : 'insertReDirDe',
+								method : 'POST',
+								data : JSON.stringify(checkList),
+								contentType : 'application/json',
+								success : function(data){	
+									swal("성공", "등록이 완료되었습니다.", "success");
+									
+									//클릭한 지시의 지시코드 가져오기
+							    	let rowKey = dirGrid.getFocusedCell().rowKey;
+							    	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');
+		
+							    	$.ajax({
+										url : 'prcsDirDeList',
+										method : 'GET',
+										data : { prcsDirCode : dirCode },
+										success : function(data){
+											//날짜 츨력 포맷 변경
+											$.each(data, function(i, objDe){
+												let psdd = data[i]['prcsStartDeDate'];
+												let pedd = data[i]['prcsEndDeDate'];
+												data[i]['prcsStartDeDate'] = getDate(psdd);
+												data[i]['prcsEndDeDate'] = getDate(pedd);
+											})
+											
+											dirDeGrid.resetData(data);
+											
+											//재지시 완료된 행들은 사용불가
+											$.each(checkList, function(idx, obj){
+												dirDeGrid.disableRow(obj['rowKey']);
+											});
+											
+							 		    },
+										error : function(reject){
+								 			console.log(reject);
+								 		}	
+									})
+								
+								},
+								error : function(reject){
+									console.log(reject);
+								}
+							});
+						}
+					} 
+				})
+
+			}
+			
+			
 		} else{
 			//선택한 행이 품질검사부적합이 아닐 경우 경고창
 			swal("경고", "재지시 등록 사항이 아닙니다.", "warning");
@@ -673,6 +681,7 @@ h1, h2{
 	   		        	ingGrid.addRowClassName(rowKey, 'my-styled-cell');
 	   		        }
 	   		    })
+
  		    },
 			error : function(reject){
 	 			console.log(reject);

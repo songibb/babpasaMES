@@ -11,8 +11,11 @@ import co.yedam.app.prcs.plan.service.PrcsPlanVO;
 import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 public interface PrcsDirMapper {
-	//생산지시 조회
+	//생산지시 조회 (아직 생산 완료 되지 않은 지시)
 	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO);
+	
+	//생산지시 조회  (생산 완료된 지시)
+	public List<PrcsDirVO> selectPrcsEndDirList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산지시 조회
 	public List<PrcsDirVO> selectPrcsDirDeList(@Param("prcsDirCode") String prcsDirCode);
@@ -53,5 +56,7 @@ public interface PrcsDirMapper {
 	public int updateReDirDe(PrcsDirVO prcsDirVO);
 	
 	//재지시 등록 - 반제품 (상세생산지시)
-	public int insertReDirDeSemi(PrcsDirVO prcsDirVO, @Param("originDirDeCode") String originDirDeCode);
+	public int insertReDirDeSemi(@Param("newDirDeCode") String newDirDeCode, 
+								 @Param("empCode") String empCode, 
+								 @Param("originDirDeCode") String originDirDeCode);
 }

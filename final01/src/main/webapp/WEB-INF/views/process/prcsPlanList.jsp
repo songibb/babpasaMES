@@ -289,7 +289,7 @@ h1, h2{
           },
           {
             header: '우선순위',
-            name: 'prcsPrio',
+            name: 'prcsPrioKr',
             align: 'center'
           },
 //           {

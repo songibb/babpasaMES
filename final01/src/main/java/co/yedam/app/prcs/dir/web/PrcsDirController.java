@@ -35,11 +35,19 @@ public class PrcsDirController {
 		return "process/prcsDirList";
 	}
 	
-	//생산지시 조회 - 리스트
+	//생산지시 조회 (아직 생산 완료 되지 않은 지시) - 리스트
 	@GetMapping("selectPrcsDirList")
 	@ResponseBody
 	public List<PrcsDirVO> getPrcsDirAllList(PrcsSearchVO prcsSearchVO) {
 		List<PrcsDirVO> list = prcsDirService.selectPrcsDirList(prcsSearchVO);
+		return list;
+	}
+	
+	//생산지시 조회 (생산 완료된 지시) - 리스트
+	@GetMapping("selectPrcsEndDirList")
+	@ResponseBody
+	public List<PrcsDirVO> getPrcsEndDirList(PrcsSearchVO prcsSearchVO) {
+		List<PrcsDirVO> list = prcsDirService.selectPrcsEndDirList(prcsSearchVO);
 		return list;
 	}
 	

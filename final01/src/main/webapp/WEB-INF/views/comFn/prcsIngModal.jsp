@@ -314,8 +314,12 @@
 		return year + '-' + month  + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;			
 	}
 	
+
 	
     ingGrid.on('click', () => {
+    	
+    	//상세생산지시가 품질검사부적합일때
+		//진행공정관리의 공정완료 부분은 클릭 불가 	(회색처리되어있음)
     	
     	//선택한 행 색깔 바꾸기
 		let selectKey = ingGrid.getFocusedCell().rowKey;
@@ -324,148 +328,155 @@
     	ingGrid.on('focusChange', () => {
     		ingGrid.removeRowClassName(selectKey, 'selected-cell');
 	    })
-    	
-		$(".modal").fadeIn();   
+	    
+	    //진행공정관리 그리드에 데이터가 있을 때만 모달창 띄우기
+    	if(ingGrid.getData().length != 0) {
+    		$(".modal").fadeIn();  
 
-		//모달창에 공정명, 투입량 정보 가져오기
-	  	let rowKey = ingGrid.getFocusedCell().rowKey;
-    	let prcsName = ingGrid.getValue(rowKey, 'prcsName');
-    	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  
-    	$('#prcsName').val(prcsName);
-		$('#inputAmt').val(inputAmt);
-		
-   		//모달창에 담당자 정보 가져오기
-    	let empCode = ${user.id};
-    	let empName = `${user.empName}`;
-		$('#empCode').val(empCode);
-		$('#empName').val(empName);
-		
-		//prcsDirDeCode 가져오기
-		let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
-    	let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
+    		//모달창에 공정명, 투입량 정보 가져오기
+    	  	let rowKey = ingGrid.getFocusedCell().rowKey;
+        	let prcsName = ingGrid.getValue(rowKey, 'prcsName');
+        	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  
+        	$('#prcsName').val(prcsName);
+    		$('#inputAmt').val(inputAmt);
+    		
+    		
+       		//모달창에 담당자 정보 가져오기
+        	let empCode = ${user.id};
+        	let empName = `${user.empName}`;
+    		$('#empCode').val(empCode);
+    		$('#empName').val(empName);
+    		
+    		//prcsDirDeCode 가져오기
+    		let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
+        	let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
 
-    	//prcsCode 가져오기
-    	let ingRowKey = ingGrid.getFocusedCell().rowKey;
-    	let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
-    	
-		//모달창에 공정 실적관리 정보 가져오기
-		$.ajax({
-			url : 'selectPrcsInfoList',
-			method : 'GET',
-			data : { prcsDirDeCode : prcsDirDeCode , prcsCode : prcsCode },
-			async : false,
-			success : function(data){	
-				
-				//data가 빈 객체인지 확인
-				let isEmpty = $.isEmptyObject(data);
-				
-				//공정 실적데이터가 없을 경우
-				if(isEmpty){			
-					//'사용 가능한 설비'로 문구 적용
-					$("#eqTitle").text("사용 가능한 설비");
-					
-					//설비, bom 그리드 생성
-					eqGridFn = createEqGrid();
-					prcsBomGridFn = createPrcsBomGrid();	
-					
-					//선택한 행 색깔 바꾸기
-					eqGridFn.on('click', () => {
-						let rowKey = eqGridFn.getFocusedCell().rowKey;
-						//선택된 설비 색깔 변경
-				    	eqGridFn.addRowClassName(rowKey, 'selected-cell');
-						//다른 행 선택시 기존에 클릭했던 행은 class제거
-				    	eqGridFn.on('focusChange', () => {
-					    	eqGridFn.removeRowClassName(rowKey, 'selected-cell');
-					    })
-					})
-					
-					//input태그 값 지우기(update된 해당 정보를 조회해서 불러올 것이므로)
-			    	$('#empCode').val('');
-			    	$('#errAmt').val('');
-			    	$('#timeContainer input').val('');
+        	//prcsCode 가져오기
+        	let ingRowKey = ingGrid.getFocusedCell().rowKey;
+        	let prcsCode = ingGrid.getValue(ingRowKey, 'prcsCode');
+        	
+    		//모달창에 공정 실적관리 정보 가져오기
+    		$.ajax({
+    			url : 'selectPrcsInfoList',
+    			method : 'GET',
+    			data : { prcsDirDeCode : prcsDirDeCode , prcsCode : prcsCode },
+    			async : false,
+    			success : function(data){	
+    				
+    				//data가 빈 객체인지 확인
+    				let isEmpty = $.isEmptyObject(data);
+    				
+    				//공정 실적데이터가 없을 경우
+    				if(isEmpty){			
+    					//'사용 가능한 설비'로 문구 적용
+    					$("#eqTitle").text("사용 가능한 설비");
+    					
+    					//설비, bom 그리드 생성
+    					eqGridFn = createEqGrid();
+    					prcsBomGridFn = createPrcsBomGrid();	
+    					
+    					//선택한 행 색깔 바꾸기
+    					eqGridFn.on('click', () => {
+    						let rowKey = eqGridFn.getFocusedCell().rowKey;
+    						//선택된 설비 색깔 변경
+    				    	eqGridFn.addRowClassName(rowKey, 'selected-cell');
+    						//다른 행 선택시 기존에 클릭했던 행은 class제거
+    				    	eqGridFn.on('focusChange', () => {
+    					    	eqGridFn.removeRowClassName(rowKey, 'selected-cell');
+    					    })
+    					})
+    					
+    					//input태그 값 지우기(update된 해당 정보를 조회해서 불러올 것이므로)
+    			    	$('#empCode').val('');
+    			    	$('#errAmt').val('');
+    			    	$('#timeContainer input').val('');
 
-			    	//담당자, 불량량 input 활성화
-					$('#empCode').prop('readonly', false);
-					$('#errAmt').prop('readonly', false);			
-						
-					//작업 버튼 활성화
-					$('#prcsStartBtn').prop('disabled', false);
-					$('#prcsEndBtn').prop('disabled', false);
-							
-				} else{
+    			    	//담당자, 불량량 input 활성화
+    					$('#empCode').prop('readonly', false);
+    					$('#errAmt').prop('readonly', false);			
+    						
+    					//작업 버튼 활성화
+    					$('#prcsStartBtn').prop('disabled', false);
+    					$('#prcsEndBtn').prop('disabled', false);
+    							
+    				} else{
 
-					let prcsStartTime = data['prcsStartTime'];
-					let prcsEndTime = data['prcsEndTime'];
-										
-					if(prcsEndTime == null){
-						//작업 시작
-						
-						//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
-						$("#eqTitle").text("사용 중인 설비");
-						
-						//선택된 설비, bom그리드 생성
-						eqGridFn = createSelectEqGrid();
-						prcsBomGridFn = createPrcsBomGrid();	
+    					let prcsStartTime = data['prcsStartTime'];
+    					let prcsEndTime = data['prcsEndTime'];
+    										
+    					if(prcsEndTime == null){
+    						//작업종료시간이 비어있을때 = 작업 시작
+    						
+    						//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
+    						$("#eqTitle").text("사용 중인 설비");
+    						
+    						//선택된 설비, bom그리드 생성
+    						eqGridFn = createSelectEqGrid();
+    						prcsBomGridFn = createPrcsBomGrid();	
 
-	 					//담당자 가져오기	
-	 					$('#empCode').val(data['empCode']);		
-	 					//불량량 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
-	 					$('#errAmt').val('');
-	 					//작업시작시간 가져오기
-	 					$('#prcsStartTime').val(data['prcsStartTime']);
-	 					//작업종료시간 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
-	 					$('#prcsEndTime').val('');
-	 				
-						//담당자 input 비활성화
-	 					$('#empCode').prop('readonly', true);
-						//불량량 input 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
-						$('#errAmt').prop('readonly', false);
-	 					//작업시작 버튼 비활성화
-	 					$('#prcsStartBtn').prop('disabled', true);	
-	 					//작업종료 버튼 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
-						$('#prcsEndBtn').prop('disabled', false);
-	 					
-					} else{		
-						//작업 종료
-						
-						//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
-						$("#eqTitle").text("사용 중인 설비");
-						
-						//선택된 설비, bom그리드 생성
-						eqGridFn = createSelectEqGrid();
-						prcsBomGridFn = createPrcsBomGrid();
-						
-						//담당자 가져오기
-						$('#empCode').val(data['empCode']);
-						//불량량 가졍오기
-						$('#errAmt').val(data['errAmt']);
-						//작업시작시간 가져오기
-						$('#prcsStartTime').val(data['prcsStartTime']);
-						//작업종료시간 가져오기
-						$('#prcsEndTime').val(data['prcsEndTime']);
-					
-						//담당자, 불량량 input 비활성화
-						$('#empCode').prop('readonly', true);
-						$('#errAmt').prop('readonly', true);					
-						//작업시작 버튼 비활성화
-						$('#prcsStartBtn').prop('disabled', true);						
-						//작업종료 버튼 비활성화
-						$('#prcsEndBtn').prop('disabled', true);	
-					}
-					
-				}
+    	 					//담당자 가져오기	
+    	 					$('#empCode').val(data['empCode']);		
+    	 					//불량량 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
+    	 					$('#errAmt').val('');
+    	 					//작업시작시간 가져오기
+    	 					$('#prcsStartTime').val(data['prcsStartTime']);
+    	 					//작업종료시간 비워놓기 (비워놓지 않으면 이전에 클릭한 값이 넘어옴)
+    	 					$('#prcsEndTime').val('');
+    	 				
+    						//담당자 input 비활성화
+    	 					$('#empCode').prop('readonly', true);
+    						//불량량 input 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
+    						$('#errAmt').prop('readonly', false);
+    	 					//작업시작 버튼 비활성화
+    	 					$('#prcsStartBtn').prop('disabled', true);	
+    	 					//작업종료 버튼 활성화 (활성화 해놓지 않으면 이전에 클릭한 값이 비활성화일때 똑같이 비활성화됨)
+    						$('#prcsEndBtn').prop('disabled', false);
+    	 					
+    					} else{		
+    						//작업시간이 모두 기입되어있을때 = 작업 종료
+    						
+    						//'사용 중인 설비' 문구 -> '사용 가능한 설비' 로 바꾸기
+    						$("#eqTitle").text("사용 가능한 설비");
+    						
+    						//선택된 설비, bom그리드 생성
+    						eqGridFn = createSelectEqGrid();
+    						prcsBomGridFn = createPrcsBomGrid();
+    						
+    						//담당자 가져오기
+    						$('#empCode').val(data['empCode']);
+    						//불량량 가졍오기
+    						$('#errAmt').val(data['errAmt']);
+    						//작업시작시간 가져오기
+    						$('#prcsStartTime').val(data['prcsStartTime']);
+    						//작업종료시간 가져오기
+    						$('#prcsEndTime').val(data['prcsEndTime']);
+    					
+    						//담당자, 불량량 input 비활성화
+    						$('#empCode').prop('readonly', true);
+    						$('#errAmt').prop('readonly', true);					
+    						//작업시작 버튼 비활성화
+    						$('#prcsStartBtn').prop('disabled', true);						
+    						//작업종료 버튼 비활성화
+    						$('#prcsEndBtn').prop('disabled', true);	
+    					}
+    					
+    				}
 
-		    },
-		    error : function(reject){
-		        console.log(reject);
-		    }				
-		})
+    		    },
+    		    error : function(reject){
+    		        console.log(reject);
+    		    }				
+    		})
+    	}
 
     })
     
 
     //작업 시작 버튼
-   	$('#prcsStartBtn').click(function(){	
+   	$('#prcsStartBtn').click(function(){
+   		
+   		//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
+		$("#eqTitle").text("사용 중인 설비");
    		
    		//모달창에 담당자 정보 가져오기
     	let empCode = ${user.id};
@@ -577,6 +588,10 @@
     	
    	//작업 종료 버튼
    	$('#prcsEndBtn').click(function(){
+   		
+   		//'사용 중인 설비' 문구 -> '사용 가능한 설비' 로 바꾸기
+		$("#eqTitle").text("사용 가능한 설비");
+   	
    		//모달창에 담당자 정보 가져오기
     	let empCode = ${user.id};
     	let empName = `${user.empName}`;
@@ -613,10 +628,12 @@
 	    	//eqCode 가져오기
 	    	eqGridFn.focus(0, 'eqCode');
 			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
-			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');	
-	
+			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');		
 			//empCode 가져오기
 			let empCode = document.getElementById('empCode').value;	
+			
+			//선택된 eqCode 행에 색깔 그대로 유지하기
+	    	eqGridFn.addRowClassName(eqRowKey, 'selected-cell');
 		
 			//프로시저 매개변수에 필요한 값이 담긴 list 만들기
 			let endObj = {};
@@ -643,7 +660,7 @@
 			})
    		}
    	})
-   
+  
    	
     //닫기 버튼 
 	$("#close_btn").click(function(){
@@ -652,9 +669,15 @@
 		let rowKey3 = ingGrid.getFocusedCell().rowKey;
 
 		
-		$(".modal").fadeOut();			
-	 	eqGridFn.destroy();
-	 	prcsBomGridFn.destroy();
+		$(".modal").fadeOut();	
+		if (eqGridFn != null && eqGridFn.el != null) {
+			eqGridFn.destroy();
+		}
+		if (prcsBomGridFn != null && prcsBomGridFn.el != null) {
+			prcsBomGridFn.destroy();
+		}
+	 	
+		
 	 
 	 	//공정진행관리 조회해서 정보 update
     	let deRowKey = dirDeGrid.getFocusedCell().rowKey;

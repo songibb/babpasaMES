@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.prcs.dir.mapper.PrcsDirMapper">
-	<!-- 생산지시 조회 (아직 생산 완료 되지 않은 지시)-->
+	<!-- 생산지시 조회 (아직 생산 완료 되지 않은 지시) -->
 	<select id="selectPrcsDirList" resultType="PrcsDirVO">
 		SELECT prcs_dir_code,
 			   prcs_plan_code,
@@ -22,6 +22,30 @@
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
 				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+		 ORDER BY prcs_dir_code DESC
+	</select>
+	
+	<!-- 생산지시 조회 (생산 완료된 지시) -->
+	<select id="selectPrcsEndDirList" resultType="PrcsDirVO">
+		SELECT prcs_dir_code,
+			   prcs_plan_code,
+			   prcs_dir_name,
+			   prcs_dir_date,
+			   prcs_start_date,
+			   prcs_end_date,
+			   find_cdnm('0R', prcs_dir_sts) AS prcs_dir_sts,
+			   emp_code,
+			   find_emp_name(emp_code) AS emp_name
+		  FROM prcs_dir
+		  <where>
+		 		prcs_dir_sts = 'P3'
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(prcs_dir_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(prcs_dir_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		 ORDER BY prcs_dir_code DESC
@@ -153,14 +177,14 @@
 	
 	<!-- 제품별 총 자재 BOM 조회 -->
 	<select id="selectBomList" resultType="BomCodeVO">
-		SELECT DISTINCT find_prod_name(v.prod_code) AS prod_name,
-			   find_prcs_name(v.prcs_code) AS prcs_name,
+		SELECT DISTINCT find_prod_name(prod_code) AS prod_name,
+			   find_prcs_name(prcs_code) AS prcs_name,
 			   mp_code,
-			   find_mat_name(v.mp_code) AS mat_name, 
-			   v.bom_amt * #{prcsDirAmt} AS bom_amt, 
-			   p.prcs_seq
-		  FROM v_mat_bom v RIGHT JOIN prcs_prod p ON v.prcs_code = p.prcs_code
-		 WHERE v.prod_code = #{prodCode}
+			   find_mat_name(mp_code) AS mat_name, 
+			   bom_amt * #{prcsDirAmt} AS bom_amt, 
+			   prcs_seq
+		  FROM v_mat_bom_seq
+		 WHERE prod_code = #{prodCode}
 		 ORDER BY prcs_seq
 	</select>
 
@@ -211,10 +235,10 @@
 	
 	
 	<!-- 재지시 등록 - 반제품 (상세생산지시) -->
-	<insert id="insertReDirDeSemi" parameterType="PrcsDirVO">
+	<insert id="insertReDirDeSemi" parameterType="String">
 		{
 			CALL PR_SEMI_RE_DIR(
-				#{prcsDirDeCode},
+				#{newDirDeCode},
 				#{empCode},
 				#{originDirDeCode}
 			)

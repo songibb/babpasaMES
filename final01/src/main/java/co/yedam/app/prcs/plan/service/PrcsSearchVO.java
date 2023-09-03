@@ -16,6 +16,7 @@ public class PrcsSearchVO {
 	//공정실적 검색
 	private String searchProdCode; 			//제품코드
 	private String searchPrcsCode;			//공정코드
+	private String searchPrcsDirCode;		//생산지시코드
 	
 	//공정관리 검색
 	private String searchPrcsType;			//공정구분

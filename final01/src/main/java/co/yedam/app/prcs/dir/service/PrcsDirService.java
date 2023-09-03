@@ -8,8 +8,11 @@ import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 
 
 public interface PrcsDirService {
-	//생산지시 조회
+	//생산지시 조회 (아직 생산 완료 되지 않은 지시)
 	public List<PrcsDirVO> selectPrcsDirList(PrcsSearchVO prcsSearchVO);
+	
+	//생산지시 조회 (생산 완료된 지시)
+	public List<PrcsDirVO> selectPrcsEndDirList(PrcsSearchVO prcsSearchVO);
 	
 	//상세생산지시 조회
 	public List<PrcsDirVO> selectPrcsDirDeList(String prcsDirCode);
