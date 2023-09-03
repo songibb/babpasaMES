@@ -314,6 +314,7 @@
 		return year + '-' + month  + '-' + day + ' ' + hours + ':' + minutes  + ':' + seconds;			
 	}
 	
+
 	
     ingGrid.on('click', () => {
     	
@@ -338,6 +339,7 @@
         	let inputAmt = ingGrid.getValue(rowKey, 'inputAmt');  
         	$('#prcsName').val(prcsName);
     		$('#inputAmt').val(inputAmt);
+    		
     		
        		//모달창에 담당자 정보 가져오기
         	let empCode = ${user.id};
