@@ -530,7 +530,7 @@ form {
         });
     });
 
-    outGrid.on('click', () => {
+    outGrid.on('click', ev => {
     	//선택한 행 색깔 바꾸기
     	let selectKey = outGrid.getFocusedCell().rowKey;
     	outGrid.addRowClassName(selectKey, 'selected-cell');
