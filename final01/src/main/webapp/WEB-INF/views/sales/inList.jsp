@@ -242,8 +242,8 @@ form {
 	border-color: #868e96;
 }
 
-.selected-cell{
-   background-color: #ffd09e;
+.selected-cell {
+	background-color: #ffd09e;
 }
 </style>
 </head>
@@ -256,13 +256,14 @@ form {
 				<div class="table-responsive pt-3">
 					<form>
 						<p>제품명</p>
-						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>입고일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;"> 
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
+						<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -289,7 +290,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch" style=" width: 164px;">
+				<input type="text" id="modalSearch" style="width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -467,26 +468,26 @@ form {
                 header: '입고량',
                 name: 'salesInAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '재고량',
                 name: 'prodSaveAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '유통기한',
                 name: 'salesInExd',
@@ -501,7 +502,7 @@ form {
             }, {
                 header: '담당자', // [필수] 컬럼 이름
                 name: 'empName',
-                align: 'center'// [필수] 컬럼 매핑 이름 값
+                align: 'center' // [필수] 컬럼 매핑 이름 값
             }, {
                 header: '검사번호', // [필수] 컬럼 이름
                 name: 'testNum', // [필수] 컬럼 매핑 이름 값
@@ -512,18 +513,18 @@ form {
     });
 
     setDisabled();
-    
-    grid.on('click', ()=>{
-    //선택한 행 색깔 바꾸기
-    	  let selectKey = grid.getFocusedCell().rowKey;
-    	  grid.addRowClassName(selectKey, 'selected-cell');
-    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-    	  grid.on('focusChange', () => {
-    		  grid.removeRowClassName(selectKey, 'selected-cell');
-    	  	})
-   	  })
-    	  
-  
+
+    grid.on('click', () => {
+        //선택한 행 색깔 바꾸기
+        let selectKey = grid
+            .getFocusedCell()
+            .rowKey;
+        grid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        grid.on('focusChange', () => {
+            grid.removeRowClassName(selectKey, 'selected-cell');
+        })
+    })
 
     //비활성화
     function setDisabled() {
@@ -545,7 +546,7 @@ form {
         let search = {
             prodCode: prodInsert,
             startDate: sd,
-            endDate: ed,
+            endDate: ed
         };
         $.ajax({
             url: 'inListFilter',
@@ -609,6 +610,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>

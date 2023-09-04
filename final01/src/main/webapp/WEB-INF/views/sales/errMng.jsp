@@ -235,8 +235,8 @@ form {
 	border-color: #868e96;
 }
 
-.selected-cell{
-   background-color: #ffd09e;
+.selected-cell {
+	background-color: #ffd09e;
 }
 </style>
 
@@ -250,12 +250,14 @@ form {
 				<div class="table-responsive pt-3">
 					<form>
 						<p>제품명</p>
-						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
-						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> <br>
+						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
+						<br>
 						<p>폐기일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
+						<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -274,7 +276,7 @@ form {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal">
 		<div class="modal_content">
 			<div class="m_head">
@@ -285,7 +287,7 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch" style=" width: 164px;">
+				<input type="text" id="modalSearch" style="width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
@@ -331,14 +333,14 @@ form {
         el: document.getElementById('grid'),
         data: [<c:forEach items="${disList}" var="d" varStatus="status">
             {
-            	salesDpCode: "${d.salesDpCode}",
-            	testNum: "${d.testNum}",
-            	prodCode: "${d.prodCode}",
-            	prodName: "${d.prodName}",
-            	salesDpAmt: "${d.salesDpAmt}",
-            	salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
-            	empCode: "${d.empCode}",
-            	empName: "${d.empName}"
+                salesDpCode: "${d.salesDpCode}",
+                testNum: "${d.testNum}",
+                prodCode: "${d.prodCode}",
+                prodName: "${d.prodName}",
+                salesDpAmt: "${d.salesDpAmt}",
+                salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
+                empCode: "${d.empCode}",
+                empName: "${d.empName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -367,7 +369,7 @@ form {
             }, {
                 header: '검수코드',
                 name: 'testNum',
-                editor : 'text',
+                editor: 'text',
                 sortable: true,
                 sortingType: 'asc',
                 align: 'center'
@@ -383,14 +385,14 @@ form {
                 name: 'salesDpAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '폐기일자',
                 name: 'salesDpDate',
@@ -443,88 +445,89 @@ form {
         });
     });
 
-	//조건맞는 행(추가되는 행)인지 체크
-	function checkChangeable(ev) {
-	    var rowKey = ev.rowKey;
-	    var rows = disGrid.findRows({salesDpCode: null});
+    //조건맞는 행(추가되는 행)인지 체크
+    function checkChangeable(ev) {
+        var rowKey = ev.rowKey;
+        var rows = disGrid.findRows({salesDpCode: null});
 
-	    let flag = false;
-	    $.each(rows, function (idx, obj) {
-	        if (obj['rowKey'] == rowKey) {
-	            flag = true;
-	            return false;
-	        }
-	    });
+        let flag = false;
+        $.each(rows, function (idx, obj) {
+            if (obj['rowKey'] == rowKey) {
+                flag = true;
+                return false;
+            }
+        });
 
-	    return flag;
-	}
-    
-	//추가되는 행만 edit가능
-	disGrid.on('editingStart', function (ev) {
-	    let flag = checkChangeable(ev);
+        return flag;
+    }
 
-	    if (!flag) {
-	        ev.stop();
-	    }
-	});    
-    
+    //추가되는 행만 edit가능
+    disGrid.on('editingStart', function (ev) {
+        let flag = checkChangeable(ev);
+
+        if (!flag) {
+            ev.stop();
+        }
+    });
+
     disGrid.on('click', ev => {
         let flag = checkChangeable(ev);
-		if(flag){
-    	//선택한 행 색깔 바꾸기
-    	let selectKey = disGrid.getFocusedCell().rowKey;
-    	disGrid.addRowClassName(selectKey, 'selected-cell');
-    	//다른 행 선택시 기존에 클릭했던 행은 class제거
-    	disGrid.on('focusChange', () => {
-    		disGrid.removeRowClassName(selectKey, 'selected-cell');
-    	})
-        let rowKey = disGrid
-            .getFocusedCell()
-            .rowKey;
-        let columnName = disGrid
-            .getFocusedCell()
-            .columnName;
-        
-        let salesDpCode = disGrid.getValue(rowKey, 'salesDpCode');
-	    if (salesDpCode != null) {
-	            ev.stop();
-	            return false;
-	    }
+        if (flag) {
+            //선택한 행 색깔 바꾸기
+            let selectKey = disGrid
+                .getFocusedCell()
+                .rowKey;
+            disGrid.addRowClassName(selectKey, 'selected-cell');
+            //다른 행 선택시 기존에 클릭했던 행은 class제거
+            disGrid.on('focusChange', () => {
+                disGrid.removeRowClassName(selectKey, 'selected-cell');
+            })
+            let rowKey = disGrid
+                .getFocusedCell()
+                .rowKey;
+            let columnName = disGrid
+                .getFocusedCell()
+                .columnName;
 
-        
-        if (columnName == 'testNum') {
-            $(".modal").fadeIn();
-            preventScroll();
-            Grid = createChkGrid();
-            $('.modal_title h3').text('검수 목록');
-            Grid.on('click', () => {
-                let rowKey2 = Grid
-                    .getFocusedCell()
-                    .rowKey;
-                let testNum = Grid.getValue(rowKey2, 'testNum');
-                let prodCode = Grid.getValue(rowKey2, 'prodCode');
-                let prodName = Grid.getValue(rowKey2, 'prodName');
-                let testAmt = Grid.getValue(rowKey2, 'testAmt');
-                console.log(testNum);
-                console.log(prodCode);
-                console.log(prodName);
-                console.log(testAmt);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                disGrid.setValue(rowKey, 'testNum', testNum);
-                disGrid.setValue(rowKey, 'prodCode', prodCode);
-                disGrid.setValue(rowKey, 'prodName', prodName);
-                disGrid.setValue(rowKey, 'salesDpAmt', testAmt);
-                //선택시 모달창 닫기
-                if (rowKey2 != null) {
-                    $(".modal").fadeOut();
-                    Grid.destroy();
-                }
+            let salesDpCode = disGrid.getValue(rowKey, 'salesDpCode');
+            if (salesDpCode != null) {
+                ev.stop();
+                return false;
+            }
 
-            });
-        } //else if(columnName == 'empName'){ session에서 받아오기
+            if (columnName == 'testNum') {
+                $(".modal").fadeIn();
+                preventScroll();
+                Grid = createChkGrid();
+                $('.modal_title h3').text('검수 목록');
+                Grid.on('click', () => {
+                    let rowKey2 = Grid
+                        .getFocusedCell()
+                        .rowKey;
+                    let testNum = Grid.getValue(rowKey2, 'testNum');
+                    let prodCode = Grid.getValue(rowKey2, 'prodCode');
+                    let prodName = Grid.getValue(rowKey2, 'prodName');
+                    let testAmt = Grid.getValue(rowKey2, 'testAmt');
+                    console.log(testNum);
+                    console.log(prodCode);
+                    console.log(prodName);
+                    console.log(testAmt);
+                    //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                    disGrid.setValue(rowKey, 'testNum', testNum);
+                    disGrid.setValue(rowKey, 'prodCode', prodCode);
+                    disGrid.setValue(rowKey, 'prodName', prodName);
+                    disGrid.setValue(rowKey, 'salesDpAmt', testAmt);
+                    //선택시 모달창 닫기
+                    if (rowKey2 != null) {
+                        $(".modal").fadeOut();
+                        Grid.destroy();
+                    }
 
-        //}
-		}
+                });
+            } //else if(columnName == 'empName'){ session에서 받아오기
+
+            //}
+        }
     });
 
     //검수목록 모달
@@ -533,7 +536,7 @@ form {
             el: document.getElementById('modal_label'),
             data: [<c:forEach items="${chkList}" var="c" varStatus="status">
                 {
-                	testNum: "${c.testNum}",
+                    testNum: "${c.testNum}",
                     prodCode: "${c.prodCode}",
                     prodName: "${c.prodName}",
                     testDate: `<fmt:formatDate value="${c.testDate}" pattern="yyyy-MM-dd"/>`,
@@ -576,38 +579,38 @@ form {
                     header: '검수량',
                     name: 'testAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '합격량',
                     name: 'passAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '불합격량',
                     name: 'nonPassAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'center'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'center'
                 }
             ]
 
@@ -770,7 +773,7 @@ form {
 
     //저장 함수
     function saveServer() {
-    	disGrid.blur();
+        disGrid.blur();
         let modifyGridInfo = disGrid.getModifiedRows();
 
         // 수정된게 없으면 바로 빠져나감
@@ -821,7 +824,7 @@ form {
 
     document.addEventListener('DOMContentLoaded', () => {
         excelDownload.addEventListener('click', function (e) {
-        	disGrid.export('xlsx');
+            disGrid.export('xlsx');
         })
     })
 
@@ -843,6 +846,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>

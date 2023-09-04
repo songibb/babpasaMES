@@ -60,11 +60,4 @@ public class InController {
 		public int modifyProdIn(@RequestBody GridVO<InVO> data) {
 			return inService.modifyProdIn(data);
 		}
-		
-//		//자재모달창 검색 ajax
-//		@GetMapping("getModalSearch")
-//		@ResponseBody
-//		public List<MatModalVO> getMatModalSearch(String matName){
-//			return mms.selectModalSearch(matName);
-//		}
 }

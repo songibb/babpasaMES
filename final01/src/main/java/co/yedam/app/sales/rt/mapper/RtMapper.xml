@@ -33,21 +33,24 @@
   	
   	<!-- 검색 -->
   <select id="selectAllRt" resultType="RtVO">
-		   	SELECT r.sales_rt_code
-			, r.prod_lot
-			, r.prod_code
-			, r.sales_out_code
-			, r.sales_rt_amt
-			, o.sales_out_amt
-			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
-			, r.sales_rt_date
-			, r.sales_rt_why
-			, r.emp_code
-			, e.emp_name
-	FROM sales_rt r left JOIN sales_out o
-                    ON (r.sales_out_code = o.sales_out_code)
-                    JOIN com_emp e
-                    ON (r.emp_code = e.emp_code)
+	   	SELECT r.sales_rt_code
+		, r.prod_lot
+		, r.prod_code
+		, r.sales_out_code
+		, r.sales_rt_amt
+		, o.sales_out_amt
+		, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+		, r.sales_rt_date
+		, r.sales_rt_why
+		, r.emp_code
+		, e.emp_name
+		, p.prod_name
+		FROM sales_rt r left JOIN sales_out o
+	                   ON (r.sales_out_code = o.sales_out_code)
+	                   JOIN com_emp e
+	                   ON (r.emp_code = e.emp_code)
+	                   JOIN com_prod p
+	                   ON (r.prod_code = p.prod_code)
 	<where>
 			<if test="prodCode != null and prodCode != ''">
 				AND r.prod_code LIKE '%' || #{prodCode} || '%'
@@ -59,7 +62,7 @@
            		AND TO_CHAR(r.sales_rt_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
          	</if>
 	</where>					
-	ORDER BY sales_rt_code DESC
+		ORDER BY sales_rt_code DESC
 	</select>
 	
 	<!-- 반품 등록 페이지 리스트 -->
@@ -76,49 +79,49 @@
 			, r.emp_code
 			, e.emp_name
 			, p.prod_name
-	FROM sales_rt r LEFT JOIN sales_out o
+		FROM sales_rt r LEFT JOIN sales_out o
                     ON (r.sales_out_code = o.sales_out_code)
                     JOIN com_emp e
                     ON (r.emp_code = e.emp_code)
                     JOIN com_prod p
                     ON (r.prod_code = p.prod_code)
-	ORDER BY sales_rt_code DESC
+		ORDER BY sales_rt_code DESC
 	</select>
 	
 	<!-- 등록-단순변심 -->
 	<insert id="insertRt" parameterType="RtVO">
-	{
-	CALL insert_sales_rt
-			 (
-				 #{prodCode}
-				, #{salesOutCode}
-				, #{salesRtAmt}
-				, #{salesRtDate}
-				, #{salesRtWhy}
-				, #{empCode}
-				, #{prodLot}
-				, #{salesOrdDeCode}
-			)
-			}
+		{
+		CALL insert_sales_rt
+				 (
+					 #{prodCode}
+					, #{salesOutCode}
+					, #{salesRtAmt}
+					, #{salesRtDate}
+					, #{salesRtWhy}
+					, #{empCode}
+					, #{prodLot}
+					, #{salesOrdDeCode}
+				)
+				}
 	</insert>
 	
 	<!-- 등록-불량 -->
 	<insert id="insertRtE" parameterType="RtVO">
-	{
-	CALL insert_sales_rt_error
-			 (
-				 #{prodCode}
-				, #{salesOutCode}
-				, #{salesRtAmt}
-				, #{salesRtDate}
-				, #{salesRtWhy}
-				, #{empCode}
-				, #{prodLot}
-				, #{salesOrdDeCode}
-				, #{salesDpAmt}
-				, #{salesDpDate}
-			)
-			}
+		{
+		CALL insert_sales_rt_error
+				 (
+					 #{prodCode}
+					, #{salesOutCode}
+					, #{salesRtAmt}
+					, #{salesRtDate}
+					, #{salesRtWhy}
+					, #{empCode}
+					, #{prodLot}
+					, #{salesOrdDeCode}
+					, #{salesDpAmt}
+					, #{salesDpDate}
+				)
+				}
 	</insert>
 	
 	<!-- 삭제 -->
@@ -134,61 +137,61 @@
 	
 	<!-- 출고목록조회 모달 -->
 	<select id="selectOutList" resultType="RtVO">
-   	SELECT o.*, d.dev_yn, p.prod_name, a.act_name, e.emp_name
-	FROM sales_out o JOIN sales_ord_de d
-	                ON (o.sales_ord_de_code = d.sales_ord_de_code)
-	                JOIN com_prod p
-	                ON (o.prod_code = p.prod_code)
-	                JOIN com_act a
-	                ON (o.act_code = a.act_code)
-	                JOIN com_emp e
-	                ON (o.emp_code = e.emp_code)
-                    LEFT JOIN sales_rt r
-                    ON (o.sales_out_code = r.sales_out_code)
-	WHERE d.dev_yn = 'Y'
-	AND r.sales_out_code IS NULL
-	ORDER BY o.sales_out_code DESC
+	   	SELECT o.*, d.dev_yn, p.prod_name, a.act_name, e.emp_name
+		FROM sales_out o JOIN sales_ord_de d
+		                ON (o.sales_ord_de_code = d.sales_ord_de_code)
+		                JOIN com_prod p
+		                ON (o.prod_code = p.prod_code)
+		                JOIN com_act a
+		                ON (o.act_code = a.act_code)
+		                JOIN com_emp e
+		                ON (o.emp_code = e.emp_code)
+	                    LEFT JOIN sales_rt r
+	                    ON (o.sales_out_code = r.sales_out_code)
+		WHERE d.dev_yn = 'Y'
+		AND r.sales_out_code IS NULL
+		ORDER BY o.sales_out_code DESC
 	</select>
 	
 	<!-- 모달검색 - 제품 -->
 	<select id="selectProdSearchList" resultType="OrderVO">
-	SELECT prod_code, prod_name, prod_unit, prod_std
-	FROM com_prod
-	<if test="prodName != null and !prodName.equals('')">
-	WHERE prod_name LIKE '%' || #{prodName} || '%'
-	</if>
-	AND prod_kind = 'C'
-	ORDER BY prod_code DESC
+		SELECT prod_code, prod_name, prod_unit, prod_std
+		FROM com_prod
+		<if test="prodName != null and !prodName.equals('')">
+		WHERE prod_name LIKE '%' || #{prodName} || '%'
+		</if>
+		AND prod_kind = 'C'
+		ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 모달검색 - 출고목록 -->
 	<select id="selectOutSearchList" resultType="RtVO">
-	SELECT o.sales_out_code sales_out_code
-			, p.prod_name prod_name
-			, o.prod_code prod_code
-			, o.prod_lot prod_lot
-			, o.act_code act_code
-			, o.emp_code emp_code
-			, e.emp_name emp_name
-			, a.act_name act_name
-			, o.sales_out_amt sales_out_amt
-			, o.sales_out_date sales_out_date
-			, i.sales_in_exd sales_in_exd
-			, o.sales_ord_de_code sales_ord_de_code
-			, i.prod_save_amt prod_save_amt
-	FROM sales_out o JOIN com_prod p
-						ON (o.prod_code = p.prod_code)
-						JOIN com_act a
-						ON (o.act_code = a.act_code)
-						JOIN sales_in i
-						ON (o.prod_code = i.prod_code)
-						JOIN sales_ord_de d
-						ON (o.sales_ord_de_code = d.sales_ord_de_code)
-						JOIN com_emp e
-						ON (o.emp_code = e.emp_code)
-	<if test="prodName != null and !prodName.equals('')">
-	WHERE prod_name LIKE '%' || #{prodName} || '%'
-	</if>
-	ORDER BY sales_out_code DESC
+		SELECT o.sales_out_code sales_out_code
+				, p.prod_name prod_name
+				, o.prod_code prod_code
+				, o.prod_lot prod_lot
+				, o.act_code act_code
+				, o.emp_code emp_code
+				, e.emp_name emp_name
+				, a.act_name act_name
+				, o.sales_out_amt sales_out_amt
+				, o.sales_out_date sales_out_date
+				, i.sales_in_exd sales_in_exd
+				, o.sales_ord_de_code sales_ord_de_code
+				, i.prod_save_amt prod_save_amt
+		FROM sales_out o JOIN com_prod p
+							ON (o.prod_code = p.prod_code)
+							JOIN com_act a
+							ON (o.act_code = a.act_code)
+							JOIN sales_in i
+							ON (o.prod_code = i.prod_code)
+							JOIN sales_ord_de d
+							ON (o.sales_ord_de_code = d.sales_ord_de_code)
+							JOIN com_emp e
+							ON (o.emp_code = e.emp_code)
+		<if test="prodName != null and !prodName.equals('')">
+		WHERE prod_name LIKE '%' || #{prodName} || '%'
+		</if>
+		ORDER BY sales_out_code DESC
 	</select>
   </mapper>

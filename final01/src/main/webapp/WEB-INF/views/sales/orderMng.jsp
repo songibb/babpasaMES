@@ -342,14 +342,17 @@ form {
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
         let ordDate = year + "-" + month + "-" + day;
-        if(orderGrid.getModifiedRows().createdRows.length > 0){
-        	orderGrid.appendRow({
+        if (orderGrid.getModifiedRows().createdRows.length > 0) {
+            orderGrid.appendRow({
                 'ordDate': ordDate,
                 'empCode': `${user.id}`,
                 'empName': `${user.empName}`,
-                'actName': orderGrid.getModifiedRows().createdRows[0].actName
+                'actName': orderGrid
+                    .getModifiedRows()
+                    .createdRows[0]
+                    .actName
             }, {at: 0});
-        }else {
+        } else {
             orderGrid.appendRow({
                 'ordDate': ordDate,
                 'empCode': `${user.id}`,
@@ -409,8 +412,8 @@ form {
                     options: {
                         language: 'ko'
                     },
-               sortable: true,
-               sortingType: 'asc'
+                    sortable: true,
+                    sortingType: 'asc'
                 },
                 className: 'yellow-background',
                 align: 'center'
@@ -438,14 +441,14 @@ form {
                 name: 'prcsRqAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            sortable: true,
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                sortable: true,
                 sortingType: 'asc',
                 align: 'right'
             }, {
@@ -500,17 +503,17 @@ form {
         ]
     });
     setDisabled();
-    
+
     //비활성화
     function setDisabled() {
         $.each(orderGrid.getData(), function (idx, obj) {
 
             if (obj['ordCode'] != null && (obj['ordSts'] == 'P2')) {
-            	orderGrid.disableRow(obj['rowKey']);
+                orderGrid.disableRow(obj['rowKey']);
             }
         })
     }
-    
+
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
 
@@ -562,53 +565,38 @@ form {
         });
     });
 
-// 	//조건맞는 행(추가되는 행)인지 체크
-// 	function checkChangeable(ev) {
-// 	    var rowKey = ev.rowKey;
-// 	    var rows = orderGrid.findRows({salesOrdDeCode: null});
+    // 조건맞는 행(추가되는 행)인지 체크 	function checkChangeable(ev) { 	    var rowKey =
+    // ev.rowKey; 	    var rows = orderGrid.findRows({salesOrdDeCode: null});
+    // let flag = false; 	    $.each(rows, function (idx, obj) { 	        if
+    // (obj['rowKey'] == rowKey) { 	            flag = true; 	            return
+    // false; 	        } 	    }); 	    return flag; 	}  추가되는 행만 edit가능
+    // orderGrid.on('editingStart', function (ev) { 	    let flag =
+    // checkChangeable(ev); 	    if (!flag) { 	        ev.stop(); 	    } 	});
 
-// 	    let flag = false;
-// 	    $.each(rows, function (idx, obj) {
-// 	        if (obj['rowKey'] == rowKey) {
-// 	            flag = true;
-// 	            return false;
-// 	        }
-// 	    });
-
-// 	    return flag;
-// 	}
-
-// 	//추가되는 행만 edit가능
-// 	orderGrid.on('editingStart', function (ev) {
-// 	    let flag = checkChangeable(ev);
-
-// 	    if (!flag) {
-// 	        ev.stop();
-// 	    }
-// 	});
-    
     orderGrid.on('click', ev => {
-    	
-    	//선택한 행 색깔 바꾸기
-    	let selectKey = orderGrid.getFocusedCell().rowKey;
-    	orderGrid.addRowClassName(selectKey, 'selected-cell');
-    	//다른 행 선택시 기존에 클릭했던 행은 class제거
-    	orderGrid.on('focusChange', () => {
-    		orderGrid.removeRowClassName(selectKey, 'selected-cell');
-    	})
+
+        //선택한 행 색깔 바꾸기
+        let selectKey = orderGrid
+            .getFocusedCell()
+            .rowKey;
+        orderGrid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        orderGrid.on('focusChange', () => {
+            orderGrid.removeRowClassName(selectKey, 'selected-cell');
+        })
         let rowKey = orderGrid
             .getFocusedCell()
             .rowKey;
         let columnName = orderGrid
             .getFocusedCell()
             .columnName;
-        
+
         let ordCode = orderGrid.getValue(rowKey, 'ordCode');
-	    if (ordCode != null) {
-	            ev.stop();
-	            return false;
-	    }
-	    
+        if (ordCode != null) {
+            ev.stop();
+            return false;
+        }
+
         if (columnName == "actName") {
             $(".modal").fadeIn();
             preventScroll();
@@ -623,12 +611,13 @@ form {
                 console.log(actCode);
                 console.log(actName);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                
-                
-                let beforeAct = orderGrid.getModifiedRows().createdRows;
-                for(data of beforeAct){                	
-	                orderGrid.setValue(data.rowKey, 'actCode', actCode);
-	                orderGrid.setValue(data.rowKey, 'actName', actName);
+
+                let beforeAct = orderGrid
+                    .getModifiedRows()
+                    .createdRows;
+                for (data of beforeAct) {
+                    orderGrid.setValue(data.rowKey, 'actCode', actCode);
+                    orderGrid.setValue(data.rowKey, 'actName', actName);
                 }
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
@@ -731,7 +720,7 @@ form {
                 ],
             scrollX: false,
             scrollY: false,
-            minBodyHeight:320,
+            minBodyHeight: 320,
             rowHeaders: ['rowNum'],
             selectionUnit: 'row',
             pagination: true,
@@ -898,8 +887,8 @@ form {
     function saveServer() {
         orderGrid.blur();
         let modifyGridInfo = orderGrid.getModifiedRows();
-			        
-       // 수정된게 없으면 바로 빠져나감
+
+        // 수정된게 없으면 바로 빠져나감
 
         if (!orderGrid.isModified()) {
             swal("", "변경사항이 없습니다", "warning");
@@ -939,11 +928,11 @@ form {
                 contentType: 'application/json',
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
-//                     orderGrid.resetData(data);
+                    //                     orderGrid.resetData(data);
                     searchOrderList();
                     setDisabled();
                     activeScroll();
-                    
+
                 },
                 error: function (reject) {
                     console.log(reject);
@@ -984,6 +973,6 @@ form {
             orderGrid.export('xlsx');
         })
     })
-	</script>
+</script>
 </body>
 </html>

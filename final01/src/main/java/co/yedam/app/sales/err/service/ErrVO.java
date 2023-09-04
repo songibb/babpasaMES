@@ -29,4 +29,5 @@ public class ErrVO {
 	private int passAmt;
 	private int nonPassAmt;
 	private String empName;
+	private String prodLot;
 }

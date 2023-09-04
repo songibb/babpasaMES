@@ -94,16 +94,6 @@
 
    </select>
    
-   <!-- 거래처목록 검색 --> 
-<!--    <select id="selectActSearchList" resultType="OrderVO"> -->
-<!--       SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind -->
-<!--       FROM com_act -->
-<!--       <if test="actName != null and !actName.equals('')"> -->
-<!--       WHERE act_name LIKE '%' || #{actName} || '%' -->
-<!--       </if> -->
-<!--       ORDER BY act_code -->
-<!--    </select> -->
-   
    <!-- 제품 목록 -->
    <select id="selectProdAllList" resultType="OrderVO">
       SELECT prod_code, prod_name, prod_unit, prod_std
@@ -241,11 +231,11 @@
 
    <!-- 수정 -->
    <update id="updateOrder" parameterType="OrderVO">
-         UPDATE sales_ord_de
-         SET
-         prcs_rq_amt = #{prcsRqAmt}
-         , dev_date = #{devDate}
-         WHERE sales_ord_de_code = #{salesOrdDeCode}
+     UPDATE sales_ord_de
+     SET
+     prcs_rq_amt = #{prcsRqAmt}
+     , dev_date = #{devDate}
+     WHERE sales_ord_de_code = #{salesOrdDeCode}
    </update>
 
    <!-- 삭제 -->
@@ -263,72 +253,72 @@
    </delete>
    
     <!-- 모달검색 - 제품 -->
-<select id="selectProdSearchList" resultType="OrderVO">
-   SELECT prod_code, prod_name, prod_unit, prod_std
-   FROM com_prod
-   <if test="prodName != null and !prodName.equals('')">
-   WHERE prod_name LIKE '%' || #{prodName} || '%'
-   </if>
-   AND prod_kind = 'C'
-   ORDER BY prod_code DESC
-</select>
+	<select id="selectProdSearchList" resultType="OrderVO">
+	   SELECT prod_code, prod_name, prod_unit, prod_std
+	   FROM com_prod
+	   <if test="prodName != null and !prodName.equals('')">
+	   WHERE prod_name LIKE '%' || #{prodName} || '%'
+	   </if>
+	   AND prod_kind = 'C'
+	   ORDER BY prod_code DESC
+	</select>
 
-<!-- 모달검색 - 거래처 -->
-<select id="selectActSearchList" resultType="OutVO">
-   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
-   FROM com_act
-   <if test="actName != null and !actName.equals('')">
-   WHERE act_name LIKE '%' || #{actName} || '%'
-   </if>
-   AND act_kind = 'ACT-TYPE1'
-   ORDER BY act_code DESC
-</select>
+	<!-- 모달검색 - 거래처 -->
+	<select id="selectActSearchList" resultType="OutVO">
+	   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
+	   FROM com_act
+	   <if test="actName != null and !actName.equals('')">
+	   WHERE act_name LIKE '%' || #{actName} || '%'
+	   </if>
+	   AND act_kind = 'ACT-TYPE1'
+	   ORDER BY act_code DESC
+	</select>
 
-<!-- 주문header그리드 -->
-<select id="ordHeaderList" resultType="OrderVO">
-SELECT
-    o.ord_code,
-    o.ord_date,
-    o.act_code,
-    o.emp_code,
-    o.ord_sts,
-    a.act_name,
-    e.emp_name,
-    o.prcs_plan_code,
-    d.dev_yn
-FROM
-         sales_ord o
-    JOIN com_act      a ON ( o.act_code = a.act_code )
-    JOIN com_emp      e ON ( o.emp_code = e.emp_code )
-    JOIN sales_ord_de d ON ( o.ord_code = d.ord_code )
-    
-GROUP BY o.ord_code,
-    o.ord_date,
-    o.act_code,
-    o.emp_code,
-    o.ord_sts,
-    a.act_name,
-    e.emp_name,
-    o.prcs_plan_code,
-    d.dev_yn
-ORDER BY
-    o.ord_date,
-    o.ord_code DESC
- </select>
+	<!-- 주문header그리드 -->
+	<select id="ordHeaderList" resultType="OrderVO">
+		SELECT
+		    o.ord_code,
+		    o.ord_date,
+		    o.act_code,
+		    o.emp_code,
+		    o.ord_sts,
+		    a.act_name,
+		    e.emp_name,
+		    o.prcs_plan_code,
+		    d.dev_yn
+		FROM
+		         sales_ord o
+		    JOIN com_act      a ON ( o.act_code = a.act_code )
+		    JOIN com_emp      e ON ( o.emp_code = e.emp_code )
+		    JOIN sales_ord_de d ON ( o.ord_code = d.ord_code )
+		    
+		GROUP BY o.ord_code,
+		    o.ord_date,
+		    o.act_code,
+		    o.emp_code,
+		    o.ord_sts,
+		    a.act_name,
+		    e.emp_name,
+		    o.prcs_plan_code,
+		    d.dev_yn
+		ORDER BY
+		    o.ord_date,
+		    o.ord_code DESC
+	 </select>
  
-<!-- 주문detail그리드 -->
-<select id="ordDetailList" resultType="OrderVO">
-   SELECT
-       d.sales_ord_de_code,
-       d.ord_code,
-       d.prod_code,
-       d.prcs_rq_amt,
-       d.dev_date,
-       d.dev_yn,
-       p.prod_name
-   FROM sales_ord_de d
-       JOIN com_prod p ON ( d.prod_code = p.prod_code )
-    WHERE d.ord_code = #{ordCode}
-    ORDER BY d.sales_ord_de_code DESC
- </select>
+	<!-- 주문detail그리드 -->
+	<select id="ordDetailList" resultType="OrderVO">
+	   SELECT
+	       d.sales_ord_de_code,
+	       d.ord_code,
+	       d.prod_code,
+	       d.prcs_rq_amt,
+	       d.dev_date,
+	       d.dev_yn,
+	       p.prod_name
+	   FROM sales_ord_de d
+	       JOIN com_prod p ON ( d.prod_code = p.prod_code )
+	    WHERE d.ord_code = #{ordCode}
+	    ORDER BY d.sales_ord_de_code DESC
+	 </select>
 </mapper>

@@ -581,26 +581,26 @@ form {
                 header: '재고량',
                 name: 'prodSaveAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '출고일자',
                 name: 'salesOutDate',
@@ -633,24 +633,26 @@ form {
 
     });
     setDisabled();
-    
-    grid.on('click', ()=>{
+
+    grid.on('click', () => {
         //선택한 행 색깔 바꾸기
-        	  let selectKey = grid.getFocusedCell().rowKey;
-        	  grid.addRowClassName(selectKey, 'selected-cell');
-        	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-        	  grid.on('focusChange', () => {
-        		  grid.removeRowClassName(selectKey, 'selected-cell');
-        	  	})
-       	  })
+        let selectKey = grid
+            .getFocusedCell()
+            .rowKey;
+        grid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        grid.on('focusChange', () => {
+            grid.removeRowClassName(selectKey, 'selected-cell');
+        })
+    })
 
     //비활성화
     function setDisabled() {
         $.each(grid.getData(), function (idx, obj) {
 
-        	 if(obj['salesOutCode'] != null && (obj['salesRtCode'] != "" && obj['salesRtCode'] != null)){
-        		 grid.disableRow(obj['rowKey']);
-             }
+            if (obj['salesOutCode'] != null && (obj['salesRtCode'] != "" && obj['salesRtCode'] != null)) {
+                grid.disableRow(obj['rowKey']);
+            }
             if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
                 grid.disableRow(obj['rowKey']);
             }
@@ -745,6 +747,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>

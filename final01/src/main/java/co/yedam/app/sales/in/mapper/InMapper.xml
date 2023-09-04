@@ -49,34 +49,34 @@
 				AND o.sales_out_code != null
 			</if>
 	</where>					
-	ORDER BY i.prod_lot DESC
+		ORDER BY i.prod_lot DESC
 	</select>
 	
 	<!-- 제품목록 -->
 	<select id="selectProdAllList" resultType="InVO">
-	SELECT prod_code, prod_name, prod_unit, prod_std
-	FROM com_prod
-	WHERE prod_kind = 'C'
-	ORDER BY prod_code DESC
+		SELECT prod_code, prod_name, prod_unit, prod_std
+		FROM com_prod
+		WHERE prod_kind = 'C'
+		ORDER BY prod_code DESC
 	</select>
 	
 	<!-- 입고관리 그리드 -->
 	<select id="inMngList" resultType="InVO">
-	SELECT i.prod_lot
-			, i.prod_code
-			, i.sales_in_date
-			, i.sales_in_amt
-			, i.prod_save_amt
-			, i.sales_in_exd
-			, i.emp_code
-			, e.emp_name
-			, i.test_num
-			, p.prod_name
-	FROM sales_in i JOIN com_emp e
-					ON (i.emp_code = e.emp_code) 
-					JOIN com_prod p
-					ON (i.prod_code = p.prod_code)
-	ORDER BY i.prod_lot DESC
+		SELECT i.prod_lot
+				, i.prod_code
+				, i.sales_in_date
+				, i.sales_in_amt
+				, i.prod_save_amt
+				, i.sales_in_exd
+				, i.emp_code
+				, e.emp_name
+				, i.test_num
+				, p.prod_name
+		FROM sales_in i JOIN com_emp e
+						ON (i.emp_code = e.emp_code) 
+						JOIN com_prod p
+						ON (i.prod_code = p.prod_code)
+		ORDER BY i.prod_lot DESC
 	</select>
 	
 	<!-- 검수완료된 완제품 목록  -->
@@ -96,66 +96,42 @@
 	
 	<!-- 등록 -->
 	<insert id="insertProductIn" parameterType="InVO">
-			INSERT INTO sales_in (
-				prod_lot
-				, prod_code
-				, sales_in_date
-				, sales_in_amt
-				, prod_save_amt
-				, sales_in_exd
-				, emp_code
-				, test_num
-			) VALUES (
-				get_primaryCode('prodLot')
-				, #{prodCode}
-				, #{salesInDate}
-				, #{salesInAmt}
-				, #{prodSaveAmt}
-				, #{salesInExd}
-				, #{empCode}
-				, #{testNum}
-			)
+		INSERT INTO sales_in (
+			prod_lot
+			, prod_code
+			, sales_in_date
+			, sales_in_amt
+			, prod_save_amt
+			, sales_in_exd
+			, emp_code
+			, test_num
+		) VALUES (
+			get_primaryCode('prodLot')
+			, #{prodCode}
+			, #{salesInDate}
+			, #{salesInAmt}
+			, #{prodSaveAmt}
+			, #{salesInExd}
+			, #{empCode}
+			, #{testNum}
+		)
 	</insert>
-	
- 	<!-- 수정 --> 
-<!-- 	<update id="updateProductIn" parameterType="InVO"> -->
-<!-- 			UPDATE sales_in -->
-<!-- 			SET sales_in_date = #{salesInDate}, sales_in_exd = #{salesInExd} -->
-<!-- 			WHERE prod_lot = #{prodLot} -->
-<!-- 	</update> -->
 	
 	<!-- 삭제 -->
 	<delete id="deleteProductIn" parameterType="InVO">
-			DELETE FROM sales_in
-			WHERE prod_lot = #{prodLot}
+		DELETE FROM sales_in
+		WHERE prod_lot = #{prodLot}
 		
 	</delete>
 	
- 	<!-- 하단 그리드 행삭제시 상단 그리드 데이터 올리기용 --> 
-<!-- 	<select id="selectDeletedTest" resultType="InVO"> -->
-<!-- 		SELECT a.mat_test_code, d.mat_name, d.mat_unit, d.mat_std, c.mat_code, f.act_code, e.act_name, a.mat_od_de_cd, a.mat_amt, mat_yamt, mat_namt, a.err_code, b.commde_info err_info, mat_test_date -->
-<!-- 		FROM mat_test a  -->
-<!-- 		LEFT JOIN com_commde b -->
-<!-- 			ON(a.err_code = b.commde_code) -->
-<!-- 			LEFT JOIN mat_order_de c -->
-<!-- 			ON(a.mat_od_de_cd = c.mat_od_de_cd) -->
-<!-- 	        LEFT JOIN com_mat d -->
-<!-- 	        ON(c.mat_code = d.mat_code) -->
-<!-- 	        LEFT JOIN mat_order f -->
-<!-- 	        ON(c.mat_od_cd = f.mat_od_cd) -->
-<!-- 	        LEFT JOIN com_act e -->
-<!-- 	        ON(f.act_code = e.act_code) -->
-<!-- 		WHERE a.mat_test_code = #{matTestCode} -->
-<!-- 	</select> -->
-
-<!-- 모달검색 - 제품 -->
-<select id="selectProdSearchList" resultType="OrderVO">
-SELECT prod_code, prod_name, prod_unit, prod_std
-FROM com_prod
-<if test="prodName != null and !prodName.equals('')">
-WHERE prod_name LIKE '%' || #{prodName} || '%'
-</if>
-AND prod_kind = 'C'
-ORDER BY prod_code DESC
-</select>
+	<!-- 모달검색 - 제품 -->
+	<select id="selectProdSearchList" resultType="OrderVO">
+		SELECT prod_code, prod_name, prod_unit, prod_std
+		FROM com_prod
+		<if test="prodName != null and !prodName.equals('')">
+		WHERE prod_name LIKE '%' || #{prodName} || '%'
+		</if>
+		AND prod_kind = 'C'
+		ORDER BY prod_code DESC
+	</select>
 </mapper>

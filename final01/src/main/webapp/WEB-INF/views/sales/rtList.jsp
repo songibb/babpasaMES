@@ -428,7 +428,8 @@ form {
                 empCode: "${rt.empCode}",
                 empName: "${rt.empName}",
                 prodCode: "${rt.prodCode}",
-                salesOutAmt: "${rt.salesOutAmt}"
+                salesOutAmt: "${rt.salesOutAmt}",
+                prodName: "${rt.prodName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -466,34 +467,37 @@ form {
                 sortingType: 'asc',
                 align: 'center'
             }, {
+                header: '제품명',
+                name: 'prodName',
+                align: 'center'
+            }, {
                 header: '제품코드',
                 name: 'prodCode',
-                value: '${rt.prodCode}',
-                align: 'center'
+                hidden: true
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '반품량',
                 name: 'salesRtAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '반품일',
                 name: 'salesRtDate',
@@ -506,20 +510,20 @@ form {
                 name: 'salesRtWhy',
                 formatter: 'listItemText',
                 editor: {
-	                type: 'select',
-	                options: {
-	                    listItems: [
-	                        {
-	                            text: '불량',
-	                            value: 'E'
-	                        }, {
-	                            text: '단순변심',
-	                            value: 'J'
-	                        }
-	                    ]
-	                }
-	            },
-	            align: 'center'
+                    type: 'select',
+                    options: {
+                        listItems: [
+                            {
+                                text: '불량',
+                                value: 'E'
+                            }, {
+                                text: '단순변심',
+                                value: 'J'
+                            }
+                        ]
+                    }
+                },
+                align: 'center'
             }, {
                 header: '직원코드',
                 name: 'empCode',
@@ -533,27 +537,28 @@ form {
 
     });
     setDisabled();
-    
-  //비활성화
+
+    //비활성화
     function setDisabled() {
         $.each(grid.getData(), function (idx, obj) {
 
-            if(obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")){
-            	grid.disableRow(obj['rowKey']);
+            if (obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")) {
+                grid.disableRow(obj['rowKey']);
             }
         })
     }
 
-    
-    grid.on('click', ()=>{
+    grid.on('click', () => {
         //선택한 행 색깔 바꾸기
-        	  let selectKey = grid.getFocusedCell().rowKey;
-        	  grid.addRowClassName(selectKey, 'selected-cell');
-        	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-        	  grid.on('focusChange', () => {
-        		  grid.removeRowClassName(selectKey, 'selected-cell');
-        	  	})
-       	  })
+        let selectKey = grid
+            .getFocusedCell()
+            .rowKey;
+        grid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        grid.on('focusChange', () => {
+            grid.removeRowClassName(selectKey, 'selected-cell');
+        })
+    })
 
     //검색 버튼
     $('#searchBtn').on('click', searchOrderList);
@@ -587,6 +592,7 @@ form {
                     obj['salesOutAmt'] = obj['salesOutAmt'];
                 })
                 grid.resetData(data2);
+                setDisabled();
             },
             error: function (reject) {
                 console.log(reject);
@@ -628,6 +634,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>
