@@ -27,10 +27,17 @@ public class OffEquipController {
 	public String getOffEquipList(Model model) {
 		model.addAttribute("offequip",offEquipService.getOffEquipList());
 		
-		model.addAttribute("allequip", offEquipService.getAllEquip());
+		//model.addAttribute("allequip", offEquipService.getAllEquip());
 		return "equip/offequip";
 	}
-		
+	
+	//Ajax - 전체 설비 모달 
+	@GetMapping("selectOffEq") //Equiplist.jsp의 ajax url과 연결되는 것 
+	@ResponseBody
+	public List<OffEquipVO> selectOffEq(){
+		List<OffEquipVO> list = offEquipService.getAllEquip();
+		return list;
+	}
 		
 	//Ajax 연결 - 전체 설비 리스트
 	@GetMapping("selectoffequip") //Equiplist.jsp의 ajax url과 연결되는 것 

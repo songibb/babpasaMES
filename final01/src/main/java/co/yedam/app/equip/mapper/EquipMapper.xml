@@ -103,6 +103,7 @@
    <select id="searchEquip" resultType="EquipVO">
   	  	SELECT  EQ_CODE
 	  			,ACT_CODE
+	  			,FIND_ACT_NAME(ACT_CODE) AS ACT_NAME
 	  			,EQ_NAME
 	  			,MODEL_NAME
 	  			,MAKE_DATE
@@ -123,7 +124,7 @@
 				AND EQ_TYPE = #{eqType}
 			</if>
 		</where>
-	ORDER BY EQ_NAME
+	ORDER BY EQ_CODE
   </select>
   
   </mapper>
