@@ -340,6 +340,7 @@ form {
                 empCode: "${rt.empCode}",
                 empName: "${rt.empName}",
                 prodCode: "${rt.prodCode}",
+                prodName: "${rt.prodName}",
                 salesOutAmt: "${rt.salesOutAmt}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
@@ -387,7 +388,10 @@ form {
             }, {
                 header: '제품코드',
                 name: 'prodCode',
-                value: '${rt.prodCode}',
+                hidden: true
+            }, {
+                header: '제품명',
+                name: 'prodName',
                 align: 'center'
             }, {
                 header: '출고량',
@@ -534,15 +538,18 @@ form {
                 let salesOutCode = Grid.getValue(rowKey2, 'salesOutCode');
                 let prodLot = Grid.getValue(rowKey2, 'prodLot');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
+                let prodName = Grid.getValue(rowKey2, 'prodName');
                 let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
                 console.log(salesOutCode);
                 console.log(prodLot);
                 console.log(prodCode);
+                console.log(prodName);
                 console.log(salesOutAmt);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
                 rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
                 rtGrid.setValue(rowKey, 'prodLot', prodLot);
                 rtGrid.setValue(rowKey, 'prodCode', prodCode);
+                rtGrid.setValue(rowKey, 'prodName', prodName);
                 rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
