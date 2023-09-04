@@ -17,4 +17,5 @@ public class MatStockVO {
 	
 	//제품의 Lot별 재고(모달창)
 	
+	private String willOdAmt;
 }

@@ -28,7 +28,7 @@
         					ON(a.mat_identi_code = d.mat_rt_code)
         						LEFT JOIN mat_in e
         							ON(a.mat_identi_code = e.mat_lot)
-		ORDER BY mat_dp_date
+		ORDER BY mat_dp_date DESC
 	</select>
 	
 	<!-- 검색 -->
@@ -64,7 +64,7 @@
 				AND TO_CHAR(a.mat_dp_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY mat_dp_date
+		ORDER BY mat_dp_date DESC
 	</select>
 	
 	<!-- 유통기한 만료 -->
@@ -80,7 +80,7 @@
 			ON(a.mat_code = b.mat_code)
 		WHERE TO_CHAR(mat_exd, 'YYYY-MM-DD') <![CDATA[<=]]> SYSDATE 
 			AND mat_stock <![CDATA[>]]> 0
-		ORDER BY mat_exd
+		ORDER BY mat_exd DESC
 	</select>
 	
 	<!-- 반품 실패 -->
@@ -103,7 +103,7 @@
         							ON(b.err_code = e.commde_code)
 		WHERE mat_rt_sts = 'R6'
 			AND mat_identi_code IS NULL
-		ORDER BY mat_rt_date
+		ORDER BY mat_rt_date DESC
 	</select>
 	
 	<!-- 등록 -->

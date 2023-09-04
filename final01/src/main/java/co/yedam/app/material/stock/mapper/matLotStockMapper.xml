@@ -13,6 +13,6 @@
 			ON(a.mat_code = b.mat_code)
 		WHERE a.mat_code = #{materialCode}
 			AND a.mat_stock <![CDATA[>]]> 0
-		ORDER BY a.mat_exd
+		ORDER BY a.mat_exd DESC
 	</select>
 </mapper>

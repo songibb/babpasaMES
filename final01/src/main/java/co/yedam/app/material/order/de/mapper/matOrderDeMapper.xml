@@ -28,7 +28,7 @@
             				ON (b.emp_code = d.emp_code)
             					LEFT JOIN com_mat e
             						ON (a.mat_code = e.mat_code)
-		ORDER BY b.mat_od_rq 
+		ORDER BY b.mat_od_rq DESC
 	</select>
 	
 	<!-- 조회 페이지에서 헤더 그리드 -->
@@ -38,7 +38,7 @@
 		ON(a.emp_code = b.emp_code)
 		JOIN com_act c
 		ON(a.act_code = c.act_code)
-		ORDER BY mat_od_rq
+		ORDER BY mat_od_rq DESC
 	</select>
 	
 	<!-- 조회페이지에서 검색 -->
@@ -59,7 +59,7 @@
 				AND TO_CHAR(a.mat_od_rq, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY mat_od_rq
+		ORDER BY mat_od_rq DESC
 	</select>
 	
 	<!--  조회 페이지에서 상세 그리드 -->
@@ -68,7 +68,7 @@
 		FROM mat_order_de a JOIN com_mat b
 		ON(a.mat_code = b.mat_code)
 		WHERE mat_od_cd = #{matOdCd}
-		ORDER BY mat_od_acp
+		ORDER BY mat_od_acp DESC
 	</select>
 	
 	<!-- 전체조회에서 검색 -->
@@ -116,7 +116,7 @@
 					AND a.mat_test_yn != 'Y'
 				</if>
 			</where>
-			ORDER BY b.mat_od_rq
+			ORDER BY b.mat_od_rq DESC
 	</select>
 	
 	<!-- 등록 -->
@@ -187,8 +187,7 @@
 		FROM com_act
 		WHERE act_kind = 'ACT-TYPE2'
 		AND ACT_STS = 'D1'
-		ORDER BY act_code DESC
-
+		ORDER BY act_code
 	</select>
 	
 	<!-- 모달검색 - 거래처 -->
@@ -199,7 +198,7 @@
 		WHERE act_name LIKE '%' || #{actName} || '%'
 		</if>
 		AND act_kind = 'ACT-TYPE2'
-		ORDER BY act_code DESC
+		ORDER BY act_code
 	</select>
 	
 	<!-- 관리페이지 신규 생산계획 자재 소모량 -->
@@ -211,6 +210,7 @@
                          , g.mat_std
                          , g.mat_safe
                          , NVL(h.mat_stock, 0) total_stock
+                         , NVL(l.will_od_amt, 0 ) will_od_amt  
         FROM
                     (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
                      				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
@@ -236,6 +236,17 @@
         ON(f.mat_code = g.mat_code)
         LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
         ON(f.mat_code = h.mat_code)
+        LEFT JOIN (
+                    SELECT i.mat_code, sum(NVL(mat_yamt, i.mat_amt)) as will_od_amt
+                    FROM mat_order_de i
+                    LEFT JOIN mat_test j
+                    ON(i.mat_od_de_cd = j.mat_od_de_cd)
+                    LEFT JOIN mat_in k
+                    ON(j.mat_test_code = k.mat_test_code)
+                    WHERE mat_lot IS NULL
+                    GROUP BY i.mat_code
+        ) l
+        ON(l.mat_code = g.mat_code)
         <if test="materialName != null and !materialName.equals('')">
 			WHERE g.mat_name LIKE '%' || #{materialName} || '%'
 		</if>
@@ -279,5 +290,30 @@
 		ON(a.mat_od_cd = b.mat_od_cd)
 		WHERE act_code = #{actCode}
 		GROUP BY mat_code
+	</select>
+	
+	<!-- max 거래처면 초록색 표시 -->
+	<select id="selectMaxActListSearch" resultType="MatOrderDeVO">
+		SELECT e.mat_code
+		FROM(SELECT mat_code
+				  , max(mat_count) as max_mat_count
+		     FROM (SELECT mat_code
+		     			, act_code
+		     			, count(mat_price) as mat_count
+		   		   FROM mat_order_de a
+		   		   JOIN mat_order b
+		    	   ON(a.mat_od_cd = b.mat_od_cd)
+		    	   GROUP BY mat_code, act_code)
+		    GROUP BY mat_code) e
+		JOIN (SELECT mat_code
+		    	   , act_code
+		    	   , COUNT(*) as act_count
+		      FROM mat_order_de c
+		      JOIN mat_order d
+		      ON(c.mat_od_cd = d.mat_od_cd)
+		      WHERE act_code = #{actCode}
+		      GROUP BY mat_code, act_code) f
+		ON(e.mat_code = f.mat_code)
+		WHERE max_mat_count = act_count
 	</select>
 </mapper>

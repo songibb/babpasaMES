@@ -25,7 +25,7 @@
 					ON(a.act_code = c.act_code)
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
-		ORDER BY a.mat_ind
+		ORDER BY a.mat_ind DESC
 	</select>
 	<!-- 검색 -->
 	<select id="selectMatInSearch" resultType="MatInVO">
@@ -71,7 +71,7 @@
 	            </when>
         	</choose>	
 		</where>
-		ORDER BY a.mat_ind
+		ORDER BY a.mat_ind DESC
 	</select>
 	
 	<!-- 검수는 됐지만 입고 안된 자재들 목록-->
@@ -104,7 +104,7 @@
 	        										ON(f.act_code = e.act_code)
 		WHERE b.mat_test_code IS NULL
 		AND a.mat_yamt > 0
-		ORDER BY mat_test_date
+		ORDER BY mat_test_date DESC
 	</select>
 	
 	<!-- 하단 그리드 행삭제시 상단 그리드 데이터 올리기용 -->

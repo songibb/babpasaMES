@@ -30,4 +30,6 @@ public class MatOrderDeVO {
 	private Integer bomAmt;
 	private Integer matStock;
 	private Integer actCount;
+	
+	
 }

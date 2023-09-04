@@ -52,4 +52,7 @@ public interface MatOrderDeMapper {
 	public List<MatOrderDeVO> selectMatBuyAct(String matCode);
 	//해당 자재 거래처 가격찾기
 	public MatOrderDeVO selectActMatPrice(MatOrderDeVO vo);
+	
+	//max 거래처면 초록색 표시
+	public List<MatOrderDeVO> selectMaxActListSearch(String actCode);
 }

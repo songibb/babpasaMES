@@ -32,7 +32,7 @@
 									ON(b.err_code = e.commde_code)
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
-		ORDER BY a.mat_rt_date
+		ORDER BY a.mat_rt_date DESC
 	</select>
 	
 	<!-- 전체조회에서 검색 -->
@@ -86,7 +86,7 @@
 	            </when>
         	</choose>	
 		</where>
-		ORDER BY a.mat_rt_date
+		ORDER BY a.mat_rt_date DESC
 	</select>
 	
 	<!-- 검수는 됐지만 아직 반품 신청하지 않은 발주들의 목록 -->
@@ -116,7 +116,7 @@
         								LEFT JOIN com_act e
         									ON(f.act_code = e.act_code)
 		WHERE err_rt_sts = 'R1'
-		ORDER BY mat_test_date
+		ORDER BY mat_test_date DESC
 	</select>
 	
 	<!-- 삭제한 행 정보 -->

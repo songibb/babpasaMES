@@ -280,7 +280,8 @@
 		            matStd: "${stock.matStd}",
 		            totalStock: "${stock.totalStock}",
 		            matSafe: "${stock.matSafe}",
-		            willUseAmt: "${stock.willUseAmt}"
+		            willUseAmt: "${stock.willUseAmt}",
+		            willOdAmt : "${stock.willOdAmt}"
 		        }
 		        <c:if test="${not status.last}">,</c:if>
 		    </c:forEach>
@@ -338,6 +339,16 @@
 		        }, {
 		        	header: '소모예정량',
 		            name: 'willUseAmt',
+		            formatter(e) {
+		                val = e['value']
+		                    .toString()
+		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                return val;
+		            },
+		            align: 'right'
+		        }, {
+		        	header: '입고예정량',
+		            name: 'willOdAmt',
 		            formatter(e) {
 		                val = e['value']
 		                    .toString()
@@ -552,6 +563,26 @@
      		
             let actCode = matActGrid.getValue(rowKey, 'actCode');
             let actName = matActGrid.getValue(rowKey, 'actName');
+            
+            $.ajax({
+            	url : 'getMaxActList',
+        		method : 'GET',
+        		data : { actCode : actCode },
+        		async : false,
+        		success : function(result){
+        			 let data = matActGrid.getData();
+        			 $.each(data, function(idx, obj){
+        				 $.each(result, function(idx2, obj2){
+        					 if(obj['matCode'] == obj2['matCode']){
+        						 matActGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-cell');
+        					 }
+        				 })
+        			 })
+        		},
+        		error : function(reject){
+        			console.log(reject);
+        		}
+            })
                 
             $('#matBuyActInput').val(actName);
            	$('#matBuyActInputHidden').val(actCode);
@@ -853,7 +884,7 @@
 		        	
 		        	$.each(result, function (idx, obj) {
 		        		
-		        	planGrid.resetData(result);
+		        		planGrid.resetData(result);
 				        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
 				            let rowKey = obj['rowKey'];
 				            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');

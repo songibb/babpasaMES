@@ -109,4 +109,10 @@ public class MatOrderDeServiceImpl implements MatOrderDeService {
 		return modm.selectActMatPrice(vo);
 	}
 
+	@Override
+	public List<MatOrderDeVO> getMaxActListSearch(String actCode) {
+		
+		return modm.selectMaxActListSearch(actCode);
+	}
+
 }
