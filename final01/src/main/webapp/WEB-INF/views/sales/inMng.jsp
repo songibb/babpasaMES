@@ -664,7 +664,7 @@ form {
             inGrid.export('xlsx');
         })
     })
-
+    
     //상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
     testGrid.on('dblclick', () => {
     	//선택한 행 색깔 바꾸기
@@ -752,11 +752,14 @@ form {
             }
         );
     }
+    
     //스크롤 활성화
     function activeScroll() {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
+    
+
 </script>
 </body>
 </html>
