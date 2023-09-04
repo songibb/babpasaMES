@@ -85,7 +85,6 @@
 									</button>
 									
 									<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
-										<button type="button" class="btn btn-info btn-icon-text" id="deleteProd">삭제</button>
 				            	</div>
 			            	</form>
 			            	<h2>제품 목록</h2>
