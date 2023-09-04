@@ -362,7 +362,42 @@
              contentType : 'application/json',
              success : function(data){
             	 
-                swal("성공", data+"건이 처리되었습니다","success");
+            	 swal("성공", data+"건이 처리되었습니다","success");
+                
+                let rowKey = grid.getFocusedCell().rowKey;
+                let eqCode = grid.getValue(rowKey, 'eqCode');
+                
+                $.ajax({
+                    url : 'ajaxletChkInfoEquip',
+                   method : 'GET',
+                   data : { eqCode : eqCode },
+                   success : function(data){
+                       $.each(data, function(i, objDe){
+           				let td3 = data[i]['chkDate'];
+           				let td4 = data[i]['chkNextDate'];
+           				cycle = data[0]['chkCycle'];
+           				data[i]['chkDate'] = getDate(td3);
+           				data[i]['chkNextDate'] = getDate(td4);
+
+           			})
+           			
+           			grid2.resetData(data);
+                       
+                       $.each(grid2.getData(), function(idx, obj){
+               			
+               			if(obj['eqChkCode'] != null){
+               				grid2.disableRow(obj['rowKey']);
+
+               			}
+               		})
+       		
+                     },
+                   error : function(reject){
+                       console.log(reject);
+                    }
+                 })
+                
+                 
                 
              },
              error : function(reject){

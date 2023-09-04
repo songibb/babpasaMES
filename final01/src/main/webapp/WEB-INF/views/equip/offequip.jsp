@@ -355,7 +355,7 @@
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 		      el: document.getElementById('actGrid'),
-		      data : [
+		      /* data : [
 		    	  <c:forEach items="${allequip}" var="ap" varStatus="status">
 		          	{
 		          		eqCode : "${ap.eqCode}",
@@ -363,7 +363,7 @@ function createActGrid(){
 		          		eqSts :"${ap.eqSts}",
 		          	} <c:if test="${not status.last}">,</c:if>
 		          </c:forEach>
-		      ],
+		      ], */
 			   scrollX: false,
 		      scrollY: false,
 		      minBodyHeight: 30,
@@ -393,6 +393,19 @@ function createActGrid(){
 			 	      },
 			    ]
 		    })   
+	   
+	   
+	   $.ajax({
+	       url : "selectOffEq",
+	       method :"GET",
+	       success : function(result){
+	    	   actGrid.resetData(result);
+	       },
+	       error : function(reject){
+				console.log(reject);
+			}
+		});
+	   
 	   return actGrid;
 }
 
@@ -420,7 +433,7 @@ $("#insertForm").on('submit', function(e){
 		  
 		  //등록 ajax 
 		  offequipInsert(offequipInfo);
-
+	
 			
 		 
 	  }
