@@ -18,7 +18,7 @@
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
-		ORDER BY a.semi_out_date
+		ORDER BY a.semi_out_date DESC
 	</select>
 	
 	<!-- 전체조회중 검색 -->
@@ -46,7 +46,7 @@
 				AND TO_CHAR(a.semi_out_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.semi_out_date
+		ORDER BY a.semi_out_date DESC
 	</select>
 
 </mapper>

@@ -37,7 +37,7 @@
 				AND TO_CHAR(a.mat_outd, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
-		ORDER BY a.mat_outd
+		ORDER BY a.mat_outd DESC
 	</select>
 
 </mapper>

@@ -110,5 +110,12 @@ public class MatOrderDeController {
 		return mods.getActMatPrice(vo);
 	}
 	
+	//max거래처면 초록색 표시
+	@GetMapping("getMaxActList")
+	@ResponseBody
+	public List<MatOrderDeVO> getMaxActListSearch(String actCode){
+		return mods.getMaxActListSearch(actCode);
+	}
+	
 	
 }
