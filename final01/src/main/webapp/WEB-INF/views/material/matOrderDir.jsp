@@ -571,13 +571,7 @@
         		async : false,
         		success : function(result){
         			 let data = matActGrid.getData();
-        			 $.each(data, function(idx, obj){
-        				 $.each(result, function(idx2, obj2){
-        					 if(obj['matCode'] == obj2['matCode']){
-        						 matActGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-cell');
-        					 }
-        				 })
-        			 })
+        			 console.log(result);
         		},
         		error : function(reject){
         			console.log(reject);
