@@ -147,7 +147,7 @@ label{
     <div class="container">
   <!-- Heading -->
   
-  <h1><img src="/app/resources/img/babpasa_logo_01.png" alt="logo"></h1>
+  <h1><img src="${pageContext.request.contextPath}/resources/img/babpasa_logo_01.png" alt="logo"></h1>
 
   <!-- Form -->
   <form method="post" action="${pageContext.request.contextPath}/login">

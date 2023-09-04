@@ -657,7 +657,8 @@
 		            header: '업체코드', // [필수] 컬럼 이름
 		            name: 'actCode',// [선택] 숨김 여부
 		            editor : 'text',
-		            align: 'center'
+		            align: 'center',
+		            hidden: true
 		        },
 		        {
 		            header: '거래처',
