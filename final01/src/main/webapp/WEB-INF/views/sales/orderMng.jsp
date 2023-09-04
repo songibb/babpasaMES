@@ -313,7 +313,7 @@ form {
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
@@ -562,7 +562,33 @@ form {
         });
     });
 
+// 	//조건맞는 행(추가되는 행)인지 체크
+// 	function checkChangeable(ev) {
+// 	    var rowKey = ev.rowKey;
+// 	    var rows = orderGrid.findRows({salesOrdDeCode: null});
+
+// 	    let flag = false;
+// 	    $.each(rows, function (idx, obj) {
+// 	        if (obj['rowKey'] == rowKey) {
+// 	            flag = true;
+// 	            return false;
+// 	        }
+// 	    });
+
+// 	    return flag;
+// 	}
+
+// 	//추가되는 행만 edit가능
+// 	orderGrid.on('editingStart', function (ev) {
+// 	    let flag = checkChangeable(ev);
+
+// 	    if (!flag) {
+// 	        ev.stop();
+// 	    }
+// 	});
+    
     orderGrid.on('click', ev => {
+    	
     	//선택한 행 색깔 바꾸기
     	let selectKey = orderGrid.getFocusedCell().rowKey;
     	orderGrid.addRowClassName(selectKey, 'selected-cell');
@@ -680,7 +706,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -897,7 +923,7 @@ form {
         if (orderGrid.getModifiedRows().updatedRows.length > 0) {
 
             $.each(orderGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-                if (obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
+                if (obj2['prcsRqAmt'] == "" || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
                     flag = false;
                     return false;
                 }

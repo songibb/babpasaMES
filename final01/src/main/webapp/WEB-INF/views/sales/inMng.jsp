@@ -161,7 +161,7 @@ form {
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
@@ -279,7 +279,33 @@ form {
         ]
     });
     
-    inGrid.on('click', ()=>{
+	//조건맞는 행(추가되는 행)인지 체크
+	function checkChangeable(ev) {
+	    var rowKey = ev.rowKey;
+	    var rows = inGrid.findRows({prodLot: null});
+
+	    let flag = false;
+	    $.each(rows, function (idx, obj) {
+	        if (obj['rowKey'] == rowKey) {
+	            flag = true;
+	            return false;
+	        }
+	    });
+
+	    return flag;
+	}
+
+	//추가되는 행만 edit가능
+	inGrid.on('editingStart', function (ev) {
+	    let flag = checkChangeable(ev);
+
+	    if (!flag) {
+	        ev.stop();
+	    }
+	});
+    
+    inGrid.on('click', ev=>{
+    	let flag = checkChangeable(ev);
         //선택한 행 색깔 바꾸기
         	  let selectKey = inGrid.getFocusedCell().rowKey;
         	  inGrid.addRowClassName(selectKey, 'selected-cell');
@@ -556,7 +582,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -665,6 +691,7 @@ form {
         })
     })
     
+
     //상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
     testGrid.on('dblclick', () => {
     	//선택한 행 색깔 바꾸기
