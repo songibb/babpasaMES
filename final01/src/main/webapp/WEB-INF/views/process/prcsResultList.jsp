@@ -91,7 +91,7 @@ h2{
            				<i class="bi bi-search" id="prcsModal"></i> <!-- 돋보기 아이콘 -->
            				<input type="text" class="blackcolorInputBox" id="prcsNameFix" readonly>
            				<br>
-						<p>생산시작일자</p>
+						<p>지시등록일자</p>
                 		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 						
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
