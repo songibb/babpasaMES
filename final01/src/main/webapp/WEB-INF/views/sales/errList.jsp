@@ -238,8 +238,8 @@ form {
 	border-color: #868e96;
 }
 
-.selected-cell{
-   background-color: #ffd09e;
+.selected-cell {
+	background-color: #ffd09e;
 }
 </style>
 </head>
@@ -252,13 +252,14 @@ form {
 				<div class="table-responsive pt-3">
 					<form>
 						<p>제품명</p>
-						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>폐기일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
+						<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -285,12 +286,12 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch" style=" width: 164px;">
+				<input type="text" id="modalSearch" style="width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
@@ -347,7 +348,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -419,14 +420,14 @@ form {
         el: document.getElementById('grid'),
         data: [<c:forEach items="${disList}" var="d" varStatus="status">
             {
-            	salesDpCode: "${d.salesDpCode}",
-            	testNum: "${d.testNum}",
-            	prodCode: "${d.prodCode}",
-            	prodName: "${d.prodName}",
-            	salesDpAmt: "${d.salesDpAmt}",
-            	salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
-            	empCode: "${d.empCode}",
-            	empName: "${d.empName}"
+                salesDpCode: "${d.salesDpCode}",
+                testNum: "${d.testNum}",
+                prodCode: "${d.prodCode}",
+                prodName: "${d.prodName}",
+                salesDpAmt: "${d.salesDpAmt}",
+                salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
+                empCode: "${d.empCode}",
+                empName: "${d.empName}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -442,66 +443,68 @@ form {
             perPage: 10
         },
         columns: [
-        	 {
-                 header: '폐기코드',
-                 name: 'salesDpCode',
-                 sortable: true,
-                 sortingType: 'asc',
-                 align: 'center'
-             }, {
-                 header: '검수코드',
-                 name: 'testNum',
-                 sortable: true,
-                 sortingType: 'asc',
-                 align: 'center'
-             }, {
-                 header: '제품코드',
-                 name: 'prodCode',
-                 align: 'center'
-             }, {
-                 header: '제품명',
-                 name: 'prodName'
-             }, {
-                 header: '폐기량',
-                 name: 'salesDpAmt',
-                 formatter(e) {
-                 	if (e['value'] != null){
- 	                val = e['value']
- 	                    .toString()
- 	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
- 	                return val;
-                 	}
- 	            },
- 	           align: 'right'
-             }, {
-                 header: '폐기일자',
-                 name: 'salesDpDate',
-                 className: 'yellow-background',
-                 sortable: true,
-                 sortingType: 'asc',
-                 align: 'center'
-             }, {
-                 header: '담당자',
-                 name: 'empName',
-                 align: 'center'
-             }, {
-                 header: '직원코드',
-                 name: 'empCode',
-                 hidden: true
-             }
+            {
+                header: '폐기코드',
+                name: 'salesDpCode',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
+            }, {
+                header: '검수코드',
+                name: 'testNum',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
+            }, {
+                header: '제품코드',
+                name: 'prodCode',
+                align: 'center'
+            }, {
+                header: '제품명',
+                name: 'prodName'
+            }, {
+                header: '폐기량',
+                name: 'salesDpAmt',
+                formatter(e) {
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
+            }, {
+                header: '폐기일자',
+                name: 'salesDpDate',
+                className: 'yellow-background',
+                sortable: true,
+                sortingType: 'asc',
+                align: 'center'
+            }, {
+                header: '담당자',
+                name: 'empName',
+                align: 'center'
+            }, {
+                header: '직원코드',
+                name: 'empCode',
+                hidden: true
+            }
         ]
 
     });
-    
-    grid.on('click', ()=>{
+
+    grid.on('click', () => {
         //선택한 행 색깔 바꾸기
-        	  let selectKey = grid.getFocusedCell().rowKey;
-        	  grid.addRowClassName(selectKey, 'selected-cell');
-        	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-        	  grid.on('focusChange', () => {
-        		  grid.removeRowClassName(selectKey, 'selected-cell');
-        	  	})
-       	  })
+        let selectKey = grid
+            .getFocusedCell()
+            .rowKey;
+        grid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        grid.on('focusChange', () => {
+            grid.removeRowClassName(selectKey, 'selected-cell');
+        })
+    })
 
     //검색 버튼
     $('#searchBtn').on('click', searchOrderList);
@@ -575,6 +578,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>

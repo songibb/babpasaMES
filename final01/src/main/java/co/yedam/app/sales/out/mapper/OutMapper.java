@@ -10,10 +10,13 @@ import co.yedam.app.sales.out.service.OutVO;
 public interface OutMapper {
 	//전체조회
 	public List<OutVO> selectOutAllList();
+	
 	//거래처 목록
 	public List<OutVO> selectActAllList();
+	
 	//제품 목록
 	public List<OutVO> selectProdAllList();
+	
 	//검색
 	public List<OutVO> selectAllOut(@Param("actCode")String actCode
 			, @Param("prodCode")String prodCode
@@ -21,8 +24,10 @@ public interface OutMapper {
 			, @Param("endDate")String endDate
 			, @Param("before") String before
 			, @Param("comple") String comple);
+	
 	//출고완료된 품목만 보여주는 출고 리스트
 	public List<OutVO> selectOutNList();
+	
 	//등록
 	public int insertOut(OutVO vo);
 	
@@ -31,9 +36,6 @@ public interface OutMapper {
 	
 	//삭제
 	public int deleteOut(OutVO vo);
-	
-//	//lot list
-//	public List<OutVO> selectLotList();
 	
 	//order detail list
 	public List<OutVO> selectOrderDeList();

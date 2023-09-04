@@ -290,7 +290,7 @@ form {
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
@@ -398,27 +398,27 @@ form {
                 name: 'salesOutAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '반품량',
                 name: 'salesRtAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '반품일자',
                 name: 'salesRtDate',
@@ -437,21 +437,21 @@ form {
                 name: 'salesRtWhy',
                 formatter: 'listItemText',
                 editor: {
-	                type: 'select',
-	                options: {
-	                    listItems: [
-	                        {
-	                            text: '불량',
-	                            value: 'E'
-	                        }, {
-	                            text: '단순변심',
-	                            value: 'J'
-	                        }
-	                    ]
-	                }
-	            },
-	              align: 'center'
-                
+                    type: 'select',
+                    options: {
+                        listItems: [
+                            {
+                                text: '불량',
+                                value: 'E'
+                            }, {
+                                text: '단순변심',
+                                value: 'J'
+                            }
+                        ]
+                    }
+                },
+                align: 'center'
+
             }, {
                 header: '직원코드',
                 name: 'empCode',
@@ -465,13 +465,13 @@ form {
         ]
     });
     setDisabled();
-    
-  //비활성화
+
+    //비활성화
     function setDisabled() {
         $.each(rtGrid.getData(), function (idx, obj) {
 
-            if(obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")){
-            	rtGrid.disableRow(obj['rowKey']);
+            if (obj['salesRtCode'] != null && (obj['salesRtWhy'] == "E")) {
+                rtGrid.disableRow(obj['rowKey']);
             }
         })
     }
@@ -503,29 +503,57 @@ form {
         });
     });
 
-    rtGrid.on('click', () => {
-    	rtGrid.on('click', ()=>{
-    		    //선택한 행 색깔 바꾸기
-    		    	  let selectKey = rtGrid.getFocusedCell().rowKey;
-    		    	  rtGrid.addRowClassName(selectKey, 'selected-cell');
-    		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-    		    	  rtGrid.on('focusChange', () => {
-    		    		  rtGrid.removeRowClassName(selectKey, 'selected-cell');
-    		    	  	})
-    		   	  })
+    //조건맞는 행(추가되는 행)인지 체크
+    function checkChangeable(ev) {
+        var rowKey = ev.rowKey;
+        var rows = rtGrid.findRows({salesRtCode: null});
+
+        let flag = false;
+        $.each(rows, function (idx, obj) {
+            if (obj['rowKey'] == rowKey) {
+                flag = true;
+                return false;
+            }
+        });
+
+        return flag;
+    }
+
+    //추가되는 행만 edit가능
+    rtGrid.on('editingStart', function (ev) {
+        let flag = checkChangeable(ev);
+
+        if (!flag) {
+            ev.stop();
+        }
+    });
+
+    rtGrid.on('click', ev => {
+        let flag = checkChangeable(ev);
+        rtGrid.on('click', () => {
+            //선택한 행 색깔 바꾸기
+            let selectKey = rtGrid
+                .getFocusedCell()
+                .rowKey;
+            rtGrid.addRowClassName(selectKey, 'selected-cell');
+            //다른 행 선택시 기존에 클릭했던 행은 class제거
+            rtGrid.on('focusChange', () => {
+                rtGrid.removeRowClassName(selectKey, 'selected-cell');
+            })
+        })
         let rowKey = rtGrid
             .getFocusedCell()
             .rowKey;
         let columnName = rtGrid
             .getFocusedCell()
             .columnName;
-        
+
         let salesRtCode = rtGrid.getValue(rowKey, 'salesRtCode');
-	    if (salesRtCode != null) {
-	            ev.stop();
-	            return false;
-	    }
-        
+        if (salesRtCode != null) {
+            ev.stop();
+            return false;
+        }
+
         if (columnName == 'salesOutCode') {
             $(".modal").fadeIn();
             preventScroll();
@@ -580,7 +608,7 @@ form {
                     prodLot: "${out.prodLot}",
                     prodName: "${out.prodName}",
                     actName: "${out.actName}",
-                    empName: "${out.empName}",
+                    empName: "${out.empName}"
                 }
                 <c:if test="${not status.last}">,</c:if>
             </c:forEach>
@@ -601,7 +629,7 @@ form {
                     header: '출고코드',
                     name: 'salesOutCode',
                     align: 'center'
-                },{
+                }, {
                     header: '상세주문코드',
                     name: 'salesOrdDeCode',
                     align: 'center'
@@ -632,14 +660,14 @@ form {
                     header: '출고량',
                     name: 'salesOutAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '담당자',
                     name: 'empCode',
@@ -695,7 +723,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -836,16 +864,12 @@ form {
             })
         }
 
-//         if (rtGrid.getModifiedRows().updatedRows.length > 0) {
-
-//             $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-//                 if (obj2['salesInDate'] == null || obj2['salesInExd'] == null || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
-//                     flag = false;
-//                     return false;
-//                 }
-//             })
-
-//         }
+        // if (rtGrid.getModifiedRows().updatedRows.length > 0) {
+        // $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
+        // if (obj2['salesInDate'] == null || obj2['salesInExd'] == null ||
+        // obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
+        // flag = false;                     return false;                 }
+        // })         }
 
         if (flag) {
             $.ajax({
@@ -896,6 +920,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-	</script>
+</script>
 </body>
 </html>

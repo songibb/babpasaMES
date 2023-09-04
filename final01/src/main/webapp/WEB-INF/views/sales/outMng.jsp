@@ -314,7 +314,7 @@ form {
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
@@ -364,8 +364,8 @@ form {
                 empCode: "${out.empCode}",
                 empName: "${out.empName}",
                 prodSaveAmt: "${out.prodSaveAmt}",
-              	prodName: "${out.prodName}",
-              	salesRtCode: "${out.salesRtCode}"
+                prodName: "${out.prodName}",
+                salesRtCode: "${out.salesRtCode}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -419,27 +419,27 @@ form {
                 name: 'prodSaveAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '출고량',
                 name: 'salesOutAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '출고일자',
                 name: 'salesOutDate',
@@ -477,7 +477,6 @@ form {
         ]
     });
     setDisabled();
-
 
     //거래처명, 자재명, 담당자명 클릭하면 모달창 나온 후 선택할 수 있음. 선택 시 hidden cell에 데이터 넘어감
     var Grid;
@@ -530,30 +529,58 @@ form {
         });
     });
 
+    //조건맞는 행(추가되는 행)인지 체크
+    function checkChangeable(ev) {
+        var rowKey = ev.rowKey;
+        var rows = outGrid.findRows({salesOutCode: null});
+
+        let flag = false;
+        $.each(rows, function (idx, obj) {
+            if (obj['rowKey'] == rowKey) {
+                flag = true;
+                return false;
+            }
+        });
+
+        return flag;
+    }
+
+    //추가되는 행만 edit가능
+    outGrid.on('editingStart', function (ev) {
+        let flag = checkChangeable(ev);
+
+        if (!flag) {
+            ev.stop();
+        }
+    });
+
     outGrid.on('click', ev => {
-    	//선택한 행 색깔 바꾸기
-    	let selectKey = outGrid.getFocusedCell().rowKey;
-    	outGrid.addRowClassName(selectKey, 'selected-cell');
-    	//다른 행 선택시 기존에 클릭했던 행은 class제거
-    	outGrid.on('focusChange', () => {
-    		outGrid.removeRowClassName(selectKey, 'selected-cell');
-    	})
+        let flag = checkChangeable(ev);
+        //선택한 행 색깔 바꾸기
+        let selectKey = outGrid
+            .getFocusedCell()
+            .rowKey;
+        outGrid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        outGrid.on('focusChange', () => {
+            outGrid.removeRowClassName(selectKey, 'selected-cell');
+        })
         let rowKey = outGrid
             .getFocusedCell()
             .rowKey;
         let columnName = outGrid
             .getFocusedCell()
             .columnName;
-        
+
         let salesOutCode = outGrid.getValue(rowKey, 'salesOutCode');
-	    if (salesOutCode != null) {
-	            ev.stop();
-	            return false;
-	    }
-        
+        if (salesOutCode != null) {
+            ev.stop();
+            return false;
+        }
+
         if (columnName == "prodLot") {
-//         	var mainRowKey = ev.rowKey;
-        	var prodCode = outGrid.getValue(rowKey, 'prodCode');
+            //         	var mainRowKey = ev.rowKey;
+            var prodCode = outGrid.getValue(rowKey, 'prodCode');
             Grid = createLotGrid(prodCode);
             $(".modal").fadeIn();
             preventScroll();
@@ -601,12 +628,12 @@ form {
                 console.log(prodCode);
                 console.log(prodName);
                 //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
-                    outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
-                    outGrid.setValue(rowKey, 'actName', actName);
-                    outGrid.setValue(rowKey, 'actCode', actCode);
-                    outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
-                    outGrid.setValue(rowKey, 'prodCode', prodCode);
-                    outGrid.setValue(rowKey, 'prodName', prodName);
+                outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
+                outGrid.setValue(rowKey, 'actName', actName);
+                outGrid.setValue(rowKey, 'actCode', actCode);
+                outGrid.setValue(rowKey, 'salesOutAmt', prcsRqAmt);
+                outGrid.setValue(rowKey, 'prodCode', prodCode);
+                outGrid.setValue(rowKey, 'prodName', prodName);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
@@ -680,33 +707,33 @@ form {
                 method: 'GET',
                 data: modalSearchData,
                 success: function (data) {
-                	
-                	 $.each(data, function (idx, obj) {
-                     	
-                         let date = new Date(obj['ordDate']);
-                         let year = date.getFullYear(); //0000년 가져오기
-                         let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                         let day = date.getDate(); //일자 가져오기
-                         obj['ordDate'] = year + "-" + (
-                             ("00" + month.toString()).slice(-2)
-                         ) + "-" + (
-                             ("00" + day.toString()).slice(-2)
-                         );
-                         
-                         date = new Date(obj['devDate']);
-                         year = date.getFullYear(); //0000년 가져오기
-                         month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                         day = date.getDate(); //일자 가져오기
-                         obj['devDate'] = year + "-" + (
-                             ("00" + month.toString()).slice(-2)
-                         ) + "-" + (
-                             ("00" + day.toString()).slice(-2)
-                         );
-                         
-                     })
-                	
+
+                    $.each(data, function (idx, obj) {
+
+                        let date = new Date(obj['ordDate']);
+                        let year = date.getFullYear(); //0000년 가져오기
+                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                        let day = date.getDate(); //일자 가져오기
+                        obj['ordDate'] = year + "-" + (
+                            ("00" + month.toString()).slice(-2)
+                        ) + "-" + (
+                            ("00" + day.toString()).slice(-2)
+                        );
+
+                        date = new Date(obj['devDate']);
+                        year = date.getFullYear(); //0000년 가져오기
+                        month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                        day = date.getDate(); //일자 가져오기
+                        obj['devDate'] = year + "-" + (
+                            ("00" + month.toString()).slice(-2)
+                        ) + "-" + (
+                            ("00" + day.toString()).slice(-2)
+                        );
+
+                    })
+
                     Grid.resetData(data);
-                    
+
                 },
                 error: function (reject) {
                     console.log(reject);
@@ -716,7 +743,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -724,7 +751,6 @@ form {
             Grid.destroy();
         }
     });
-
 
     //salesOrdDeCode modal
     function createODGrid() {
@@ -786,8 +812,8 @@ form {
                             return "작업대기";
                         } else if (e.value == 'P2') {
                             return "공정진행중";
-                        } else if (e.value == 'P3'){
-                        	return "생산완료";
+                        } else if (e.value == 'P3') {
+                            return "생산완료";
                         }
                     }
                 }, {
@@ -797,14 +823,14 @@ form {
                     header: '주문량',
                     name: 'prcsRqAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '납기일자',
                     name: 'devDate',
@@ -830,7 +856,7 @@ form {
                 }, {
                     header: '직원코드',
                     name: 'empCode',
-                    hidden : true
+                    hidden: true
                 }, {
                     header: '생산계획코드',
                     name: 'prcsPlanCode',
@@ -846,7 +872,7 @@ form {
 
         return lotGrid;
     }
-    
+
     //prodLot modal
     function createLotGrid(prodCode) {
         var odGrid = new tui.Grid({
@@ -898,26 +924,26 @@ form {
                     header: '입고량',
                     name: 'salesInAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '재고량',
                     name: 'prodSaveAmt',
                     formatter(e) {
-                    	if (e['value'] != null){
-    	                val = e['value']
-    	                    .toString()
-    	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    	                return val;
-                    	}
-    	            },
-    	            align: 'right'
+                        if (e['value'] != null) {
+                            val = e['value']
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                            return val;
+                        }
+                    },
+                    align: 'right'
                 }, {
                     header: '유통기한',
                     name: 'salesInExd',
@@ -931,17 +957,17 @@ form {
             ]
 
         });
-        
+
         $.ajax({
-	        url: 'getProdLotList',
-	        method: 'GET',
-	        data: {
-	        	prodCode : prodCode
-	        },
-	        success: function (data) {
-	            console.log(data);
-	            $.each(data, function (idx, obj) {
-                 	
+            url: 'getProdLotList',
+            method: 'GET',
+            data: {
+                prodCode: prodCode
+            },
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (idx, obj) {
+
                     let date = new Date(obj['salesInDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -951,7 +977,7 @@ form {
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
-                    
+
                     date = new Date(obj['salesInExd']);
                     year = date.getFullYear(); //0000년 가져오기
                     month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -961,19 +987,18 @@ form {
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
-                    
+
                 })
                 console.log(data);
-	            odGrid.resetData(data);
-	        },
-	        error: function (reject) {
-	            console.log(reject);
-	        }
-	    })
+                odGrid.resetData(data);
+            },
+            error: function (reject) {
+                console.log(reject);
+            }
+        })
 
         return odGrid;
     }
-
 
     //거래처 모달 그리드
     function createActGrid() {
@@ -1106,8 +1131,8 @@ form {
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
-                	console.log(obj);
-                	
+                    console.log(obj);
+
                     let date = new Date(obj['salesOutDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -1117,7 +1142,7 @@ form {
                     ) + "-" + (
                         ("00" + day.toString()).slice(-2)
                     );
-                    
+
                 })
                 outGrid.resetData(data2);
                 setDisabled();
@@ -1198,7 +1223,7 @@ form {
                 }
             })
         } else {
-        	swal("경고", "값이 입력되지 않았습니다.", "warning");
+            swal("경고", "값이 입력되지 않았습니다.", "warning");
         }
 
     }
@@ -1223,9 +1248,9 @@ form {
         if (ordersQty) {
             // 입력수량이 존재함 입력수량 > 재고
             if (ordersQty > productQty) {
-                alert("재고 수량을 초과하여 입력할 수 없습니다.")// 입력수량 = 0 or 입력수량 < 0);
+                alert("재고 수량을 초과하여 입력할 수 없습니다.") // 입력수량 = 0 or 입력수량 < 0);
             } else if (ordersQty === 0 || ordersQty < 0) {
-                alert("1개 이상 입력할 수 있습니다.")// 그게 아니라면 true로 반환 !ret 이니까 true임);
+                alert("1개 이상 입력할 수 있습니다.") // 그게 아니라면 true로 반환 !ret 이니까 true임);
             } else {
                 ret = !ret;
             }
@@ -1263,23 +1288,19 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-    
 
     //비활성화
     function setDisabled() {
         $.each(outGrid.getData(), function (idx, obj) {
 
-            if(obj['salesOutCode'] != null && (obj['salesRtCode'] != "" && obj['salesRtCode'] != null)){
-            	outGrid.disableRow(obj['rowKey']);
+            if (obj['salesOutCode'] != null && (obj['salesRtCode'] != "" && obj['salesRtCode'] != null)) {
+                outGrid.disableRow(obj['rowKey']);
             }
             if (obj['salesOutCode'] != null && (Number(obj['prodSaveAmt']) < 1)) {
-            	outGrid.disableRow(obj['rowKey']);
+                outGrid.disableRow(obj['rowKey']);
             }
         })
     }
-    
-    
-    
-	</script>
+</script>
 </body>
 </html>

@@ -121,10 +121,11 @@ form {
 						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
 						<i class="bi bi-search" id="prodModal"></i>
 						<!-- 돋보기 아이콘 -->
-						<input type="text" class="blackcolorInputBox" id="prodNameFix"readonly> 
+						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>입고일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
+						<input id="endDate" type="date" style="margin-right: 20px;">
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -145,7 +146,7 @@ form {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="modal">
 		<div class="modal_content">
 			<div class="m_head">
@@ -156,16 +157,16 @@ form {
 			</div>
 			<div class="m_body">
 				<p>이름</p>
-				<input type="text" id="modalSearch" style=" width: 164px;">
+				<input type="text" id="modalSearch" style="width: 164px;">
 				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
-				<div class="modal_btn cancle close_btn">CANCLE</div>
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
     // 입고 목록
     var inGrid = new tui.Grid({
@@ -228,27 +229,27 @@ form {
                 name: 'salesInAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '재고량',
                 name: 'prodSaveAmt',
                 editor: 'text',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '유통기한',
                 name: 'salesInExd',
@@ -269,7 +270,7 @@ form {
             }, {
                 header: '담당자', // [필수] 컬럼 이름
                 name: 'empName',
-                align: 'center'// [필수] 컬럼 매핑 이름 값
+                align: 'center' // [필수] 컬럼 매핑 이름 값
             }, {
                 header: '검사번호', // [필수] 컬럼 이름
                 name: 'testNum', // [필수] 컬럼 매핑 이름 값
@@ -278,16 +279,44 @@ form {
 
         ]
     });
-    
-    inGrid.on('click', ()=>{
+
+    //조건맞는 행(추가되는 행)인지 체크
+    function checkChangeable(ev) {
+        var rowKey = ev.rowKey;
+        var rows = inGrid.findRows({prodLot: null});
+
+        let flag = false;
+        $.each(rows, function (idx, obj) {
+            if (obj['rowKey'] == rowKey) {
+                flag = true;
+                return false;
+            }
+        });
+
+        return flag;
+    }
+
+    //추가되는 행만 edit가능
+    inGrid.on('editingStart', function (ev) {
+        let flag = checkChangeable(ev);
+
+        if (!flag) {
+            ev.stop();
+        }
+    });
+
+    inGrid.on('click', ev => {
+        let flag = checkChangeable(ev);
         //선택한 행 색깔 바꾸기
-        	  let selectKey = inGrid.getFocusedCell().rowKey;
-        	  inGrid.addRowClassName(selectKey, 'selected-cell');
-        	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-        	  inGrid.on('focusChange', () => {
-        		  inGrid.removeRowClassName(selectKey, 'selected-cell');
-        	  	})
-       	  })
+        let selectKey = inGrid
+            .getFocusedCell()
+            .rowKey;
+        inGrid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        inGrid.on('focusChange', () => {
+            inGrid.removeRowClassName(selectKey, 'selected-cell');
+        })
+    })
 
     //test완료 목록 그리드
     var testGrid = new tui.Grid({
@@ -339,14 +368,14 @@ form {
                 header: '검사량',
                 name: 'testAmt',
                 formatter(e) {
-                	if (e['value'] != null){
-	                val = e['value']
-	                    .toString()
-	                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	                return val;
-                	}
-	            },
-	            align: 'right'
+                    if (e['value'] != null) {
+                        val = e['value']
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return val;
+                    }
+                },
+                align: 'right'
             }, {
                 header: '제품LOT', // [필수] 컬럼 이름
                 name: 'prodLot', // [필수] 컬럼 매핑 이름 값
@@ -425,8 +454,8 @@ form {
 
         // if(inGrid.getModifiedRows().updatedRows.length > 0 ){
         // $.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-        // if(obj2['matLot'] == "" ||obj2['matInd'] == "" ||obj2['matExd'] == ""){
-        // flag = false; 						return false; 					} 				}) 		}
+        // if(obj2['matLot'] == "" ||obj2['matInd'] == "" ||obj2['matExd'] == ""){ flag
+        // = false; 						return false; 					} 				}) 		}
 
         if (flag) {
             $.ajax({
@@ -556,7 +585,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -664,16 +693,18 @@ form {
             inGrid.export('xlsx');
         })
     })
-    
+
     //상단 그리드 셀 클릭시 하단 그리드로 데이터 넘어가는 이벤트
     testGrid.on('dblclick', () => {
-    	//선택한 행 색깔 바꾸기
-    	let selectKey = testGrid.getFocusedCell().rowKey;
-    	testGrid.addRowClassName(selectKey, 'selected-cell');
-    	//다른 행 선택시 기존에 클릭했던 행은 class제거
-    	testGrid.on('focusChange', () => {
-    		testGrid.removeRowClassName(selectKey, 'selected-cell');
-    	})
+        //선택한 행 색깔 바꾸기
+        let selectKey = testGrid
+            .getFocusedCell()
+            .rowKey;
+        testGrid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        testGrid.on('focusChange', () => {
+            testGrid.removeRowClassName(selectKey, 'selected-cell');
+        })
         let rowKey = testGrid
             .getFocusedCell()
             .rowKey;
@@ -694,7 +725,7 @@ form {
         )).substr(-2);
         let day = ('0' + now.getDate()).substr(-2);
         let salesInDate = year + "-" + month + "-" + day;
-        
+
         let salesInAmt = testGrid.getValue(rowKey, 'salesInAmt');
         let prodSaveAmt = testGrid.getValue(rowKey, 'prodSaveAmt');
         let salesInExd = testGrid.getValue(rowKey, 'salesInExd');
@@ -714,11 +745,8 @@ form {
 
         testGrid.blur();
         inGrid.appendRow({
-            'testNum': testNum, 
-            'prodCode': prodCode,
-            'prodName' : prodName,     					   
-			// 'testDate' : testDate,
-            // 'testAmt' : testAmt,
+            'testNum': testNum, 'prodCode': prodCode, 'prodName': prodName,
+            // 'testDate' : testDate, 'testAmt' : testAmt,
 
             'prodLot': prodLot,
             'salesInDate': salesInDate,
@@ -752,14 +780,12 @@ form {
             }
         );
     }
-    
+
     //스크롤 활성화
     function activeScroll() {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-    
-
 </script>
 </body>
 </html>

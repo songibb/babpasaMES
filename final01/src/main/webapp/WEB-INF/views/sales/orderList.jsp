@@ -253,70 +253,75 @@ form {
 </style>
 </head>
 <body>
-   <div class="black_bg"></div>
-   <h1>주문 조회</h1>
-   <div class="col-lg-12 stretch-card">
-      <div class="card">
-         <div class="card-body">
-            <div class="table-responsive pt-3">
-               <form>
-                  <p>제품명</p>
-                  <input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly>
-                  <i class="bi bi-search" id="prodModal"></i>
-                  <!-- 돋보기 아이콘 -->
-                  <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
-                  <br>
-                  <p>거래처</p>
-                  <input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly>
-                  <i class="bi bi-search" id="actModal"></i> 
-                  <input type="text" class="blackcolorInputBox" id="actNameFix" readonly> 
-                  <br>
-                  <p>주문일자</p>
-                  <input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
-                  <br>
-                  <p>출고상태</p>
-                  <label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
-                  <label for="comple" style="margin-right: 20px;"><input type="checkbox" id="comple" value="comple">출고완료</label>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-                     <i class="fas fa-search"></i> 검색
-                  </button>
-                  <button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
-               </form>
-                <div id="container" style="display: flex; justify-content: center;">
-                       <div id="grid" style="width: 700px; margin-right: 50px"><h2>주문 목록</h2></div>
-                       <div id="grid2" style="width: 800px;"><h2>주문 상세 목록</h2>
-                       <button type="button" class="btn btn-info btn-icon-text excelDownload">
-                     Excel <i class="bi bi-printer"></i>
-                  </button>
-                     </div>
-                  </div>
-            </div>
-         </div>
-      </div>
-   </div>
+	<div class="black_bg"></div>
+	<h1>주문 조회</h1>
+	<div class="col-lg-12 stretch-card">
+		<div class="card">
+			<div class="card-body">
+				<div class="table-responsive pt-3">
+					<form>
+						<p>제품명</p>
+						<input type="text" placeholder="검색어를 선택하세요" id="prodCodeInput" readonly> 
+						<i class="bi bi-search" id="prodModal"></i>
+						<!-- 돋보기 아이콘 -->
+						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
+						<br>
+						<p>거래처</p>
+						<input type="text" placeholder="검색어를 입력하세요" id="actCodeInput" readonly> 
+						<i class="bi bi-search" id="actModal"></i> 
+						<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
+						<br>
+						<p>주문일자</p>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
+						<input id="endDate" type="date"> <br>
+						<p>출고상태</p>
+						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
+						<label for="comple" style="margin-right: 20px;">
+						<input type="checkbox" id="comple" value="comple">출고완료</label>
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+							<i class="fas fa-search"></i> 검색
+						</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
+					</form>
+					<div id="container" style="display: flex; justify-content: center;">
+						<div id="grid" style="width: 700px; margin-right: 50px">
+							<h2>주문 목록</h2>
+						</div>
+						<div id="grid2" style="width: 800px;">
+							<h2>주문 상세 목록</h2>
+							<button type="button"
+								class="btn btn-info btn-icon-text excelDownload">
+								Excel <i class="bi bi-printer"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-   <div class="modal">
-      <div class="modal_content">
-         <div class="m_head">
-            <div class="modal_title">
-               <h3>목록</h3>
-            </div>
-            <div class="close_btn" id="close_btn">X</div>
-         </div>
-         <div class="m_body">
-            <p>이름</p>
-            <input type="text" id="modalSearch" style=" width: 164px;">
-            <button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
-            <div id="modal_label"></div>
-         </div>
-         <div class="m_footer">
-            <div class="modal_btn cancle close_btn">CANCLE</div>
-         </div>
-      </div>
-   </div>
+	<div class="modal">
+		<div class="modal_content">
+			<div class="m_head">
+				<div class="modal_title">
+					<h3>목록</h3>
+				</div>
+				<div class="close_btn" id="close_btn">X</div>
+			</div>
+			<div class="m_body">
+				<p>이름</p>
+				<input type="text" id="modalSearch" style="width: 164px;">
+				<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">검색</button>
+				<div id="modal_label"></div>
+			</div>
+			<div class="m_footer">
+				<div class="modal_btn cancle close_btn" id="cancle_btn">CANCLE</div>
+			</div>
+		</div>
+	</div>
 
-   <script>
+	<script>
 
     //거래처 리스트 모달 시작
     var Grid;
@@ -406,7 +411,7 @@ form {
     })
 
     //모달창 닫기
-    $("#close_btn").click(function () {
+    $("#close_btn, #cancle_btn").click(function () {
         $(".modal").fadeOut();
         activeScroll();
         let inputContent = $('#modalSearch').val('');
@@ -526,7 +531,7 @@ form {
         el: document.getElementById('grid'),
         data: [<c:forEach items="${ordHeaderList}" var="order" varStatus="status">
             {
-               ordCode: "${order.ordCode}",
+                ordCode: "${order.ordCode}",
                 ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
                 actName: "${order.actName}",
                 ordSts: "${order.ordSts}",
@@ -534,7 +539,7 @@ form {
                 empName: "${order.empName}",
                 actCode: "${order.actCode}",
                 prcsPlanCode: "${order.prcsPlanCode}",
-                devYn: "${order.devYn}",
+                devYn: "${order.devYn}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -603,19 +608,19 @@ form {
 
     });
     setDisabled();
-    
-  //주문 Detail 그리드
+
+    //주문 Detail 그리드
     var grid2 = new tui.Grid({
         el: document.getElementById('grid2'),
         data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
             {
-               salesOrdDeCode: "${order.salesOrdDeCode}",
-               ordCode: "${order.ordCode}",
-               prodCode: "${order.prodCode}",
-               prodName: "${order.prodName}",
-               prcsRqAmt: "${order.prcsRqAmt}",
+                salesOrdDeCode: "${order.salesOrdDeCode}",
+                ordCode: "${order.ordCode}",
+                prodCode: "${order.prodCode}",
+                prodName: "${order.prodName}",
+                prcsRqAmt: "${order.prcsRqAmt}",
                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-                devYn: "${order.devYn}",
+                devYn: "${order.devYn}"
             }<c:if test="${not status.last}">,</c:if>
         </c:forEach>
             ],
@@ -674,48 +679,54 @@ form {
         ]
 
     });
-    setDisabled();  
-    
+    setDisabled();
+
     //Header항목선택 -> Detail
-   grid.on('click', () => {
-      let rowKey = grid.getFocusedCell().rowKey;
-       let ordCode = grid.getValue(rowKey, 'ordCode');
-     //선택한 행 색깔 바꾸기
-       let selectKey = grid.getFocusedCell().rowKey;
-       grid.addRowClassName(selectKey, 'selected-cell');
-       //다른 행 선택시 기존에 클릭했던 행은 class제거
-       grid.on('focusChange', () => {
-    	   grid.removeRowClassName(selectKey, 'selected-cell');
-       })
-       
-       console.log(ordCode);
-       
-       $.ajax({
-          url : 'ajaxOrdDetailList',
-         method : 'GET',
-         data : { ordCode : ordCode },
-         success : function(data){
-             for (let i of data) {
-                       let date = new Date(i.devDate);
-                       let year = date.getFullYear(); //0000년 가져오기
-                       let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-                       let day = date.getDate(); //일자 가져오기
-                       i.devDate = year + "-" + (
-                           ("00" + month.toString()).slice(-2)
-                       ) + "-" + (
-                           ("00" + day.toString()).slice(-2)
-                       );
-                   }
-            
-             grid2.resetData(data);
-             setDisabled();
-           },
-         error : function(reject){
-             console.log(reject);
-          }
-       })
-       
-   });
+    grid.on('click', () => {
+        let rowKey = grid
+            .getFocusedCell()
+            .rowKey;
+        let ordCode = grid.getValue(rowKey, 'ordCode');
+        //선택한 행 색깔 바꾸기
+        let selectKey = grid
+            .getFocusedCell()
+            .rowKey;
+        grid.addRowClassName(selectKey, 'selected-cell');
+        //다른 행 선택시 기존에 클릭했던 행은 class제거
+        grid.on('focusChange', () => {
+            grid.removeRowClassName(selectKey, 'selected-cell');
+        })
+
+        console.log(ordCode);
+
+        $.ajax({
+            url: 'ajaxOrdDetailList',
+            method: 'GET',
+            data: {
+                ordCode: ordCode
+            },
+            success: function (data) {
+                for (let i of data) {
+                    let date = new Date(i.devDate);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    i.devDate = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                }
+
+                grid2.resetData(data);
+                setDisabled();
+            },
+            error: function (reject) {
+                console.log(reject);
+            }
+        })
+
+    });
 
     //비활성화
     function setDisabled() {
@@ -726,7 +737,7 @@ form {
             }
         })
     }
-    
+
     //검색 버튼
     $('#searchBtn').on('click', searchOrderList);
     function searchOrderList(e) {
@@ -826,6 +837,6 @@ form {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
-   </script>
+</script>
 </body>
 </html>

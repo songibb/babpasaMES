@@ -7,9 +7,9 @@
   <select id="selectErrList" resultType="ErrVO">
   	SELECT d.*, p.prod_name, e.emp_name
 	FROM sales_dispose d JOIN com_prod p
-						 ON (d.prod_code = p.prod_code)
-						 JOIN com_emp e
-						 ON (d.emp_code = e.emp_code)
+	                     ON (d.prod_code = p.prod_code)
+	                     JOIN com_emp e
+	                     ON (d.emp_code = e.emp_code)
 	ORDER BY sales_dp_code DESC
   </select>
   <!-- 등록 -->
@@ -39,9 +39,9 @@
   <select id="selectAllOut" resultType="ErrVO">
   	SELECT d.*, p.prod_name, e.emp_name
 	FROM sales_dispose d JOIN com_prod p
-						 ON (d.prod_code = p.prod_code)
-						 JOIN com_emp e
-						 ON (d.emp_code = e.emp_code)
+                     ON (d.prod_code = p.prod_code)
+                     JOIN com_emp e
+                     ON (d.emp_code = e.emp_code)
 	<where>
 	<if test="prodCode != null and prodCode != ''">
 		AND d.prod_code LIKE '%' || #{prodCode} || '%'
@@ -94,7 +94,7 @@
 	SELECT q.test_num, q.prod_code, q.test_date, q.test_amt, q.total_test_yn
         , q.pass_amt, q.non_pass_amt, q.test_semi_yn, p.prod_name
 	FROM prod_quality q JOIN com_prod p
-                    ON (q.prod_code = p.prod_code)
+                    	ON (q.prod_code = p.prod_code)
 	<if test="prodName != null and !prodName.equals('')">
 	WHERE p.prod_name LIKE '%' || #{prodName} || '%'
 	</if>

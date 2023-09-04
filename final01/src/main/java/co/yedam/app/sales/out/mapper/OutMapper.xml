@@ -4,68 +4,68 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="co.yedam.app.sales.out.mapper.OutMapper">
   <!-- 전체조회 -->
-     <select id="selectOutAllList" resultType="OutVO">
-   SELECT o.sales_out_code sales_out_code
-         , p.prod_name prod_name
-         , a.act_name act_name
-         , o.sales_out_amt sales_out_amt
-         , o.sales_out_date sales_out_date
-         , i.sales_in_exd sales_in_exd
-         , i.prod_save_amt prod_save_amt
-   FROM sales_out o JOIN com_prod p
-                  ON (o.prod_code = p.prod_code)
-                  JOIN com_act a
-                  ON (o.act_code = a.act_code)
-                  JOIN sales_in i
-                  ON (o.prod_code = i.prod_code)
-   ORDER BY sales_out_code DESC
+   <select id="selectOutAllList" resultType="OutVO">
+	   SELECT o.sales_out_code sales_out_code
+	         , p.prod_name prod_name
+	         , a.act_name act_name
+	         , o.sales_out_amt sales_out_amt
+	         , o.sales_out_date sales_out_date
+	         , i.sales_in_exd sales_in_exd
+	         , i.prod_save_amt prod_save_amt
+	   FROM sales_out o JOIN com_prod p
+	                  ON (o.prod_code = p.prod_code)
+	                  JOIN com_act a
+	                  ON (o.act_code = a.act_code)
+	                  JOIN sales_in i
+	                  ON (o.prod_code = i.prod_code)
+	   ORDER BY sales_out_code DESC
      </select>
      
      <!-- 거래처 목록 -->
    <select id="selectActAllList" resultType="OrderVO">
-   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
-   FROM com_act
-   WHERE act_kind = 'ACT-TYPE1'
-   AND ACT_STS = 'D1'
-   ORDER BY act_code DESC
+	   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
+	   FROM com_act
+	   WHERE act_kind = 'ACT-TYPE1'
+	   AND ACT_STS = 'D1'
+	   ORDER BY act_code DESC
 
    </select>
    <!-- 제품 목록 -->
    <select id="selectProdAllList" resultType="OrderVO">
-   SELECT prod_code, prod_name, prod_unit, prod_std
-   FROM com_prod
-   WHERE prod_kind = 'C'
-   ORDER BY prod_code DESC
+	   SELECT prod_code, prod_name, prod_unit, prod_std
+	   FROM com_prod
+	   WHERE prod_kind = 'C'
+	   ORDER BY prod_code DESC
    </select>
      
      <!-- 검색 -->
   <select id="selectAllOut" resultType="OutVO">
-  SELECT o.sales_out_code sales_out_code
-         , p.prod_name prod_name
-         , o.prod_code prod_code
-         , o.prod_lot prod_lot
-         , o.act_code act_code
-         , o.emp_code emp_code
-         , e.emp_name emp_name
-         , a.act_name act_name
-         , o.sales_out_amt sales_out_amt
-         , o.sales_out_date sales_out_date
-         , i.sales_in_exd sales_in_exd
-         , o.sales_ord_de_code sales_ord_de_code
-         , i.prod_save_amt prod_save_amt
-         , r.sales_rt_code sales_rt_code
-   FROM sales_out o JOIN com_prod p
-                  ON (o.prod_code = p.prod_code)
-                  JOIN com_act a
-                  ON (o.act_code = a.act_code)
-                  JOIN sales_in i
-                  ON (o.prod_lot = i.prod_lot)
-                  JOIN sales_ord_de d
-                  ON (o.sales_ord_de_code = d.sales_ord_de_code)
-                  JOIN com_emp e
-                  ON (o.emp_code = e.emp_code)
-                  LEFT JOIN sales_rt r
-                  ON (o.sales_out_code = r.sales_out_code)
+	  SELECT o.sales_out_code sales_out_code
+	         , p.prod_name prod_name
+	         , o.prod_code prod_code
+	         , o.prod_lot prod_lot
+	         , o.act_code act_code
+	         , o.emp_code emp_code
+	         , e.emp_name emp_name
+	         , a.act_name act_name
+	         , o.sales_out_amt sales_out_amt
+	         , o.sales_out_date sales_out_date
+	         , i.sales_in_exd sales_in_exd
+	         , o.sales_ord_de_code sales_ord_de_code
+	         , i.prod_save_amt prod_save_amt
+	         , r.sales_rt_code sales_rt_code
+	   FROM sales_out o JOIN com_prod p
+	                  ON (o.prod_code = p.prod_code)
+	                  JOIN com_act a
+	                  ON (o.act_code = a.act_code)
+	                  JOIN sales_in i
+	                  ON (o.prod_lot = i.prod_lot)
+	                  JOIN sales_ord_de d
+	                  ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	                  JOIN com_emp e
+	                  ON (o.emp_code = e.emp_code)
+	                  LEFT JOIN sales_rt r
+	                  ON (o.sales_out_code = r.sales_out_code)
    <where>
          <if test="actCode != null and actCode != ''">
             AND a.act_code LIKE '%' || #{actCode} || '%'
@@ -86,168 +86,141 @@
             AND d.dev_yn != 'Y'
          </if>
    </where>               
-   ORDER BY sales_out_code DESC
+   	ORDER BY sales_out_code DESC
    </select>
    
    <!-- 출고완료된 품목만 보여주는 출고 리스트 -->
    <select id="selectOutNList" resultType="OutVO">
-  SELECT o.sales_out_code sales_out_code
-         , p.prod_name prod_name
-         , o.prod_code prod_code
-         , o.prod_lot prod_lot
-         , o.act_code act_code
-         , o.emp_code emp_code
-         , e.emp_name emp_name
-         , a.act_name act_name
-         , o.sales_out_amt sales_out_amt
-         , o.sales_out_date sales_out_date
-         , i.sales_in_exd sales_in_exd
-         , o.sales_ord_de_code sales_ord_de_code
-         , i.prod_save_amt prod_save_amt
-         , r.sales_rt_code sales_rt_code
-   FROM sales_out o JOIN com_prod p
-                  ON (o.prod_code = p.prod_code)
-                  JOIN com_act a
-                  ON (o.act_code = a.act_code)
-                  JOIN sales_in i
-                  ON (o.prod_lot = i.prod_lot)
-                  JOIN sales_ord_de d
-                  ON (o.sales_ord_de_code = d.sales_ord_de_code)
-                  JOIN com_emp e
-                  ON (o.emp_code = e.emp_code)
-                  LEFT JOIN sales_rt r
-                  ON (o.sales_out_code = r.sales_out_code)
-   ORDER BY sales_out_code DESC
+	  SELECT o.sales_out_code sales_out_code
+	         , p.prod_name prod_name
+	         , o.prod_code prod_code
+	         , o.prod_lot prod_lot
+	         , o.act_code act_code
+	         , o.emp_code emp_code
+	         , e.emp_name emp_name
+	         , a.act_name act_name
+	         , o.sales_out_amt sales_out_amt
+	         , o.sales_out_date sales_out_date
+	         , i.sales_in_exd sales_in_exd
+	         , o.sales_ord_de_code sales_ord_de_code
+	         , i.prod_save_amt prod_save_amt
+	         , r.sales_rt_code sales_rt_code
+	   FROM sales_out o JOIN com_prod p
+	                  ON (o.prod_code = p.prod_code)
+	                  JOIN com_act a
+	                  ON (o.act_code = a.act_code)
+	                  JOIN sales_in i
+	                  ON (o.prod_lot = i.prod_lot)
+	                  JOIN sales_ord_de d
+	                  ON (o.sales_ord_de_code = d.sales_ord_de_code)
+	                  JOIN com_emp e
+	                  ON (o.emp_code = e.emp_code)
+	                  LEFT JOIN sales_rt r
+	                  ON (o.sales_out_code = r.sales_out_code)
+	   ORDER BY sales_out_code DESC
      </select>
    
    
    <!-- 출고 등록 -->
    <insert id="insertOut" parameterType="OutVO">
-   CALL insert_sales_out
-   (
-   #{prodCode}
-   , #{actCode}
-   , #{salesOutDate}
-   , #{salesOutAmt}
-   , #{empCode}
-   , #{salesOrdDeCode}
-   , #{prodLot}   
-   )
-<!--          INSERT    INTO sales_out -->
-<!--          ( -->
-<!--          sales_out_code -->
-<!--          , prod_code -->
-<!--          , act_code -->
-<!--          , sales_out_date -->
-<!--          , sales_out_amt -->
-<!--          , emp_code -->
-<!--          , sales_ord_de_code -->
-<!--          , prod_lot -->
-<!--          ) -->
-<!--          VALUES -->
-<!--          ( -->
-<!--          get_primaryCode('salesOutCode') -->
-<!--          , #{prodCode} -->
-<!--          , #{actCode} -->
-<!--          , #{salesOutDate} -->
-<!--          , #{salesOutAmt} -->
-<!--          , #{empCode} -->
-<!--          , #{salesOrdDeCode} -->
-<!--          , #{prodLot} -->
-<!--          )  -->
+	   CALL insert_sales_out
+	   (
+	   #{prodCode}
+	   , #{actCode}
+	   , #{salesOutDate}
+	   , #{salesOutAmt}
+	   , #{empCode}
+	   , #{salesOrdDeCode}
+	   , #{prodLot}   
+	   )
    </insert>
    
-   <!-- 수정 -->
-<!--    <update id="updateOut" parameterType="OutVO"> -->
-        
-<!--      </update> -->
-     
      <!-- 삭제 -->
-        <delete id="deleteOut" parameterType="OutVO">
-      CALL delete_sales_out
-      (
-      #{salesOutCode}
-      , #{salesOutAmt}
-      , #{prodLot}
-      , #{salesOrdDeCode}
-      )
+     <delete id="deleteOut" parameterType="OutVO">
+	      CALL delete_sales_out
+	      (
+	      #{salesOutCode}
+	      , #{salesOutAmt}
+	      , #{prodLot}
+	      , #{salesOrdDeCode}
+	      )
      </delete>
      
      <!-- lot list -->
      <select id="getProdLotList" resultType="OutVO">
-    SELECT i.*, p.prod_name
-   FROM sales_in i JOIN com_prod p
+	    SELECT i.*, p.prod_name
+	    FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
     <if test="prodCode != null and !prodCode.equals('')">
 		WHERE i.prod_code = #{prodCode}
 	</if>
-    AND i.prod_save_amt <![CDATA[>]]> 0
-     ORDER BY i.prod_lot DESC
+	     AND i.prod_save_amt <![CDATA[>]]> 0
+	     ORDER BY i.prod_lot DESC
      </select>
      
    <!-- 모달검색 - lot -->
    <select id="selectLotSearchList" resultType="OutVO">
       SELECT i.*, p.prod_name
-   FROM sales_in i JOIN com_prod p
+   	  FROM sales_in i JOIN com_prod p
                    ON (i.prod_code = p.prod_code)
     <if test="prodName != null and !prodName.equals('')">
-   WHERE p.prod_name LIKE '%' || #{prodName} || '%'
+      WHERE p.prod_name LIKE '%' || #{prodName} || '%'
    </if>
-    AND i.prod_save_amt <![CDATA[>]]> 0
+     AND i.prod_save_amt <![CDATA[>]]> 0
      ORDER BY i.prod_lot DESC
    </select>
      
-     <!-- orderde list -->
-     <select id="selectOrderDeList" resultType="OutVO">
-     SELECT d.sales_ord_de_code sales_ord_de_code
-         , o.ord_date ord_date
-         , a.act_code act_code
-         , a.act_name act_name
-         , o.ord_sts ord_sts
-         , p.prod_name prod_name
-         , d.prcs_rq_amt prcs_rq_amt
-         , d.dev_date dev_date
-         , d.dev_yn dev_yn
-         , e.emp_code
-         , e.emp_name
-         , r.prcs_dir_sts
-         , d.prod_code
-   FROM sales_ord o JOIN sales_ord_de d
-                ON (o.ord_code = d.ord_code)
-                JOIN com_prod p
-                ON (d.prod_code = p.prod_code)
-                JOIN com_act a
-                ON (o.act_code = a.act_code)
-                JOIN prcs_dir r
-                ON (o.prcs_plan_code = r.prcs_plan_code)
-                JOIN com_emp e
-                ON (o.emp_code = e.emp_code)
-   WHERE d.dev_yn = 'N'
-   AND o.ord_sts = 'P2'
-   AND prcs_dir_sts = 'P3'
-   ORDER BY d.sales_ord_de_code DESC
+    <!-- orderde list -->
+    <select id="selectOrderDeList" resultType="OutVO">
+	     SELECT d.sales_ord_de_code sales_ord_de_code
+	         , o.ord_date ord_date
+	         , a.act_code act_code
+	         , a.act_name act_name
+	         , o.ord_sts ord_sts
+	         , p.prod_name prod_name
+	         , d.prcs_rq_amt prcs_rq_amt
+	         , d.dev_date dev_date
+	         , d.dev_yn dev_yn
+	         , e.emp_code
+	         , e.emp_name
+	         , r.prcs_dir_sts
+	         , d.prod_code
+	   FROM sales_ord o JOIN sales_ord_de d
+	                ON (o.ord_code = d.ord_code)
+	                JOIN com_prod p
+	                ON (d.prod_code = p.prod_code)
+	                JOIN com_act a
+	                ON (o.act_code = a.act_code)
+	                JOIN prcs_dir r
+	                ON (o.prcs_plan_code = r.prcs_plan_code)
+	                JOIN com_emp e
+	                ON (o.emp_code = e.emp_code)
+	   WHERE d.dev_yn = 'N'
+	   AND o.ord_sts = 'P2'
+	   AND prcs_dir_sts = 'P3'
+	   ORDER BY d.sales_ord_de_code DESC
      </select>
      
      <!-- 모달검색 - 제품 -->
    <select id="selectProdSearchList" resultType="OrderVO">
-   SELECT prod_code, prod_name, prod_unit, prod_std
-   FROM com_prod
-   <if test="prodName != null and !prodName.equals('')">
-   WHERE prod_name LIKE '%' || #{prodName} || '%'
-   </if>
-   AND prod_kind = 'C'
-   ORDER BY prod_code DESC
+	   SELECT prod_code, prod_name, prod_unit, prod_std
+	   FROM com_prod
+	   <if test="prodName != null and !prodName.equals('')">
+	   	WHERE prod_name LIKE '%' || #{prodName} || '%'
+	   </if>
+	   AND prod_kind = 'C'
+	   ORDER BY prod_code DESC
    </select>
    
    <!-- 모달검색 - 거래처 -->
    <select id="selectActSearchList" resultType="OutVO">
-   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
-   FROM com_act
-   <if test="actName != null and !actName.equals('')">
-   WHERE act_name LIKE '%' || #{actName} || '%'
-   </if>
-   AND act_kind = 'ACT-TYPE1'
-   ORDER BY act_code DESC
+	   SELECT act_code, act_name, find_cdnm('0J',act_sts) act_sts, find_cdnm('ACT-TYPE',act_kind) act_kind
+	   FROM com_act
+	   <if test="actName != null and !actName.equals('')">
+	   WHERE act_name LIKE '%' || #{actName} || '%'
+	   </if>
+	   AND act_kind = 'ACT-TYPE1'
+	   ORDER BY act_code DESC
    </select>
    
    
