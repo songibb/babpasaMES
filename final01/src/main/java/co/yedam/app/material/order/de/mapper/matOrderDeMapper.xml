@@ -316,4 +316,13 @@
 		ON(e.mat_code = f.mat_code)
 		WHERE max_mat_count = act_count
 	</select>
+	
+	<!-- 1번 거래처면 노란색 표시 -->
+	<select id="selectLeastActListSearch" resultType="MatOrderDeVO">
+		SELECT mat_code
+		FROM mat_order_de a JOIN mat_order b
+		ON(a.mat_od_cd = b.mat_od_cd)
+		WHERE act_code = #{actCode}
+	</select>
+		
 </mapper>

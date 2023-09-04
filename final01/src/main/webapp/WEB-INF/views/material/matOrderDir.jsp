@@ -181,7 +181,11 @@
 		margin-bottom : 17px;
 	}
 /*모달끝*/
-	.my-styled-cell {background-color: rgb(255, 229, 229)}
+	.my-styled-cell {background-color: rgb(255, 229, 229);}
+	
+	.my-styled-green-cell {background-color: #cff0cc;}
+	
+	.my-styled-yellow-cell {background-color: #fdfd96;}
 </style>    
        
 </head>
@@ -248,7 +252,7 @@
 				</div>
 			</div>
 		</div>
-	</div> 
+	
 	<div class="modal" id="modal">
    		<div class="modal_content">
         	<div class="m_head">
@@ -485,7 +489,7 @@
 	
 		    $.each(data, function (idx, obj) {
 	
-		        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+		        if (Number(obj['totalStock']) + Number(obj['willOdAmt']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
 		            let rowKey = obj['rowKey'];
 		            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
 		        }
@@ -564,14 +568,51 @@
             let actCode = matActGrid.getValue(rowKey, 'actCode');
             let actName = matActGrid.getValue(rowKey, 'actName');
             
+            
+            $.ajax({
+            	url : 'getLeastActListSearch',
+        		method : 'GET',
+        		data : { actCode : actCode },
+        		async : false,
+        		success : function(result){
+        			
+        			 let data = planGrid.getData();
+        			 $.each(data, function(idx, obj){
+        				 $.each(result, function(idx2, obj2){
+        					 if(obj['matCode'] == obj2['matCode']){
+        						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        						 return false;
+        					 } else {
+        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        					 }
+        				 })
+        			 })
+        		},
+        		error : function(reject){
+        			console.log(reject);
+        		}
+            })
+            
+            
             $.ajax({
             	url : 'getMaxActList',
         		method : 'GET',
         		data : { actCode : actCode },
         		async : false,
         		success : function(result){
-        			 let data = matActGrid.getData();
-        			 console.log(result);
+        			console.log(result);
+        			 let data = planGrid.getData();
+        			 $.each(data, function(idx, obj){
+        				 $.each(result, function(idx2, obj2){
+        					 if(obj['matCode'] == obj2['matCode']){
+        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        						 return false;
+        					 } else {
+        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        					 }
+        				 })
+        			 })
         		},
         		error : function(reject){
         			console.log(reject);
@@ -879,7 +920,7 @@
 		        	$.each(result, function (idx, obj) {
 		        		
 		        		planGrid.resetData(result);
-				        if (Number(obj['totalStock']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+				        if (Number(obj['totalStock']) + Number(obj['willOdAmt']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
 				            let rowKey = obj['rowKey'];
 				            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
 				        }

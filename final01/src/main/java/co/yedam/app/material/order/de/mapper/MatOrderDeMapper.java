@@ -55,4 +55,7 @@ public interface MatOrderDeMapper {
 	
 	//max 거래처면 초록색 표시
 	public List<MatOrderDeVO> selectMaxActListSearch(String actCode);
+	
+	//1번이라도 거래한적 있으면
+	public List<MatOrderDeVO> selectLeastActListSearch(String actCode);
 }
