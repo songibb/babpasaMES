@@ -117,5 +117,10 @@ public class MatOrderDeController {
 		return mods.getMaxActListSearch(actCode);
 	}
 	
-	
+	//max는 아닌데 한번이라도 거래했으면 노란색 표시
+	@GetMapping("getLeastActListSearch")
+	@ResponseBody
+	public List<MatOrderDeVO> selectLeastActListSearch(String actCode){
+		return mods.selectLeastActListSearch(actCode);
+	}
 }
