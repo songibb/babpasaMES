@@ -701,6 +701,7 @@ h1, h2{
 			contentType : "application/json",
 			success : function(data){
 				//console.log(data);
+				searchDirist();
 			},
 			error : function(reject){
 	 			console.log(reject);
