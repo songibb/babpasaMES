@@ -13,7 +13,7 @@
    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
    
    <security:http use-expressions="true">
-      <security:intercept-url pattern="/home.jsp" access="permitAll()"/>
+      <security:intercept-url pattern="/" access="isAuthenticated()"/>
       <security:intercept-url pattern="/loginForm" access="permitAll()"/>
       <security:intercept-url pattern="/admin/**" access="hasAuthority('A')"/>
       <security:intercept-url pattern="/**" access="isAuthenticated()"/>
