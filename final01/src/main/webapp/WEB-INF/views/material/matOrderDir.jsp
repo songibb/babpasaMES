@@ -374,8 +374,16 @@
 				method : 'GET',
 				data : { materialName : materialName },
 				success : function(result){
-					console.log(result);
+					
 					planGrid.resetData(result);
+					
+					$.each(result, function(idx, obj){
+						if (Number(obj['totalStock']) + Number(obj['willOdAmt']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+				            let rowKey = obj['rowKey'];
+				            planGrid.addCellClassName(rowKey, 'totalStock', 'my-styled-cell');
+				        }
+					})
+					
 				},
 				error : function(reject){
 					console.log(reject);
@@ -579,30 +587,31 @@
         		async : false,
         		success : function(result){
         			
-        			var state = [];
-        			 let data = planGrid.getData();
-        			 $.each(data, function(idx, obj){
-        				 $.each(result, function(idx2, obj2){
+        			
+        			let data = planGrid.getData();
+        			$.each(data, function(idx, obj){
+        				$.each(result, function(idx2, obj2){
         					 
-        					 if(obj['matCode'] == obj2['matCode']){
-        						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
-        						 let stateEl = { code: 'eq', value: obj2['matCode'] };
-            					 state.push(stateEl);
-        						 return false;
-        					 } else {
-        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
-        					 }
-        				 })
-        			 })
+        					if(obj['matCode'] == obj2['matCode']){
+        						planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        						return false;
+        					} else {
+        						planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        					}
+        					
+        					
+        				})
+        			})
         			 
-        			 if(result.length == 0){
-        				 $.each(data, function(idx, obj){
-        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
-        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
-        				 })
-        			 }
-        			 
-        			 planGrid.filter('matCode', state);
+        			if(result.length == 0){
+        				$.each(data, function(idx, obj){
+        					planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        					planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        				})
+        			}
+        			
+        			
+        			planGrid.filter("matCode", [{code: 'eq', value: 'MAT-0001'}, {code: 'eq', value: 'MAT-0001'}]);
         		},
         		error : function(reject){
         			console.log(reject);

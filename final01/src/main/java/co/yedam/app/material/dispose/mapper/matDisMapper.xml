@@ -58,10 +58,10 @@
 				AND a.mat_code LIKE '%' || #{materialCode} || '%'
 			</if>
 			<if test="startDate != null and !startDate.equals('')">
-				AND TO_CHAR(a.mat_dp_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+				AND TRUNC(a.mat_dp_date) <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				AND TO_CHAR(a.mat_dp_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+				AND TRUNC(a.mat_dp_date) <![CDATA[<=]]> #{endDate}
 			</if>
 		</where>
 		ORDER BY mat_dp_date DESC
