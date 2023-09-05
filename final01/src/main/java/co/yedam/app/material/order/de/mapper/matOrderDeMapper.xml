@@ -235,7 +235,9 @@
 		RIGHT JOIN com_mat g
         ON(f.mat_code = g.mat_code)
         LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
-        ON(g.mat_code = h.mat_code)
+
+        ON(h.mat_code = g.mat_code)
+
         LEFT JOIN (
                     SELECT i.mat_code, sum(NVL(mat_yamt, i.mat_amt)) as will_od_amt
                     FROM mat_order_de i
