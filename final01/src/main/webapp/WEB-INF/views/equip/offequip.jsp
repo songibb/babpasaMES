@@ -286,22 +286,7 @@
   
 		 	    ]
 		      });
-			
-	/* setDisabled(); */
-	
-	
-	
-	/* //비활성화
-	function setDisabled(){
-		$.each(grid.getData(), function(idx, obj){
-			
-			if(obj['offEtime'] != null){
-				grid.disableRow(obj['rowKey']);
-			
-			}
-		})
-	} */
-			
+
 		    var Grid;
 		    $("#actModal").click(function(){
 		      $(".modal").fadeIn();
@@ -355,16 +340,7 @@
 function createActGrid(){
 	   var actGrid = new tui.Grid({
 		      el: document.getElementById('actGrid'),
-		      /* data : [
-		    	  <c:forEach items="${allequip}" var="ap" varStatus="status">
-		          	{
-		          		eqCode : "${ap.eqCode}",
-		          		eqName :"${ap.eqName}",
-		          		eqSts :"${ap.eqSts}",
-		          	} <c:if test="${not status.last}">,</c:if>
-		          </c:forEach>
-		      ], */
-			   scrollX: false,
+			  scrollX: false,
 		      scrollY: false,
 		      minBodyHeight: 30,
 		      rowHeaders: ['rowNum'],
@@ -414,31 +390,23 @@ function createActGrid(){
 //거래처 등록/수정 한개버튼으로 같이하기
 
 
-$("#insertForm").on('submit', function(e){
-	  e.preventDefault();
-	  let offequipInfo = getoffequipInfo(); 
-	  
-	  console.log(offequipInfo);
-	  if(offequipInfo.offEtime != "" && offequipInfo.offEtime != null){
+	$("#insertForm").on('submit', function(e){
+		  e.preventDefault();
+		  let offequipInfo = getoffequipInfo(); 
 		  
-		
-		//수정 ajax
-		offequipUpdate(offequipInfo);
+		  console.log(offequipInfo);
+		  if(offequipInfo.offEtime != "" && offequipInfo.offEtime != null){
+			 
+			//수정 ajax
+			offequipUpdate(offequipInfo);
 			
-		
-	  }else{
-		  
-		 
-
-		  
-		  //등록 ajax 
-		  offequipInsert(offequipInfo);
-	
-			
-		 
-	  }
- 
-});
+		  }else{
+			  
+			//등록 ajax 
+			offequipInsert(offequipInfo);
+		  }
+	 
+	});
 
 	//form에 입력된 값들가져오기
 	function getoffequipInfo(){

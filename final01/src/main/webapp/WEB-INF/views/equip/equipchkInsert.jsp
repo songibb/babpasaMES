@@ -339,12 +339,22 @@
         
         
        //입력 빠뜨린곳 없으면 true
-       let flag = true;
+       var flag = true;
+       
+       if(grid2.getModifiedRows().createdRows.length > 0 ){
+			
+			$.each(grid2.getModifiedRows().createdRows, function(idx2, obj2){
+				if(obj2['chkDate'] == null ||obj2['eqChkYn'] == null ){
+					flag = false;
+					return false;
+				}
+			})
+	}
        
        if(grid2.getModifiedRows().updatedRows.length > 0 ){
 
           $.each(grid2.getModifiedRows().updatedRows, function(idx2, obj2){
-             if(obj2['commdeCode'] == "" ||obj2['commdeName'] =="" || obj2['commdeInfo'] == "" || obj2['commdeUse'] == ""){
+             if(obj2['chkDate'] == null ||obj2['eqChkYn'] == null){
                 flag = false;
                 return false;
              }
@@ -394,6 +404,7 @@
                      },
                    error : function(reject){
                        console.log(reject);
+                       swal("실패", "모든 값이 입력되지 않았습니다.", "warning");
                     }
                  })
                 
@@ -402,12 +413,13 @@
              },
              error : function(reject){
                 console.log(reject);
+                swal("실패", "모든 값이 입력되지 않았습니다.", "warning");
              }
           })
 
            
      } else {
-        alert("값이 입력되지 않았습니다.");
+    	 swal("실패", "모든 값이 입력되지 않았습니다.", "warning");
      }
 
   }

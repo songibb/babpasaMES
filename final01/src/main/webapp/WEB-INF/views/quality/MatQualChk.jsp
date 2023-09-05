@@ -130,9 +130,7 @@
 	           		empName : "${matChk.empName}",
 	           		matTestDate : `<fmt:formatDate value="${matChk.matTestDate}" pattern="yyyy-MM-dd"/>`,
 	           		errCode : "${matChk.errCode}",
-	           		errCodeName : "${matChk.errCodeName}",
-	           		errRtSts : "${matChk.errRtSts}",
-	           		errRtStsName :"${matChk.errRtStsName}" 
+	           		errCodeName : "${matChk.errCodeName}"
 	           			
 	           	}<c:if test="${not status.last}">,</c:if>
 	           </c:forEach>
@@ -233,14 +231,7 @@
 		 	 	        hidden: true
 		 	 	     
 		 	 	       
-		 	 	  },
-		 	 		{
-		 	 	        header: '불량반품요청상태',
-		 	 	        name: 'errRtStsName',
-		 	 	        editor:'text'
-		 	 	       
 		 	 	  }
-		 	 	  
 	        ]
 	      });
 	
@@ -311,7 +302,7 @@
 		if(matgrid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(matgrid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['matCode'] == "" ||obj2['matInAmt'] =="" || obj2['matExd'] == "" || obj2['matInd'] == "" || obj2['matTestCode']=="" || obj2['actCode'] == ""){
+					if(obj2['matYamt'] == "" ||obj2['errRtSts'] =="" || obj2['errRtStsName'] == "" ){
 						flag = false;
 						return false;
 					}
@@ -321,7 +312,7 @@
 		if(matgrid.getModifiedRows().updatedRows.length > 0 ){
 
 				$.each(matgrid.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['matLot'] == "" ||obj2['matInd'] == "" ||obj2['matExd'] == ""){
+					if(obj2['matYamt'] == "" ||obj2['errRtSts'] == "" ||obj2['errRtStsName'] == ""){
 						flag = false;
 						return false;
 					}
@@ -373,7 +364,7 @@
 					},
 					error : function(reject){
 						console.log(reject);
-						swal("실패", "", "error");
+						swal("실패", "모든 값이 입력되지 않았습니다.", "warning");
 					}
 				})
 		} else {
@@ -645,7 +636,7 @@
 	function setDisabled(){
 		$.each(matgrid.getData(), function(idx, obj){
 			
-			if(obj['errRtStsName'] != null){
+			if(obj['matYamt'] != null){
 				matgrid.disableRow(obj['rowKey']);
 
 			}
