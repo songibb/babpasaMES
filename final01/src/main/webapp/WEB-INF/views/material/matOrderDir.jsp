@@ -889,7 +889,7 @@
 		    if (orderGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(orderGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['actCode'] == "" || obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp'] == null || obj2['matPrice'] == "" || obj2['matOdRq'] == null) {
+		            if (obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || obj2['matPrice'] == null || obj2['matOdRq'] == null || obj2['matOdRq'] == "") {
 		                flag = false;
 		                return false;
 		            }
@@ -898,7 +898,7 @@
 	
 		    if (orderGrid.getModifiedRows().updatedRows.length > 0) {
 		        $.each(orderGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-		            if (obj2['matOdDeCd'] == "" || obj2['actCode'] == "" || obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp'] == null || obj2['matPrice'] == "") {
+		            if (obj2['matOdDeCd'] == "" || obj2['matOdDeCd'] == null || obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || obj2['matPrice'] == null) {
 		                flag = false;
 		                return false;
 		            }
