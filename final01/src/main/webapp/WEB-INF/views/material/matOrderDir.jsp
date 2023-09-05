@@ -312,8 +312,8 @@
 		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            align: 'left',
-		            filter: 'text'
+		            align: 'left'
+		            
 		        }, {
 		            header: '단위',
 		            name: 'matUnit',
@@ -559,7 +559,7 @@
 				})
 			}
 			
-		})
+		});
 		
 		matActGrid.on('dblclick', () => {
         	let rowKey = matActGrid
@@ -579,11 +579,15 @@
         		async : false,
         		success : function(result){
         			
+        			var state = [];
         			 let data = planGrid.getData();
         			 $.each(data, function(idx, obj){
         				 $.each(result, function(idx2, obj2){
+        					 
         					 if(obj['matCode'] == obj2['matCode']){
         						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        						 let stateEl = { code: 'eq', value: obj2['matCode'] };
+            					 state.push(stateEl);
         						 return false;
         					 } else {
         						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
@@ -597,6 +601,8 @@
         					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
         				 })
         			 }
+        			 
+        			 planGrid.filter('matCode', state);
         		},
         		error : function(reject){
         			console.log(reject);
