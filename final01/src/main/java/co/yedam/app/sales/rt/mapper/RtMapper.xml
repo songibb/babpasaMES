@@ -90,7 +90,6 @@
 	
 	<!-- 등록-단순변심 -->
 	<insert id="insertRt" parameterType="RtVO">
-		{
 		CALL insert_sales_rt
 				 (
 					 #{prodCode}
@@ -102,12 +101,10 @@
 					, #{prodLot}
 					, #{salesOrdDeCode}
 				)
-				}
 	</insert>
 	
 	<!-- 등록-불량 -->
 	<insert id="insertRtE" parameterType="RtVO">
-		{
 		CALL insert_sales_rt_error
 				 (
 					 #{prodCode}
@@ -121,7 +118,6 @@
 					, #{salesDpAmt}
 					, #{salesDpDate}
 				)
-				}
 	</insert>
 	
 	<!-- 삭제 -->

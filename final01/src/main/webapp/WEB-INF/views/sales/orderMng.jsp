@@ -902,7 +902,13 @@ form {
         if (orderGrid.getModifiedRows().createdRows.length > 0) {
 
             $.each(orderGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['ordDate'] == null || obj2['actCode'] == "" || obj2['prodCode'] == "" || obj2['prcsRqAmt'] == "" || obj2['devDate'] == null || obj2['empCode'] == "") {
+                if (obj2['ordDate'] == null || obj2['ordDate'] == "" ||
+                		obj2['actCode'] == "" || obj2['actCode'] == null ||
+                		obj2['prodCode'] == "" || obj2['prodCode'] == null ||
+                		obj2['prcsRqAmt'] == "" || obj2['prcsRqAmt'] == null ||
+                		obj2['devDate'] == "" || obj2['devDate'] == null ||
+                		obj2['empCode'] == "" || obj2['empCode'] == null
+                		) {
                     flag = false;
                     return false;
                 }
@@ -912,7 +918,10 @@ form {
         if (orderGrid.getModifiedRows().updatedRows.length > 0) {
 
             $.each(orderGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-                if (obj2['prcsRqAmt'] == "" || obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
+                if (obj2['prcsRqAmt'] == "" || obj2['prcsRqAmt'] == null ||
+                		obj2['devDate'] == "" || obj2['devDate'] == null ||
+                		obj2['salesOrdDeCode'] == "" || obj2['salesOrdDeCode'] == null
+                		) {
                     flag = false;
                     return false;
                 }

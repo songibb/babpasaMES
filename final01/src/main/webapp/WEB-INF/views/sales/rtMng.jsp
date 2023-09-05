@@ -857,19 +857,19 @@ form {
         if (rtGrid.getModifiedRows().createdRows.length > 0) {
 
             $.each(rtGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['prodCode'] == "" || obj2['salesOutCode'] == "" || obj2['salesRtAmt'] == "" || obj2['salesRtDate'] == null || obj2['salesRtWhy'] == "" || obj2['empCode'] == "" || obj2['prodLot'] == "") {
+                if (obj2['prodCode'] == "" || obj2['prodCode'] == null ||
+                	obj2['salesOutCode'] == "" || obj2['salesOutCode'] == null ||
+                	obj2['salesRtAmt'] == "" || obj2['salesRtAmt'] == null ||
+                	obj2['salesRtDate'] == "" || obj2['salesRtDate'] == null ||
+                	obj2['salesRtWhy'] == "" || obj2['salesRtWhy'] == null ||
+                	obj2['empCode'] == "" || obj2['empCode'] == null ||
+                	obj2['prodLot'] == "" || obj2['prodLot'] == null
+                	) {
                     flag = false;
                     return false;
                 }
             })
         }
-
-        // if (rtGrid.getModifiedRows().updatedRows.length > 0) {
-        // $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-        // if (obj2['salesInDate'] == null || obj2['salesInExd'] == null ||
-        // obj2['devDate'] == null || obj2['salesOrdDeCode'] == "") {
-        // flag = false;                     return false;                 }
-        // })         }
 
         if (flag) {
             $.ajax({
