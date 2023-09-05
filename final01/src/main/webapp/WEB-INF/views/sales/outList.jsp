@@ -582,7 +582,8 @@ form {
                 name: 'prodSaveAmt',
                 formatter(e) {
                     if (e['value'] != null) {
-                        val = e['value']
+                    	let amount = Math.floor(e['value']/50)
+                        val = amount
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         return val;
