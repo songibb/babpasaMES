@@ -749,7 +749,7 @@
 	
 		    if (grid.getModifiedRows().createdRows.length > 0) {
 		        $.each(grid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['calCategory'] == "" || obj2['matName'] == "" || obj2['matUnit'] == "" || obj2['matStd'] == "" || obj2['matLot'] == "" || obj2['calAmt'] == "") {
+		            if (obj2['calCategory'] == "" || obj2['calCategory'] == null || obj2['matName'] == "" || obj2['matName'] == null || obj2['matUnit'] == "" || obj2['matUnit'] == null ||obj2['matStd'] == "" ||obj2['matStd'] == null ||obj2['matLot'] == "" || obj2['matLot'] == null || obj2['calAmt'] == "" || obj2['calAmt'] == null) {
 		                flag = false;
 		                return false;
 		            }
