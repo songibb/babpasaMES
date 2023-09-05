@@ -521,7 +521,7 @@
 		    if (rtGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(rtGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['actCode'] == "" || obj2['matTestCode'] == "" || obj2['matCode'] == "" || obj2['matRtAmt'] == "" || obj2['matRtDate'] == null || obj2['matRtSts'] == "") {
+		            if (obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matTestCode'] == "" || obj2['matTestCode'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matRtAmt'] == "" || obj2['matRtAmt'] == null || obj2['matRtDate'] == null || obj2['matRtDate'] == "" || obj2['matRtSts'] == "" || obj2['matRtSts'] == null) {
 		                flag = false;
 		                return false;
 		            }
@@ -531,7 +531,7 @@
 		    if (rtGrid.getModifiedRows().updatedRows.length > 0) {
 	
 		        $.each(rtGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-		            if (obj2['matRtCode'] == "" || obj2['matRtAmt'] == "" || obj2['matRtDate'] == null || obj2['matRtSts'] == "") {
+		            if (obj2['matRtCode'] == "" || obj2['matRtCode'] == null || obj2['matRtAmt'] == "" || obj2['matRtAmt'] == null || obj2['matRtDate'] == null ||  obj2['matRtDate'] == "" || obj2['matRtSts'] == "" || obj2['matRtSts'] == null) {
 		                flag = false;
 		                return false;
 		            }

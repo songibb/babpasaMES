@@ -515,7 +515,7 @@
 		    if (grid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(grid.getModifiedRows().createdRows, function (idx, obj) {
-		            if (obj['matIdentiCode'] == "" || obj['matIdentiCode'] == null ||obj['matName'] == "" || obj['matName'] == null || obj['matUnit'] == "" || obj['matUnit'] == null || obj['matStd'] == "" || obj['matStd'] == null || obj['matDpAmt'] == "" || obj['matDpAmt'] == null || obj['matDpDate'] == null || obj['empName'] == "") {
+		            if (obj['matIdentiCode'] == "" || obj['matIdentiCode'] == null ||obj['matName'] == "" || obj['matName'] == null || obj['matUnit'] == "" || obj['matUnit'] == null || obj['matStd'] == "" || obj['matStd'] == null || obj['matDpAmt'] == "" || obj['matDpAmt'] == null || obj['matDpDate'] == null || obj['empName'] == "" || obj['empName'] == null) {
 		                flag = false;
 		                return false;
 		            }
@@ -525,7 +525,7 @@
 		    if (grid.getModifiedRows().updatedRows.length > 0) {
 		        $.each(grid.getModifiedRows().updatedRows, function (idx, obj) {
 	
-		            if (obj['matDpAmt'] == "") {
+		            if (obj['matDpAmt'] == "" || obj['matDpAmt'] == null) {
 		                flag = false;
 		                return false;
 		            }

@@ -438,7 +438,7 @@
 		    if (inGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(inGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['prodCode'] == "" || obj2['semiInAmt'] == "" || obj2['semiExd'] == null || obj2['semiInd'] == null || obj2['prcsIngCode'] == "") {
+		            if (obj2['prodCode'] == "" || obj2['prodCode'] == null || obj2['semiInAmt'] == "" || obj2['semiInAmt'] == null || obj2['semiExd'] == null ||  obj2['semiExd'] == "" ||obj2['semiInd'] == null ||obj2['semiInd'] == null ||obj2['prcsIngCode'] == "" || obj2['prcsIngCode'] == null) {
 		                flag = false;
 		                return false;
 		            }
@@ -448,7 +448,7 @@
 		    if (inGrid.getModifiedRows().updatedRows.length > 0) {
 	
 		        $.each(inGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-		            if (obj2['semiInd'] == null || obj2['semiExd'] == null) {
+		            if (obj2['semiInd'] == null || obj2['semiInd'] == "" ||obj2['semiExd'] == null || obj2['semiExd'] == "") {
 		                flag = false;
 		                return false;
 		            }

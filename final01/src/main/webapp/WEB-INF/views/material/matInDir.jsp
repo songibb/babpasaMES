@@ -516,7 +516,7 @@
 		    if (inGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(inGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['matCode'] == "" || obj2['matInAmt'] == "" || obj2['matExd'] == null || obj2['matInd'] == null || obj2['matTestCode'] == "" || obj2['actCode'] == "") {
+		            if (obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matInAmt'] == "" || obj2['matInAmt'] == null || obj2['matExd'] == null || obj2['matExd'] == "" || obj2['matInd'] == null ||  obj2['matInd'] == "" ||obj2['matTestCode'] == "" || obj2['matTestCode'] == null ||obj2['actCode'] == "" || obj2['actCode'] == null) {
 		                flag = false;
 		                return false;
 		            }
@@ -526,7 +526,7 @@
 		    if (inGrid.getModifiedRows().updatedRows.length > 0) {
 	
 		        $.each(inGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-		            if (obj2['matLot'] == "" || obj2['matInd'] == null || obj2['matExd'] == null) {
+		            if (obj2['matLot'] == "" || obj2['matLot'] == null || obj2['matInd'] == null || obj2['matInd'] == "" || obj2['matExd'] == null ||  obj2['matExd'] == "") {
 		                flag = false;
 		                return false;
 		            }
