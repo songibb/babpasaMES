@@ -790,7 +790,13 @@ form {
         if (disGrid.getModifiedRows().createdRows.length > 0) {
 
             $.each(disGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['salesDpCode'] == "" || obj2['testNum'] == "" || obj2['prodCode'] == "" || obj2['salesDpAmt'] == null || obj2['salesDpDate'] == "" || obj2['empCode'] == "") {
+                if (obj2['salesDpCode'] == "" || obj2['salesDpCode'] == null || 
+                	obj2['testNum'] == "" || obj2['testNum'] == null ||
+                	obj2['prodCode'] == "" || obj2['prodCode'] == null ||
+                	obj2['salesDpAmt'] == "" || obj2['salesDpAmt'] == null ||
+                	obj2['salesDpDate'] == "" || obj2['salesDpDate'] == null ||
+                	obj2['empCode'] == "" || obj2['empCode'] == null
+                	) {
                     flag = false;
                     return false;
                 }

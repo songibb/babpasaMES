@@ -1190,19 +1190,20 @@ form {
         if (outGrid.getModifiedRows().createdRows.length > 0) {
 
             $.each(outGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-                if (obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['salesOutDate'] == null || obj2['salesOutAmt'] == "" || obj2['empCode'] == "" || obj2['salesOrdDeCode'] == "" || obj2['prodLot'] == "") {
-
+                if (obj2['prodCode'] == "" || obj2['prodCode'] == null || 
+                	obj2['prodCode'] == "" || obj2['prodCode'] == null || 
+                	obj2['actCode'] == "" || obj2['actCode'] == null || 
+                	obj2['salesOutDate'] == "" || obj2['salesOutDate'] == null || 
+                	obj2['salesOutAmt'] == "" || obj2['salesOutAmt'] == null || 
+                	obj2['empCode'] == "" || obj2['empCode'] == null || 
+                	obj2['salesOrdDeCode'] == "" || obj2['salesOrdDeCode'] == null || 
+                	obj2['prodLot'] == "" || obj2['prodLot'] == null
+                	) {
                     flag = false;
                     return false;
                 }
             })
         }
-
-        // if(outGrid.getModifiedRows().updatedRows.length > 0 ){
-        // $.each(outGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-        // if(obj2['prcsRqAmt'] == "" || obj2['prodCode'] == "" || obj2['actCode'] == ""
-        // || obj2['ordDate'] == "" || obj2['devDate'] == "" || obj2['empCode'] == "" ){
-        // flag = false; 						return false; 					} 				}) 		}
 
         if (flag) {
             $.ajax({
@@ -1212,13 +1213,12 @@ form {
                 contentType: 'application/json',
                 success: function (data) {
                     swal("성공", "작업이 성공하였습니다.", "success");
-                    console.log(data);
                     searchOrderList();
                     setDisabled();
                 },
                 error: function (reject) {
-                    swal("실패", "작업을 실패했습니다.", "error");
                     console.log(reject);
+                    swal("실패", "작업을 실패했습니다.", "error");
 
                 }
             })
