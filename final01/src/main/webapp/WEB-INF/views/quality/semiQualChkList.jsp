@@ -31,7 +31,7 @@
 		  border-radius: 4px;
 		}
 		
-		#customtemplateSearchAndButton p{
+		#customtemplateSearchAndButton > p{
 		width: 90px;
 		display: inline-block;
 		font-size: 20px;
@@ -78,7 +78,6 @@
          </div> 
       </div> 
       </div>
-   </div>
   
    <div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
