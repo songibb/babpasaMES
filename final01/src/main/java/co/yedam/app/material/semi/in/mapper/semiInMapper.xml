@@ -43,10 +43,10 @@
 				AND a.prod_code LIKE '%' || #{productCode} || '%'
 			</if>
 			<if test="startDate != null and !startDate.equals('')">
-				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+				AND TRUNC(a.semi_ind) <![CDATA[>=]]> #{startDate}
 			</if>
 			<if test="endDate != null and !endDate.equals('')">
-				AND TO_CHAR(a.semi_ind, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+				AND TRUNC(a.semi_ind) <![CDATA[<=]]> #{endDate}
 			</if>
 			
 			<choose>
