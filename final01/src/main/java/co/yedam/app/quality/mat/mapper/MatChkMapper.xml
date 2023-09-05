@@ -50,7 +50,6 @@
   			,#{errCode}
   			,#{empCode}
   			,#{matOdDeCd}
-  			,#{errRtSts}
   			)
   		}
   	</insert>
@@ -62,7 +61,6 @@
   			,MAT_NAMT =#{matNamt}
   			,ERR_CODE =#{errCode}
   			,EMP_CODE =#{empCode}
-  			,ERR_RT_STS =#{errRtSts}
   		WHERE MAT_TEST_CODE =#{matTestCode}
   	</update>
   	

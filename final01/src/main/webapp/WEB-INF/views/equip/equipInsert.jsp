@@ -123,7 +123,7 @@
 <hr>
 <div class="card">
 <div class="card-body">
-<form name="insertForm" action="equipInsert" method="post">
+<form name="insertForm" action="equipInsert" method="post" id="insertForm">
    <table id="equipTable">
    <button type="button" id="actModal">설비조회</button>
       <tr>
@@ -458,8 +458,7 @@
 		 		}	
 			})
 		});
-
-
+		
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
