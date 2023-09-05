@@ -307,11 +307,13 @@
 		            header: '자재코드',
 		            name: 'matCode',
 		            align: 'center',
+		            filter: 'text',
 		            hidden: true
 		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            align: 'left'
+		            align: 'left',
+		            filter: 'text'
 		        }, {
 		            header: '단위',
 		            name: 'matUnit',
@@ -566,6 +568,7 @@
         
      		
             let actCode = matActGrid.getValue(rowKey, 'actCode');
+            
             let actName = matActGrid.getValue(rowKey, 'actName');
             
             
@@ -587,6 +590,13 @@
         					 }
         				 })
         			 })
+        			 
+        			 if(result.length == 0){
+        				 $.each(data, function(idx, obj){
+        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        				 })
+        			 }
         		},
         		error : function(reject){
         			console.log(reject);
@@ -600,19 +610,29 @@
         		data : { actCode : actCode },
         		async : false,
         		success : function(result){
-        			console.log(result);
-        			 let data = planGrid.getData();
+        			let data = planGrid.getData();
+        			
         			 $.each(data, function(idx, obj){
         				 $.each(result, function(idx2, obj2){
         					 if(obj['matCode'] == obj2['matCode']){
+        						 console.log("dd");
         						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
         						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        						 
         						 return false;
         					 } else {
+        						 console.log("ss");
         						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
         					 }
         				 })
         			 })
+        			 
+        			  if(result.length == 0){
+        				 $.each(data, function(idx, obj){
+        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+        				 })
+        			 }
         		},
         		error : function(reject){
         			console.log(reject);
@@ -869,7 +889,7 @@
 		    if (orderGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(orderGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['actCode'] == "" || obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp'] == null || obj2['matPrice'] == "" || obj2['matOdRq'] == null) {
+		            if (obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || obj2['matPrice'] == null || obj2['matOdRq'] == null || obj2['matOdRq'] == "") {
 		                flag = false;
 		                return false;
 		            }
@@ -878,7 +898,7 @@
 	
 		    if (orderGrid.getModifiedRows().updatedRows.length > 0) {
 		        $.each(orderGrid.getModifiedRows().updatedRows, function (idx2, obj2) {
-		            if (obj2['matOdDeCd'] == "" || obj2['actCode'] == "" || obj2['matAmt'] == "" || obj2['matCode'] == "" || obj2['matOdAcp'] == null || obj2['matPrice'] == "") {
+		            if (obj2['matOdDeCd'] == "" || obj2['matOdDeCd'] == null || obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || obj2['matPrice'] == null) {
 		                flag = false;
 		                return false;
 		            }
