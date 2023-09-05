@@ -154,7 +154,7 @@ label {
 						})
 				   grid.resetData(data);
 				   stopEdit();
-				   $('#userInsertForm')[0].reset();
+				   
 				   
 				 
 			   },
