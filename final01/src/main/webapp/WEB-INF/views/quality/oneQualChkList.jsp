@@ -81,6 +81,7 @@
 		
 	</div>
   </div>	
+ </div>
 	<div>
 		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
 	</div>

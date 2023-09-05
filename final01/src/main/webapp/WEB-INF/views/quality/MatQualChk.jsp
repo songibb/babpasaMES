@@ -223,14 +223,6 @@
 		 	 	        header: '불량명',
 		 	 	        name: 'errCodeName',
 		 	 	        editor:'text'
-		 	 	  },
-		 	 	  {
-		 	 	        header: '불량반품요청상태',
-		 	 	        name: 'errRtSts',
-		 	 	        editor:'text',
-		 	 	        hidden: true
-		 	 	     
-		 	 	       
 		 	 	  }
 	        ]
 	      });
@@ -240,14 +232,6 @@
 	//불량수량, 반품 있는 셀 - 빨간색으로 변경
 	matgrid.on('onGridMounted', function (e) {
 	    let data = matgrid.getData();
-
-	    $.each(data, function (idx, obj) {
-
-	        if (obj['errRtStsName'] == '반품요청완료' || obj['errRtStsName'] == '반품요청전') {
-	            let rowKey = obj['rowKey'];
-	            matgrid.addRowClassName(rowKey, 'my-styled-cell');
-	        }
-	    })
 	    
 	    $.each(data, function (idx, obj) {
 		    if (obj['matNamt'] != '0') {
@@ -302,7 +286,7 @@
 		if(matgrid.getModifiedRows().createdRows.length > 0 ){
 				
 				$.each(matgrid.getModifiedRows().createdRows, function(idx2, obj2){
-					if(obj2['matYamt'] == "" ||obj2['errRtSts'] =="" || obj2['errRtStsName'] == "" ){
+					if(obj2['matYamt'] == "" || obj2['errCodeName'] == "" ){
 						flag = false;
 						return false;
 					}
@@ -312,7 +296,7 @@
 		if(matgrid.getModifiedRows().updatedRows.length > 0 ){
 
 				$.each(matgrid.getModifiedRows().updatedRows, function(idx2, obj2){
-					if(obj2['matYamt'] == "" ||obj2['errRtSts'] == "" ||obj2['errRtStsName'] == ""){
+					if(obj2['matYamt'] == "" ||obj2['errCodeName'] == ""){
 						flag = false;
 						return false;
 					}
@@ -346,7 +330,7 @@
 
 							     $.each(result, function (idx, obj) {
 
-							        if (obj['errRtStsName'] == '반품요청완료' || obj['errRtStsName'] == '반품요청전') {
+							        if (obj['matNamt'] != '0') {
 							            let rowKey = obj['rowKey'];
 							            matgrid.addRowClassName(rowKey, 'my-styled-cell');
 							        }
