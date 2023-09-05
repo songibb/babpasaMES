@@ -115,7 +115,10 @@
         							ON(c.mat_od_cd = f.mat_od_cd)
         								LEFT JOIN com_act e
         									ON(f.act_code = e.act_code)
-		WHERE err_rt_sts = 'R1'
+                                                LEFT JOIN mat_rt g
+                                                    ON(g.mat_test_code = a.mat_test_code)
+		WHERE mat_namt > 0
+        AND g.mat_test_code IS NULL
 		ORDER BY mat_test_date DESC
 	</select>
 	
@@ -188,7 +191,6 @@
 	<delete id="deleteMatRtList" parameterType="MatRtVO">
 		DELETE FROM mat_rt
 		WHERE mat_rt_code = #{matRtCode}
-
 	</delete>
 	<update id="updateMatTestStsN" parameterType="MatRtVO">
 		UPDATE mat_test
