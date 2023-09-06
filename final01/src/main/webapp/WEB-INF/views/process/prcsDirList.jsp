@@ -711,7 +711,14 @@ h1, h2{
 
 	updateDirPrcsStsAjax();
    
- 
+	//이전 날짜 선택불가
+    $('#startDate').on('change', function() {
+		$('#endDate').attr('min', $('#startDate').val());
+    });
+	//이후 날짜 선택불가
+    $('#endDate').on('change', function() {
+		$('#startDate').attr('max', $('#endDate').val());
+	});
 	
 	
     
