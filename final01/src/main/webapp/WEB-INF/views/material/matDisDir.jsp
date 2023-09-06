@@ -451,14 +451,17 @@
 		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
 		                );
+		                rtGrid.appendRow(obj, {at: 0});
 		            })
-		            rtGrid.appendRows(data);
+		            
 	
 		        },
 		        error: function (reject) {
 		            console.log(reject);
 		        }
 		    })
+		    
+		    
 	
 		    $.ajax({
 		        url: 'getDeletedExdDisInfo',
@@ -476,8 +479,10 @@
 		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
 		                );
+		                
+		                exdGrid.appendRow(obj, {at: 0});
 		            })
-		            exdGrid.appendRows(data);
+		           
 	
 		        },
 		        error: function (reject) {
@@ -763,7 +768,13 @@
 		});
 	
 		//검색버튼 검색
-		$('#searchBtn').on('click', selectAjax);
+		$('#searchBtn').on('click', searchAjax);
+		
+		function searchAjax(){
+			selectAjax();
+            getReRtList();
+            getReExdList();
+		}
 	
 		//검색 옆 초기화버튼
 		$('#searchResetBtn').on('click', resetInput);

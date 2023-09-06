@@ -131,12 +131,12 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>거래처</p>
-                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -477,8 +477,10 @@
 		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
 		                );
+		                
+		                testGrid.appendRow(obj, {at: 0});
 		            })
-		            testGrid.appendRows(data);
+		            
 	
 		        },
 		        error: function (reject) {
@@ -607,31 +609,36 @@
 		            })
 		            inGrid.resetData(data2);
 		            setDisabled();
-		            $.ajax({
-		                url: 'getMatTestInFilter',
-		                method: 'GET',
-		                data: search,
-		                success: function (data2) {
-	
-		                    $.each(data2, function (idx, obj) {
-	
-		                        let date = new Date(obj['matTestDate']);
-		                        let year = date.getFullYear(); //0000년 가져오기
-		                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
-		                        let day = date.getDate(); //일자 가져오기
-		                        obj['matTestDate'] = year + "-" + (
-		                            ("00" + month.toString()).slice(-2)
-		                        ) + "-" + (
-		                            ("00" + day.toString()).slice(-2)
-		                        );
-	
-		                    })
-		                    testGrid.resetData(data2);
-	
-		                }
-		            })
+		            upGridReset();
 		        }
 		    })
+		}
+		
+		function upGridReset(){
+			let search = null;
+			$.ajax({
+                url: 'getMatTestInFilter',
+                method: 'GET',
+                data: search,
+                success: function (data2) {
+
+                    $.each(data2, function (idx, obj) {
+
+                        let date = new Date(obj['matTestDate']);
+                        let year = date.getFullYear(); //0000년 가져오기
+                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                        let day = date.getDate(); //일자 가져오기
+                        obj['matTestDate'] = year + "-" + (
+                            ("00" + month.toString()).slice(-2)
+                        ) + "-" + (
+                            ("00" + day.toString()).slice(-2)
+                        );
+
+                    })
+                    testGrid.resetData(data2);
+
+                }
+            })
 		}
 	
 		//거래처 검색 모달창
@@ -868,6 +875,7 @@
 		        endDate: ed
 		    };
 		    selectAjax();
+		    upGridReset();
 		}
 	
 		//검색 옆 초기화버튼

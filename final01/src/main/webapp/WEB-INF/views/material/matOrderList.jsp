@@ -147,7 +147,7 @@
             				<div style="flex: 1;">
                 				
                 				<p>거래처</p>
-                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
