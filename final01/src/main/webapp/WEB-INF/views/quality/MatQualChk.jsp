@@ -98,7 +98,7 @@
             		
 				</div>
 		            <div id="matgrid"></div>
-            		<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
+            		
             		<button class="btn btn-info btn-icon-text" id="save">저장</button>
 			</div>
 		</div>

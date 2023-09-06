@@ -92,7 +92,7 @@
 <body>
 
 	<div class="black_bg"></div>
-	<h1>비가동 설비 조회</h1>
+	<h1>비가동 설비 관리</h1>
 	<div style="display: flex;">
 		<div  style="width: 30%;">
             	<div class="col-lg-12 stretch-card">
@@ -389,24 +389,33 @@ function createActGrid(){
 
 //거래처 등록/수정 한개버튼으로 같이하기
 
-
+	//비가동 설비 기반으로 수정하기 
 	$("#insertForm").on('submit', function(e){
-		  e.preventDefault();
+		  
 		  let offequipInfo = getoffequipInfo(); 
 		  
-		  console.log(offequipInfo);
-		  if(offequipInfo.offEtime != "" && offequipInfo.offEtime != null){
-			 
+		  if(offequipInfo.offStime != "" && offequipInfo.offStime != null){
+			  e.preventDefault();
+			  if(offequipInfo.offEtime == '' || offequipInfo.offEtime == null){
+					offequipInsert(offequipInfo);
+			  }else{
+
+				  	swal("경고","종료시간이 입력되지 않았습니다","warning");
 			//수정 ajax
-			offequipUpdate(offequipInfo);
-			
+					offequipUpdate(offequipInfo);
+				}
 		  }else{
-			  
-			//등록 ajax 
-			offequipInsert(offequipInfo);
+			  e.preventDefault();
+			  if(offequipInfo.offType =='' ||offequipInfo.offInfo == '' || offequipInfo.offStime == '' ){
+ 				  swal("경고","모든 값이 입력되지 않았습니다","warning");
+ 			  }else{
+		  
+			  //등록 ajax 
+					offequipInsert(offequipInfo);
+				}	 
 		  }
-	 
 	});
+		  
 
 	//form에 입력된 값들가져오기
 	function getoffequipInfo(){

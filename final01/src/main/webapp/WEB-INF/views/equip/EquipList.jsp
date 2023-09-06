@@ -40,6 +40,11 @@
 			width : 100px;
 			font-size: 20px;
 		}
+		
+		#customtemplateSearchAndButton input, #modalTitle input {
+	    border: 1px solid #ccc;
+	    display: inline-block;
+		}
 	</style>
 
 </head>
