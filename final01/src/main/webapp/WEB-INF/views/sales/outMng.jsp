@@ -873,7 +873,10 @@ form {
 
         return lotGrid;
     }
-
+	
+    function getNumber(num){
+    	return Number(num)/50
+    }
     //prodLot modal
     function createLotGrid(prodCode) {
         var odGrid = new tui.Grid({
@@ -926,7 +929,8 @@ form {
                     name: 'salesInAmt',
                     formatter(e) {
                         if (e['value'] != null) {
-                            val = e['value']
+                        	let amount = Math.floor(e['value']/50)
+                            val = amount
                                 .toString()
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                             return val;
@@ -1172,7 +1176,51 @@ form {
     $('#endDate').on('change', function () {
         $('#startDate').attr('max', $('#endDate').val());
     });
+    
+    
+    
 
+  	//계산
+	outGrid.on('beforeChange', (ev) => {
+
+	    let change = ev.changes[0];
+	    let rowData = outGrid.getRow(change.rowKey);
+	   
+		
+	    if (change.columnName == 'salesOutAmt') {
+	    	console.log(rowData);
+			console.log(rowData.salesOutAmt +','+rowData.prodSaveAmt);
+			
+	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) /50) {
+	        	
+	        	console.log('test');
+	        	
+	            swal("경고", "재고량을 넘을 수 없습니다", "warning");
+	            outGrid.setValue(change.rowKey, 'salesOutAmt', rowData.prodSaveAmt);
+	        }
+	    }
+	});    
+  	
+// 	outGrid.on('afterChange', (ev) => {
+
+// 	    let change = ev.changes[0];
+// 	    let rowData = outGrid.getRow(change.rowKey);
+	   
+		
+// 	    if (change.columnName == 'prodSaveAmt') {
+// 	    	console.log(rowData);
+// 			console.log(rowData.salesOutAmt +','+rowData.prodSaveAmt);
+			
+// 	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) /50) {
+	        	
+// 	        	console.log('test');
+	        	
+// 	            swal("경고", "재고량을 넘을 수 없습니다", "warning");
+// 	            outGrid.setValue(change.rowKey, 'salesOutAmt', rowData.prodSaveAmt);
+// 	        }
+// 	    }
+// 	});    
+    
     //저장 함수
     function saveServer() {
         outGrid.blur();
@@ -1230,22 +1278,6 @@ form {
 
     }
 
-  	//계산
-	outGrid.on('afterChange', (ev) => {
-
-	    let change = ev.changes[0];
-	    let rowData = outGrid.getRow(change.rowKey);
-
-	    if (change.columnName == 'salesOutAmt') {
-
-	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt)) {
-	            swal("경고", "재고량을 넘을 수 없습니다", "warning");
-	            outGrid.setValue(change.rowKey, 'salesOutAmt', rowData.prodSaveAmt);
-	        }
-
-	    }
-	});
-    
 //     //수량체크하는 함수
 //     function qtyCheck() {
 //         // let ordersQty = parseInt(document.getElementsByName("ordersQty")[0].value);
