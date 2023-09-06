@@ -85,6 +85,8 @@
 		}
 		
 		.selected-cell{background-color: #ffd09e;}
+		
+		.my-styled-cell {background-color: rgb(255, 229, 229)}
     </style>
     
 </head>
@@ -199,7 +201,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 	
-	
+	//비활성화
+	function setDisabled(){
+		$.each(grid.getData(), function(idx, obj){
+			
+			if(obj['offEtime'] != '' && obj['offEtime'] != null ){
+				grid.disableRow(obj['rowKey']);
+
+			}
+		})
+	}
 	//설비명 검색
     $('#searchBtn').on('click', searchProdIn);
     function searchProdIn(e){
@@ -211,6 +222,7 @@
  		   data : search ,
  		   success : function(data){
  			   grid.resetData(data);
+ 			  setDisabled();
  		   },
  		   error : function(reject){
  			   console.log(reject);
@@ -286,7 +298,11 @@
   
 		 	    ]
 		      });
+		    setDisabled();
 
+		    
+	    
+		    
 		    var Grid;
 		    $("#actModal").click(function(){
 		      $(".modal").fadeIn();
@@ -403,6 +419,7 @@ function createActGrid(){
 				  	swal("경고","종료시간이 입력되지 않았습니다","warning");
 			//수정 ajax
 					offequipUpdate(offequipInfo);
+			
 				}
 		  }else{
 			  e.preventDefault();
@@ -414,6 +431,8 @@ function createActGrid(){
 					offequipInsert(offequipInfo);
 				}	 
 		  }
+			  
+		
 	});
 		  
 
@@ -442,14 +461,16 @@ function createActGrid(){
 		.done(data => { 
 			if(data != null){   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
 				swal('등록 성공!', '설비가 비가동 되었습니다.', 'success' )
-				selectAjax();
 				
+				selectAjax();
 				
 				//form 비우기
 				 $('form')[0].reset();
+				
 			} else{
 				alert('등록 처리가 실패되었습니다.');
 			}   	
+			
 		})
 		.fail(reject => console.log(reject));
 	  	
@@ -462,6 +483,7 @@ function createActGrid(){
 		       method :"GET",
 		       success : function(result){
 		           grid.resetData(result);
+		           setDisabled();
 		       },
 		       error : function(reject){
 					console.log(reject);
@@ -517,7 +539,7 @@ function createActGrid(){
 		let offEtime = grid.getValue(rowKey, 'offEtime');
 
 		
-	
+		if(offEtime == '' || offEtime == null){
 		$("#offNo").val(offNo);
 		$("#offCode").val(offCode);
 		$("#eqCode").val(eqCode);
@@ -526,6 +548,8 @@ function createActGrid(){
 		$("#offInfo").val(offInfo);
 		$("#offStime").val(offStime);
 		$("#offEtime").val(offEtime);
+		
+		}
 		
 	});
 

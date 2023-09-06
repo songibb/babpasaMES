@@ -11,7 +11,7 @@
 	<div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>발주 목록</h3></div>
+				<div class="modal_title"><h3>자재 목록</h3></div>
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
@@ -63,7 +63,7 @@
 	        el: document.getElementById('modal_label'),
 	        scrollX: false,
 	        scrollY: false,
-	        minBodyHeight: 30,
+	        minBodyHeight: 400,
 	        rowHeaders: ['checkbox'],
 	        selectionUnit: 'row',
 	        pagination: true,

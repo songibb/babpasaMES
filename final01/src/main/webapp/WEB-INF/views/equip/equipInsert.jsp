@@ -418,11 +418,12 @@
 		return objectData;
 	}
 	
+	
 		function ajaxEquipUpdate(e){
 			
 			let obj=serializeObject();
 			
-			
+			//if(obj != null)
 			$.ajax({				
 			url: 'equipUpdate',
 			type:'post',
