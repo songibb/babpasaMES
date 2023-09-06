@@ -83,7 +83,7 @@ h1, h2{
 	           		</div>
 	           		<div id="rightGrid">
 	           			<div id="rightGridHeader">
-	           				<div>         					
+	           				<div> 			
 		           				<input type="text" name="prodName" id="prodName" readonly>
 		           			</div>	
 		           			<div>

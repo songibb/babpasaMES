@@ -163,6 +163,10 @@ h1, h2{
 	
 	//행삭제 버튼 클릭시 체크된 상세생산지시 행 삭제
 	function removeDeRow(){
+		let list = dirDeGrid.getCheckedRows();
+		if(list.length == 0){
+			swal("경고", "삭제할 행을 선택해주세요.", "warning");	
+		}
 		dirDeGrid.removeCheckedRows(false);
 	}
 		

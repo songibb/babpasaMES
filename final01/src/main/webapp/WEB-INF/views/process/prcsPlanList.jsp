@@ -366,7 +366,7 @@ h1, h2{
     $('#startDate').on('change', function() {
 		$('#endDate').attr('min', $('#startDate').val());
     });
-	//이후날짜 선택불가
+	//이후 날짜 선택불가
     $('#endDate').on('change', function() {
 		$('#startDate').attr('max', $('#endDate').val());
 	});
