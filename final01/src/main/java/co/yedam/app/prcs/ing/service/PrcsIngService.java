@@ -36,6 +36,8 @@ public interface PrcsIngService {
 	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (진행공정 모달)
 	public String selectPrcsIngSts(PrcsIngVO prcsIngVO);
 	
+	//작업시작 => 혼합공정일때 반제품 입고됐는지 확인용 -> 미입고시 작업버튼 실행X (진행공정 모달)
+	public String selectSemiIn(PrcsIngVO prcsIngVO);
 	
 	//공정 실적 조회 (검색)
 	public List<PrcsIngVO> selectPrcsResultList(PrcsSearchVO prcsSearchVO);

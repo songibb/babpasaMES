@@ -499,6 +499,8 @@
    			
    			//이전 공정이 완료되었을 시 작업시작버튼 작동 시킬 변수 
    	  		let btnOk = true;
+   			//혼합공정일때 공정이 완료되었을 시 작업시작버튼 작동 시킬 변수
+   			let semiInOk = true;
    			
    	  		let deRowKey = dirDeGrid.getFocusedCell().rowKey;
    	    	let dirDeCode = dirDeGrid.getValue(deRowKey, 'prcsDirDeCode');
@@ -521,62 +523,89 @@
    				data : ingObj,
    				async : false,
    			    success : function(data){
-					console.log(data);
    			    	//data가 'false'로 넘어오면 작업시작 할 수 없음
    			    	if(data == 'false'){
    			    		btnOk = false;
    			    	} else{
    			    		btnOk = true;
-   			    	}
-   			    	
+   			    	}  			    	
    			    },
    			    error : function(reject){
    			        console.log(reject);
    			    }	  				
    			})
    			
+   			//혼합공정일때 반제품이 입고되었는지 확인할 ajax
+   			$.ajax({
+   				url : 'selectSemiIn',
+   				method : 'GET',
+   				data : ingObj,
+   				async : false,
+   			    success : function(data){
+   			    	//data가 'false'로 넘어오면 작업시작 할 수 없음
+   			    	if(data == 'false'){
+   			    		semiInOk = false;
+   			    	} else{
+   			    		semiInOk = true;
+   			    	}  			    	
+   			    },
+   			    error : function(reject){
+   			        console.log(reject);
+   			    }	  				
+   			})
+   			
+   			
+   			
+   			//이전 공정이 완료되었을 시
    			if(btnOk){
    				
-   				//작업 시작 시간 입력
-   	   			let startTime = getDateTime();
-   	   			$('#prcsStartTime').val(startTime);
-   			
-   	   			//prcsDirDeCode 가져오기
-   	   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
-   	   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
-   	   			//prcsIngCode 가져오기
-   	   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
-   	   			let prcsIngCode = ingGrid.getValue(ingRowKey, 'prcsIngCode');
-   	   	    	//eqCode 가져오기
-   	   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
-   	   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
-   	   			//empCode 값 가져오기
-   	   			let empCode = document.getElementById('empCode').value;	
-   			  			
-   	   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
-   	   			let startObj = {};
-   	   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
-   	   	    	startObj['prcsIngCode'] = prcsIngCode;
-   	   			startObj['eqCode'] = eqCode;
-   	   			startObj['empCode'] = empCode;
-   	   			startObj['prcsStartTime'] = startTime;
+   				//혼합 공정일때 검수완료된 반제품이 입고되었을 시
+   				if(semiInOk){
+   					//작업 시작 시간 입력
+   	   	   			let startTime = getDateTime();
+   	   	   			$('#prcsStartTime').val(startTime);
    	   			
-   	   			//ajax 프로시저
-   	   			$.ajax({
-   	   			    url : 'callPrcsStart',
-   	   			    method : 'POST',
-   	   			    data : startObj,
-   	   			    success : function(data){
-   	   			    	//담당자 input 비활성화
-   	   					$('#empCode').prop('readonly', true);	
-   	   			    	//작업시작 버튼 비활성화
-   	   					$('#prcsStartBtn').prop('disabled', true);	
-   	   			    },
-   	   			    error : function(reject){
-   	   			        console.log(reject);
-   	   			    }	
-   	   			})
-   	   			
+   	   	   			//prcsDirDeCode 가져오기
+   	   	   			let dirRowKey = dirDeGrid.getFocusedCell().rowKey;
+   	   	   			let prcsDirDeCode = dirDeGrid.getValue(dirRowKey, 'prcsDirDeCode');
+   	   	   			//prcsIngCode 가져오기
+   	   	   			let ingRowKey = ingGrid.getFocusedCell().rowKey;	
+   	   	   			let prcsIngCode = ingGrid.getValue(ingRowKey, 'prcsIngCode');
+   	   	   	    	//eqCode 가져오기
+   	   	   			let eqRowKey = eqGridFn.getFocusedCell().rowKey;
+   	   	   			let eqCode = eqGridFn.getValue(eqRowKey, 'eqCode');				
+   	   	   			//empCode 값 가져오기
+   	   	   			let empCode = document.getElementById('empCode').value;	
+   	   			  			
+   	   	   	    	//프로시저 매개변수에 필요한 값이 담긴 list 만들기
+   	   	   			let startObj = {};
+   	   	   	    	startObj['prcsDirDeCode'] = prcsDirDeCode;
+   	   	   	    	startObj['prcsIngCode'] = prcsIngCode;
+   	   	   			startObj['eqCode'] = eqCode;
+   	   	   			startObj['empCode'] = empCode;
+   	   	   			startObj['prcsStartTime'] = startTime;
+   	   	   			
+   	   	   			//ajax 프로시저
+   	   	   			$.ajax({
+   	   	   			    url : 'callPrcsStart',
+   	   	   			    method : 'POST',
+   	   	   			    data : startObj,
+   	   	   			    success : function(data){
+   	   	   			    	//담당자 input 비활성화
+   	   	   					$('#empCode').prop('readonly', true);	
+   	   	   			    	//작업시작 버튼 비활성화
+   	   	   					$('#prcsStartBtn').prop('disabled', true);	
+   	   	   			    },
+   	   	   			    error : function(reject){
+   	   	   			        console.log(reject);
+   	   	   			    }	
+   	   	   			})
+   				} else{
+   					swal("경고", "아직 반제품이 입고되지 않았습니다.", "warning");
+   	   				return false;
+   				}
+   				
+   				
    			} else{
    				swal("경고", "이전 공정이 아직 완료되지 않았습니다.", "warning");
    				return false;
