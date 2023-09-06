@@ -541,6 +541,7 @@
 		    return matGrid;
 		}
 		
+		
 		grid.on('click', ()=>{
 		    //선택한 행 색깔 바꾸기
 		    	  let selectKey = grid.getFocusedCell().rowKey;
@@ -551,15 +552,18 @@
 		    	  })
 		})
 		
-		grid2.on('click', ()=>{
-		    //선택한 행 색깔 바꾸기
-		    	  let selectKey = grid2.getFocusedCell().rowKey;
-		    	  grid2.addRowClassName(selectKey, 'selected-cell');
-		    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
-		    	  grid2.on('focusChange', () => {
-		    		  grid2.removeRowClassName(selectKey, 'selected-cell');
-		    	  })
-		})
+		if(grid2 != null){
+			grid2.on('click', ()=>{
+			    //선택한 행 색깔 바꾸기
+			    	  let selectKey = grid2.getFocusedCell().rowKey;
+			    	  grid2.addRowClassName(selectKey, 'selected-cell');
+			    	  //다른 행 선택시 기존에 클릭했던 행은 class제거
+			    	  grid2.on('focusChange', () => {
+			    		  grid2.removeRowClassName(selectKey, 'selected-cell');
+			    	  })
+			})
+		}
+		
 		
 		
 		//스크롤 막기
