@@ -197,7 +197,6 @@
 	                ON (o.emp_code = e.emp_code)
 	   WHERE d.dev_yn = 'N'
 	   AND o.ord_sts = 'P2'
-	   AND prcs_dir_sts = 'P3'
 	   ORDER BY d.sales_ord_de_code DESC
      </select>
      
