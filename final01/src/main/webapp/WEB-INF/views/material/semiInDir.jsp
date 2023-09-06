@@ -480,7 +480,6 @@
 	
 		            },
 		            error: function (reject) {
-		                console.log(reject);
 		                swal("실패", "", "error");
 		            }
 		        })
@@ -596,7 +595,6 @@
 		        $("#prodCodeInput").val(prodCode);
 		        $("#prodNameFix").val(prodName);
 		        //모달창 닫기
-		        console.log(rowKey);
 		        if (rowKey != null) {
 		            $(".modal").fadeOut();
 		            activeScroll();

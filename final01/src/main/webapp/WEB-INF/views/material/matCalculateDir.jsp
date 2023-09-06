@@ -254,7 +254,6 @@
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
-		                console.log(data);
 		                Grid.resetData(data);
 		            },
 		            error: function (reject) {
@@ -680,7 +679,6 @@
 		            materialCode: selectMatCode
 		        },
 		        success: function (data) {
-		            console.log(data);
 		            lotGrid.resetData(data);
 		        },
 		        error: function (reject) {
@@ -767,7 +765,6 @@
 		                searchMatCal();
 		            },
 		            error: function (reject) {
-		                console.log(reject);
 		                swal("실패", "", "error");
 		            }
 		        })

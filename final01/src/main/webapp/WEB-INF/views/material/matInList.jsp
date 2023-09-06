@@ -195,7 +195,6 @@
 		        $("#actCodeInput").val(actCode);
 		        $("#actNameFix").val(actName);
 		        //모달창 닫기
-		        console.log(rowKey);
 		        if (rowKey != null) {
 		            $(".modal").fadeOut();
 		            activeScroll();
@@ -277,7 +276,6 @@
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
-		                console.log(data);
 		                Grid.resetData(data);
 		            },
 		            error: function (reject) {
@@ -293,7 +291,6 @@
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
-		                console.log(data);
 		                Grid.resetData(data);
 		            },
 		            error: function (reject) {
