@@ -547,7 +547,6 @@
 		                selectAjax();
 		            },
 		            error: function (reject) {
-		                console.log(reject);
 		                swal("실패", "", "error");
 		            }
 		        })
@@ -834,7 +833,6 @@
 		            method: 'GET',
 		            data: modalSearchData,
 		            success: function (data) {
-		                console.log(data);
 		                Grid.resetData(data);
 		            },
 		            error: function (reject) {

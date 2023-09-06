@@ -183,7 +183,7 @@
 		        $("#prodCodeInput").val(prodCode);
 		        $("#prodNameFix").val(prodName);
 		        //모달창 닫기
-		        console.log(rowKey);
+
 		        if (rowKey != null) {
 		            $(".modal").fadeOut();
 		            activeScroll();

@@ -286,7 +286,7 @@
 	</select>
 	
 	<!-- 해당 거래처 자재 찾기 -->
-	<select id="selectActSellMat">
+	<select id="selectActSellMat" resultType="MatOrderDeVO">
 		SELECT mat_code
 		FROM mat_order_de a LEFT JOIN mat_order b
 		ON(a.mat_od_cd = b.mat_od_cd)
@@ -321,7 +321,7 @@
 	
 	<!-- 1번 거래처면 노란색 표시 -->
 	<select id="selectLeastActListSearch" resultType="MatOrderDeVO">
-		SELECT mat_code
+		SELECT mat_code, find_mat_name(mat_code) as mat_name
 		FROM mat_order_de a JOIN mat_order b
 		ON(a.mat_od_cd = b.mat_od_cd)
 		WHERE act_code = #{actCode}

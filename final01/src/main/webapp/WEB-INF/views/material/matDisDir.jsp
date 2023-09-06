@@ -551,7 +551,6 @@
 		                getReExdList();
 		            },
 		            error: function (reject) {
-		                console.log(reject);
 		                swal("실패", "", "error");
 		            }
 		        })

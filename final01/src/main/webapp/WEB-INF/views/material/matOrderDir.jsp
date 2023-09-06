@@ -307,12 +307,23 @@
 		            header: '자재코드',
 		            name: 'matCode',
 		            align: 'center',
-		            filter: 'text',
+		            filter: {
+		                type: 'select',
+		                showApplyBtn: true,
+		                showClearBtn: true,
+		                operator: 'OR'
+		             },
 		            hidden: true
 		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            align: 'left'
+		            align: 'left',
+		            filter: {
+		                type: 'text',
+		                showApplyBtn: true,
+		                showClearBtn: true,
+		                operator: 'OR'
+		             }
 		            
 		        }, {
 		            header: '단위',
@@ -384,12 +395,90 @@
 				        }
 					})
 					
-				},
-				error : function(reject){
-					console.log(reject);
-				}
+				let actName = $('#matBuyActInput').val();
+				let actCode = $('#matBuyActInputHidden').val();
+					
+					
+				$.ajax({
+	            	url : 'getLeastActListSearch',
+	        		method : 'GET',
+	        		data : { actCode : actCode },
+	        		async : false,
+	        		success : function(actResult){
+	        			
+	        			
+	        			let data = planGrid.getData();
+	        			$.each(data, function(idx, obj){
+	        				$.each(actResult, function(idx2, obj2){
+	        					 
+	        					if(obj['matCode'] == obj2['matCode']){
+	        						planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+	        						return false;
+	        					} else {
+	        						planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+	        					}
+	        					
+	        					
+	        				})
+	        			})
+	        			 
+	        			if(actResult.length == 0){
+	        				$.each(data, function(idx, obj){
+	        					planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+	        					planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+	        				})
+	        			}
+	        			
+	        			
+	        			
+	        			
+	        		},
+	        		error : function(actReject){
+	        			console.log(actReject);
+	        		}
+	            })
+            
+            
+	            $.ajax({
+	            	url : 'getMaxActList',
+	        		method : 'GET',
+	        		data : { actCode : actCode },
+	        		async : false,
+	        		success : function(actResult){
+	        			let data = planGrid.getData();
+	        			
+	        			 $.each(data, function(idx, obj){
+	        				 $.each(actResult, function(idx2, obj2){
+	        					 if(obj['matCode'] == obj2['matCode']){
+	        						 
+	        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+	        						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+	        						 
+	        						 return false;
+	        					 } else {
+	        						 
+	        						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+	        					 }
+	        				 })
+	        			 })
+	        			 
+	        			  if(actResult.length == 0){
+	        				 $.each(data, function(idx, obj){
+	        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
+	        					 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
+	        				 })
+	        			 }
+	        		},
+	        		error : function(actReject){
+	        			console.log(actReject);
+	        		}
+	            })
+					},
+					error : function(reject){
+						console.log(reject);
+					}
+				})
 			})
-		})
 		
 		
 		
@@ -435,8 +524,6 @@
 		        		data : { matCode : matCode, actCode : actCode },
 		        		async : false,
 		        		success : function(result){
-		        			console.log(result);
-		        			
 		        			matPrice = result.matPrice;
 		        		},
 		        		error : function(reject){
@@ -526,7 +613,12 @@
 		        },
 		        {
 		        	header:'거래처명',
-		        	name:'actName'
+		        	name:'actName',
+		            filter: {
+		                type: 'text',
+		                showApplyBtn: true,
+		                showClearBtn: true
+		             }
 		        },
 		        {
 		        	header:'거래횟수',
@@ -610,8 +702,17 @@
         				})
         			}
         			
+        				let filterData = [];
+            			$.each(result, function(idx, obj){
+            				console.log(result);
+            				console.log(obj);
+            				filterData.push({code:'eq', value:obj.matName});
+            			})
+            			console.log(filterData);
+            			filterPlanGrid(filterData);
         			
-        			planGrid.filter("matCode", [{code: 'eq', value: 'MAT-0001'}, {code: 'eq', value: 'MAT-0001'}]);
+        			
+        			
         		},
         		error : function(reject){
         			console.log(reject);
@@ -630,13 +731,13 @@
         			 $.each(data, function(idx, obj){
         				 $.each(result, function(idx2, obj2){
         					 if(obj['matCode'] == obj2['matCode']){
-        						 console.log("dd");
+        						 
         						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-yellow-cell');
         						 planGrid.addCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
         						 
         						 return false;
         					 } else {
-        						 console.log("ss");
+        						 
         						 planGrid.removeCellClassName(obj.rowKey, 'matName', 'my-styled-green-cell');
         					 }
         				 })
@@ -668,7 +769,7 @@
 		        		data : { matCode : matCode, actCode : actCode },
 		        		async : false,
 		        		success : function(result){
-		        			console.log(result);
+		        			
 		        			
 		        			matPrice = result.matPrice;
 		        		},
@@ -683,6 +784,10 @@
             }
 
     	});
+		
+		function filterPlanGrid(data){
+			planGrid.filter('matName', data);
+		}
 		
 
 		//삭제버튼
@@ -903,7 +1008,7 @@
 		    if (orderGrid.getModifiedRows().createdRows.length > 0) {
 	
 		        $.each(orderGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-		            if (obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || obj2['matPrice'] == null || obj2['matOdRq'] == null || obj2['matOdRq'] == "") {
+		            if (obj2['actCode'] == "" || obj2['actCode'] == null || obj2['matAmt'] == "" || obj2['matAmt'] == null || obj2['matCode'] == "" || obj2['matCode'] == null || obj2['matOdAcp'] == null || obj2['matOdAcp'] == "" || obj2['matPrice'] == "" || Number(obj2['matPrice']) == 0 ||obj2['matPrice'] == null || obj2['matOdRq'] == null || obj2['matOdRq'] == "") {
 		                flag = false;
 		                return false;
 		            }
@@ -935,7 +1040,7 @@
 				        $('#matBuyActInputHidden').val("");
 		            },
 		            error: function (reject) {
-		                console.log(reject);
+		                
 		                swal("실패", "", "error");
 		            }
 		        })
@@ -1378,10 +1483,9 @@
 		        orderGrid.export('xlsx');
 		    })
 		})
-	
 		
-	
-
+		
+		
     </script>
 </body>
 </html>
