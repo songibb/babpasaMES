@@ -892,6 +892,22 @@ form {
         }
 
     }
+    
+	//계산
+	rtGrid.on('afterChange', (ev) => {
+
+	    let change = ev.changes[0];
+	    let rowData = rtGrid.getRow(change.rowKey);
+
+	    if (change.columnName == 'salesRtAmt') {
+
+	        if (Number(rowData.salesRtAmt) > Number(rowData.salesOutAmt)) {
+	            swal("경고", "출고량을 넘을 수 없습니다", "warning");
+	            rtGrid.setValue(change.rowKey, 'salesRtAmt', rowData.salesOutAmt);
+	        }
+
+	    }
+	});
 
     //엑셀 다운로드
     const excelDownload = document.querySelector('.excelDownload');
