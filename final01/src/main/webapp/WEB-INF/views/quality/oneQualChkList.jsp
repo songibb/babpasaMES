@@ -59,7 +59,7 @@
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1; margin-left: 10px; margin-top : 20px;">
-                				<p>검사번호</p>
+                				<p>완제품명</p>
 	  							<input type="text" placeholder="검색어를 입력하세요" id="matSearch">
 								<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 									<i class="fas fa-search"></i>검색

@@ -131,6 +131,6 @@
        AND EQ_CHK_YN != 'N'
     </if>
   	</where>
-  	ORDER BY A.EQ_CODE ASC
+  	ORDER BY B.EQ_CHK_CODE DESC
   	</select>
   </mapper>

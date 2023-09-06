@@ -91,9 +91,10 @@
   				,find_mat_name(mat_code) AS mat_name
   				,find_cdnm('0I', err_rt_sts) AS err_rt_sts_name
   				,find_cdnm('ERR-TYPE', err_code) AS err_code_name 
+  				,FIND_EMP_NAME(EMP_CODE) AS EMP_NAME
   		FROM mat_test t JOIN mat_order_de o
   			ON(o.mat_od_de_cd = t.mat_od_de_cd)
   		WHERE find_mat_name(mat_code)  LIKE '%' || #{matName} || '%'
-  		ORDER BY t.mat_test_code
+  		ORDER BY t.mat_test_code DESC
   </select>
   </mapper>

@@ -99,16 +99,19 @@
 		    ,A.PASS_AMT
 		    ,A.NON_PASS_AMT
 		    ,A.TEST_DATE
+            ,C.PROD_NAME
 		FROM PROD_QUALITY A 
 		
 		LEFT JOIN PRCS_ING B 
-		    ON (A.PRCS_ING_CODE = B.PRCS_ING_CODE)  	 	
+		    ON (A.PRCS_ING_CODE = B.PRCS_ING_CODE)  
+            JOIN COM_PROD C 
+            ON (B.PROD_CODE = C.PROD_CODE) 
 		WHERE
 		    B.PRCS_CODE = (SELECT MAX(PRCS_CODE)
 		       				 FROM PRCS_ING)
 		AND A.TEST_SEMI_YN = 'C'
 		AND test_date IS NOT NULL
-        AND LOWER(A.TEST_NUM) LIKE '%' || LOWER(#{testNum}) || '%'
+        AND C.PROD_NAME LIKE '%' || #{prodName} || '%'
         ORDER BY TEST_DATE DESC
   
   	</select>
