@@ -198,12 +198,12 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
                 				<p>거래처</p>
-                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="actCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="actModal"></i>
                 				<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
                 				<br>
@@ -764,12 +764,11 @@
 		        {
 		            header: '거래처',
 		            name: 'actName',
-		            editor : 'text',
 		            align: 'left'
+		            
 		        }, {
 		            header: '자재명',
 		            name: 'matName',
-		            editor: 'text',
 		            align: 'left'
 		        }, {
 		            header: '자재코드', // [필수] 컬럼 이름
@@ -1129,48 +1128,7 @@
 		        }
 		    }
 	
-		    if (columnName == 'matName') {
-		        $("#modal").fadeIn();
-		        preventScroll();
-		        Grid = createMatGrid();
-		        $('.modal_title h3').text('자재 목록');
-		        Grid.on('dblclick', () => {
-		            let rowKey2 = Grid
-		                .getFocusedCell()
-		                .rowKey;
-		            if (rowKey2 != null) {
-		                let matCode = Grid.getValue(rowKey2, 'matCode');
-		                let matName = Grid.getValue(rowKey2, 'matName');
-		                let matUnit = Grid.getValue(rowKey2, 'matUnit');
-		                let matStd = Grid.getValue(rowKey2, 'matStd');
-		                orderGrid.finishEditing(rowKey, columnName);
-	
-		                if (matCode != null) {
-		                    orderGrid.setValue(rowKey, 'matCode', matCode);
-		                }
-		                if (matName != null) {
-		                    orderGrid.setValue(rowKey, 'matName', matName);
-		                }
-		                if (matUnit != null) {
-		                    orderGrid.setValue(rowKey, 'matUnit', matUnit);
-		                }
-		                if (matStd != null) {
-		                    orderGrid.setValue(rowKey, 'matStd', matStd);
-		                }
-		            }
-	
-		            //선택시 모달창 닫기
-		            if (rowKey2 != null) {
-		                $("#modal").fadeOut();
-		                activeScroll();
-		                let inputContent = $('#modalSearch').val('');
-		                if (Grid != null && Grid.el != null) {
-		                    Grid.destroy();
-		                }
-		            }
-	
-		        })
-		    }
+		 
 	
 		});
 		

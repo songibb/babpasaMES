@@ -120,7 +120,7 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>반제품명</p>
-				                <input type="text" id="prodCodeInput" placeholder="검색어를 선택하세요">
+				                <input type="text" id="prodCodeInput" placeholder="검색어를 선택하세요" readonly>
 				                <i class="bi bi-search" id="prodModal"></i> <!-- 돋보기 아이콘 -->
 				                <input type="text" class="blackcolorInputBox" id="prodNameFix" readonly>
 				                <br>

@@ -119,10 +119,10 @@
                <div class="table-responsive pt-3">
                		
                   	
-        				<div id="searchP" style="display: flex; justify-content: space-between;">
+        				<div id="searchP" style="display: flex; justify-content: space-between;" readOnly>
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
@@ -285,10 +285,19 @@
 		        }, {
 		            header: '불량수량',
 		            name: 'matRtTotalAmt',
-		            align: 'right'
+		            align: 'right',
+		            
+		            formatter(e) {
+		                if (e['value'] != null) {
+		                    val = e['value']
+		                        .toString()
+		                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+		                    return val;
+		                }
+		            }
 	
 		        }, {
-		            header: '검사일자',
+		            header: '검수일자',
 		            name: 'matTestDate',
 		            className: 'yellow-background',
 		            align: 'center'
@@ -482,9 +491,12 @@
 		                ) + "-" + (
 		                    ("00" + day.toString()).slice(-2)
 		                );
+		                
+		                testGrid.appendRow(obj, {at: 0});
 		            })
-	
-		            testGrid.appendRows(data);
+					
+		           
+		            
 	
 		        },
 		        error: function (reject) {
@@ -627,6 +639,7 @@
 	
 		//insert 후에는 1번 그리드도 내용이 업데이트 되어야 함
 		function resetTestList() {
+			search = null;
 		    $.ajax({
 		        url: 'getMatTestRtFilter',
 		        method: 'GET',
@@ -899,6 +912,7 @@
 		        endDate: ed
 		    };
 		    selectAjax();
+		    resetTestList();
 		}
 	
 		//검색 옆 초기화버튼
@@ -967,6 +981,7 @@
 		            'matRtTotalAmt': matNamt,
 		            'empCode': `${user.id}`,
 		            'matRtDate': matRtDate,
+		            'matRtSts' : 'R4',
 		            'empName': `${user.empName}`
 		        }, {at: 0});
 		    }

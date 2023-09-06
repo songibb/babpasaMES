@@ -119,7 +119,7 @@
         				<div id="searchP" style="display: flex; justify-content: space-between;">
             				<div style="flex: 1;">
                 				<p>자재명</p>
-                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요">
+                				<input type="text" id="matCodeInput" placeholder="검색어를 선택하세요" readonly>
                 				<i class="bi bi-search" id="matModal"></i> <!-- 돋보기 아이콘 -->
                 				<input type="text" class="blackcolorInputBox" id="matNameFix" readonly>
                 				<br>
