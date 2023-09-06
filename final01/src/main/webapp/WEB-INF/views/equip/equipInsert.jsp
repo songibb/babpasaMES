@@ -394,15 +394,43 @@
 	      return actGrid;
 	   }
 	
-	//$('#insert').on('click', alertInsert);
-	//function alertInsert(){
+	 
+	 //serialize로 form정보 가져옴(+)
+		function getUserInfoObject(){
+			let userArray = $('#insertForm').serializeArray();
+			let userObj = {};
+			$.each(userArray, function(idx, obj){
+				userObj[obj.name] = obj.value;
+			})
+			
+			return userObj;
+		}
+	 
+// 	$('#insert').on('click', alertInsert);
+// 	function alertInsert(){
 		let msg = `${result}`;
 		console.log(msg);
-		if(msg == '등록성공'){
+		
+		let userObj = getUserInfoObject();
+		console.log(userObj);
+		
+		if(userObj.eqCode == "" || userObj.eqCode == null || 
+			userObj.eqName == "" || userObj.eqName == null || 
+			userObj.eqType == "" || userObj.eqType == null || 
+			userObj.actCode == "" || userObj.actCode == null || 
+			userObj.modelName == "" || userObj.modelName == null || 
+			userObj.chkCycle == "" || userObj.chkCycle == null || 
+			userObj.buyDate == "" || userObj.buyDate == null || 
+			userObj.makeDate == "" || userObj.makeDate == null || 
+			userObj.eqSts == "" || userObj.eqSts == null || 
+			userObj.lowTemp == "" || userObj.lowTemp == null || 
+			userObj.highTemp == "" || userObj.highTemp == null 
+				){
+			swal("경고", "모든값이 입력되지 않았습니다", "warning")
+		}else if(msg == '등록성공'){
 			swal('등록 성공!', '설비 정보가 등록되었습니다.', 'success' );
 		}
-		
-	//}
+// 	};	
 	
 	//수정
 	 $('#update').on('click',ajaxEquipUpdate);
