@@ -99,18 +99,33 @@ public class PrcsIngServiceImpl implements PrcsIngService {
 //	}
 	
 	//작업시작 => 이전 공정 미완료 확인용 -> 미완료시 작업버튼 실행X (프로시저) (진행공정 모달)
+	@Override
 	public String selectPrcsIngSts(PrcsIngVO prcsIngVO) {
 		prcsIngMapper.selectPrcsIngSts(prcsIngVO);
 		
 		//프로시저 out값 찾기
 		String result = prcsIngVO.getResult();
-		System.out.println(result);
+
 		if(result == null || result.equals("true")) {
 			return "true";
 		}
 		return result;
 	}
 	
+	
+	//작업시작 => 혼합공정일때 반제품 입고됐는지 확인용 -> 미입고시 작업버튼 실행X (프로시저) (진행공정 모달)
+	@Override
+	public String selectSemiIn(PrcsIngVO prcsIngVO) {
+		prcsIngMapper.selectSemiIn(prcsIngVO);
+		
+		//프로시저 out값 찾기
+		String result = prcsIngVO.getResult();
+
+		if(result == null) {
+			return "true";
+		}
+		return result;
+	}
 
 	//공정 실적 조회 (검색)
 	@Override

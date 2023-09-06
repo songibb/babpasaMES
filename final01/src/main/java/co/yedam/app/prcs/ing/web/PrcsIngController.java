@@ -82,6 +82,13 @@ public class PrcsIngController {
 		return prcsIngService.selectPrcsIngSts(prcsIngVO);
 	}
 	
+	//작업시작 => 혼합공정일때 반제품 입고됐는지 확인용 -> 미입고시 작업버튼 실행X (프로시저) (진행공정 모달)
+	@GetMapping("selectSemiIn")
+	@ResponseBody
+	public String selectSemiIn(PrcsIngVO prcsIngVO) {	
+		return prcsIngService.selectSemiIn(prcsIngVO);
+	}
+	
 	
 	//공정 실적 조회 - 페이지 호출
 	@GetMapping("prcsResultList")
