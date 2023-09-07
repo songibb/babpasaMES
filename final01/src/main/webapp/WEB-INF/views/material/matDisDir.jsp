@@ -106,6 +106,10 @@
    		background-color: #ffd09e;
 	}
 	
+	
+	td[data-column-name="matDpInfo"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>

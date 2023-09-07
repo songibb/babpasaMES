@@ -39,9 +39,9 @@ public class MatStockController {
 	//전체 재고에서 선택하면 해당 제품 LOT별 조회
 	@GetMapping("matLotStockList")
 	@ResponseBody
-	public List<MatLotStockVO> getMatLotStckList(@RequestParam(value="materialCode", required=false) String materialCode){
-		List<MatLotStockVO> vo = mlss.selectMatLotStockList(materialCode);
-		return vo;
+	public List<MatLotStockVO> getMatLotStckList(MatLotStockVO vo){
+		List<MatLotStockVO> findVO = mlss.selectMatLotStockList(vo);
+		return findVO;
 	}
 	
 	//검색 ajax

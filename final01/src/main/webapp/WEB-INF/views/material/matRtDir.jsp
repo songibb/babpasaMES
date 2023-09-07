@@ -108,6 +108,10 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	td[data-column-name="matRtSts"], td[data-column-name="matRtDate"], td[data-column-name="matRtAmt"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>

@@ -110,6 +110,10 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	td[data-column-name="semiInd"], td[data-column-name="semiExd"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>

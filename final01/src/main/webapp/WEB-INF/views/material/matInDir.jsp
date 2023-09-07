@@ -117,6 +117,10 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	td[data-column-name="matExd"], td[data-column-name="matInd"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>

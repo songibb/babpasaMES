@@ -16,9 +16,9 @@ public class MatLotStockServiceImpl implements MatLotStockService {
 	MatLotStockMapper mlsm;	
 	
 	@Override
-	public List<MatLotStockVO> selectMatLotStockList(String materialCode) {
+	public List<MatLotStockVO> selectMatLotStockList(MatLotStockVO vo) {
 		
-		return mlsm.selectMatLotStockList(materialCode);
+		return mlsm.selectMatLotStockList(vo);
 	}
 
 }
