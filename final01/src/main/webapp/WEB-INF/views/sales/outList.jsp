@@ -581,9 +581,8 @@ form {
                 header: '재고량',
                 name: 'prodSaveAmt',
                 formatter(e) {
-                    if (e['value'] != null) {
-                    	let amount = Math.floor(e['value']/50)
-                        val = amount
+                	if (e['value'] != null) {
+                        val = e['value']
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         return val;

@@ -252,6 +252,10 @@ form {
 .selected-cell{
    background-color: #ffd09e;
 }
+
+td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-name="prcsRqAmt"], td[data-column-name="devDate"]{
+		cursor : pointer;
+	}
 </style>
 
 </head>
@@ -928,7 +932,7 @@ form {
             })
 
         }
-
+        
         if (flag) {
             $.ajax({
                 url: 'orderSave',
@@ -982,6 +986,19 @@ form {
             orderGrid.export('xlsx');
         })
     })
+    
+    //수정중일때 페이지 나가면 경고창 출력
+	$(document).ready(function(){ 
+	    window.onbeforeunload = function(){
+	        if(orderGrid.isModified()){
+	        	doExit();
+	        }
+	    };
+	});
+	
+	function doExit(){
+	    event.returnValue = '"저장되지 않은 데이터가 있습니다."';
+	}
 </script>
 </body>
 </html>

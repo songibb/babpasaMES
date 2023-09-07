@@ -238,6 +238,10 @@ form {
 .selected-cell{
    background-color: #ffd09e;
 }
+
+td[data-column-name="salesOutCode"], td[data-column-name="salesRtWhy"] {
+		cursor : pointer;
+	}
 </style>
 
 </head>
@@ -579,6 +583,7 @@ form {
                 rtGrid.setValue(rowKey, 'prodCode', prodCode);
                 rtGrid.setValue(rowKey, 'prodName', prodName);
                 rtGrid.setValue(rowKey, 'salesOutAmt', salesOutAmt);
+                rtGrid.setValue(rowKey, 'salesRtAmt', salesOutAmt);
                 //선택시 모달창 닫기
                 if (rowKey2 != null) {
                     $(".modal").fadeOut();
