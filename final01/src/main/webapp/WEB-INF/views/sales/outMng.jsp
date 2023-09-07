@@ -419,9 +419,8 @@ form {
                 name: 'prodSaveAmt',
                 editor: 'text',
                 formatter(e) {
-                    if (e['value'] != null) {
-                    	let amount = Math.floor(e['value']/50)
-                        val = amount
+                	if (e['value'] != null) {
+                        val = e['value']
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         return val;
@@ -873,10 +872,7 @@ form {
 
         return lotGrid;
     }
-	
-    function getNumber(num){
-    	return Number(num)/50
-    }
+    
     //prodLot modal
     function createLotGrid(prodCode) {
         var odGrid = new tui.Grid({
@@ -929,8 +925,7 @@ form {
                     name: 'salesInAmt',
                     formatter(e) {
                         if (e['value'] != null) {
-                        	let amount = Math.floor(e['value']/50)
-                            val = amount
+                            val = e['value']
                                 .toString()
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                             return val;
@@ -941,9 +936,8 @@ form {
                     header: '재고량',
                     name: 'prodSaveAmt',
                     formatter(e) {
-                        if (e['value'] != null) {
-                    		let amount = Math.floor(e['value']/50)
-                            val = amount
+                    	if (e['value'] != null) {
+                            val = e['value']
                                 .toString()
                                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                             return val;
@@ -1181,17 +1175,17 @@ form {
     
 
   	//계산
-	outGrid.on('beforeChange', (ev) => {
+	outGrid.on('afterChange', (ev) => {
 
 	    let change = ev.changes[0];
 	    let rowData = outGrid.getRow(change.rowKey);
 	   
 		
-	    if (change.columnName == 'salesOutAmt') {
+	    if (change.columnName == 'prodSaveAmt') {
 	    	console.log(rowData);
 			console.log(rowData.salesOutAmt +','+rowData.prodSaveAmt);
 			
-	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) /50) {
+	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) ) {
 	        	
 	        	console.log('test');
 	        	
