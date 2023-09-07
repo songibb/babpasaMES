@@ -229,9 +229,8 @@ form {
                 name: 'salesInAmt',
                 editor: 'text',
                 formatter(e) {
-                    if (e['value'] != null) {
-                    	let amount = Math.floor(e['value']/50)
-                        val = amount
+                	if (e['value'] != null) {
+                        val = e['value']
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         return val;
@@ -243,9 +242,8 @@ form {
                 name: 'prodSaveAmt',
                 editor: 'text',
                 formatter(e) {
-                    if (e['value'] != null) {
-                    	let amount = Math.floor(e['value']/50)
-                        val = amount
+                	if (e['value'] != null) {
+                        val = e['value']
                             .toString()
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
                         return val;
@@ -752,8 +750,8 @@ form {
 
             'prodLot': prodLot,
             'salesInDate': salesInDate,
-            'salesInAmt': testAmt,
-            'prodSaveAmt': testAmt,
+            'salesInAmt': Math.floor(Number(testAmt) / 50),
+            'prodSaveAmt': Math.floor(Number(testAmt) / 50),
             'salesInExd': salesInExd,
             'empCode': `${user.id}`,
             'empName': `${user.empName}`
