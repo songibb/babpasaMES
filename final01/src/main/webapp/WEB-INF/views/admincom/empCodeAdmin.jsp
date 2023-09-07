@@ -121,10 +121,12 @@
 							</select>
 							<label>연락처</label>
 							<input type="text" name="empTel" id="empTel">
-							<label>직급</label>
+							<label>권한</label>
 							<select id="inputRoleList" name="empRole" style="width: 100%">
 								<c:forEach items="${inputRoleList}" var="i">
+								<c:if test="${i.commdeCode ne'X'}">
 									<option value="${i.commdeCode }">${i.commdeName }</option>
+								</c:if>
 								</c:forEach>
 							</select>
 							<label id="empDateLa">입사일</label>
@@ -314,7 +316,7 @@
 	           hidden: true
 		      },
 	         {
-	           header: '직급정보',
+	           header: '권한',
 	           name: 'empRoleName',
 	           align: 'center'
 	         },
@@ -436,7 +438,8 @@
 
 	//사원 정보 수정
 	function requestUpdateUser(userObj){
-		
+		if(userObj.empLeaveDate == '' || userObj.empLeaveDate== null){
+			
 		$.ajax({
 			url : 'empInfoUpdate',
 			type : 'POST',
@@ -483,6 +486,55 @@
 			}
 		})
 		.fail(reject => console.log(reject));
+		
+		}else{
+			$.ajax({
+				url : 'leaveEmpInfoUpdate',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(userObj),
+			})
+			.done(data => {
+				if(data > 0){
+					swal("성공", "사원 정보수정이 정상적으로 처리되었습니다", "success");
+					empDate.style.display = '';
+					empDateLa.style.display = '';
+					empLeaveDateLa.style.display='none';
+					empLeaveDate.style.display='none';
+					$('#userInsertForm')[0].reset();
+					$('form')[1].reset();
+					 let content = $('#empSearch').val();
+					  let search = { empName : content};
+					 $.ajax({
+					   url : 'ajaxEmpList',
+					   method : 'GET',
+					   data : search,
+					   success : function(data){
+						   $.each(data, function(i, objDe){
+								let empDate = data[i]['empDate'];
+								data[i]['empDate'] = getDate(empDate);
+								
+								let empLeaveDate = data[i]['empLeaveDate'];
+								if(empLeaveDate==null){
+									data[i]['empLeaveDate'] = "-";
+								}else{
+								data[i]['empLeaveDate'] = getDate(empLeaveDate);
+								}
+								})
+							grid.resetData(data);
+						   stopEdit();
+					   },
+					   error : function(reject){
+						   console.log(reject);
+					   }
+				   })
+					
+				}else{
+					swal("실패", "수정처리가 실패되었습니다", "error")
+				}
+			})
+			.fail(reject => console.log(reject));
+		}
 	}
 	
 	grid.on('click', ()=>{

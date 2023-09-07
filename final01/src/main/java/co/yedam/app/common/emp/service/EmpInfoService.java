@@ -23,4 +23,7 @@ public interface EmpInfoService {
 	//조회+검색
 	public List<EmpInfoVO> empSelect(EmpInfoVO empInfoVO);
 
+
+
+	public int leaveEmpInfoUpdate(EmpInfoVO empInfoVO);
 }

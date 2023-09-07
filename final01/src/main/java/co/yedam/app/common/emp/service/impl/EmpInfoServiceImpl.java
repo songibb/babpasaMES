@@ -55,6 +55,13 @@ public class EmpInfoServiceImpl implements EmpInfoService {
 	}
 
 
+	@Override
+	public int leaveEmpInfoUpdate(EmpInfoVO empInfoVO) {
+		
+		return empInfoMapper.leaveEmpInfoUpdate(empInfoVO);
+	}
+
+
 
 	
 }

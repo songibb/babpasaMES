@@ -63,19 +63,19 @@
       <p class="yesterday">| Yesterday</p>
       <br>
       <i class="fa-solid fa-cart-shopping"></i>
-      <div id="my-box-content">${totalSaleAmt}</div>
+      <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSaleAmt}"/></div>
       </div>
        <div class="my-box" style="width: 31%; height: 100%; min-width: 20%; min-height: 10%;">
        <p class="title">총 생산량</p><p class="yesterday">| Yesterday</p>
        <br>
        <i class="fa-solid fa-arrow-up-right-dots"></i>
-       <div id="my-box-content">${totalpassAmt}</div>
+       <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalpassAmt}"/></div>
        </div>
        <div class="my-box" style="width: 31%; height: 100%; min-width: 20%; min-height: 10%;">
        <p class="title">총 불량량</p><p class="yesterday">| Yesterday</p>
        <br>
        <i class="fa-regular fa-circle-xmark"></i>
-       <div id="my-box-content">${totalNonPassAmt}</div>
+       <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNonPassAmt}"/></div>
        </div>
    </div>
    <div style="height: 110%; display: flex; justify-content: space-between;">
@@ -154,7 +154,7 @@
                 name: '재고량',
                 data: [
                    <c:forEach items="${prodAmtList}" var="a">
-                      <fmt:parseNumber value="${a.prodSaveAmt/50}" integerOnly="true"/>,
+                      <fmt:parseNumber value="${a.prodSaveAmt}" integerOnly="true"/>,
                      
                       </c:forEach>
                    ],

@@ -120,4 +120,24 @@
 			</where>
 		ORDER BY emp_code
   	</select>
+  	
+  	<!-- 퇴사사원 수정 -->
+  	<update id="leaveEmpInfoUpdate" parameterType="EmpInfoVO">
+  		UPDATE com_emp SET
+		  				  emp_name = #{empName}
+						, emp_tel = #{empTel}
+						<if test="empPw != null and !empPw.equals('')">
+						, emp_pw = #{empPw}
+						</if>
+						, emp_role = 'X'
+						<if test="deptCode != null and !deptCode.equals('')">
+						, dept_code = #{deptCode}
+						</if>
+						<if test="empLeaveDate != null and !empLeaveDate.equals('')">
+						,emp_leave_date = #{empLeaveDate}
+						</if>
+		WHERE	emp_code = #{empCode}	
+  	</update>
+ 
+  	
   </mapper>

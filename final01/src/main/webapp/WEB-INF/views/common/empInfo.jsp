@@ -234,7 +234,7 @@ var grid = new tui.Grid({
 	           className: 'yellow-background'
 		         },
 	         {
-	           header: '직급정보',
+	           header: '권한',
 	           name: 'empRole',
 	           align: 'center',
 	           hidden: true
