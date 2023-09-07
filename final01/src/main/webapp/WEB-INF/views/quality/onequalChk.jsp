@@ -31,11 +31,11 @@
 	<h1>완제품 품질 검사</h1>
 	<div class="col-lg-12 stretch-card">
       <div class="card">
-         <div class="card-body">
-            <div class="table-responsive pt-3">
+         <div class="card-body" style="padding-top: 50px;">
+            <!-- <div class="table-responsive pt-3">
                   
                   
-               </div>
+               </div> -->
                <div id="container" style="display: flex; justify-content: center;">
                        <div id="grid" style="width: 700px; margin-right: 20px"><h2>완제품 품질 검사 목록</h2></div>
                       <div>
@@ -101,19 +101,23 @@
 			columns: [
 				{
 					header: '검사번호',
-					name: 'testNum'
+					name: 'testNum',
+			        align: 'center'
 				},
 				{
 					header: '공정진행코드',
-					name: 'prcsIngCode'
+					name: 'prcsIngCode',
+			        align: 'center'
 				},
 				{
 					header: '제품명',
-					name: 'prodName'
+					name: 'prodName',
+			        align: 'left'
 				},
 				{
 					header: '생산량',
-					name: 'prcsAmt'
+					name: 'prcsAmt',
+			        align: 'left'
 				}
 				
 			]
@@ -127,12 +131,7 @@
 			scrollX: false,
 			scrollY: false,
 			 minBodyHeight: 200,
-			 rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
-			pagination: true,
-			pageOptions: {
-				useClient: true,
-				perPage: 10,
-			},
+			 rowHeaders: [{type: 'rowNum'}],
 			columns: [
 				{
 					header: '검사번호',

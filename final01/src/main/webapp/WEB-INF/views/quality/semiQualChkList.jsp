@@ -195,11 +195,6 @@
          scrollY: false,
           minBodyHeight: 200,
           rowHeaders: [{type: 'rowNum'}],
-         pagination: true,
-         pageOptions: {
-            useClient: true,
-            perPage: 10,
-         },
          columns: [
             {
                header: '검사번호',

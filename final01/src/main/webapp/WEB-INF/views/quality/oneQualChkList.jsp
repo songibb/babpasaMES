@@ -55,7 +55,7 @@
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
 			<div class="card-body">
-				<div class="table-responsive pt-3" >
+				<div class="table-responsive pt-3">
                   	<div id="customtemplateSearchAndButton">
         				<div style="display: flex; justify-content: space-between;">
             				<div style="flex: 1; margin-left: 10px; margin-top : 20px;">
@@ -193,11 +193,6 @@
 			scrollY: false,
 			 minBodyHeight: 200,
 			 rowHeaders: [{type: 'rowNum'}],
-			pagination: true,
-			pageOptions: {
-				useClient: true,
-				perPage: 10,
-			},
 			columns: [
 				{
 					header: '검사번호',
