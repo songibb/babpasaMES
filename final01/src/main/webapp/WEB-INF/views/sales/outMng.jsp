@@ -252,6 +252,10 @@ form {
 .selected-cell{
    background-color: #ffd09e;
 }
+
+td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
+		cursor : pointer;
+	}
 </style>
 
 </head>

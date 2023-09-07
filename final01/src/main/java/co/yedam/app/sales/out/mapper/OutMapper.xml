@@ -85,7 +85,8 @@
          <if test="comple==2">
             AND d.dev_yn != 'Y'
          </if>
-   </where>               
+   </where>             
+    WHERE i.prod_save_amt <![CDATA[>]]> 0
    	ORDER BY sales_out_code DESC
    </select>
    
@@ -117,6 +118,7 @@
 	                  ON (o.emp_code = e.emp_code)
 	                  LEFT JOIN sales_rt r
 	                  ON (o.sales_out_code = r.sales_out_code)
+       WHERE i.prod_save_amt <![CDATA[>]]> 0
 	   ORDER BY sales_out_code DESC
      </select>
    

@@ -238,6 +238,10 @@ form {
 .selected-cell {
 	background-color: #ffd09e;
 }
+
+td[data-column-name="testNum"] {
+		cursor : pointer;
+	}
 </style>
 
 </head>
@@ -270,7 +274,6 @@ form {
 						Excel <i class="bi bi-printer"></i>
 					</button>
 					<button class="btn btn-info btn-icon-text" id="save">저장</button>
-					<button class="btn btn-info btn-icon-text" id="delete">삭제</button>
 					<button class="btn btn-info btn-icon-text" id="dirAdd">행추가</button>
 				</div>
 			</div>
