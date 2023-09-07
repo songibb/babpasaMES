@@ -419,7 +419,6 @@ function createActGrid(){
 				  	swal("경고","종료시간이 입력되지 않았습니다","warning");
 			//수정 ajax
 					offequipUpdate(offequipInfo);
-			
 				}
 		  }else{
 			  e.preventDefault();
@@ -431,8 +430,6 @@ function createActGrid(){
 					offequipInsert(offequipInfo);
 				}	 
 		  }
-			  
-		
 	});
 		  
 
