@@ -12,6 +12,10 @@
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
 		WHERE a.mat_code = #{materialCode}
+		AND mat_stock <![CDATA[>]]> 0
+		<if test="lotName != null and !lotName.equals('')">
+			AND a.mat_lot LIKE '%' || #{lotName} || '%'
+		</if>
 		ORDER BY a.mat_exd DESC
 	</select>
 </mapper>

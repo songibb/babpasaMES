@@ -12,4 +12,7 @@ public class MatLotStockVO {
 	private Integer lotStock;
 	private Date matExd;
 	private String matName;
+	
+	private String materialCode;
+	private String lotName;
 }

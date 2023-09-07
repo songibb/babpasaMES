@@ -95,6 +95,19 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	#searchGrid2Input{
+	  width: 15%;
+	  padding: 5px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	#searchGrid2{
+		display : inline-block;
+		margin-left : 360px;
+	}
 </style>    
        
 </head>
@@ -135,7 +148,10 @@
 		            
 		            
 		            <div id="grid2">
-		            	<h2>자재 LOT별 재고</h2>
+		            	<h2>자재 LOT별 재고</h2><p id="searchGrid2">LOT명</p> <input type="text" id="searchGrid2Input"><button type="button" class="btn btn-info btn-icon-text" id="searchBtn2">
+                    				<i class="fas fa-search"></i>
+                    					검색
+                				</button>
 		            	<button type="button" class="btn btn-info btn-icon-text excelDownload2">
                       	 Excel
                       	<i class="bi bi-printer"></i>                                                                      
@@ -333,7 +349,9 @@
 		        }
 		    })
 		});
-	
+		
+		
+		var matCode30;
 		//상세재고 조회
 		var grid2;
 		function createGrid2() {
@@ -385,12 +403,12 @@
 	
 		grid.on('dblclick', () => {
 	
-		    //클릭한 계획의 계획코드 가져오기
+		   
 		    let rowKey = grid
 		        .getFocusedCell()
 		        .rowKey;
 		    if (rowKey != null && rowKey >= 0) {
-		        let matCode = grid.getValue(rowKey, 'matCode');
+		        matCode30 = grid.getValue(rowKey, 'matCode');
 		        if (rowKey >= 0) {
 	
 		            if (grid2 != null && grid2.el != null) {
@@ -402,7 +420,7 @@
 		            url: 'matLotStockList',
 		            method: 'GET',
 		            data: {
-		                materialCode: matCode
+		                materialCode: matCode30
 		            },
 		            success: function (data) {
 	
@@ -594,7 +612,30 @@
 		$('#endDate').on('change', function () {
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
-  
+  		
+		
+		//2번째 그리드 검색
+		$('#searchBtn2').on('click', searchGrid2);
+		function searchGrid2(e){
+			let lotName = $('#searchGrid2Input').val();
+			console.log(lotName);
+			console.log(matCode30);
+			$.ajax({
+				url : 'matLotStockList',
+				method : 'GET',
+				data : [{ lotName : lotName }, {
+	                materialCode: matCode30
+	            }],
+				success : function(result){
+					if (grid2 != null && grid2.el != null){
+						grid2.resetData(result);
+					}
+				},
+				error : function(reject){
+					console.log(reject);
+				}
+			})
+		}
     
 	</script>
 </body>

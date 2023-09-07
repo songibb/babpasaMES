@@ -186,6 +186,10 @@
 	.my-styled-green-cell {background-color: #cff0cc;}
 	
 	.my-styled-yellow-cell {background-color: #fdfd96;}
+	
+	td[data-column-name="matPrice"], td[data-column-name="matAmt"], td[data-column-name="matOdAcp"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>

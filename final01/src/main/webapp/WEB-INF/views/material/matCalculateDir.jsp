@@ -121,6 +121,10 @@
 	.selected-cell{
    		background-color: #ffd09e;
 	}
+	
+	td[data-column-name="calCategory"], td[data-column-name="matName"], td[data-column-name="matUnit"], td[data-column-name="matStd"], td[data-column-name="matLot"], td[data-column-name="calAmt"]{
+		cursor : pointer;
+	}
 </style>
 </head>
 <body>
