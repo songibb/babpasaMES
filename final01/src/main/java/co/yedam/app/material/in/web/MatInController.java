@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.yedam.app.common.grid.service.GridVO;
@@ -20,6 +19,7 @@ import co.yedam.app.material.order.de.service.MatOrderDeService;
 import co.yedam.app.material.rt.service.MatRtService;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
+import co.yedam.app.material.stock.service.MatLotStockVO;
 
 @Controller
 public class MatInController {
@@ -101,8 +101,8 @@ public class MatInController {
 	//정산 페이지에서 matLot 조회
 	@GetMapping("getMatLotList")
 	@ResponseBody
-	public List<MatInVO> getMatLotList(@RequestParam(value="materialCode", required=false) String materialCode){
-		return mis.getMatLotModal(materialCode);
+	public List<MatInVO> getMatLotList(MatLotStockVO vo){
+		return mis.getMatLotModal(vo);
 	}
 	
 	

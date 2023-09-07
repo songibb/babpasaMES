@@ -84,14 +84,14 @@
 	
 	.modal_content {
 		/*모달창 크기 조절*/
-		width: 600px;
+		width: 800px;
 		height: 700px;
 		background: #fff;
 		border-radius: 10px;
 		/*모달창 위치 조절*/
 		position: relative;
 		top: 33%;
-		left: 45%;
+		left: 39%;
 		margin-top: -100px;
 		margin-left: -200px;
 		text-align: center;
@@ -236,6 +236,7 @@
 	
 		$(".close_btn").click(function () {
 		    $(".modal").fadeOut();
+		    $("#m_body_s p").text("이름");
 		    activeScroll();
 		    let inputContent = $('#modalSearch').val('');
 		    if (Grid != null && Grid.el != null) {
@@ -244,7 +245,8 @@
 		    $("#reset_btn").css("display", "block");
 		    $("#m_body_s").css("display", "block");
 		});
-	
+		
+		var matCode30 = "";
 		$('#modalSearchBtn').on('click', function (e) {
 		    let title = $('.modal_title h3').text();
 		    let inputContent = $('#modalSearch').val();
@@ -264,6 +266,45 @@
 		                console.log(reject);
 		            }
 		        })
+		    } else if(title =='LOT 목록'){
+		    	//lot모달창 검색
+					
+		    		console.log(inputContent);
+		    		console.log(matCode30);
+					let search = {
+					        materialCode: matCode30,
+					        lotName: inputContent
+					    };
+					$.ajax({
+						url : 'getMatLotList',
+						method : 'GET',
+						data : search,
+						success : function(data){
+							
+							
+								
+								/* for (let i of data) {
+				                    let date = new Date(i.matExd);
+				                    let year = date.getFullYear(); //0000년 가져오기
+				                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+				                    let day = date.getDate(); //일자 가져오기
+			
+				                    i.matExd = year + "-" + (
+				                        ("00" + month.toString()).slice(-2)
+				                    ) + "-" + (
+				                        ("00" + day.toString()).slice(-2)
+				                    );
+				                } */
+								
+								
+								Grid.resetData(data);
+							
+						},
+						error : function(reject){
+							console.log(reject);
+						}
+					})
+				
 		    }
 		})
 	
@@ -548,10 +589,11 @@
 		            })
 		        } else if (ev.columnName == 'matLot' || ev.columnName == 'matBamt') {
 	
-		            $("#m_body_s").css("display", "none");
-		            var selectMatCode = grid.getValue(mainRowKey, 'matCode');
+		            $("#m_body_s p").text("LOT 이름");
+		            var matCode30 = grid.getValue(mainRowKey, 'matCode');
+		            //var selectMatCode = grid.getValue(mainRowKey, 'matCode');
 	
-		            Grid = createLotGrid(selectMatCode);
+		            Grid = createLotGrid(matCode30);
 		            Grid.refreshLayout();
 		            $(".modal").fadeIn();
 		            preventScroll();
@@ -602,7 +644,7 @@
 		                        Grid.destroy();
 		                    }
 		                    $("#m_body_s").css("display", "block");
-	
+		                    $("#m_body_s p").text("이름");
 		                }
 	
 		            });
@@ -612,6 +654,7 @@
 		                grid.setValue(mainRowKey, 'calBamt', '');
 	
 		                $(".modal").fadeOut();
+		                $("#m_body_s p").text("이름");
 		                activeScroll();
 		                let inputContent = $('#modalSearch').val('');
 		                if (Grid != null && Grid.el != null) {
@@ -692,12 +735,16 @@
 	
 		    return lotGrid;
 		}
+		
+		
 	
 		//자동 계산
 		grid.on('afterChange', (ev) => {
 	
 		    let change = ev.changes[0];
 		    let rowData = grid.getRow(change.rowKey);
+		    
+		    
 	
 		    if (change.columnName == 'calBamt' || change.columnName == 'calAmt' || change.columnName == 'calCategory') {
 		        if (rowData.calBamt != null && rowData.calAmt != null && rowData.calCategory != null) {
@@ -717,8 +764,13 @@
 		                }
 		            }
 		        }
+		    } else if(change.columnName == 'matCode'){
+		    	matCode30 = rowData.matCode;
 		    }
 		});
+		
+		
+		
 		
 		grid.on('click', ()=>{
 		    //선택한 행 색깔 바꾸기
@@ -897,7 +949,32 @@
 		$('#endDate').on('change', function () {
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
-
+		
+		
+		$(document).ready(function(){ 
+		    window.onbeforeunload = function(){
+		        if(grid.isModified()){
+		        	event.returnValue = false
+		        	swal({
+		      			  title: "경고",
+		      			  text: `저장되지 않은 데이터가 있습니다 \n 페이지를 이동하시겠습니까?`,
+		      			  icon: "warning",
+		      			  buttons: true,
+		      			  dangerMode: true,
+		      			})
+		      			.then(result => {
+		      				if (result.isConfirmed) {
+		      					event.returnValue = true
+		      				} else {
+		      					
+		      				}
+		      			})
+		        		
+		        }
+		    };
+		});
+		
+		
 </script>
 </body>
 </html>

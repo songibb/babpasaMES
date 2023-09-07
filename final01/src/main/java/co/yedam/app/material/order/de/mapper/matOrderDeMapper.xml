@@ -227,8 +227,11 @@
 	        			 ON(c.mp_code = d.prod_code)
 	        			 LEFT JOIN bom_detail e
 	        			 ON(d.bom_no = e.bom_no)
+	        			 LEFT JOIN prcs_plan m
+	        			 ON(a.prcs_plan_code = m.prcs_plan_code)
         			 WHERE prcs_dir_sts= 'T1'
         			 	AND b.bom_yn = 'O'
+        			 	AND prcs_start_date - 7 <![CDATA[<=]]> sysdate
         			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
                      			   WHEN c.mp_kind='M' THEN c.mp_code
                      			   END) f

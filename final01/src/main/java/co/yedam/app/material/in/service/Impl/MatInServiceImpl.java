@@ -12,6 +12,7 @@ import co.yedam.app.material.in.service.MatInService;
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
+import co.yedam.app.material.stock.service.MatLotStockVO;
 
 @Service
 public class MatInServiceImpl implements MatInService {
@@ -66,9 +67,9 @@ public class MatInServiceImpl implements MatInService {
 	}
 
 	@Override
-	public List<MatInVO> getMatLotModal(String materialCode) {
+	public List<MatInVO> getMatLotModal(MatLotStockVO vo) {
 		
-		return mim.selectLotModal(materialCode);
+		return mim.selectLotModal(vo);
 	}
 	
 	
