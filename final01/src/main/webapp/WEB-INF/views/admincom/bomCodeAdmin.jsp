@@ -135,6 +135,13 @@
 /*모달끝*/
 
 .my-styled-cell {background-color: rgb(255, 229, 229)}
+
+td[data-column-name="prcsName"],
+td[data-column-name="bomUnit"],
+td[data-column-name="mpName"]
+ {
+		cursor : pointer;
+	}
 </style>
 <title>BOM관리</title>
 <!-- 토스트 페이지 네이션 dd-->
@@ -178,19 +185,17 @@
 		            	<h2>BOM 목록</h2>
 		            	<div>
 			            	<button id = "deleteBom" class="btn btn-info btn-icon-text">삭제</button>
+			            	
+			            	<button id = "deAdd" class="btn btn-info btn-icon-text" style="display: none;">상세추가</button>
+			            	<button id = "beBomDeCall" class="btn btn-info btn-icon-text" style="display: none;">기존 제품 BOM상세 가져오기</button>
 			            	<button id = "deSave" class="btn btn-info btn-icon-text">저장</button>
+			            	
 			           	</div>
 		           		</div>
-		           		<div id="bomgrid"></div>
-		           		
-		           		<br>
-		           		<div>
-		           			<div style="display: flex; flex; justify-content: space-between;">
-			           		<h2> BOM 상세 목록 </h2>
-			           		<button id = "deAdd" class="btn btn-info btn-icon-text" style="float: right; display: none;">상세추가</button>
-			           		</div>
-			           		<div id="deBomgrid"></div>
-						</div>
+		           		<div style="display: flex; justify-content: space-between;">
+		           		<div id="bomgrid"  style="width: 800px; margin-right: 20px"></div>
+		           		<div id="deBomgrid" style="width: 1000px;"></div>
+		           		</div>
 					</div>
 	   		</div>
 		</div>
@@ -204,6 +209,20 @@
        </div>
        <div class="m_body">
             <div id="modal_label_one"></div>
+       </div>
+       <div class="m_footer">
+    </div>
+  </div>
+</div>
+<div class="modal" id="DeBomModal">
+  <div class="modal_content" 
+       title="클릭하면 창이 닫힙니다.">
+          <div class="m_head">
+            <div class="modal_title"><h3>기존 제품 목록</h3></div>
+            <div class="close_btn" id="close_btn">X</div>
+       </div>
+       <div class="m_body">
+            <div id="modal_label_de"></div>
        </div>
        <div class="m_footer">
     </div>
@@ -258,6 +277,7 @@
 	<script>
 	
 	
+	
 	//페이지 호출할떄 BOM등록하는 창 호출
 /* 	window.onload = function addRow(){
 		bomgrid.appendRow();
@@ -280,9 +300,12 @@
 	//저장 버튼 클릭시 insert 진행
 	document.getElementById('deSave').addEventListener('click', saveServer);
 	
+	
+	
 	/* 삭제,버튼은 등록시에 안보이게 상세 추가 버튼은 등록시에만 보이게 하기 */
 	  var deleteBom = document.getElementById('deleteBom');
 	  var deAdd = document.getElementById('deAdd');
+	  var beBomDeCall = document.getElementById('beBomDeCall');
 	
 	
 	function saveServer(){
@@ -540,6 +563,7 @@
 						   stopEdit();
 						   deleteBom.style.display = 'inline-block';
 						   deAdd.style.display = 'none';
+						   beBomDeCall.style.display = 'none';
 					   },
 					   error : function(reject){
 						   console.log(reject);
@@ -644,12 +668,12 @@
         el: document.getElementById('bomgrid'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 120,
+        minBodyHeight: 400,
 		rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 3,
+			perPage: 10,
 		},
         columns: [
           {
@@ -893,6 +917,7 @@
  	        		$("#prodModal").fadeOut();
 	        		Grid.destroy();
 	        		deleteBom.style.display = 'none';
+	        		beBomDeCall.style.display = 'inline-block';
 	        		deAdd.style.display = 'inline-block';
 	        		$('form')[0].reset();
 
@@ -971,6 +996,78 @@
 		
 		return pordGrid
 	}
+	
+	
+	$("#beBomDeCall").click(function(){
+		
+    	
+		$("#DeBomModal").fadeIn();
+	       Grid = createDeBomDeCall();
+	})
+	
+	function createDeBomDeCall(){
+			let content = null;
+		   let search = { prodName : content };
+		   
+		   $.ajax({
+			   url : 'bomSearch',
+			   method : 'GET',
+			   data : search ,
+			   success : function(data){
+		           Grid.resetData(data);
+		       },
+		       error : function(reject){
+					console.log(reject);
+			   }
+		})
+	
+	var bomgrid2 = new tui.Grid({
+        el: document.getElementById('modal_label_de'),
+        scrollX: false,
+        scrollY: false,
+        minBodyHeight: 400,
+		rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+		pagination: true,
+		pageOptions: {
+			useClient: true,
+			perPage: 10,
+		},
+        columns: [
+          {
+            header: 'NO',
+            name: 'bomNo',
+            align: 'center',
+            sortable: true,
+	        sortingType: 'asc'
+          },
+          {
+              header: '제품코드',
+              name: 'prodCode',
+              align: 'center'
+            },
+          {
+              header: '제품명',
+              name: 'prodName'
+            },
+          {
+            header: '사용여부',
+            name: 'bomYn',
+            align: 'center' 
+          },
+          {
+            header: '공정사용여부',
+            name: 'bomPrcsYnName',
+            align: 'center'
+          }
+    
+        ]
+      });
+	
+	
+	return bomgrid2
+}
+
+	
 	
 	
 	deBomgrid.on('dblclick' ,() => {
@@ -1250,6 +1347,7 @@
 			   stopEdit();
 			   deleteBom.style.display = 'inline-block';
 			   deAdd.style.display = 'none';
+			   beBomDeCall.style.display = 'none';
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -1343,7 +1441,20 @@
 		})
 
 
-
+	//수정중일때 페이지 나가면 경고창 출력
+		$(document).ready(function(){ 
+			
+		    window.onbeforeunload = function(){
+		    	bomgrid.blur();
+		        if(bomgrid.isModified()){
+		        	doExit();
+		        }
+		    };
+		});
+		
+		function doExit(){
+		    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
+		}
 
    
       
