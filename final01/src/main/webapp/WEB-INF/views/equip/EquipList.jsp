@@ -42,8 +42,12 @@
 		}
 		
 		#customtemplateSearchAndButton input, #modalTitle input {
-	    border: 1px solid #ccc;
-	    display: inline-block;
+		    border: 1px solid #ccc;
+		    display: inline-block;
+		}
+		
+		#customtemplateSearchAndButton {
+			margin-bottom: 30px;
 		}
 	</style>
 
@@ -69,7 +73,7 @@
 											</c:forEach>
 									</select>
 									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-									<i class="fas fa-search"></i>검색
+									<i class="fas fa-search"></i> 검색
 								</button>
 							<button type="reset" class="btn btn-info btn-icon-text">초기화</button>					
 						</div>
@@ -115,20 +119,16 @@
 			 	        header: '설비코드',
 			 	        name: 'eqCode',
 			 	        align: 'center'
-			 	      
-			 	      },
-			 	     {
-			 	    	  header : '설비업체코드',
-			 	    	  name : 'actName',
-			 	    	  hidden : true
-			 	    	  
-			 	    	  
 			 	      },
 			 	      {
-			 	    	  header : '설비업체명',
-			 	    	  name : 'actName',
-				          align: 'center'
-			 	    	  
+			 	    	header : '설비업체코드',
+			 	    	name : 'actName',
+			 	    	hidden : true 
+			 	      },
+			 	      {
+			 	    	header : '설비업체명',
+			 	    	name : 'actName',
+				        align: 'center'  
 			 	      },
 			 	      {
 			 	        header: '설비명',
@@ -142,19 +142,19 @@
 			 	        align: 'center'
 			 	      },
 			 	      {
-			 	    	  header :'제작일자',
-			 	    	  name : 'makeDate',
-				 	      align: 'center'
+			 	    	header :'제작일자',
+			 	    	name : 'makeDate',
+				 	    align: 'center'
 			 	      },
 			 	      {
-			 	    	  header :'구입일자',
-			 	    	  name : 'buyDate',
-				 	      align: 'center'
+			 	    	header :'구입일자',
+			 	    	name : 'buyDate',
+				 	    align: 'center'
 			 	      },
 			 	      {
-			 	    	  header : '점검주기',
-			 	    	  name : 'chkCycle',
-				 	      align: 'right'
+			 	    	header : '점검주기',
+			 	    	name : 'chkCycle',
+				 	    align: 'right'
 			 	      },
 			 	      
 			 	      {
@@ -168,14 +168,14 @@
 				 	    align: 'left'
 			 	      },
 			 	      {
-			 	    	 header : '최저온도',
-			 	    	 name : 'lowTemp',
-				 	     align: 'right'
+			 	    	header : '최저온도',
+			 	    	name : 'lowTemp',
+				 	    align: 'right'
 			 	      },
 			 	      {
-			 	    	  header :'최고온도',
-			 	    	  name : 'highTemp',
-					 	  align: 'right'
+			 	    	header :'최고온도',
+			 	    	name : 'highTemp',
+					 	align: 'right'
 			 	      }
 			 	     
 			 	    ]

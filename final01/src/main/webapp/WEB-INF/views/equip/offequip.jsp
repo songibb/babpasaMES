@@ -43,11 +43,12 @@
 		  display: inline-block;
 		  margin-bottom: 7px;
 		  margin-top: 2px;
-		  font-weight: bold;
 		  width:110px;
 		}
 	
-	
+		#input-container {
+			margin-left: 5px;
+		}
 		#input-container input[type="text"],
 		select {
 		  width: 50%;
@@ -87,6 +88,14 @@
 		.selected-cell{background-color: #ffd09e;}
 		
 		.my-styled-cell {background-color: rgb(255, 229, 229)}
+		
+		#actModal{
+			margin-right: 10px;
+		}
+		
+		#customtemplateSearchAndButton{
+			margin-bottom: 60px;
+		}
     </style>
     
 </head>
@@ -154,7 +163,7 @@
 									<p>설비명</p>
 		  							<input type="text" placeholder="검색어를 입력하세요" id="offequipSearch">
 									<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
-										<i class="fas fa-search"></i>검색
+										<i class="fas fa-search"></i> 검색
 									</button>
 									<button type="reset" class="btn btn-info btn-icon-text" id="resetBtn">초기화</button>
 				            	</div>
@@ -502,7 +511,7 @@ function createActGrid(){
 		.done(data => { 
 			console.log(data);
 			   //데이터의 key가 한글이라면 반드시 대괄호[''] 사용해야함
-				swal('수정 성공!', '비가동 종료되었습니다.', 'success' )
+				swal('저장 성공!', '비가동 종료되었습니다.', 'success' )
 			
 				//밑에 조회 ajax 새로 처리 필요
 				selectAjax();

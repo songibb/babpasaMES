@@ -137,8 +137,8 @@
 		          ],
 	        scrollX: false,
 	        scrollY: false,
-	        minBodyHeight: 300,
-	        rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
+	        minBodyHeight: 400,
+	        rowHeaders: [{type: 'rowNum'}],
 	        pagination: true,
 			pageOptions: {
 				useClient: true,

@@ -5,10 +5,11 @@
   <mapper namespace="co.yedam.app.equip.mapper.EquipChkMapper">
   <!-- 전체조회 -->
   <select id="selectEquipChkAllList" resultType="EquipChkVO">
-  	SELECT B.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, B.*
+  	SELECT B.EQ_CODE, A.EQ_NAME, A.EQ_TYPE, A.CHK_CYCLE, A.EQ_STS, B.*
   				,FIND_CDNM('EQUIP-TYPE', EQ_TYPE) AS EQ_TYPE2
   				,FIND_CDNM('0N', EQ_CHK_YN) AS EQ_CHK_YN2
   				,FIND_EMP_NAME(EMP_CODE) AS EMP_NAME2
+  				,FIND_CDNM('0L', EQ_STS) AS EQ_STS2
   				
   	FROM EQ_EQUIP A LEFT JOIN EQ_CHK B
   		ON(A.EQ_CODE = B.EQ_CODE)

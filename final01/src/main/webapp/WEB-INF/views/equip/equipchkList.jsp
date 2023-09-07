@@ -58,6 +58,10 @@
 	  border-radius: 4px;
 	}
 	
+	#customtemplateSearchAndButton{
+		margin-bottom: 30px;
+
+	}
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 </style>
 </head>
@@ -120,10 +124,11 @@
 	         el: document.getElementById('grid'),
 	         data: [
 		        	<c:forEach items="${equipchkList}" var="chk" varStatus="status">
-		           	{
+		           	{	eqChkCode : "${chk.eqChkCode}",
 		           		eqCode : "${chk.eqCode}",
 		           		eqName : "${chk.eqName}",
 		           		eqType2 : "${chk.eqType2}",
+		           		eqSts2 : "${chk.eqSts2}",
 		           		chkCycle : "${chk.chkCycle}",
 		           		chkDate : "<fmt:formatDate value='${chk.chkDate}' pattern='yyyy-MM-dd'/>",
 		           		chkNextDate : "<fmt:formatDate value='${chk.chkNextDate}' pattern='yyyy-MM-dd'/>",
@@ -144,6 +149,11 @@
 				perPage: 10,
 				},
 	         columns: [
+        	   {
+	             header: '설비점검코드',
+	             name: 'eqChkCode',
+	             align: 'center'
+	           },
 	           {
 	             header: '설비코드',
 	             name: 'eqCode',
@@ -159,6 +169,11 @@
 			     name: 'eqType2',
 	             align: 'center'
 			   },
+			   {
+			     header: '설비상태',
+			     name: 'eqSts2',
+	             align: 'center'
+				},
 	           {
 		         header: '점검주기(일)',
 		         name: 'chkCycle',

@@ -24,6 +24,8 @@
 		}
 		
 		.selected-cell{background-color: #ffd09e;}
+		
+		
     </style>
 </head>
 <body>
@@ -31,11 +33,11 @@
    <h1>반제품 품질 검사</h1>
    <div class="col-lg-12 stretch-card">
       <div class="card">
-         <div class="card-body">
-            <div class="table-responsive pt-3">
+         <div class="card-body" style="padding-top: 50px;">
+            <!-- <div class="table-responsive pt-3">
                   
                   
-               </div>
+               </div> -->
                <div id="container" style="display: flex; justify-content: center;">
                        <div id="grid" style="width: 700px; margin-right: 20px"><h2>반제품 품질 검사 목록</h2></div>
                       <div>
@@ -101,15 +103,18 @@
          columns: [
             {
                header: '검사번호',
-               name: 'testNum'
+               name: 'testNum',
+		        align: 'center'
             },
             {
                header: '생산진행코드',
-               name: 'prcsIngCode'
+               name: 'prcsIngCode',
+		        align: 'center'
             },
             {
                header: '반제품명',
-               name: 'prodName'
+               name: 'prodName',
+		        align: 'left'
             },
             {
                header: '생산량',
@@ -135,12 +140,7 @@
          scrollX: false,
          scrollY: false,
           minBodyHeight: 200,
-          rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
-         pagination: true,
-         pageOptions: {
-            useClient: true,
-            perPage: 10,
-         },
+          rowHeaders: [{type: 'rowNum'}],
          columns: [
             {
                header: '검사번호',
@@ -344,7 +344,20 @@
       }
 
    }
-
+      
+    //수정중일때 페이지 나가면 경고창 출력
+  	$(document).ready(function(){ 
+  	    window.onbeforeunload = function(){
+  	        if(grid2.isModified()){
+  	        	doExit();
+  	        }
+  	    };
+  	});
+  	
+  	function doExit(){
+  	    event.returnValue = "페이지를 벗어 나시겠습니까?";
+  	}
+  	
    </script>
 </body>
 </html>

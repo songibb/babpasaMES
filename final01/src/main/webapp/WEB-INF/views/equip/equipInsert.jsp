@@ -21,7 +21,10 @@
 <meta charset="EUC-KR">
 <title>설비 등록 페이지</title>
 <style>
+		th{
+			font-weight : normal;
 		
+		}
 		#actModal{
 			 margin-left: 13px;
 		}
@@ -114,6 +117,21 @@
     		border-top-width: 0px;
 		}
 		
+		#equipTable  th {
+			text-align : center;
+		}
+		
+		#borderx{
+			border-bottom : none;
+		}
+		
+		#equipTable th{
+			border-bottom : none;
+		}
+		
+		.content-wrapper{
+			padding-left: 50px;
+		}
     </style>
 
 </head>
@@ -141,27 +159,8 @@
 				</c:forEach>
 			</select>
          </td>
-         <th>거래처</th>
-         <td><input type="text" name="actCode" id="actCode">
-         <button type="button" id="actModal2" style="margin-left: 10px;">거래처조회</button>
-         </td>
-      
-      </tr>
-      <tr>
-         <th>모델명</th>
-         <td><input type="text" name="modelName" id="modelName"></td>
-         <th>점검주기</th>
-         <td><input type="text" name="chkCycle" id="chkCycle"> 일</td>
          
-      </tr>
-      <tr>
-         <th>구매일자</th>
-         <td><input type="date" name="buyDate" id="buyDate"></td>
-         <th>제작일자</th>
-         <td><input type="date" name="makeDate" id="makeDate"></td>
-      </tr>
-      <tr>
-         <th>가동여부</th>
+      <th>가동여부</th>
          <td>
          <select id="EquipStsList" name="eqSts">
 			<c:forEach items="${EquipStsList}" var="s">
@@ -171,10 +170,30 @@
 			</td>
       </tr>
       <tr>
-         <th>최저온도</th>
-         <td><input type="text" name="lowTemp" id="lowTemp"> ℃ </td> 
-         <th>최고온도</th>
-         <td><input type="text" name="highTemp" id="highTemp"> ℃  </td>
+         <th>모델명</th>
+         <td><input type="text" name="modelName" id="modelName"></td>
+          <th>거래처</th>
+         <td><input type="text" name="actCode" id="actCode">
+         <button type="button" id="actModal2" style="margin-left: 10px;">거래처조회</button>
+         </td>
+         
+      </tr>
+      <tr>
+         <th>구매일자</th>
+         <td><input type="date" name="buyDate" id="buyDate"></td>
+         <th>제작일자</th>
+         <td><input type="date" name="makeDate" id="makeDate"></td>
+      </tr>
+      <tr>
+      <th>점검주기</th>
+         <td><input type="text" name="chkCycle" id="chkCycle"> 일</td>
+        
+      </tr>
+      <tr id="borderx">
+         <th id="borderx">최저온도</th>
+         <td id="borderx"><input type="text" name="lowTemp" id="lowTemp"> ℃ </td> 
+         <th id="borderx">최고온도</th>
+         <td id="borderx"><input type="text" name="highTemp" id="highTemp"> ℃  </td>
       </tr>
    </table>
    <br>
@@ -197,7 +216,7 @@
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
-            <div class="modal_title"><h3>설비목록</h3></div>
+            <div class="modal_title"><h3>목록</h3></div>
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
@@ -205,7 +224,7 @@
              <div id="modal_label"></div>
        </div>
         <div class="m_footer">
-            <div class="modal_btn save" id="save_btn">SAVE</div>
+            <!-- <div class="modal_btn save" id="save_btn">SAVE</div> -->
     </div>
   </div>
 </div>
