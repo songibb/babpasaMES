@@ -87,6 +87,7 @@ h1, h2{
 		           				<input type="text" name="prodName" id="prodName" readonly>
 		           			</div>	
 		           			<div>
+		           				<button id="prcsInfo" class="btn btn-info btn-icon-text">기존 제품 정보 가져오기</button>
 		           				<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
 								<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
 								<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>		            		

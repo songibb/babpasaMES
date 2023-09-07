@@ -152,7 +152,7 @@
 	
 	<!-- 미계획 주문서 조회 -->
 	<select id="selectNotPlanOrderList" resultType="OrderVO">
-		SELECT s.ord_code, 
+		SELECT DISTINCT s.ord_code, 
 			   s.ord_date, 
 			   find_act_name(s.act_code) AS act_name, 
 			   d.dev_date
