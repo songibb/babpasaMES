@@ -62,6 +62,7 @@
 	            {
 	                header: '제품코드',
 	                name: 'prodCode',
+	                align: 'center'
 	            },
 	            {
 	                header: '제품명',

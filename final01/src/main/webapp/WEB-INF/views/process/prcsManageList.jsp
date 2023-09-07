@@ -52,6 +52,12 @@ h2{
 .selected-cell{
 	background-color: #ffd09e;
 }
+
+td[data-column-name="prcsType"], 
+td[data-column-name="prcsName"], 
+td[data-column-name="semiYn"]{
+	cursor : pointer;
+}
 </style>
 </head>
 <body>
@@ -182,7 +188,7 @@ h2{
 		//등록
 		if(modifyGrid.createdRows.length > 0){
 			$.each(modifyGrid.createdRows, function(idx, obj){
-				if(obj['prcsType'] == '' || obj['prcsName'] == '' || obj['semiYn'] == ''){
+				if(obj['prcsType'] == null || obj['prcsName'] == null || obj['semiYn'] == null){
 					flag = false;
 					return false;
 				}
@@ -192,7 +198,7 @@ h2{
 		//수정
 		if(modifyGrid.updatedRows.length > 0){
 			$.each(modifyGrid.updatedRows, function(idx, obj){
-				if(obj['prcsType'] == '' || obj['prcsName'] == '' || obj['semiYn'] == ''){
+				if(obj['prcsType'] == null || obj['prcsName'] == null || obj['semiYn'] == null){
 					flag = false;
 					return false;
 				}

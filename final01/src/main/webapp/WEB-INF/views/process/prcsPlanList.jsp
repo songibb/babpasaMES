@@ -89,7 +89,9 @@ h1, h2{
 						<br>
 						<p>계획일자</p>
                  		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
-											
+						
+						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -124,55 +126,72 @@ h1, h2{
 	
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
 
-
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
 	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	//검색 버튼 클릭시
 	function searchPlanList(){
-		   let planName = $('#searchPlanName').val();
-		   let sd = $('#startDate').val();
-		   let ed = $('#endDate').val();	   
-
-			$.ajax({
-				url : 'searchPlanList',
-				method : 'GET',
-				data : { searchPlanName : planName, startDate : sd , endDate : ed },
-				success : function(data){	
-					//날짜 츨력 포맷 변경
-					$.each(data, function(i, objDe){
-						let ppd = data[i]['prcsPlanDate'];
-						let psd = data[i]['prcsStartDate'];
-						let ped = data[i]['prcsEndDate'];
-						data[i]['prcsPlanDate'] = getDate(ppd);
-						data[i]['prcsStartDate'] = getDate(psd);
-						data[i]['prcsEndDate'] = getDate(ped);
-					})
-					planGrid.resetData(data);
-					planDeGrid.clear();	
-					},
-					error : function(reject){
-					 console.log(reject);
-					}
-			});
+		let planName = $('#searchPlanName').val();
+		let sd = $('#startDate').val();
+		let ed = $('#endDate').val();	
+		  
+		$.ajax({
+			url : 'searchPlanList',
+			method : 'GET',
+			data : { searchPlanName : planName, startDate : sd , endDate : ed },
+			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let ppd = data[i]['prcsPlanDate'];
+					let psd = data[i]['prcsStartDate'];
+					let ped = data[i]['prcsEndDate'];
+					data[i]['prcsPlanDate'] = getDate(ppd);
+					data[i]['prcsStartDate'] = getDate(psd);
+					data[i]['prcsEndDate'] = getDate(ped);
+				})
+				planGrid.resetData(data);
+				planDeGrid.clear();	
+				},
+				error : function(reject){
+				 console.log(reject);
+				}
+		});
+		   
 	};
 
-	
+
+
 	//생산계획 조회
     var planGrid = new tui.Grid({
         el: document.getElementById('planGrid'),
-        data: [
-	           <c:forEach items="${planList}" var="p" varStatus="status">
-	           	{
-	           		prcsPlanCode : "${p.prcsPlanCode}",
-	           		prcsPlanName : "${p.prcsPlanName}",
-	           		prcsPlanDate : "<fmt:formatDate value='${p.prcsPlanDate}' pattern='yyyy-MM-dd'/>",
-	           		empCode : "${p.empCode}",
-	           		empName : "${p.empName}",
-	           		prcsDirYn : "${p.prcsDirYn}",
-	           		prcsStartDate : "<fmt:formatDate value='${p.prcsStartDate}' pattern='yyyy-MM-dd'/>",
-	           		prcsEndDate : "<fmt:formatDate value='${p.prcsEndDate}' pattern='yyyy-MM-dd'/>"
-	           	} <c:if test="${not status.last}">,</c:if>
-	           </c:forEach>
-	          ],
+//         data: [
+// 	           <c:forEach items="${planList}" var="p" varStatus="status">
+// 	           	{
+// 	           		prcsPlanCode : "${p.prcsPlanCode}",
+// 	           		prcsPlanName : "${p.prcsPlanName}",
+// 	           		prcsPlanDate : "<fmt:formatDate value='${p.prcsPlanDate}' pattern='yyyy-MM-dd'/>",
+// 	           		empCode : "${p.empCode}",
+// 	           		empName : "${p.empName}",
+// 	           		prcsDirYn : "${p.prcsDirYn}",
+// 	           		prcsStartDate : "<fmt:formatDate value='${p.prcsStartDate}' pattern='yyyy-MM-dd'/>",
+// 	           		prcsEndDate : "<fmt:formatDate value='${p.prcsEndDate}' pattern='yyyy-MM-dd'/>"
+// 	           	} <c:if test="${not status.last}">,</c:if>
+// 	           </c:forEach>
+// 	          ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
@@ -226,7 +245,31 @@ h1, h2{
             align: 'center'
           }
         ]
-      })  
+    })  
+	
+	//생산계획 조회(오늘 날짜)
+	$.ajax({
+		url : 'searchPlanList',
+		method : 'GET',
+		data : { startDate : getToday() , endDate : getToday() },
+		success : function(data){	
+			//날짜 츨력 포맷 변경
+			$.each(data, function(i, objDe){
+				let ppd = data[i]['prcsPlanDate'];
+				let psd = data[i]['prcsStartDate'];
+				let ped = data[i]['prcsEndDate'];
+				data[i]['prcsPlanDate'] = getDate(ppd);
+				data[i]['prcsStartDate'] = getDate(psd);
+				data[i]['prcsEndDate'] = getDate(ped);
+			})
+			planGrid.resetData(data);
+			planDeGrid.clear();	
+			},
+			error : function(reject){
+			 console.log(reject);
+			}
+	});
+	
 
 	
 	//상세생산계획 조회

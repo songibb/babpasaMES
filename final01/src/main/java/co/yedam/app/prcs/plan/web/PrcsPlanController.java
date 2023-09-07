@@ -115,8 +115,8 @@ public class PrcsPlanController {
 	//미계획 주문서 조회 	
 	@GetMapping("notPlanOrderList")
 	@ResponseBody
-	public List<OrderVO> getNotPlanOrderList(){
-		List<OrderVO> list = prcsPlanService.selectNotPlanOrderList();
+	public List<OrderVO> getNotPlanOrderList(PrcsSearchVO prcsSearchVO){
+		List<OrderVO> list = prcsPlanService.selectNotPlanOrderList(prcsSearchVO);
 		return list;
 	}
 	

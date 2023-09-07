@@ -5,9 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>미계획 주문서 목록</title>
+<style type="text/css">
+.m_body p{
+	display: inline-block;
+}
+.m_body input[type="date"]{
+	width: 130px;
+}
+</style>
 </head>
-<body>
-
+<body>\
 	<div class="modal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
@@ -15,6 +22,15 @@
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
+				<form>
+					<p>납기일자</p>
+					<input type="date" id="searchStartDate" name="searchStartDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="searchEndDate" name="searchEndDate" value="">		
+	
+					<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">
+						<i class="fas fa-search"></i>검색
+					</button>
+					<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+				</form>
 				<div id="modal_label"></div>
 			</div>
 			<div class="m_footer">
@@ -26,12 +42,11 @@
 	
 	<script type="text/javascript">	
 	//미계획 주문서 모달
+	var Grid;
 	$("#orderModal").click(function(){
 	    $(".modal").fadeIn();
 	    Grid = createOrderGrid();
 	});
-	
-
 	
 	
 	//save버튼 클릭 후 그리드 내용 지우고 모달창에서 선택한 데이터 넣은 후
@@ -158,6 +173,34 @@
 		})
 	    return orderGrid;
 	}
+	
+	//검색 버튼 누를때
+	$('#modalSearchBtn').click(function(){
+		
+	    let searchObj = {};
+		searchObj['startDate'] = $('#searchStartDate').val();
+		searchObj['endDate'] = $('#searchEndDate').val();	   
+
+		$.ajax({
+			url : 'notPlanOrderList',
+			method : 'GET',
+			data : searchObj, 
+			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let od = data[i]['ordDate'];
+					let dd = data[i]['devDate'];
+					data[i]['ordDate'] = getDate(od);
+					data[i]['devDate'] = getDate(dd);
+				})
+				
+				Grid.resetData(data);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+	})
 	
 	
 	$("#close_btn").click(function(){

@@ -64,6 +64,11 @@ h1, h2{
 .selected-cell{
 	background-color: #ffd09e;
 }
+
+td[data-column-name="prcsName"], 
+td[data-column-name="prcsSeq"]{
+	cursor : pointer;
+}
 </style>
 </head>
 <body>
@@ -87,7 +92,7 @@ h1, h2{
 		           				<input type="text" name="prodName" id="prodName" readonly>
 		           			</div>	
 		           			<div>
-		           				<button id="prcsInfo" class="btn btn-info btn-icon-text">기존 제품 정보 가져오기</button>
+		           				<button id="prcsInfo" class="btn btn-info btn-icon-text">공정 정보 가져오기</button>
 		           				<button id="addBtn" class="btn btn-info btn-icon-text">추가</button>
 								<button id="removeBtn" class="btn btn-info btn-icon-text">삭제</button>
 								<button id="saveBtn" class="btn btn-info btn-icon-text">저장</button>		            		
@@ -100,29 +105,40 @@ h1, h2{
 		</div>
 	</div> 
 
-	<div class="modal">
+	<div class="modal" id="prcsListModal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>목록</h3></div>
+				<div class="modal_title"><h3>공정목록</h3></div>
+				<div class="close_btn" id="close_btn_prcs">X</div>
+			</div>
+			<div class="m_body">
+				<div id="modal_label_prcs"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal" id="pdModal">
+		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
+			<div class="m_head">
+				<div class="modal_title"><h3>제품 목록</h3></div>
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
 				<div id="modal_label"></div>
 			</div>
-<!-- 			<div class="m_footer"> -->
-<!-- 				<div class="modal_btn save" id="save_btn">선택</div> -->
-<!-- 			</div> -->
 		</div>
 	</div>
-    
+
 	<script>
+
 	//추가
 	document.getElementById('addBtn').addEventListener('click', addRow);
 	//삭제
 	document.getElementById('removeBtn').addEventListener('click', removeRow);
 	//저장
 	document.getElementById('saveBtn').addEventListener('click', saveServer);
-	
+	//기존 제품 공정 정보 가져오기
+	document.getElementById('prcsInfo').addEventListener('click', getPrcsInfo);
 	
 	function addRow(){	
 		grid2.appendRow();
@@ -132,6 +148,36 @@ h1, h2{
 		grid2.removeCheckedRows(false);
 	}
 	
+	
+	var Grid;
+	function getPrcsInfo(){
+		$("#pdModal").fadeIn();
+	    Grid = createProdGrid();
+	    
+	    Grid.on('dblclick', () => {
+	        let rowKey = Grid.getFocusedCell().rowKey;
+	        let prodCode = Grid.getValue(rowKey, 'prodCode');        
+	        
+	        //모달창 닫기
+	        if(rowKey != null){
+				$(".modal").fadeOut();
+		        Grid.destroy();
+	        	
+	        	$.ajax({
+	    			url : 'selectPrcsProdList',
+	    			method : 'GET',
+	    			data : { prodCode : prodCode },
+	    			success : function(data){
+	     				grid2.appendRows(data);
+	     		    },
+	    			error : function(reject){
+	    	 			console.log(reject);
+	    	 		}	
+	    		})
+	        }
+
+	    });
+	}
 
 	//제품 조회
 	var grid = new tui.Grid({
@@ -168,6 +214,7 @@ h1, h2{
     })  
 	
 	function saveServer(){
+		checkUnload = false;
 		grid2.blur();
 		let modifyGrid = grid2.getModifiedRows();
 
@@ -182,7 +229,7 @@ h1, h2{
 		//등록
 		if(modifyGrid.createdRows.length > 0){
 			$.each(modifyGrid.createdRows, function(idx, obj){
-				if(obj['prcsCode'] == '' || obj['prcsName'] == '' || obj['prcsSeq'] == ''){
+				if(obj['prcsCode'] == null || obj['prcsName'] == null || obj['prcsSeq'] == null){
 					flag = false;
 					return false;
 				}
@@ -192,7 +239,7 @@ h1, h2{
 		//수정
 		if(modifyGrid.updatedRows.length > 0){
 			$.each(modifyGrid.updatedRows, function(idx, obj){
-				if(obj['prcsCode'] == '' || obj['prcsName'] == '' || obj['prcsSeq'] == ''){
+				if(obj['prcsCode'] == null || obj['prcsName'] == null || obj['prcsSeq'] == null){
 					flag = false;
 					return false;
 				}
@@ -201,11 +248,9 @@ h1, h2{
 		
 		let prRowKey = grid.getFocusedCell().rowKey;
 		let prodCode = grid.getValue(prRowKey, 'prodCode');
-		modifyGrid['prodCode'] = prodCode;
-		
+		modifyGrid['prodCode'] = prodCode;		
 		
 		let modiList = { prodCode : prodCode , gridVO : modifyGrid }
-		console.log(modiList);
 		if(flag){
 			$.ajax({
 				url : 'updatePrcsProd',
@@ -213,9 +258,8 @@ h1, h2{
 				data : JSON.stringify(modiList),
 				contentType : 'application/json',
 				success : function(data){
-					console.log(data);
 					swal("성공", data +"건이 처리되었습니다.", "success");
-					selectListAjax();
+
 				},
 				error : function(reject){		
 					console.log(reject);
@@ -299,40 +343,38 @@ h1, h2{
 		let rowKey = grid2.getFocusedCell().rowKey;
     	let columnName = grid2.getFocusedCell().columnName;
     	let value = grid2.getFocusedCell().value; 
-    	let no = grid2.getValue(rowKey,'bomNo');
-    	if(columnName == 'prcsName' && no ==null){
-    		$(".modal").fadeIn();
-  	       Grid = createPrcsGrid();
+    	//let no = grid2.getValue(rowKey,'bomNo');
+    	
+    	if(columnName == 'prcsName'){
+    		$("#prcsListModal").fadeIn();
+			prcsListGrid = createPrcsGrid();
   	       
-  	       Grid.on('dblclick', () => {
-  	    	 let rowKey2 = Grid.getFocusedCell().rowKey;
-  	    	 if(rowKey2 != null){
-  	    		let prcsCode = Grid.getValue(rowKey2, 'prcsCode');
- 	        	let prcsName = Grid.getValue(rowKey2, 'prcsName');
- 	        	grid2.finishEditing(rowKey, columnName);
- 	        	
- 	        	if(prcsCode != null){
- 	        		grid2.setValue(rowKey, 'prcsCode', prcsCode);
- 	        	}
- 	         	if(prcsName != null){
- 	         		grid2.setValue(rowKey, 'prcsName', prcsName);
- 	        	} 
-  	    	 }
-  	    	 
-  	    	 if(rowKey2 != null){
-  	    		$(".modal").fadeOut();
-	        		Grid.destroy();
-  	    	 }
-  	    	 
-  	    	 
+			prcsListGrid.on('dblclick', () => {
+				let rowKey2 = prcsListGrid.getFocusedCell().rowKey;
+				if(rowKey2 != null){
+					let prcsCode = prcsListGrid.getValue(rowKey2, 'prcsCode');
+				 	let prcsName = prcsListGrid.getValue(rowKey2, 'prcsName');
+				 	grid2.finishEditing(rowKey, columnName);
+				 	
+				 	if(prcsCode != null){
+				 		grid2.setValue(rowKey, 'prcsCode', prcsCode);
+				 	}
+				  	if(prcsName != null){
+				  		grid2.setValue(rowKey, 'prcsName', prcsName);
+				 	} 
+				}
+				
+				if(rowKey2 != null){
+					$("#prcsListModal").fadeOut();
+					prcsListGrid.destroy();
+				}	 
   	       });
     	}
 	})
 	
-   	function createPrcsGrid(){
-   		
+   	function createPrcsGrid(){  		
    		var prcsGrid = new tui.Grid({
-   			el: document.getElementById('modal_label'),
+   			el: document.getElementById('modal_label_prcs'),
 			scrollX: false,
 			scrollY: false,
 			minBodyHeight: 30,
@@ -348,10 +390,12 @@ h1, h2{
 			   {
 			        header: '공정코드',
 			        name: 'prcsCode',
+			        align: 'center'
 			      },
 			      {
 			        header: '공정구분',
-			        name: 'prcsType',
+			        name: 'prcsTypeKr',
+			        align: 'center'
 			   },
 			      {
 			        header: '공정이름',
@@ -378,11 +422,76 @@ h1, h2{
    		return prcsGrid;
    	}
 	
+	$("#close_btn_prcs").click(function(){
+	    $(".modal").fadeOut();
+	    prcsListGrid.destroy();
+	});
+	
+
+
+	function createProdGrid(){
+	    var prodGrid = new tui.Grid({
+	        el: document.getElementById('modal_label'),
+	        scrollX: false,
+	        scrollY: false,
+	        minBodyHeight: 30,
+	        rowHeaders: ['rowNum'],
+	        selectionUnit: 'row',
+	        pagination: true,
+	        pageOptions: {
+	            useClient: true,
+	            perPage: 10
+	        },
+	        columns: [
+	            {
+	                header: '제품코드',
+	                name: 'prodCode',
+	                align: 'center'
+	            },
+	            {
+	                header: '제품명',
+	                name: 'prodName'
+	            },
+	        ]       
+	    });
+		
+		$.ajax({
+		    url : 'selectProdList',
+		    method : 'GET',
+		    success : function(data){
+		    	prodGrid.resetData(data);
+		    },
+		    error : function(reject){
+		        console.log(reject);
+		    }	
+		})
+	    return prodGrid;
+	}
+	
+	
 	$("#close_btn").click(function(){
 	    $(".modal").fadeOut();
-	  	Grid.destroy();
+	    if (Grid != null && Grid.el != null) {
+	        Grid.destroy();
+	    }
 	});
+	
+	
+	//수정중일때 저장하지 않고 페이지 나가면 경고창 출력
+// 	$(document).ready(function(){ 
+// 	    window.onbeforeunload = function(){
+// 	        if(grid2.ismodified()){
+// 	        	doexit();
+// 	        }
+// 	    };
+// 	});
+	
+// 	function doexit(){
+// 	    event.returnvalue = '"저장되지 않은 데이터가 있습니다."';
+// 	}
 
+
+	    
 	</script>
 </body>
 </html>
