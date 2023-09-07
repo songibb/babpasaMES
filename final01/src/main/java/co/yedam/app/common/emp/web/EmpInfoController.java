@@ -98,6 +98,23 @@ public class EmpInfoController {
 		}
 		
 	}
-
+	
+	
+	//퇴사처리시 권한 변경
+	
+	@PostMapping("/leaveEmpInfoUpdate")
+	@ResponseBody
+	public int leaveEmpInfoUpdate(@RequestBody EmpInfoVO vo) {
+		if(vo.getEmpPw()==null || vo.getEmpPw().equals("")) {
+			return empInfoService.leaveEmpInfoUpdate(vo);
+		}else {
+			BCryptPasswordEncoder enco = new BCryptPasswordEncoder();
+			String pw = vo.getEmpPw();
+			vo.setEmpPw(enco.encode(pw));
+			
+			return empInfoService.leaveEmpInfoUpdate(vo);
+		}
+		
+	}
 	
 }

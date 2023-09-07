@@ -25,6 +25,10 @@ public interface EmpInfoMapper {
 	public List<EmpInfoVO> empSelect(EmpInfoVO empInfoVO);
 	
 	
+	//퇴사사원 수정
+	public int leaveEmpInfoUpdate(EmpInfoVO empInfoVO);
+	
+	
 	
 
 }

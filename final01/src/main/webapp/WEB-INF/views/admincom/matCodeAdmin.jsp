@@ -69,6 +69,10 @@
 	float : right;
 }
 
+td[data-column-name="matCode"]{
+		cursor : pointer;
+	}
+
 	
 </style>
 </head>
