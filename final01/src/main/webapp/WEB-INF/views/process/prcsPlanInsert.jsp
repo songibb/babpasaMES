@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생산 계획 등록</title>
+<title>생산 계획 관리</title>
 
 <!-- 토스트 그리드 데이트피커 -->
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
@@ -76,6 +76,11 @@
  
 .selected-cell{
 	background-color: #ffd09e;
+}
+
+
+.input-cell{
+	cursor: pointer;
 }
 </style>
 
@@ -581,6 +586,9 @@
 	});
 	
 	
+// 	planGrid.on('mouseover', () => {
+
+// 	})
 
 	
 
