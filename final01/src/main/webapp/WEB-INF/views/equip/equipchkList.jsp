@@ -71,6 +71,47 @@
 	#comple{
 		cursor : pointer;
 	}
+	
+	.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+	}
+	
+	.btn-info2 {
+	    color: black;
+	    background-color: white;
+	    border-color: #ccc;
+	    
+	}
+	
+	#todayBtn {
+		margin-left: 2px !important;
+		border-radius: 5px 0 0 5px;
+		border : 1px solid #ccc;
+	}
+		#todayBtn:hover{
+			background-color : #f4f4f4;
+			border : 1px solid #868e96;
+			color: black;
+		}
+		#monthBtn:hover{
+			background-color : #f4f4f4;
+			border : 1px solid #868e96;
+			color: black;
+		}
+		#weekBtn:hover{
+	    background-color : #f4f4f4;
+	    border : 1px solid #868e96;
+	    color: black;
+	}
+		
+	#monthBtn{
+			border-radius: 0 5px 5px 0;
+			border : 1px solid #ccc;
+	}
 </style>
 </head>
 <body>
@@ -89,9 +130,11 @@
 							<br>
 							<p>점검일자</p>
 							 <input type="date" id="startDate"> ~ <input type="date" id="endDate">
-							 <button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
-							 <button type="button" id="searchBtn" class="btn btn-info btn-icon-text">검색</button>
+							 <button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+							<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+							<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="monthBtn">한달</button>
+							 <button type="button" id="searchBtn" class="btn btn-info btn-icon-text" style="margin-left: 10px;">검색</button>
+							 <button type="reset" class="btn btn-info btn-icon-text">초기화</button>
 							<div>
 							<p>점검판정</p>
 							<label for="before"><input type="checkbox" id="before" value="before"> 합격</label> 
@@ -136,17 +179,26 @@
 	//일주일
 	document.getElementById('weekBtn').addEventListener('click', weekBtn);
 	
+	document.getElementById('monthBtn').addEventListener('click', monthBtn);
+	
 	//오늘 버튼 클릭시
 	function todayBtn(){
 		$('#startDate').val(getToday());
-		$('#endDate').val(getToday());;
+		$('#endDate').val(getToday());
 	}
 	
 	//일주일 버튼 클릭시
 	function weekBtn(){
 		$('#startDate').val(getWeek());
-		$('#endDate').val(getToday());;
+		$('#endDate').val(getToday());
 	}
+	
+	//한달 버튼 클릭시
+	function monthBtn(){
+		$('#startDate').val(getMonth());
+		$('#endDate').val(getToday());
+	}
+	
 	   //점검 설비 grid
 	     var grid = new tui.Grid({
 	         el: document.getElementById('grid'),
@@ -244,7 +296,7 @@
 	 	});
 	   
 	     let search = {
-	                startDate: getToday(),
+	                startDate: getMonth(),
 	                endDate: getToday()
 	            };
 	            $.ajax({
@@ -252,7 +304,7 @@
 	                method: 'GET',
 	                data: search,
 	                success: function (data2) {
-	                	todayBtn();
+	                	monthBtn();
 	                	
 	                	//날짜 형식 변환
 	                     $.each(data2, function (idx, obj) {

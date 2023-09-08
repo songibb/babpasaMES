@@ -654,12 +654,14 @@
  				
  			   matgrid.resetData(data);
 				setDisabled();
+				
  		   },
  		   error : function(reject){
  			   console.log(reject);
  		   }
  	   })
     }
+
     
   //수정중일때 페이지 나가면 경고창 출력
  	$(document).ready(function(){ 

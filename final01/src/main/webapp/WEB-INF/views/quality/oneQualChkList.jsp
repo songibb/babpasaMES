@@ -47,10 +47,14 @@
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 	
 	.selected-cell{background-color: #ffd09e;}
-	
+
 	#grid tbody td{
 			cursor : pointer;
 		}
+		
+	.pass-cell{
+		background-color:#b0e09a;
+	}
 	</style> 
 </head>
 <body>
@@ -296,8 +300,16 @@
    		         	grid2.addRowClassName(rowKey,'my-styled-cell');
    		        }
    		    })
- 				
- 				
+   		    
+   		    //안전재고량 > 현재고
+   		    $.each(data, function (idx, obj) {
+   	
+   		        if (Number(obj['passValue']) > Number(obj['testResult'])) {
+   		            let rowKey = obj['rowKey'];
+   		         	grid2.addCellClassName(rowKey, 'passYn2','pass-cell');
+   		        }
+   		    })
+	
  		    },
 			error : function(reject){
 	 			console.log(reject);

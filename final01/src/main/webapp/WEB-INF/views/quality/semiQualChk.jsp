@@ -33,6 +33,10 @@
 			cursor : pointer;
 		}
 		
+		.pass-cell{
+		background-color:#b0e09a;
+	}
+
     </style>
 </head>
 <body>
@@ -228,6 +232,17 @@
             grid2.setValue(change.rowKey, 'passYn', passYn);
             grid2.setValue(change.rowKey, 'passYn2', passYn2);
          }
+         
+       //안전재고량 > 현재고
+         let data = grid2.getData();
+        
+    	    $.each(data, function (idx, obj) {
+
+    	        if (obj['passYn2'] == '합격') {
+    	            let rowKey = obj['rowKey'];
+    	         	grid2.addCellClassName(rowKey, 'passYn2','pass-cell');
+    	        }
+    	    })
       }
       });
       //끝
@@ -365,6 +380,7 @@
   	    event.returnValue = "페이지를 벗어 나시겠습니까?";
   	}
   	
+  
    </script>
 </body>
 </html>
