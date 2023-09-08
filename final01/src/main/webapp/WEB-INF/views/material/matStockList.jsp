@@ -108,6 +108,7 @@
 		display : inline-block;
 		margin-left : 360px;
 	}
+	
 </style>    
        
 </head>
@@ -178,7 +179,9 @@
     		</div>
   		</div>
 	</div>
-
+	<div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
     
 	<script>
 		var Grid;
