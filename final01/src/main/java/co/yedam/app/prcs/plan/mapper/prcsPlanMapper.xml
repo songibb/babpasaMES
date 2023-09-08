@@ -158,7 +158,15 @@
 			   d.dev_date
 		  FROM sales_ord s JOIN sales_ord_de d 
 		  					 ON s.ord_code = d.ord_code
-		 WHERE s.ord_sts = 'P1'
+		 <where>
+		 		s.ord_sts = 'P1'
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(dev_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(dev_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
 		 ORDER BY d.dev_date
 	</select>
 	

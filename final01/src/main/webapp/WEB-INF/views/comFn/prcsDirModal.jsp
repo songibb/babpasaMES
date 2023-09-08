@@ -112,12 +112,12 @@
 	    return prcsDirGrid;
 	}
 	
+	//검색 버튼 누를때
 	$('#modalSearchBtn').click(function(){
 		
 	    let searchObj = {};
 		searchObj['startDate'] = $('#searchStartDate').val();
 		searchObj['endDate'] = $('#searchEndDate').val();	   
-		console.log(searchObj);
 		
 		$.ajax({
 			url : 'selectPrcsEndDirList',

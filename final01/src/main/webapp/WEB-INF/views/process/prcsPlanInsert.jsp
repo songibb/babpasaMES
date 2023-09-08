@@ -78,9 +78,12 @@
 	background-color: #ffd09e;
 }
 
-
-.input-cell{
-	cursor: pointer;
+td[data-column-name="prcsPlanName"], 
+td[data-column-name="prcsStartDate"], 
+td[data-column-name="prcsEndDate"],
+td[data-column-name="prcsPlanAmt"],
+td[data-column-name="prcsPrio"]{
+	cursor : pointer;
 }
 </style>
 
@@ -585,12 +588,6 @@
 		]
 	});
 	
-	
-// 	planGrid.on('mouseover', () => {
-
-// 	})
-
-	
 
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회
 	planGrid.on('click', () => {
@@ -664,6 +661,20 @@
 		$('#startDate').attr('max', $('#endDate').val());
 	});
 	
+	
+	
+	//수정중일때 저장하지 않고 페이지 나가면 경고창 출력
+	$(document).ready(function(){ 
+	    window.onbeforeunload = function(){
+	        if(orderGrid.isModified()){
+	        	doExit();
+	        }
+	    };
+	});
+	
+	function doExit(){
+	    event.returnValue = '"저장되지 않은 데이터가 있습니다."';
+	}
 	
     </script>
     

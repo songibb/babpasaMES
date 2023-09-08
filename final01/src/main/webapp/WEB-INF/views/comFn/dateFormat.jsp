@@ -9,7 +9,8 @@
 <body>
 
 	<script type="text/javascript">
-		function getDate(sec){    //서버에서 숫자로 넘어온 날짜를 다시 날짜로 바꾸기
+		//서버에서 숫자로 넘어온 날짜를 다시 날짜로 바꾸기
+		function getDate(sec){    
 		    let date = new Date(sec);  //매개변수값으로 숫자를 넘겨주면 날짜로 변환
 		    
 		    let year = date.getFullYear();
@@ -19,6 +20,31 @@
 		
 		    return year + '-' + month + '-' + day;
 		}	
+		
+		//오늘 날짜 구하기
+		function getToday(){
+			let today = new Date();
+			
+			let year = today.getFullYear();
+			let month = ('0' + (today.getMonth() + 1)).substr(-2);
+			let day = ('0' + today.getDate()).substr(-2);
+
+			return year + '-' + month  + '-' + day ;			
+		}
+		
+		//일주일전
+		function getWeek(){
+			let today = new Date();
+			let week = new Date(today.setDate(today.getDate() - 7));
+					
+			let year = week.getFullYear();
+			let month = ('0' + (week.getMonth() + 1)).substr(-2);
+			let day = ('0' + (week.getDate())).substr(-2);
+
+			return year + '-' + month  + '-' + day ;			
+		}
+
+		
 	</script>
 
 </body>

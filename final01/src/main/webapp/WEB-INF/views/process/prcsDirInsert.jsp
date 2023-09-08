@@ -66,6 +66,13 @@ h1, h2{
 .selected-cell{
 	background-color: #ffd09e;
 }
+
+td[data-column-name="prcsDirName"], 
+td[data-column-name="prcsStartDate"], 
+td[data-column-name="prcsDirAmt"],
+td[data-column-name="prcsStartDeDate"]{
+	cursor : pointer;
+}
 </style>    
     
 </head>

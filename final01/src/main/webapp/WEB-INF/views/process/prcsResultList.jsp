@@ -94,6 +94,8 @@ h2{
 						<p>지시등록일자</p>
                 		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 						
+						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -126,7 +128,24 @@ h2{
 	<script>
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchResultList);
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
 	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	//검색 버튼 클릭시
 	function searchResultList(){
 		let searchObj = {};
 		searchObj['searchPrcsDirCode'] = $('#searchPrcsDirCode').val();
@@ -152,7 +171,7 @@ h2{
 				 console.log(reject);
 			}
 		});
-};
+	};
 	
 	
  	//공정 실적 조회
@@ -253,10 +272,10 @@ h2{
 	})  
  	
  	
+	//공정실적 조회(오늘 날짜)
 	let searchObj = {};
- 	searchObj['searchProdCode'] = $('#searchProdCode').val();
- 	searchObj['startDate'] = $('#startDate').val();
- 	searchObj['endDate'] = $('#endDate').val();
+ 	searchObj['startDate'] = getToday();
+ 	searchObj['endDate'] = getToday();
 
 	$.ajax({
         url : "selectPrcsResultList",

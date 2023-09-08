@@ -130,8 +130,8 @@ public class PrcsPlanServiceImpl implements PrcsPlanService {
 	
 	//미계획 주문서 조회
 	@Override
-	public List<OrderVO> selectNotPlanOrderList() {
-		return prcsPlanMapper.selectNotPlanOrderList();
+	public List<OrderVO> selectNotPlanOrderList(PrcsSearchVO prcsSearchVO) {
+		return prcsPlanMapper.selectNotPlanOrderList(prcsSearchVO);
 	}
 	
 	//미계획 상세주문서 조회

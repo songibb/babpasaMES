@@ -34,7 +34,7 @@ public interface PrcsPlanMapper {
 	
 	
 	//미계획 주문서 조회 
-	public List<OrderVO> selectNotPlanOrderList();
+	public List<OrderVO> selectNotPlanOrderList(PrcsSearchVO prcsSearchVO);
 	
 	//미계획 상세 주문서 조회 
 	public List<OrderVO> selectNotPlanOrderDeList(@Param("ordCode") String ordCode);
