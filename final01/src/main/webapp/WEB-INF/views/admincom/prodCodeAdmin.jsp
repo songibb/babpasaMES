@@ -119,7 +119,7 @@
 										<label>규격</label>
 										<input type="text" name="prodStd" id="prodStd" >
 										<label>유통기한(일)</label>
-										<input type="text" name="prodExdate" id="prodExdate" style="margin-bottom: 30px">
+										<input type="text" name="prodExdate" id="prodExdate" style="margin-bottom: 30px" placeholder="숫자만 입력">
 										<div style="text-align: center;">
 											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 9px; margin-bottom: 10px">저장</button>
 											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 9px; margin-bottom: 10px">취소</button>

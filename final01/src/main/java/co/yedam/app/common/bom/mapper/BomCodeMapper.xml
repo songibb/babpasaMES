@@ -62,6 +62,7 @@
 							  LEFT JOIN com_prod p
 							  		ON(b.mp_code = p.prod_code)
 			WHERE b.bom_no = #{bomNo}
+			ORDER BY b.bom_code
   	</select>
   	
   	<insert id="bomCodeInsert" parameterType="BomCodeVO">
@@ -173,6 +174,7 @@
 							  LEFT JOIN com_prod p
 							  		ON(b.mp_code = p.prod_code)
 			WHERE b.bom_no = #{bomNo}
+			ORDER BY b.bom_code
   	</select>
   	
   </mapper>

@@ -220,7 +220,7 @@ td[data-column-name="bomAmt"]
   <div class="modal_content" 
        title="클릭하면 창이 닫힙니다.">
           <div class="m_head">
-            <div class="modal_title"><h3>기존 제품 목록</h3></div>
+            <div class="modal_title"><h3>기존 제품 BOM 목록</h3></div>
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
@@ -1039,6 +1039,8 @@ td[data-column-name="bomAmt"]
 		  	});
 	})
 	
+	
+	var bomgrid2;
 	function createDeBomDeCall(){
 			let content = null;
 		   let search = { prodName : content };
@@ -1055,7 +1057,7 @@ td[data-column-name="bomAmt"]
 			   }
 		})
 	
-	var bomgrid2 = new tui.Grid({
+		bomgrid2 = new tui.Grid({
         el: document.getElementById('modal_label_de'),
         scrollX: false,
         scrollY: false,
@@ -1476,6 +1478,18 @@ td[data-column-name="bomAmt"]
 		
 		$('#deBomCallsearchBtn').on('click',function(e){
 			let inputBomContent = $('#deBomCallsearch').val();
+			let search = {prodName : inputBomContent}
+			 $.ajax({
+				   url : 'bomSearch',
+				   method : 'GET',
+				   data : search ,
+				   success : function(data){
+					   bomgrid2.resetData(data);
+				   },
+				   error : function(reject){
+					   console.log(reject);
+				   }
+			   })
 		})
 
 
