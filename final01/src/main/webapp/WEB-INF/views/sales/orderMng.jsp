@@ -569,14 +569,6 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
         });
     });
 
-    // 조건맞는 행(추가되는 행)인지 체크 	function checkChangeable(ev) { 	    var rowKey =
-    // ev.rowKey; 	    var rows = orderGrid.findRows({salesOrdDeCode: null});
-    // let flag = false; 	    $.each(rows, function (idx, obj) { 	        if
-    // (obj['rowKey'] == rowKey) { 	            flag = true; 	            return
-    // false; 	        } 	    }); 	    return flag; 	}  추가되는 행만 edit가능
-    // orderGrid.on('editingStart', function (ev) { 	    let flag =
-    // checkChangeable(ev); 	    if (!flag) { 	        ev.stop(); 	    } 	});
-
     orderGrid.on('click', ev => {
 
         //선택한 행 색깔 바꾸기

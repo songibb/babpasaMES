@@ -645,9 +645,7 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
                 }
 
             });
-        } //else if(columnName == 'empName'){ session에서 받아오기
-
-        //}
+        } 
 
     });
 
@@ -1175,9 +1173,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
         $('#startDate').attr('max', $('#endDate').val());
     });
     
-    
-    
-
   	//계산
 	outGrid.on('afterChange', (ev) => {
 
@@ -1199,26 +1194,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
 	    }
 	});    
   	
-// 	outGrid.on('afterChange', (ev) => {
-
-// 	    let change = ev.changes[0];
-// 	    let rowData = outGrid.getRow(change.rowKey);
-	   
-		
-// 	    if (change.columnName == 'prodSaveAmt') {
-// 	    	console.log(rowData);
-// 			console.log(rowData.salesOutAmt +','+rowData.prodSaveAmt);
-			
-// 	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) /50) {
-	        	
-// 	        	console.log('test');
-	        	
-// 	            swal("경고", "재고량을 넘을 수 없습니다", "warning");
-// 	            outGrid.setValue(change.rowKey, 'salesOutAmt', rowData.prodSaveAmt);
-// 	        }
-// 	    }
-// 	});    
-    
     //저장 함수
     function saveServer() {
         outGrid.blur();
@@ -1275,39 +1250,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
         }
 
     }
-
-//     //수량체크하는 함수
-//     function qtyCheck() {
-//         // let ordersQty = parseInt(document.getElementsByName("ordersQty")[0].value);
-//         // 입력수량 150         let productQty =
-//         // parseInt(document.getElementById("productQty")); 재고수량 95
-//         let modifyGridInfo = outGrid.getModifiedRows();
-//         $.each(outGrid.getModifiedRows().createdRows, function (idx2, obj2) {
-//             if (obj2['prodCode'] == "" || obj2['actCode'] == "" || obj2['salesOutDate'] == "" || obj2['salesOutAmt'] == "" || obj2['empCode'] == "" || obj2['salesOrdDeCode'] == "" || obj2['prodLot'] == "") {}
-//         })
-
-//         // 반복 코드 줄이기 위해 return false; 를 변수화
-//         let ret = false;
-
-//         console.log("orderQty : " + ordersQty);
-//         console.log("productQty : " + productQty);
-
-//         // 입력 수량이 undefined인지 여부
-//         if (ordersQty) {
-//             // 입력수량이 존재함 입력수량 > 재고
-//             if (ordersQty > productQty) {
-//                 alert("재고 수량을 초과하여 입력할 수 없습니다.") // 입력수량 = 0 or 입력수량 < 0);
-//             } else if (ordersQty === 0 || ordersQty < 0) {
-//                 alert("1개 이상 입력할 수 있습니다.") // 그게 아니라면 true로 반환 !ret 이니까 true임);
-//             } else {
-//                 ret = !ret;
-//             }
-//         } else {
-//             // 입력수량이 undefined임
-//             alert("수량을 입력해 주세요.");
-//         }
-//         return ret;
-//     }
 
     //엑셀 다운로드
     const excelDownload = document.querySelector('.excelDownload');

@@ -278,6 +278,8 @@ form {
 						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
 						<label for="comple" style="margin-right: 20px;">
 						<input type="checkbox" id="comple" value="comple">출고완료</label>
+						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -322,7 +324,23 @@ form {
 	</div>
 
 	<script>
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
 
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
     //거래처 리스트 모달 시작
     var Grid;
     $("#actModal").click(function () {
@@ -529,20 +547,20 @@ form {
     //주문Header 그리드
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${ordHeaderList}" var="order" varStatus="status">
-            {
-                ordCode: "${order.ordCode}",
-                ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
-                actName: "${order.actName}",
-                ordSts: "${order.ordSts}",
-                empCode: "${order.empCode}",
-                empName: "${order.empName}",
-                actCode: "${order.actCode}",
-                prcsPlanCode: "${order.prcsPlanCode}",
-                devYn: "${order.devYn}"
-            }<c:if test="${not status.last}">,</c:if>
-        </c:forEach>
-            ],
+//         data: [<c:forEach items="${ordHeaderList}" var="order" varStatus="status">
+//             {
+//                 ordCode: "${order.ordCode}",
+//                 ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
+//                 actName: "${order.actName}",
+//                 ordSts: "${order.ordSts}",
+//                 empCode: "${order.empCode}",
+//                 empName: "${order.empName}",
+//                 actCode: "${order.actCode}",
+//                 prcsPlanCode: "${order.prcsPlanCode}",
+//                 devYn: "${order.devYn}"
+//             }<c:if test="${not status.last}">,</c:if>
+//         </c:forEach>
+//             ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
@@ -612,18 +630,18 @@ form {
     //주문 Detail 그리드
     var grid2 = new tui.Grid({
         el: document.getElementById('grid2'),
-        data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
-            {
-                salesOrdDeCode: "${order.salesOrdDeCode}",
-                ordCode: "${order.ordCode}",
-                prodCode: "${order.prodCode}",
-                prodName: "${order.prodName}",
-                prcsRqAmt: "${order.prcsRqAmt}",
-                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-                devYn: "${order.devYn}"
-            }<c:if test="${not status.last}">,</c:if>
-        </c:forEach>
-            ],
+//         data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
+//             {
+//                 salesOrdDeCode: "${order.salesOrdDeCode}",
+//                 ordCode: "${order.ordCode}",
+//                 prodCode: "${order.prodCode}",
+//                 prodName: "${order.prodName}",
+//                 prcsRqAmt: "${order.prcsRqAmt}",
+//                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
+//                 devYn: "${order.devYn}"
+//             }<c:if test="${not status.last}">,</c:if>
+//         </c:forEach>
+//             ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
