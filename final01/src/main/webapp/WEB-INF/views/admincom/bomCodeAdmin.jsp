@@ -138,7 +138,9 @@
 
 td[data-column-name="prcsName"],
 td[data-column-name="bomUnit"],
-td[data-column-name="mpName"]
+td[data-column-name="mpName"],
+td[data-column-name="bomYn"],
+td[data-column-name="bomAmt"]
  {
 		cursor : pointer;
 	}
@@ -222,6 +224,10 @@ td[data-column-name="mpName"]
             <div class="close_btn" id="close_btn">X</div>
        </div>
        <div class="m_body">
+       		<div>
+       			 제품명 <input type="text" id="deBomCallsearch" style="width: 30%">
+       			<button type="button" class="btn btn-info btn-icon-text" id="deBomCallsearchBtn">검색</button>
+       		</div>
             <div id="modal_label_de"></div>
        </div>
        <div class="m_footer">
@@ -401,7 +407,7 @@ td[data-column-name="mpName"]
 		//빈데이터 확인
 		$.each(list, function(i, obj){
 			for(let field in obj){
-					if(field != 'bomNo' && field != 'bomPrcsYnName' && obj[field] == null){
+					if(obj['prodCode'] == null || obj['prodName'] == null || obj['bomYn'] == null){
 						flag = false;
 					}
 			}
@@ -413,16 +419,19 @@ td[data-column-name="mpName"]
 		$.each(deList, function(i, objDe){
 			
 			for(let field in objDe){
-				if(field != 'bomCode' && field != 'bomNo' && objDe[field] == null){
+				if(objDe['prcsCode'] == null || objDe['mpKind'] == null || objDe['mpCode'] == null || objDe['bomUnit'] == null || objDe['bomAmt'] == null){
 					flag = false;
 				}
 				 if(isNaN(objDe['bomAmt'])==true || objDe['bomAmt']>999999999){
 					flag = false;
 					
 				} 
+
+				 
 			}
-		})
 			
+		})
+
 			if (flag) {
 				
 				let bomInsertList = {
@@ -1003,6 +1012,31 @@ td[data-column-name="mpName"]
     	
 		$("#DeBomModal").fadeIn();
 	       Grid = createDeBomDeCall();
+	       
+	       Grid.on('dblclick', () => {
+		    	//클릭한 제품 BOM가져오기
+		    	let rowKey = Grid.getFocusedCell().rowKey;
+		    	let bomNo = Grid.getValue(rowKey, 'bomNo');
+		    	 if(rowKey != null){
+		  	    		$("#DeBomModal").fadeOut();
+			        		Grid.destroy();
+			        		$.ajax({
+								url : 'bomDeCallList',
+								method : 'GET',
+								data : { bomNo : bomNo },
+								success : function(data){
+									deBomgrid.appendRows(data);
+					 		    },
+								error : function(reject){
+						 			console.log(reject);
+						 		}	
+							})
+							
+							
+		  	    	 }
+		  	    	 
+		    	
+		  	});
 	})
 	
 	function createDeBomDeCall(){
@@ -1025,12 +1059,12 @@ td[data-column-name="mpName"]
         el: document.getElementById('modal_label_de'),
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 400,
+        minBodyHeight: 320,
 		rowHeaders: [{type: 'rowNum'},{type: 'checkbox'}],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 10,
+			perPage: 8,
 		},
         columns: [
           {
@@ -1438,6 +1472,10 @@ td[data-column-name="mpName"]
 						console.log(reject);
 					}
 				})
+		})
+		
+		$('#deBomCallsearchBtn').on('click',function(e){
+			let inputBomContent = $('#deBomCallsearch').val();
 		})
 
 

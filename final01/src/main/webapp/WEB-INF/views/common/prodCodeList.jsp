@@ -174,7 +174,12 @@ function searchProdIn(e){
        {
          header: '규격',
          name: 'prodStd'
-       }
+       },
+       {
+           header: '유통기한(일)',
+           name: 'prodExdate',
+           align: 'right'
+           }
      ]
    });
  

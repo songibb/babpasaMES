@@ -35,4 +35,8 @@ public interface BomCodeService {
 	
 	//chart test
 	public List<BomCodeVO> chartTest();
+	
+	
+	//bom 상세 조회(기존제품가져오기)
+	public List<BomCodeVO> DeBomCallList(String bomNo);
 }

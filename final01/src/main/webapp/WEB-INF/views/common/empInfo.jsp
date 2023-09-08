@@ -240,7 +240,7 @@ var grid = new tui.Grid({
 	           hidden: true
 		      },
 	         {
-	           header: '직급정보',
+	           header: '권한',
 	           name: 'empRoleName',
 	           align: 'center'
 	         },

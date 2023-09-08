@@ -70,8 +70,8 @@
 		
 	}
 	#id label {
-		margin-top: 19.5px;
-		margin-bottom : 14px;
+		margin-top: 12px;
+		margin-bottom : 10px;
 		font-size: 20px;
 		font-weight: 400;
 	}
@@ -117,10 +117,12 @@
 										<label>단위</label>
 										<input type="text" name="prodUnit" id="prodUnit">
 										<label>규격</label>
-										<input type="text" name="prodStd" id="prodStd" style="margin-bottom: 55px">
+										<input type="text" name="prodStd" id="prodStd" >
+										<label>유통기한(일)</label>
+										<input type="text" name="prodExdate" id="prodExdate" style="margin-bottom: 30px">
 										<div style="text-align: center;">
-											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 15px; margin-bottom: 10px">저장</button>
-											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 15px; margin-bottom: 10px">취소</button>
+											<button type="submit" class="btn btn-info btn-icon-text" style="margin-top: 9px; margin-bottom: 10px">저장</button>
+											<button type="reset" class="btn btn-info btn-icon-text" style="margin-top: 9px; margin-bottom: 10px">취소</button>
 										</div>
 								</form>
 							</div>
@@ -254,7 +256,12 @@
           {
             header: '규격',
             name: 'prodStd'
-          }
+          },
+          {
+            header: '유통기한(일)',
+            name: 'prodExdate',
+           	align: 'right'
+            }
         ]
       });
     
@@ -264,9 +271,11 @@
     	if(prodInfo.prodCode != ''){
     		 e.preventDefault();
     		 
-    		 if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
+    		 if(prodInfo.prodName == '' || prodInfo.prodUnit =='' || prodInfo.prodExdate ==''){
     			 swal("경고","모든 값이 입력되지 않았습니다","warning");
-    		 }else{
+    		 }else if(isNaN(prodInfo.prodExdate)){
+    				swal("경고","유통기한에 숫자를 입력해주세요","warning");
+       		 }else{
     			 if(prodInfo.prodName == prodInfo.prodBeforeName){
     				 //수정 ajax
         			 prodUpdate(prodInfo);
@@ -294,8 +303,10 @@
     		 }
     	}else{
     		e.preventDefault();
-    		if(prodInfo.prodName == '' || prodInfo.prodUnit ==''){
+    		if(prodInfo.prodName == '' || prodInfo.prodUnit =='' || prodInfo.prodExdate ==''){
     			swal("경고","모든 값이 입력되지 않았습니다","warning");
+   		 }else if(isNaN(prodInfo.prodExdate)){
+   				swal("경고","유통기한에 숫자를 입력해주세요","warning");
    		 }else{
    			 	let prodNameCheck = {prodNameUse : prodInfo.prodName};
    			 	
@@ -410,6 +421,7 @@
 			let prodKind = grid.getValue(rowKey, 'prodKind');
 			let prodUnit = grid.getValue(rowKey, 'prodUnit');
 			let prodStd = grid.getValue(rowKey, 'prodStd');
+			let prodExdate = grid.getValue(rowKey, 'prodExdate');
 			
 			$("#prodCode").val(prodCode);
 			$("#prodName").val(prodName);
@@ -417,6 +429,7 @@
 			$("#prodTypeList option[value='" + prodKind + "']").prop("selected", true);
 			$("#prodUnit").val(prodUnit);
 			$("#prodStd").val(prodStd);
+			$("#prodExdate").val(prodExdate);
 			
 			let selectKey = grid.getFocusedCell().rowKey;
 			grid.addRowClassName(selectKey, 'selected-cell');

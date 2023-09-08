@@ -127,6 +127,12 @@ public class BomCodeServiceImpl implements BomCodeService {
 		return result; 
 	}
 
+	@Override
+	public List<BomCodeVO> DeBomCallList(String bomNo) {
+		
+		return bomCodeMapper.DeBomCallList(bomNo);
+	}
+
 
 
 }

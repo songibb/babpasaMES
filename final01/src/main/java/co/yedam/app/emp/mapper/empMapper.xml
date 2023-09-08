@@ -10,5 +10,6 @@
 			   emp_name
 		FROM com_emp
 		WHERE emp_code = #{username}
+		AND emp_leave_date is null
 	</select>
 </mapper>
