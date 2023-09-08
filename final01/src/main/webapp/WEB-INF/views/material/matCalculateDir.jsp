@@ -55,7 +55,7 @@
 	  	border-radius: 4px;	
 	}
 	
-	#searchP input[type="date"]{
+	#dateDiv input[type="date"]{
 	  width: 15%;
 	  padding: 5px;
 	  margin-bottom: 15px;
@@ -125,9 +125,36 @@
 	td[data-column-name="calCategory"], td[data-column-name="matName"], td[data-column-name="matUnit"], td[data-column-name="matStd"], td[data-column-name="matLot"], td[data-column-name="calAmt"]{
 		cursor : pointer;
 	}
+	
+	.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #248AFD;
+}
+
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 15px 0 0 15px;
+}
+
+#resetBtn{
+		border-radius: 0 15px 15px 0;
+}
+
+#dateDiv{
+	display : inline-block;
+}
 </style>
 </head>
-<body>
+<body onbeforeunload="return myFunction()">
 	<h1>자재 정산 등록</h1>
 	<div class="col-lg-12 stretch-card">
 		<div class="card">
@@ -145,19 +172,31 @@
 								<input type="text" class="blackcolorInputBox" id="matNameFix"
 									readonly> <br>
 								<p>정산일자</p>
+								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="searchBtn">
+								한달
+								</button>
+								<button type="reset" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="resetBtn">날짜지정</button>
+								<div id="dateDiv">
 								<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input
-									id="endDate" type="date"> <br>
+									id="endDate" type="date">
+								</div>	
+								<br>
+								
 								<p>정산구분</p>
 								<label for="calInCheck"><input type="checkbox"
 									id="calInCheck" value="calIn">정산입고</label> <label
 									for="calOutCheck"><input type="checkbox"
 									id="calOutCheck" value="calOut">정산출고</label>
-								<button type="button" class="btn btn-info btn-icon-text"
-									id="searchBtn">
-									<i class="fas fa-search"></i> 검색
-								</button>
-								<button type="button" class="btn btn-info btn-icon-text"
-									id="searchResetBtn">초기화</button>
+								<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+                    				<i class="fas fa-search"></i>
+                    					검색
+                				</button>
+                				<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">
+                    				초기화
+                				</button>
+								
 							</div>
 						</div>
 					
@@ -950,29 +989,26 @@
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
 		
-		
+	
+		//수정중일때 페이지 나가면 경고창 출력
 		$(document).ready(function(){ 
 		    window.onbeforeunload = function(){
 		        if(grid.isModified()){
-		        	event.returnValue = false
-		        	swal({
-		      			  title: "경고",
-		      			  text: `저장되지 않은 데이터가 있습니다 \n 페이지를 이동하시겠습니까?`,
-		      			  icon: "warning",
-		      			  buttons: true,
-		      			  dangerMode: true,
-		      			})
-		      			.then(result => {
-		      				if (result.isConfirmed) {
-		      					event.returnValue = true
-		      				} else {
-		      					
-		      				}
-		      			})
-		        		
+		        	doExit();
 		        }
 		    };
 		});
+		
+		function doExit(){
+		    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
+		}
+		
+		
+		$('#dateDiv').css("visibility", "hidden");
+		$('#resetBtn').on('click', function(event){
+			$('#dateDiv').css("visibility", "visible");
+		})
+		
 		
 		
 </script>

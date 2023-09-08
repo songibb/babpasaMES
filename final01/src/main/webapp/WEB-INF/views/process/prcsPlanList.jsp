@@ -73,6 +73,7 @@ h1, h2{
 	background-color: #ffd09e;
 }
 
+
 #todayBtn .btn-icon-text {
     margin: -5px;
     padding: 0 20px;
@@ -80,6 +81,7 @@ h1, h2{
     height: 33px;
     line-height: 33px;
 }
+
 
 #weekBtn .btn-icon-text {
     margin: -5px;
