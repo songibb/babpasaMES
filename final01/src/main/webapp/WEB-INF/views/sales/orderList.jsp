@@ -250,6 +250,47 @@ form {
 .selected-cell{
    background-color: #ffd09e;
 }
+
+.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #ccc;
+    
+}
+
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
+}
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#resetBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+   background-color : #f4f4f4;
+   border : 1px solid #868e96;
+   color: black;
+}
+	
+#monthBtn{
+		border-radius: 0 5px 5px 0;
+		border : 1px solid #ccc;
+}
 </style>
 </head>
 <body>
@@ -272,14 +313,16 @@ form {
 						<input type="text" class="blackcolorInputBox" id="actNameFix" readonly>
 						<br>
 						<p>주문일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
-						<input id="endDate" type="date"> <br>
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;
+						<input id="endDate" type="date">
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id=monthBtn>한달</button>
+						<br>
 						<p>출고상태</p>
 						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
 						<label for="comple" style="margin-right: 20px;">
 						<input type="checkbox" id="comple" value="comple">출고완료</label>
-						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -322,12 +365,18 @@ form {
 			</div>
 		</div>
 	</div>
+	
+	<div>
+	<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 
 	<script>
 	//오늘
 	document.getElementById('todayBtn').addEventListener('click', todayBtn);
 	//일주일
 	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
 
 	//오늘 버튼 클릭시
 	function todayBtn(){
@@ -338,6 +387,11 @@ form {
 	//일주일 버튼 클릭시
 	function weekBtn(){
 		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	function monthInput(){
+		$('#startDate').val(getMonth());
 		$('#endDate').val(getToday());;
 	}
 	
@@ -626,22 +680,63 @@ form {
 
     });
     setDisabled();
+    
+  //주문조회(오늘 날짜)
+	let searchObj = {};
+ 	searchObj['startDate'] = getToday();
+ 	searchObj['endDate'] = getToday();
+
+	$.ajax({
+        url : "orderListFilter",
+        method :"GET",
+        data : searchObj,
+        success : function(data){
+        	
+        		//날짜 츨력 포맷 변경
+			      $.each(data, function (idx, obj) {
+		    	  	let date = new Date(obj['ordDate']);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    obj['ordDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+
+                    date = new Date(obj['devDate']);
+                    year = date.getFullYear(); //0000년 가져오기
+                    month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    day = date.getDate(); //일자 가져오기
+                    obj['devDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+                })
+        	grid.resetData(data);
+	      	setDisabled();
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
+	});
 
     //주문 Detail 그리드
     var grid2 = new tui.Grid({
         el: document.getElementById('grid2'),
-//         data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
-//             {
-//                 salesOrdDeCode: "${order.salesOrdDeCode}",
-//                 ordCode: "${order.ordCode}",
-//                 prodCode: "${order.prodCode}",
-//                 prodName: "${order.prodName}",
-//                 prcsRqAmt: "${order.prcsRqAmt}",
-//                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-//                 devYn: "${order.devYn}"
-//             }<c:if test="${not status.last}">,</c:if>
-//         </c:forEach>
-//             ],
+        data: [<c:forEach items="${ordDetailList}" var="order" varStatus="status">
+            {
+                salesOrdDeCode: "${order.salesOrdDeCode}",
+                ordCode: "${order.ordCode}",
+                prodCode: "${order.prodCode}",
+                prodName: "${order.prodName}",
+                prcsRqAmt: "${order.prcsRqAmt}",
+                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
+                devYn: "${order.devYn}"
+            }<c:if test="${not status.last}">,</c:if>
+        </c:forEach>
+            ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,

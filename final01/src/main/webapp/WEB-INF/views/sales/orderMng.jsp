@@ -255,7 +255,48 @@ form {
 
 td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-name="prcsRqAmt"], td[data-column-name="devDate"]{
 		cursor : pointer;
-	}
+}
+
+.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #ccc;
+    
+}
+
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
+}
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#resetBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+   background-color : #f4f4f4;
+   border : 1px solid #868e96;
+   color: black;
+}
+	
+#monthBtn{
+		border-radius: 0 5px 5px 0;
+		border : 1px solid #ccc;
+}
 </style>
 
 </head>
@@ -279,6 +320,9 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
 						<br>
 						<p>주문일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date"> 
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id=monthBtn>한달</button>
 						<br>
 						<p>출고상태</p>
 						<label for="before"><input type="checkbox" id="before" value="before">출고전</label> 
@@ -321,8 +365,36 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
 			</div>
 		</div>
 	</div>
+	
+	<div>
+	<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 
 	<script>
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
+
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	function monthInput(){
+		$('#startDate').val(getMonth());
+		$('#endDate').val(getToday());;
+	}
+	
     document
         .getElementById('save')
         .addEventListener('click', saveServer);
@@ -368,23 +440,23 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
     //주문 form
     var orderGrid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${orderNList}" var="order" varStatus="status">
-            {
-                salesOrdDeCode: "${order.salesOrdDeCode}",
-                ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
-                actName: "${order.actName}",
-                ordSts: "${order.ordSts}",
-                prodName: "${order.prodName}",
-                prcsRqAmt: "${order.prcsRqAmt}",
-                devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
-                devYn: "${order.devYn}",
-                empCode: "${order.empCode}",
-                empName: "${order.empName}",
-                prodCode: "${order.prodCode}",
-                ordCode: "${order.ordCode}"
-            }<c:if test="${not status.last}">,</c:if>
-        </c:forEach>
-            ],
+//         data: [<c:forEach items="${orderNList}" var="order" varStatus="status">
+//             {
+//                 salesOrdDeCode: "${order.salesOrdDeCode}",
+//                 ordDate: "<fmt:formatDate value='${order.ordDate}' pattern='yyyy-MM-dd'/>",
+//                 actName: "${order.actName}",
+//                 ordSts: "${order.ordSts}",
+//                 prodName: "${order.prodName}",
+//                 prcsRqAmt: "${order.prcsRqAmt}",
+//                 devDate: "<fmt:formatDate value='${order.devDate}' pattern='yyyy-MM-dd'/>",
+//                 devYn: "${order.devYn}",
+//                 empCode: "${order.empCode}",
+//                 empName: "${order.empName}",
+//                 prodCode: "${order.prodCode}",
+//                 ordCode: "${order.ordCode}"
+//             }<c:if test="${not status.last}">,</c:if>
+//         </c:forEach>
+//             ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
@@ -507,6 +579,47 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
         ]
     });
     setDisabled();
+    
+  //주문조회(오늘 날짜)
+	let searchObj = {};
+ 	searchObj['startDate'] = getToday();
+ 	searchObj['endDate'] = getToday();
+
+	$.ajax({
+        url : "orderMngFilter",
+        method :"GET",
+        data : searchObj,
+        success : function(data){
+        	
+       		//날짜 츨력 포맷 변경
+		      $.each(data, function (idx, obj) {
+	    	  	let date = new Date(obj['ordDate']);
+                let year = date.getFullYear(); //0000년 가져오기
+                let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                let day = date.getDate(); //일자 가져오기
+                obj['ordDate'] = year + "-" + (
+                    ("00" + month.toString()).slice(-2)
+                ) + "-" + (
+                    ("00" + day.toString()).slice(-2)
+                );
+
+                date = new Date(obj['devDate']);
+                year = date.getFullYear(); //0000년 가져오기
+                month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                day = date.getDate(); //일자 가져오기
+                obj['devDate'] = year + "-" + (
+                    ("00" + month.toString()).slice(-2)
+                ) + "-" + (
+                    ("00" + day.toString()).slice(-2)
+                );
+               })
+        	orderGrid.resetData(data);
+	      	setDisabled();
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
+	});
 
     //비활성화
     function setDisabled() {
@@ -819,8 +932,8 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
         let search = {
             actCode: actInsert,
             prodCode: prodInsert,
-            startDate: sd,
-            endDate: ed,
+            startDate: getToday(),
+            endDate: getToday(),
             before: before,
             comple: comple
         };
@@ -941,7 +1054,7 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
                 },
                 error: function (reject) {
                     console.log(reject);
-                    swal("실패", "작업을 실패했습니다.", "error");
+//                     swal("실패", "작업을 실패했습니다.", "error");
                 }
             })
         } else {
