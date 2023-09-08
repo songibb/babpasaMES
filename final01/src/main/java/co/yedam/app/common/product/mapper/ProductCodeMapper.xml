@@ -10,7 +10,8 @@
 					find_cdnm('0E', prod_kind) AS kindName,
 					prod_name,
 					prod_unit,
-					prod_std
+					prod_std,
+					prod_exdate
 			FROM com_prod
 		ORDER BY prod_code
 	  </select>
@@ -21,7 +22,8 @@
 					find_cdnm('0E', prod_kind) AS kindName,
 					prod_name,
 					prod_unit,
-					prod_std
+					prod_std,
+					prod_exdate
 			FROM com_prod
 			<where>
 				<if test="prodName != null and prodName != ''">
@@ -40,7 +42,8 @@
 					find_cdnm('0E', prod_kind) AS kindName,
 					prod_name,
 					prod_unit,
-					prod_std
+					prod_std,
+					prod_exdate
 			FROM com_prod
 			<where>
 				prod_kind='S'
@@ -67,6 +70,7 @@
 								<if test="prodStd != null and prodStd != ''">
 								,prod_std
 								</if>
+								,prod_exdate
 		  						)
 		  		VALUES
 		  				(
@@ -77,6 +81,7 @@
 		  				<if test="prodStd != null and prodStd != ''">
 		  				,#{prodStd}
 		  				</if>
+		  				,#{prodExdate}
 		  				)
 	  </insert>
 	  
@@ -88,6 +93,7 @@
 							<if test="prodStd != null and prodStd != ''">
 							,prod_std = #{prodStd}
 							</if>
+							,prod_exdate = #{prodExdate}
 		WHERE prod_code = #{prodCode}
 	  </update>
 	  
@@ -116,7 +122,8 @@
 						find_cdnm('0E', prod_kind) AS kindName,
 						prod_name,
 						prod_unit,
-						prod_std
+						prod_std,
+						prod_exdate
 				FROM com_prod
 	            WHERE prod_code not 
 	            					IN(SELECT prod_code
@@ -133,7 +140,8 @@
 					prod_kind,
 					prod_name,
 					prod_unit,
-					prod_std
+					prod_std,
+					prod_exdate
 			FROM com_prod
 			WHERE prod_name = #{prodNameUse}
 		</select>

@@ -114,4 +114,12 @@ public class BomCodeController {
 		return productCodeService.selectSemiProdList(productCodeVO);
 	}
 	
+	
+	//BOM 상세조회 기존 BOM 가져오기
+		@GetMapping("/bomDeCallList")
+		@ResponseBody
+		public List<BomCodeVO> bomDeCallList(@RequestParam String bomNo){
+			List<BomCodeVO> vo = bomCodeService.DeBomCallList(bomNo);
+			return vo;
+		}
 }

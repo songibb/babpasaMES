@@ -69,7 +69,11 @@
 	float : right;
 }
 
-td[data-column-name="matUnit"]{
+td[data-column-name="matUnit"],
+td[data-column-name="matName"],
+td[data-column-name="matStd"],
+td[data-column-name="matSafe"]
+{
 		cursor : pointer;
 	}
 

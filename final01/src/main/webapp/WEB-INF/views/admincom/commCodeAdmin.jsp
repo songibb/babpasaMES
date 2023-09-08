@@ -66,7 +66,11 @@
 	   background-color: #ffd09e;
 	}
 	
-	td[data-column-name="commdeUse"]{
+td[data-column-name="commdeName"],
+td[data-column-name="commdeCode"],
+td[data-column-name="commdeInfo"],
+td[data-column-name="commdeUse"]
+{
 		cursor : pointer;
 	}
 
