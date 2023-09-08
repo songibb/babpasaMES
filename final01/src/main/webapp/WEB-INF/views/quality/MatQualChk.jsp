@@ -63,6 +63,13 @@
 	
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 
+	td[data-column-name="matYamt"]{
+		cursor : pointer;
+	}
+	
+	td[data-column-name="errCodeName"]{
+		cursor : pointer;
+	}
 </style>    
        
 </head>
@@ -654,6 +661,18 @@
  	   })
     }
     
+  //수정중일때 페이지 나가면 경고창 출력
+ 	$(document).ready(function(){ 
+ 	    window.onbeforeunload = function(){
+ 	        if(matgrid.isModified()){
+ 	        	doExit();
+ 	        }
+ 	    };
+ 	});
+ 	
+ 	function doExit(){
+ 	    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
+ 	}
     </script>
     
     <div>

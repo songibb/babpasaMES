@@ -36,6 +36,7 @@ public class EquipController {
 	public String selectEquipAllList(Model model) {
 		model.addAttribute("EquipList", equipService.getEquipList());
 		model.addAttribute("EquipTypeList", commCodeService.selectEquipTypeList());
+		model.addAttribute("EquipStsList", commCodeService.selectEquipStsList());
 		return "equip/EquipList";
 	}
 	

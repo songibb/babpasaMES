@@ -47,6 +47,10 @@
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
 	
 	.selected-cell{background-color: #ffd09e;}
+	
+	#grid tbody td{
+			cursor : pointer;
+		}
 	</style> 
 </head>
 <body>

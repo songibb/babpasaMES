@@ -132,6 +132,14 @@
 		.content-wrapper{
 			padding-left: 50px;
 		}
+		
+		#EquipStsList{
+			cursor : pointer;
+		}
+		
+		#EquipTypeList{
+			cursor : pointer;
+		}
     </style>
 
 </head>
@@ -462,8 +470,21 @@
 		
 		//삭제
 		$('#deleteEq').click(function(){
+			
+			swal({
+				title: "정말 삭제하시겠습니까?",
+				text: "",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+			
+			.then((message) => {
+				if(message) {
+			
 			var eqCode = $('#eqCode').val();
-			console.log(eqCode);
+			
+			
 			$.ajax({
 				url : 'equipDelete',
 				method : 'GET',
@@ -475,9 +496,13 @@
 				    },
 				error : function(reject){
 		 			console.log(reject);
-		 		}	
-			})
-		});
+		 			}	
+				})	
+			} else{
+				swal("삭제가 취소되었습니다.", "", {icon: "warning"});
+			}
+		})
+	});
 		
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

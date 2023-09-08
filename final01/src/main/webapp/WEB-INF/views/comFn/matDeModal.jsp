@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>미계획 주문서 목록</title>
+<style>
+	#save_btn{
+		cursor : pointer;
+	}
+	
+</style>
 </head>
 <body>
 
