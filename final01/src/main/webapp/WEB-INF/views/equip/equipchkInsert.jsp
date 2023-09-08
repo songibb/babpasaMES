@@ -531,6 +531,19 @@
              }
          }
      });
+     
+   //수정중일때 페이지 나가면 경고창 출력
+ 	$(document).ready(function(){ 
+ 	    window.onbeforeunload = function(){
+ 	        if(grid2.isModified()){
+ 	        	doExit();
+ 	        }
+ 	    };
+ 	});
+ 	
+ 	function doExit(){
+ 	    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
+ 	}
    </script>
 </body>
 </html>

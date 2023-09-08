@@ -412,10 +412,6 @@ form {
             deleteList.push(deleteObj);
         })
 
-        // $.ajax({ 			url : 'getDeletedMatInfo', 			method : 'POST', 			contentType :
-        // 'application/json', 			data : JSON.stringify(deleteList), 			success :
-        // function(data){ 				testGrid.appendRows(data); 			}, 			error :
-        // function(reject){ 				console.log(reject); 			} 		}) 그리드에서 행 지움
         inGrid.removeCheckedRows(false);
         //마우스 커서 없앰
         inGrid.blur();
@@ -452,11 +448,6 @@ form {
             })
         }
 
-        // if(inGrid.getModifiedRows().updatedRows.length > 0 ){
-        // $.each(inGrid.getModifiedRows().updatedRows, function(idx2, obj2){
-        // if(obj2['matLot'] == "" ||obj2['matInd'] == "" ||obj2['matExd'] == ""){ flag
-        // = false; 						return false; 					} 				}) 		}
-
         if (flag) {
             $.ajax({
                 url: 'modifyProdIn',
@@ -481,10 +472,6 @@ form {
     //검색 또는 DML 후 다시 LIST 불러오는 함수
     function selectAjax() {
         let prod = $('#prodCodeInput').val();
-
-        // var checkboxList = []; 		let checkedList =
-        // $('input[type="checkbox"]:checked'); 		$.each(checkedList, function(idx,
-        // obj){ 			checkboxList.push(obj.value); 		})
 
         let sd = $('#startDate').val();
         let ed = $('#endDate').val();
@@ -708,29 +695,54 @@ form {
         let rowKey = testGrid
             .getFocusedCell()
             .rowKey;
-        // let columnName = orderGrid.getFocusedCell().columnName; let value =
-        // orderGrid.getFocusedCell().value;
 
         let testNum = testGrid.getValue(rowKey, 'testNum');
         let prodCode = testGrid.getValue(rowKey, 'prodCode');
-        // let prodName = testGrid.getValue(rowKey, 'prodName');     	let testDate =
-        // testGrid.getValue(rowKey, 'testDate');
         let testAmt = testGrid.getValue(rowKey, 'testAmt');
         let prodLot = testGrid.getValue(rowKey, 'prodLot');
 
         let now = new Date(); // 현재 날짜 및 시간
-        let year = now.getFullYear();
-        let month = ('0' + (
+        let years = now.getFullYear();
+        let months = ('0' + (
             now.getMonth() + 1
         )).substr(-2);
-        let day = ('0' + now.getDate()).substr(-2);
-        let salesInDate = year + "-" + month + "-" + day;
+        let days = ('0' + now.getDate()).substr(-2);
+        let salesInDate = years + "-" + months + "-" + days;
 
         let salesInAmt = testGrid.getValue(rowKey, 'salesInAmt');
         let prodSaveAmt = testGrid.getValue(rowKey, 'prodSaveAmt');
         let salesInExd = testGrid.getValue(rowKey, 'salesInExd');
         let prodName = testGrid.getValue(rowKey, 'prodName');
+        
+        //유통기한 계산
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = ('0' + (today.getMonth() + 1)).slice(-2);
+        let day = ('0' + today.getDate()).slice(-2);
 
+        let dateString = year + '-' + month  + '-' + day;
+
+        console.log(dateString);
+        
+        // Date(YYYY-MM-DD) + n일
+        function StringToDate(date, n) {
+        	let yyyy = date.substring(0, 4);
+        	let mm = date.substring(5, 7);
+        	let dd = date.substring(8, 10);
+        	mm = Number(mm) - 1;
+            
+        	let stringNewDate = new Date(yyyy, mm, dd);
+        	stringNewDate.setDate(stringNewDate.getDate() + n);
+            
+        	return stringNewDate.getFullYear() +
+        		"-" + ((stringNewDate.getMonth() + 1) > 9 ? (stringNewDate.getMonth() + 1).toString() : "0" + (stringNewDate.getMonth() + 1)) +
+        		"-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
+        }
+
+
+        let expDate = StringToDate(dateString, 365);
+        console.log(StringToDate(dateString, 365));
+        
         console.log(testNum);
         console.log(prodCode);
         console.log(prodName);
@@ -745,14 +757,14 @@ form {
 
         testGrid.blur();
         inGrid.appendRow({
-            'testNum': testNum, 'prodCode': prodCode, 'prodName': prodName,
-            // 'testDate' : testDate, 'testAmt' : testAmt,
-
+            'testNum': testNum, 
+            'prodCode': prodCode, 
+            'prodName': prodName,
             'prodLot': prodLot,
             'salesInDate': salesInDate,
             'salesInAmt': Math.floor(Number(testAmt) / 50),
             'prodSaveAmt': Math.floor(Number(testAmt) / 50),
-            'salesInExd': salesInExd,
+            'salesInExd': expDate,
             'empCode': `${user.id}`,
             'empName': `${user.empName}`
         }, {at: 0});

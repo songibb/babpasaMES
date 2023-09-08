@@ -154,4 +154,25 @@
   	</select>
   	
   	
+  	<!-- bom상세조회 기존 BOM 상세가져오기 -->
+  	<select id="DeBomCallList" resultType="BomCodeVO">
+	  		SELECT  b.prcs_code,
+					find_prcs_name(prcs_code) AS prcsName,					
+					b.mp_kind,
+					find_cdnm('0X',mp_kind) AS kindName,	
+					b.mp_code,
+					CASE 
+				        WHEN SUBSTR(mp_code, 1, 4) = 'MAT-' THEN m.mat_name
+				        WHEN SUBSTR(mp_code, 1, 4) = 'PROD' THEN p.prod_name
+				        ELSE b.mp_code
+    				END AS mpName,
+					b.bom_unit,
+					b.bom_amt
+			FROM bom_detail b LEFT JOIN com_mat m
+									ON(b.mp_code = m.mat_code)
+							  LEFT JOIN com_prod p
+							  		ON(b.mp_code = p.prod_code)
+			WHERE b.bom_no = #{bomNo}
+  	</select>
+  	
   </mapper>

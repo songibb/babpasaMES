@@ -63,6 +63,14 @@
 
 	}
 	.my-styled-cell {background-color: rgb(255, 229, 229)}
+	
+	#before{
+		cursor : pointer;
+	}
+	
+	#comple{
+		cursor : pointer;
+	}
 </style>
 </head>
 <body>
@@ -81,6 +89,8 @@
 							<br>
 							<p>점검일자</p>
 							 <input type="date" id="startDate"> ~ <input type="date" id="endDate">
+							 <button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 							 <button type="button" id="searchBtn" class="btn btn-info btn-icon-text">검색</button>
 							<div>
 							<p>점검판정</p>
@@ -116,13 +126,31 @@
   </div>
 </div>
 
-	
+	<div>
+		<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 	<script>
-    
+	
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
 	   //점검 설비 grid
 	     var grid = new tui.Grid({
 	         el: document.getElementById('grid'),
-	         data: [
+	         /*  data: [
 		        	<c:forEach items="${equipchkList}" var="chk" varStatus="status">
 		           	{	eqChkCode : "${chk.eqChkCode}",
 		           		eqCode : "${chk.eqCode}",
@@ -138,7 +166,7 @@
 		           		chkNote : "${chk.chkNote}"		   	        
 		           	}<c:if test="${not status.last}">,</c:if>
 		           </c:forEach>
-			          ], 
+			          ], */ 
 	         scrollX: false,
 	         scrollY: false,
 	         minBodyHeight: 300,
@@ -214,7 +242,61 @@
 	           }
 	         ]
 	 	});
+	   
+	     let search = {
+	                startDate: getToday(),
+	                endDate: getToday()
+	            };
+	            $.ajax({
+	                url: 'searchChkEquip',
+	                method: 'GET',
+	                data: search,
+	                success: function (data2) {
+	                	todayBtn();
+	                	
+	                	//날짜 형식 변환
+	                     $.each(data2, function (idx, obj) {
+	                        let date = new Date(obj['chkDate']);
+	                        let year = date.getFullYear(); //0000년 가져오기
+	                        let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+	                        let day = date.getDate(); //일자 가져오기
+	                        obj['chkDate'] = year + "-" + (
+	                            ("00" + month.toString()).slice(-2)
+	                        ) + "-" + (
+	                            ("00" + day.toString()).slice(-2)
+	                        );
+	                        
+	                        let date2 = new Date(obj['chkNextDate']);
+	                        let year2 = date2.getFullYear(); //0000년 가져오기
+	                        let month2 = date2.getMonth() + 1; //월은 0부터 시작하니 +1하기
+	                        let day2 = date2.getDate(); //일자 가져오기
+	                        obj['chkNextDate'] = year2 + "-" + (
+	                            ("00" + month2.toString()).slice(-2)
+	                        ) + "-" + (
+	                            ("00" + day2.toString()).slice(-2)
+	                        );
 
+	                    }) 
+
+	                    grid.resetData(data2);
+	                     
+	                     
+                //셀 빨간색으로 바꾸는거 (AJAX안에 넣는 버전)
+         		let data = grid.getData();
+                  
+        		    $.each(data, function (idx, obj) {
+        	
+        		        if (obj['eqChkYn2'] == '불합격') {
+        		            let rowKey = obj['rowKey'];
+        		         	grid.addCellClassName(rowKey, 'eqChkYn2', 'my-styled-cell');
+        		        }
+        		    })
+	             
+	                },
+	                error: function (reject) {
+	                    console.log(reject);
+	                }
+	            });
 	     grid.on('afterChange', (ev) => {
 	         let change = ev.changes[0];
 	         let rowData = grid.getRow(change.rowKey);

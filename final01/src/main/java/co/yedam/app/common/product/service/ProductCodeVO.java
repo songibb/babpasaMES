@@ -19,4 +19,8 @@ public class ProductCodeVO {
 	
 	
 	private String result;
+	
+	
+	//제품 유통기한
+	private int prodExdate;
 }

@@ -591,9 +591,7 @@ td[data-column-name="salesOutCode"], td[data-column-name="salesRtWhy"] {
                 }
 
             });
-        } //else if(columnName == 'empName'){ session에서 받아오기
-
-        //}
+        } 
 
     });
 

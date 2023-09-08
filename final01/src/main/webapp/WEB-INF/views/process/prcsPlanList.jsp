@@ -73,7 +73,8 @@ h1, h2{
 	background-color: #ffd09e;
 }
 
-.btn-icon-text {
+
+#todayBtn .btn-icon-text {
     margin: -5px;
     padding: 0 20px;
     border-radius: 0;
@@ -81,20 +82,36 @@ h1, h2{
     line-height: 33px;
 }
 
-.btn-info {
+
+#weekBtn .btn-icon-text {
+    margin: -5px;
+    padding: 0 20px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 33px;
+}
+
+.btn-date-info {
     color: black;
     background-color: white;
     border-color: #248AFD;
 }
 
-#todayBtn {
-	margin-left: 30px !important;
-	border-radius: 15px 0 0 15px;
+.btn-date-info {
+    color: black;
+    background-color: white;
+    border-color: #248AFD;
 }
 
-#resetBtn{
-		border-radius: 0 15px 15px 0;
+#todayBtn { 
+	margin-left: 30px !important;
+	border-radius: 15px 0 0 15px;
+} 
+
+#weekBtn{
+	border-radius: 0 15px 15px 0;
 }
+
 </style>
 
 </head>
@@ -114,6 +131,7 @@ h1, h2{
 						
 						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="monthBtn">한달</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -149,19 +167,26 @@ h1, h2{
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
 	//오늘
-	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	document.getElementById('todayBtn').addEventListener('click', todayInput);
 	//일주일
-	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	document.getElementById('weekBtn').addEventListener('click', weekInput);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
 
-	//오늘 버튼 클릭시
-	function todayBtn(){
+	//오늘 버튼 클릭시 input태그에 오늘 날짜 입력
+	function todayInput(){
 		$('#startDate').val(getToday());
 		$('#endDate').val(getToday());;
 	}
 	
-	//일주일 버튼 클릭시
-	function weekBtn(){
+	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	function weekInput(){
 		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	function monthInput(){
+		$('#startDate').val(getMonth());
 		$('#endDate').val(getToday());;
 	}
 	
@@ -273,8 +298,11 @@ h1, h2{
 	$.ajax({
 		url : 'searchPlanList',
 		method : 'GET',
-		data : { startDate : getToday() , endDate : getToday() },
+		data : { startDate : getToday(), endDate : getToday() },
 		success : function(data){	
+			//오늘 날짜 input태그에 입력시켜놓기
+			todayInput();
+			
 			//날짜 츨력 포맷 변경
 			$.each(data, function(i, objDe){
 				let ppd = data[i]['prcsPlanDate'];
