@@ -105,6 +105,8 @@ td[data-column-name="prcsPrio"]{
 							<p>계획일자</p>
 	                 		<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
 	                 		
+	                 		<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+							<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -152,18 +154,31 @@ td[data-column-name="prcsPrio"]{
 	
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchPlanList);
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayInput);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekInput);
+	
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
 	//삭제
 	document.getElementById('remove').addEventListener('click', removeData);
 	
+	//오늘 버튼 클릭시 input태그에 오늘 날짜 입력
+	function todayInput(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
 	
+	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	function weekInput(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
 	
 	//검색 -> 상세생산계획에 주문서 조회 적용 후에는 생산계획 그리드 클릭 적용안되게 할 변수
 	//상세계획 클릭시 'Y' / 주문서조회 -> 상세계획 클릭시 'N'
 	var gridClick = null;
-	
-	searchPlanList();
 	
 	//검색 -> 조건별 생산계획 조회
 	function searchPlanList(){
@@ -587,6 +602,40 @@ td[data-column-name="prcsPrio"]{
 //      		}
 		]
 	});
+	
+	//생산계획 조회(오늘 날짜)
+	$.ajax({
+		url : 'searchPlanList',
+		method : 'GET',
+		data : { startDate : getToday(), endDate : getToday() },
+		success : function(data){	
+			//오늘 날짜 input태그에 입력시켜놓기
+			todayInput();
+			
+			//날짜 츨력 포맷 변경
+			$.each(data, function(i, objDe){
+				let ppd = data[i]['prcsPlanDate'];
+				let psd = data[i]['prcsStartDate'];
+				let ped = data[i]['prcsEndDate'];
+				data[i]['prcsPlanDate'] = getDate(ppd);
+				data[i]['prcsStartDate'] = getDate(psd);
+				data[i]['prcsEndDate'] = getDate(ped);
+			})
+			
+			planGrid.resetData(data);
+			planDeGrid.clear();	
+			stopEdit();
+			
+			//삭제버튼 다시 생기게하기
+			remove.style.display = 'inline-block';
+			
+			gridClick = 'Y';
+		},
+		error : function(reject){
+		 	console.log(reject);
+		}
+	});
+	
 	
 
 	//생산 계획 클릭시 해당 계획의 상세생산계획 조회

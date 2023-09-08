@@ -43,6 +43,18 @@
 
 			return year + '-' + month  + '-' + day ;			
 		}
+		
+		//한달전
+		function getMonth(){
+			let today = new Date();
+			let beforeMonth = new Date(today.setMonth(today.getMonth() - 1));
+					
+			let year = beforeMonth.getFullYear();
+			let month = ('0' + (beforeMonth.getMonth() + 1)).substr(-2);
+			let day = ('0' + (beforeMonth.getDate())).substr(-2);
+
+			return year + '-' + month  + '-' + day ;			
+		}
 
 		
 	</script>

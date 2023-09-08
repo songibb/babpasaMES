@@ -82,7 +82,9 @@ h1, h2{
 					<form>
 						<p>생산시작일자</p>
 						<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
-
+						
+						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -126,8 +128,26 @@ h1, h2{
 	
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchDirist);
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayInput);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekInput);
+	
 	//재지시
 	document.getElementById('reDir').addEventListener('click', reDirInsert);
+	
+	
+	//오늘 버튼 클릭시 input태그에 오늘 날짜 입력
+	function todayInput(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	function weekInput(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
 	
 	//검색 
 	function searchDirist(){
@@ -308,10 +328,7 @@ h1, h2{
 			swal("경고", "재지시 등록 사항이 아닙니다.", "warning");
 		}
 		
-		
-		
-		
-		
+
 // 		if(nonPassCk == 0){
 // 			//체크한 리스트에 품질검사부적합이 없을시 경고창
 // 			swal("경고", "재지시를 등록할 사항이 없습니다.", "warning");	
@@ -336,16 +353,10 @@ h1, h2{
 				
 // 			}
 			
-			
-			
-			
-			
-			
-			
-
 // 		}
 
 	}
+	
 	
 	//생산지시 조회
     var dirGrid = new tui.Grid({
