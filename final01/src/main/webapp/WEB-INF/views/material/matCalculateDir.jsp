@@ -55,7 +55,7 @@
 	  	border-radius: 4px;	
 	}
 	
-	#dateDiv input[type="date"]{
+	input[type="date"]{
 	  width: 15%;
 	  padding: 5px;
 	  margin-bottom: 15px;
@@ -126,6 +126,8 @@
 		cursor : pointer;
 	}
 	
+	
+	
 	.btn-icon-text2 {
     margin: -5px;
     width : 70px;
@@ -137,21 +139,38 @@
 .btn-info2 {
     color: black;
     background-color: white;
-    border-color: #248AFD;
+    border-color: #ccc;
+    
 }
 
 #todayBtn {
 	margin-left: 2px !important;
-	border-radius: 15px 0 0 15px;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
 }
-
+	#todayBtn:hover{
+		background-color : #f4f4f4;
+		border : 1px solid #868e96;
+		color: black;
+	}
+	#resetBtn:hover{
+		background-color : #f4f4f4;
+		border : 1px solid #868e96;
+		color: black;
+	}
+	#weekBtn:hover{
+    background-color : #f4f4f4;
+    border : 1px solid #868e96;
+    color: black;
+}
+	
 #resetBtn{
-		border-radius: 0 15px 15px 0;
+		border-radius: 0 5px 5px 0;
+		border : 1px solid #ccc;
 }
+	
 
-#dateDiv{
-	display : inline-block;
-}
+
 </style>
 </head>
 <body onbeforeunload="return myFunction()">
@@ -171,17 +190,15 @@
 								<!-- 돋보기 아이콘 -->
 								<input type="text" class="blackcolorInputBox" id="matNameFix"
 									readonly> <br>
-								<p>정산일자</p>
+								<p>정산일자</p><input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input
+									id="endDate" type="date">
 								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
 								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
-								<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="searchBtn">
-								한달
-								</button>
-								<button type="reset" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="resetBtn">날짜지정</button>
-								<div id="dateDiv">
-								<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input
-									id="endDate" type="date">
-								</div>	
+								
+								<button type="reset" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="resetBtn">한달</button>
+								
+								
+								
 								<br>
 								
 								<p>정산구분</p>
@@ -1004,10 +1021,6 @@
 		}
 		
 		
-		$('#dateDiv').css("visibility", "hidden");
-		$('#resetBtn').on('click', function(event){
-			$('#dateDiv').css("visibility", "visible");
-		})
 		
 		
 		
