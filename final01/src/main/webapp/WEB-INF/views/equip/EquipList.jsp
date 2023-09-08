@@ -49,6 +49,18 @@
 		#customtemplateSearchAndButton {
 			margin-bottom: 30px;
 		}
+		
+		#eqTypeSearch{
+			cursor : pointer;
+		}
+		
+		#eqStsSearch{
+			cursor : pointer;
+		}
+		
+		.tui-grid-table>tr{
+			cursor : pointer;
+		}
 	</style>
 
 </head>
@@ -66,9 +78,16 @@
 	  							<input type="text" placeholder="검색어를 입력하세요" id="equipSearch">
 								<br>
 								<p>설비구분</p>
-									<select id="eqTypeSearch" name="eqType" style="margin-bottom: 35px">
+									<select id="eqTypeSearch" name="eqType" style="margin-bottom: 10px">
 										<option value="">선택</option>
 										<c:forEach items="${EquipTypeList}" var="p">
+										<option value="${p.commdeCode }">${p.commdeName }</option>
+											</c:forEach>
+									</select><br>
+									<p>설비상태</p>
+                						<select id="eqStsSearch" name="eqSts" style="margin-bottom: 10px">
+										<option value="">선택</option>
+										<c:forEach items="${EquipStsList}" var="p">
 										<option value="${p.commdeCode }">${p.commdeName }</option>
 											</c:forEach>
 									</select>
@@ -186,8 +205,9 @@
 		    function searchProdIn(e){
 		 	   let content = $('#equipSearch').val();
 		 	   let eqType = $('#eqTypeSearch').val();
+		 	   let eqSts = $('#eqStsSearch').val();
 		 	   
-		 	   let search = { eqName : content, eqType : eqType };
+		 	   let search = { eqName : content, eqType : eqType, eqSts : eqSts };
 		 	   $.ajax({
 		 		   url : 'searchEquip',
 		 		   method : 'GET',

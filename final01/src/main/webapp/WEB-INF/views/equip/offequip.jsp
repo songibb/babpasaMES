@@ -96,6 +96,10 @@
 		#customtemplateSearchAndButton{
 			margin-bottom: 60px;
 		}
+		
+		#grid tbody td{
+			cursor : pointer;
+		}
     </style>
     
 </head>
@@ -559,6 +563,7 @@ function createActGrid(){
 		
 	});
 
+	
 	</script>
 </body>
 </html>	
