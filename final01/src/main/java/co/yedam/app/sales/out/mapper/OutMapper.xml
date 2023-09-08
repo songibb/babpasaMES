@@ -86,7 +86,7 @@
             AND d.dev_yn != 'Y'
          </if>
    </where>             
-    WHERE i.prod_save_amt <![CDATA[>]]> 0
+    AND i.prod_save_amt <![CDATA[>]]> 0
    	ORDER BY sales_out_code DESC
    </select>
    

@@ -126,7 +126,6 @@
       ON (o.emp_code = e.emp_code)
       JOIN com_act a
       ON (o.act_code = a.act_code)
-      WHERE  - 7 <![CDATA[<=]]> sysdate
       ORDER BY o.ord_date DESC, d.sales_ord_de_code DESC
    </select>
    

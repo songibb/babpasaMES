@@ -241,6 +241,47 @@ form {
 .selected-cell{
    background-color: #ffd09e;
 }
+
+.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #ccc;
+    
+}
+
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
+}
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#resetBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+   background-color : #f4f4f4;
+   border : 1px solid #868e96;
+   color: black;
+}
+	
+#monthBtn{
+		border-radius: 0 5px 5px 0;
+		border : 1px solid #ccc;
+}
 </style>
 </head>
 <body>
@@ -258,8 +299,12 @@ form {
 						<input type="text" class="blackcolorInputBox" id="prodNameFix" readonly> 
 						<br>
 						<p>반품일자</p>
-						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date" style="margin-right: 20px;">
-						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
+						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;
+						<input id="endDate" type="date">
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn btn-info btn-icon-text btn-info2 btn-icon-text2" id=monthBtn>한달</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn" style="margin-left: 8px;">
 							<i class="fas fa-search"></i> 검색
 						</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchResetBtn">초기화</button>
@@ -294,8 +339,36 @@ form {
 			</div>
 		</div>
 	</div>
+	
+	<div>
+	<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 
 	<script>
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
+
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	function monthInput(){
+		$('#startDate').val(getMonth());
+		$('#endDate').val(getToday());;
+	}
+	
     //제품 리스트 모달 시작
     var Grid;
     $("#prodModal").click(function () {
@@ -417,22 +490,22 @@ form {
     //전체 반품 목록 조회 그리드
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${rtList}" var="rt" varStatus="status">
-            {
-                salesRtCode: "${rt.salesRtCode}",
-                prodLot: "${rt.prodLot}",
-                salesOutCode: "${rt.salesOutCode}",
-                salesRtAmt: "${rt.salesRtAmt}",
-                salesRtDate: `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
-                salesRtWhy: "${rt.salesRtWhy}",
-                empCode: "${rt.empCode}",
-                empName: "${rt.empName}",
-                prodCode: "${rt.prodCode}",
-                salesOutAmt: "${rt.salesOutAmt}",
-                prodName: "${rt.prodName}"
-            }<c:if test="${not status.last}">,</c:if>
-        </c:forEach>
-            ],
+//         data: [<c:forEach items="${rtList}" var="rt" varStatus="status">
+//             {
+//                 salesRtCode: "${rt.salesRtCode}",
+//                 prodLot: "${rt.prodLot}",
+//                 salesOutCode: "${rt.salesOutCode}",
+//                 salesRtAmt: "${rt.salesRtAmt}",
+//                 salesRtDate: `<fmt:formatDate value="${rt.salesRtDate}" pattern="yyyy-MM-dd"/>`,
+//                 salesRtWhy: "${rt.salesRtWhy}",
+//                 empCode: "${rt.empCode}",
+//                 empName: "${rt.empName}",
+//                 prodCode: "${rt.prodCode}",
+//                 salesOutAmt: "${rt.salesOutAmt}",
+//                 prodName: "${rt.prodName}"
+//             }<c:if test="${not status.last}">,</c:if>
+//         </c:forEach>
+//             ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
@@ -547,6 +620,38 @@ form {
             }
         })
     }
+    
+  //반품조회(오늘 날짜)
+	let searchObj = {};
+ 	searchObj['startDate'] = getToday();
+ 	searchObj['endDate'] = getToday();
+
+	$.ajax({
+        url : "rtListFilter",
+        method :"GET",
+        data : searchObj,
+        success : function(data){
+        	
+        		//날짜 츨력 포맷 변경
+			      $.each(data, function (idx, obj) {
+                    let date = new Date(obj['salesRtDate']);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    obj['salesRtDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+
+                })
+        	grid.resetData(data);
+	      	setDisabled();
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
+	});
 
     grid.on('click', () => {
         //선택한 행 색깔 바꾸기
