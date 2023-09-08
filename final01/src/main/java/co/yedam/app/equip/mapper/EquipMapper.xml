@@ -123,6 +123,9 @@
 			<if test="eqType != null and eqType != ''">
 				AND EQ_TYPE = #{eqType}
 			</if>
+			<if test="eqSts != null and eqSts != ''">
+				AND EQ_STS =#{eqSts}
+			</if>
 		</where>
 	ORDER BY EQ_CODE
   </select>

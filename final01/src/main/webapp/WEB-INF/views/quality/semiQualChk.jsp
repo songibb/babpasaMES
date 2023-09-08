@@ -25,6 +25,13 @@
 		
 		.selected-cell{background-color: #ffd09e;}
 		
+		#grid tbody td{
+			cursor : pointer;
+		}
+		
+		td[data-column-name="testResult"]{
+			cursor : pointer;
+		}
 		
     </style>
 </head>

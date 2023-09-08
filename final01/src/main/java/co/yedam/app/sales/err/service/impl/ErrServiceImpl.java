@@ -48,8 +48,8 @@ public class ErrServiceImpl implements ErrService {
 	}
 
 	@Override
-	public List<ErrVO> searchErrList(String prodCode, String startDate, String outDate) {
-		return errMapper.selectAllOut(prodCode, startDate, outDate);
+	public List<ErrVO> searchErrList(String prodCode, String startDate, String endDate) {
+		return errMapper.selectAllOut(prodCode, startDate, endDate);
 	}
 
 	@Override

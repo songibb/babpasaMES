@@ -56,7 +56,7 @@ public class ErrController {
 	public List<ErrVO> errListFilter(@RequestParam(value = "prodCode", required = false) String prodCode,
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate) {
-		List<ErrVO> vo = errService.searchErrList(prodCode, startDate, startDate);
+		List<ErrVO> vo = errService.searchErrList(prodCode, startDate, endDate);
 		return vo;
 	}
 	

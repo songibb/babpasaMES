@@ -129,18 +129,18 @@ h2{
 	//검색
 	document.getElementById('searchBtn').addEventListener('click', searchResultList);
 	//오늘
-	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	document.getElementById('todayBtn').addEventListener('click', todayInput);
 	//일주일
-	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+	document.getElementById('weekBtn').addEventListener('click', weekInput);
 
-	//오늘 버튼 클릭시
-	function todayBtn(){
+	//오늘 버튼 클릭시 input태그에 오늘 날짜 입력
+	function todayInput(){
 		$('#startDate').val(getToday());
 		$('#endDate').val(getToday());;
 	}
 	
-	//일주일 버튼 클릭시
-	function weekBtn(){
+	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	function weekInput(){
 		$('#startDate').val(getWeek());
 		$('#endDate').val(getToday());;
 	}
@@ -282,6 +282,7 @@ h2{
         method :"GET",
         data : searchObj,
         success : function(data){
+        	todayInput();
         	//날짜 츨력 포맷 변경
 			$.each(data, function(i, objDe){
 				let pdd = data[i]['prcsDirDate'];
