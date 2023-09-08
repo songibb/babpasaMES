@@ -785,9 +785,13 @@
 		})
 		
 		//생산지시 조회해서 '공정진행중' 정보 update
+		let searchObj = {};
+		searchObj['startDate'] = $('#startDate').val();
+		searchObj['endDate'] = $('#endDate').val();	   
 		$.ajax({
 			url : 'selectPrcsDirList',
 			method : 'GET',
+			data : searchObj,
 			success : function(data){	
 				//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
