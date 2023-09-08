@@ -41,22 +41,22 @@
 }
 
 input[type="text"] {
-  width: 15%;
-  padding: 6px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+	width: 15%;
+	padding: 6px;
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 input[type="date"]{
-  width: 15%;
-  padding: 5px;
-  margin-bottom: 35px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+	width: 150px;
+	padding: 5px;
+	margin-bottom: 35px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
 select {
-  background-color: white; 
+	background-color: white; 
 }
 form p{
 	width: 80px;
@@ -73,43 +73,45 @@ h1, h2{
 	background-color: #ffd09e;
 }
 
-
-#todayBtn .btn-icon-text {
+.btn-icon-text2 {
     margin: -5px;
-    padding: 0 20px;
+    width : 70px;
     border-radius: 0;
     height: 33px;
-    line-height: 33px;
+    line-height: 20px;
 }
-
-
-#weekBtn .btn-icon-text {
-    margin: -5px;
-    padding: 0 20px;
-    border-radius: 0;
-    height: 33px;
-    line-height: 33px;
-}
-
-.btn-date-info {
+.btn-info2 {
     color: black;
     background-color: white;
-    border-color: #248AFD;
+    border-color: #ccc;
+    
 }
-
-.btn-date-info {
-    color: black;
-    background-color: white;
-    border-color: #248AFD;
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
 }
-
-#todayBtn { 
-	margin-left: 30px !important;
-	border-radius: 15px 0 0 15px;
-} 
-
-#weekBtn{
-	border-radius: 0 15px 15px 0;
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#monthBtn{
+	border-radius: 0 5px 5px 0;
+	border : 1px solid #ccc;
+}
+#monthBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#searchBtn{
+	margin-left: 10px;
 }
 
 </style>
@@ -129,9 +131,9 @@ h1, h2{
 						<p>계획일자</p>
                  		<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">
 						
-						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="monthBtn">한달</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="monthBtn">한달</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -179,12 +181,13 @@ h1, h2{
 		$('#endDate').val(getToday());;
 	}
 	
-	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	//일주일 버튼 클릭시 input태그에 일주일전~오늘 날짜 입력
 	function weekInput(){
 		$('#startDate').val(getWeek());
 		$('#endDate').val(getToday());;
 	}
 	
+	//한달 버튼 클릭시 input태그에 한달전~오늘 날짜 입력
 	function monthInput(){
 		$('#startDate').val(getMonth());
 		$('#endDate').val(getToday());;

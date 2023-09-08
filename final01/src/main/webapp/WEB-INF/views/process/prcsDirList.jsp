@@ -47,7 +47,7 @@
 }
 
 input[type="date"] {
-  width: 15%;
+  width: 150px;
   padding: 5px;
   margin-bottom: 35px;
   border: 1px solid #ccc;
@@ -70,6 +70,31 @@ h1, h2{
 .my-styled-cell{
 	background-color: rgb(255, 229, 229);
 }
+
+.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #ccc;
+    
+}
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 5px 5px 5px;
+	border : 1px solid #ccc;
+}
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+
 </style>
 </head>
 <body>
@@ -83,8 +108,7 @@ h1, h2{
 						<p>생산시작일자</p>
 						<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
 						
-						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
-						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -130,8 +154,6 @@ h1, h2{
 	document.getElementById('searchBtn').addEventListener('click', searchDirist);
 	//오늘
 	document.getElementById('todayBtn').addEventListener('click', todayInput);
-	//일주일
-	document.getElementById('weekBtn').addEventListener('click', weekInput);
 	
 	//재지시
 	document.getElementById('reDir').addEventListener('click', reDirInsert);
@@ -143,13 +165,9 @@ h1, h2{
 		$('#endDate').val(getToday());;
 	}
 	
-	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
-	function weekInput(){
-		$('#startDate').val(getWeek());
-		$('#endDate').val(getToday());;
-	}
 	
-	//검색 
+	
+	//검색 버튼 클릭시
 	function searchDirist(){
 		let searchObj = {};
 		searchObj['startDate'] = $('#startDate').val();
@@ -168,7 +186,11 @@ h1, h2{
 				dirGrid.resetData(data);
 				dirDeGrid.clear();	
 				ingGrid.clear();
-				},
+				
+				//생산지시 -> 생산완료 update	 ajax호출
+				updateDirPrcsStsAjax();
+
+			},
 			error : function(reject){
 				console.log(reject);
 			}
@@ -357,22 +379,24 @@ h1, h2{
 
 	}
 	
+
+  	
 	
 	//생산지시 조회
     var dirGrid = new tui.Grid({
         el: document.getElementById('dirGrid'),
-        data: [
-	           <c:forEach items="${dirList}" var="d" varStatus="status">
-	           	{
-	           		prcsDirCode : "${d.prcsDirCode}",
-	           		prcsPlanCode : "${d.prcsPlanCode}",
-	           		prcsDirName : "${d.prcsDirName}",
-	           		prcsStartDate : "<fmt:formatDate value='${d.prcsStartDate}' pattern='yyyy-MM-dd'/>",
-	           		prcsDirSts : "${d.prcsDirSts}",
-	           		empName : "${d.empName}"
-	           	} <c:if test="${not status.last}">,</c:if>
-	           </c:forEach>
-	          ],
+//         data: [
+// 	           <c:forEach items="${dirList}" var="d" varStatus="status">
+// 	           	{
+// 	           		prcsDirCode : "${d.prcsDirCode}",
+// 	           		prcsPlanCode : "${d.prcsPlanCode}",
+// 	           		prcsDirName : "${d.prcsDirName}",
+// 	           		prcsStartDate : "<fmt:formatDate value='${d.prcsStartDate}' pattern='yyyy-MM-dd'/>",
+// 	           		prcsDirSts : "${d.prcsDirSts}",
+// 	           		empName : "${d.empName}"
+// 	           	} <c:if test="${not status.last}">,</c:if>
+// 	           </c:forEach>
+// 	          ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 120,
@@ -422,8 +446,34 @@ h1, h2{
             align: 'center'
           },
         ]
-      })  
+    })  
 
+    $.ajax({
+		url : 'selectPrcsDirList',
+		method : 'GET',
+		data : { startDate : getToday(), endDate : getToday() },
+		success : function(data){	
+			
+			//오늘 날짜 input태그에 입력시켜놓기
+			todayInput();
+			
+			//날짜 츨력 포맷 변경
+			$.each(data, function(i, objDe){
+				let psd = data[i]['prcsStartDate'];
+				data[i]['prcsStartDate'] = getDate(psd);
+			})
+			dirGrid.resetData(data);
+			dirDeGrid.clear();	
+			ingGrid.clear();
+			
+			//생산지시 -> 생산완료 update	 ajax호출
+			updateDirPrcsStsAjax();
+		},
+	
+		error : function(reject){
+			console.log(reject);
+		}
+	});
 	
 	//상세생산지시 조회
 	var dirDeGrid = new tui.Grid({
@@ -510,7 +560,7 @@ h1, h2{
             hidden: true
           }
         ]
-      })  
+    })  
 	
 	
  	//진행 공정 조회
@@ -610,7 +660,25 @@ h1, h2{
           }
          
         ]
-      })  
+    })  
+	
+	
+  	//생산지시 -> 생산완료 update	
+	function updateDirPrcsStsAjax(){
+		let dirList = dirGrid.getData();	
+		
+		$.ajax({
+			url : 'updateDirPrcsSts',
+			method : 'POST',
+			data : JSON.stringify(dirList),
+			contentType : "application/json",
+			success : function(data){
+			},
+			error : function(reject){
+	 			console.log(reject);
+	 		}
+		})
+	}
 	
 	
 	//생산지시 클릭시 해당 지시의 상세 생산지시 조회
@@ -699,28 +767,9 @@ h1, h2{
 	 		}	
 		})
   	});
-  	
-  	
-  	//생산지시 -> 생산완료 update
-	let dirList = dirGrid.getData();
-	
-	function updateDirPrcsStsAjax(){
-		$.ajax({
-			url : 'updateDirPrcsSts',
-			method : 'POST',
-			data : JSON.stringify(dirList),
-			contentType : "application/json",
-			success : function(data){
-				//console.log(data);
-				searchDirist();
-			},
-			error : function(reject){
-	 			console.log(reject);
-	 		}
-		})
-	}
 
-	updateDirPrcsStsAjax();
+	
+
    
 	//이전 날짜 선택불가
     $('#startDate').on('change', function() {

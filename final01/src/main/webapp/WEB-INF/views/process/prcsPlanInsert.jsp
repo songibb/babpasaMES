@@ -19,58 +19,59 @@
 <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
 
 <style type="text/css">
-.yellow-background {
-	background-color: rgb(255,253,235);
-}
+
 #btnContainer{ 
 	display: flex; 
  	justify-content: space-between; 
- } 
- #planContainer{ 
+} 
+#planContainer{ 
  	display: flex; 
  	justify-content: space-between; 
- } 
- #leftGrid{ 
-     width: 800px; 
-     margin-right: 20px; 
- } 
- #leftGridHeader{ 
+} 
+#leftGrid{ 
+	width: 800px; 
+	margin-right: 20px; 
+} 
+#leftGridHeader{ 
  	height: 45px; 
  	display: flex; 
  	justify-content: space-between; 
- } 
- #rightGrid{ 
-     width: 800px; 
- } 
- #rightGridHeader{ 
+} 
+#rightGrid{ 
+	width: 800px; 
+} 
+#rightGridHeader{ 
  	height: 45px; 
  	display: flex; 
  	justify-content: space-between; 
- } 
+} 
 
- input[type="text"] { 
-   width: 15%; 
-   padding: 6px; 
-   margin-bottom: 15px; 
-   border: 1px solid #ccc; 
-   border-radius: 4px; 
- } 
- input[type="date"] { 
-   width: 25%; 
-   padding: 5px; 
-   margin-bottom: 35px; 
-   border: 1px solid #ccc; 
-   border-radius: 4px; 
- } 
- .table-responsive p{ 
+.yellow-background {
+	background-color: rgb(255,253,235);
+}
+input[type="text"] { 
+	width: 15%; 
+	padding: 6px; 
+	margin-bottom: 15px; 
+	border: 1px solid #ccc; 
+	border-radius: 4px; 
+} 
+input[type="date"] { 
+	width: 150px; 
+	padding: 5px; 
+	margin-bottom: 35px; 
+	border: 1px solid #ccc; 
+	border-radius: 4px; 
+} 
+.table-responsive p{ 
  	width: 80px; 
  	display: inline-block; 
  	font-size: 20px; 
- } 
- h1{ 
+} 
+h1{ 
  	margin-left: 15px; 
- } 
- h1, h2{ 
+} 
+h1, h2{ 
  	font-weight: 800; 
  } 
  
@@ -85,6 +86,48 @@ td[data-column-name="prcsPlanAmt"],
 td[data-column-name="prcsPrio"]{
 	cursor : pointer;
 }
+
+.btn-icon-text2 {
+    margin: -5px;
+    width : 70px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 20px;
+}
+.btn-info2 {
+    color: black;
+    background-color: white;
+    border-color: #ccc;
+    
+}
+#todayBtn {
+	margin-left: 2px !important;
+	border-radius: 5px 0 0 5px;
+	border : 1px solid #ccc;
+}
+#todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#monthBtn{
+	border-radius: 0 5px 5px 0;
+	border : 1px solid #ccc;
+}
+#monthBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#searchBtn{
+	margin-left: 10px;
+}
+
 </style>
 
 </head>
@@ -105,8 +148,9 @@ td[data-column-name="prcsPrio"]{
 							<p>계획일자</p>
 	                 		<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;<input id="endDate" type="date">
 	                 		
-	                 		<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
-							<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
+	                 		<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+							<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+							<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="monthBtn">한달</button>
 							<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 								<i class="fas fa-search"></i>검색
 							</button>
@@ -158,6 +202,8 @@ td[data-column-name="prcsPrio"]{
 	document.getElementById('todayBtn').addEventListener('click', todayInput);
 	//일주일
 	document.getElementById('weekBtn').addEventListener('click', weekInput);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
 	
 	//저장
 	document.getElementById('save').addEventListener('click', saveServer);
@@ -170,9 +216,15 @@ td[data-column-name="prcsPrio"]{
 		$('#endDate').val(getToday());;
 	}
 	
-	//일주일 버튼 클릭시 input태그에 일주일 날짜 입력
+	//일주일 버튼 클릭시 input태그에 일주일전~오늘 날짜 입력
 	function weekInput(){
 		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
+	//한달 버튼 클릭시 input태그에 한달전~오늘 날짜 입력
+	function monthInput(){
+		$('#startDate').val(getMonth());
 		$('#endDate').val(getToday());;
 	}
 	
