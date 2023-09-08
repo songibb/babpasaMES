@@ -20,6 +20,7 @@
 			ON(a.mat_code = b.mat_code)
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
+		WHERE TRUNC(cal_date) = sysdate
 		ORDER BY a.cal_date DESC
 	</select>
 	
