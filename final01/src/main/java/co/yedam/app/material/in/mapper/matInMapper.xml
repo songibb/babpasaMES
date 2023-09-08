@@ -185,9 +185,16 @@
 			 , a.mat_stock
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)	
-		<if test="materialCode != null and !materialCode.equals('')">
-			WHERE a.mat_code = #{materialCode}
-		</if>
+		
+		<where>
+			<if test="materialCode != null and !materialCode.equals('')">
+				AND a.mat_code = #{materialCode}
+			</if>
+			<if test="lotName != null and !lotName.equals('')">
+				AND a.mat_lot LIKE '%' || #{lotName} || '%'
+			</if>
+		</where>
+		
 		ORDER BY a.mat_code
 	</select>
 </mapper>

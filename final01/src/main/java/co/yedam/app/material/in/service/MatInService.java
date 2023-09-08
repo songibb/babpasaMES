@@ -5,6 +5,7 @@ import java.util.List;
 import co.yedam.app.common.grid.service.GridVO;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
+import co.yedam.app.material.stock.service.MatLotStockVO;
 
 
 
@@ -24,5 +25,5 @@ public interface MatInService {
 	public int modifyMatIn(GridVO<MatInVO> data);
 	
 	//정산 페이지
-	public List<MatInVO> getMatLotModal(String materialCode);
+	public List<MatInVO> getMatLotModal(MatLotStockVO vo);
 }

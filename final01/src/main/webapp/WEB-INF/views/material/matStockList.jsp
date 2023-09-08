@@ -617,18 +617,34 @@
 		//2번째 그리드 검색
 		$('#searchBtn2').on('click', searchGrid2);
 		function searchGrid2(e){
-			let lotName = $('#searchGrid2Input').val();
-			console.log(lotName);
-			console.log(matCode30);
+			let lotName = $("#searchGrid2Input").val();
+			let search = {
+			        materialCode: matCode30,
+			        lotName: lotName
+			    };
 			$.ajax({
 				url : 'matLotStockList',
 				method : 'GET',
-				data : [{ lotName : lotName }, {
-	                materialCode: matCode30
-	            }],
-				success : function(result){
+				data : search,
+				success : function(data){
+					
 					if (grid2 != null && grid2.el != null){
-						grid2.resetData(result);
+						
+						for (let i of data) {
+		                    let date = new Date(i.matExd);
+		                    let year = date.getFullYear(); //0000년 가져오기
+		                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+		                    let day = date.getDate(); //일자 가져오기
+	
+		                    i.matExd = year + "-" + (
+		                        ("00" + month.toString()).slice(-2)
+		                    ) + "-" + (
+		                        ("00" + day.toString()).slice(-2)
+		                    );
+		                }
+						
+						
+						grid2.resetData(data);
 					}
 				},
 				error : function(reject){

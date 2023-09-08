@@ -2,11 +2,10 @@ package co.yedam.app.material.in.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import co.yedam.app.material.in.service.MatInVO;
 import co.yedam.app.material.rt.service.MatTestVO;
 import co.yedam.app.material.search.service.SearchVO;
+import co.yedam.app.material.stock.service.MatLotStockVO;
 
 public interface MatInMapper {
 	//자재 입고 조회
@@ -29,5 +28,5 @@ public interface MatInMapper {
 	public int deleteMatIn(MatInVO vo);
 	
 	//자재 정산
-	public List<MatInVO> selectLotModal(@Param("materialCode") String materialCode);
+	public List<MatInVO> selectLotModal(MatLotStockVO vo);
 }

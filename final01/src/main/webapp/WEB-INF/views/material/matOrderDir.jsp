@@ -358,7 +358,7 @@
 		            },
 		            align: 'right'
 		        }, {
-		        	header: '소모예정량',
+		        	header: '일주일 내 소모예정량',
 		            name: 'willUseAmt',
 		            formatter(e) {
 		                val = e['value']
@@ -366,6 +366,7 @@
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
 		            },
+		            width : 130,
 		            align: 'right'
 		        }, {
 		        	header: '입고예정량',
