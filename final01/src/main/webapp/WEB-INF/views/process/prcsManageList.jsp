@@ -227,19 +227,19 @@ td[data-column-name="semiYn"]{
 	}
 	
 
-
+//
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [
-	           <c:forEach items="${prcsManageList}" var="p" varStatus="status">
-	           	{
-	           		prcsCode : "${p.prcsCode}",
-	           		prcsType : "${p.prcsType}",
-	           		prcsName : "${p.prcsName}",
-	           		semiYn : "${p.semiYn}"
-	           	} <c:if test="${not status.last}">,</c:if>
-	           </c:forEach>
-	    ] ,
+//         data: [
+// 	           <c:forEach items="${prcsManageList}" var="p" varStatus="status">
+// 	           	{
+// 	           		prcsCode : "${p.prcsCode}",
+// 	           		prcsType : "${p.prcsType}",
+// 	           		prcsName : "${p.prcsName}",
+// 	           		semiYn : "${p.semiYn}"
+// 	           	} <c:if test="${not status.last}">,</c:if>
+// 	           </c:forEach>
+// 	    ] ,
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
