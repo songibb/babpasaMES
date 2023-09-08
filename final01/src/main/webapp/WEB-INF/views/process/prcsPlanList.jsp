@@ -73,6 +73,28 @@ h1, h2{
 	background-color: #ffd09e;
 }
 
+.btn-icon-text {
+    margin: -5px;
+    padding: 0 20px;
+    border-radius: 0;
+    height: 33px;
+    line-height: 33px;
+}
+
+.btn-info {
+    color: black;
+    background-color: white;
+    border-color: #248AFD;
+}
+
+#todayBtn {
+	margin-left: 30px !important;
+	border-radius: 15px 0 0 15px;
+}
+
+#resetBtn{
+		border-radius: 0 15px 15px 0;
+}
 </style>
 
 </head>

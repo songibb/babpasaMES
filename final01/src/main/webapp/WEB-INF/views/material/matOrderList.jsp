@@ -714,8 +714,9 @@
 		    		  grid2.removeRowClassName(selectKey, 'selected-cell');
 		    	  })
 		})
-   
-
+   		
+		
+		
 	</script>
 </body>
 </html>

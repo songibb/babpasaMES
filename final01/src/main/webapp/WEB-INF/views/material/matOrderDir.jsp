@@ -174,7 +174,7 @@
 	
 	#searchGrid2, #searchGrid3{
 		display : inline-block;
-		margin-left : 290px;
+		margin-left : 130px;
 	}
 	
 	#matActGridTitle{
@@ -189,6 +189,11 @@
 	
 	td[data-column-name="matPrice"], td[data-column-name="matAmt"], td[data-column-name="matOdAcp"]{
 		cursor : pointer;
+	}
+	
+	#lowerMat{
+		display : inline-block;
+		margin-left : 20px;
 	}
 </style>    
        
@@ -227,7 +232,7 @@
             				</div>
         				</div>
 		            <div id="container" style="display: flex;">
-		           		<div style="flex: 1;"><h2>현재 자재 재고</h2><p id="searchGrid2">자재명</p> <input type="text" id="searchGrid2Input">
+		           		<div style="flex: 1;"><h2>현재 자재 재고</h2><label for="lowerMat"><input type="checkbox" id="lowerMat" value="N">부족한 자재만 조회</label><p id="searchGrid2">자재명</p> <input type="text" id="searchGrid2Input">
 		           		<button type="button" class="btn btn-info btn-icon-text" id="searchBtn2">
                     				<i class="fas fa-search"></i>
                     					검색
@@ -277,10 +282,10 @@
 
 
 	<script>
-		//그리드2 생성
-		var planGrid = new tui.Grid({
-		    el: document.getElementById('grid2'),
-		    data: [<c:forEach items="${stockList}" var="stock" varStatus="status">
+		var upGridData = [];
+		
+		<c:forEach items="${stockList}" var="stock" varStatus="status">
+			upGridData.push(
 		        {
 		        	matCode: "${stock.matCode}",
 		            matName: "${stock.matName}",
@@ -291,9 +296,14 @@
 		            willUseAmt: "${stock.willUseAmt}",
 		            willOdAmt : "${stock.willOdAmt}"
 		        }
-		        <c:if test="${not status.last}">,</c:if>
-		    </c:forEach>
-		        ],
+		    );
+		</c:forEach>
+	
+	
+		//그리드2 생성
+		var planGrid = new tui.Grid({
+		    el: document.getElementById('grid2'),
+		    data: upGridData,
 		    scrollX: false,
 		    scrollY: false,
 		    minBodyHeight: 160,
@@ -1489,6 +1499,42 @@
 		    })
 		})
 		
+		
+		var filterUpGridData = [];
+		$.each(upGridData, function(idx, obj){
+				if (Number(obj['totalStock']) + Number(obj['willOdAmt']) < Number(obj['matSafe']) + Number(obj['willUseAmt'])) {
+			    	filterUpGridData.push(obj);
+			    }
+		})
+		
+		
+		
+		//부족 자재 체크박스
+		$('#lowerMat').on('click', function(event){
+			let value = $('#lowerMat').val();
+			if(value == 'N'){
+				$('#lowerMat').val('Y');
+
+				planGrid.resetData(filterUpGridData);
+			} else{
+				$('#lowerMat').val('N');
+				planGrid.resetData(upGridData);
+			}
+		})
+		
+		
+		//수정중일때 페이지 나가면 경고창 출력
+		$(document).ready(function(){ 
+		    window.onbeforeunload = function(){
+		        if(orderGrid.isModified()){
+		        	doExit();
+		        }
+		    };
+		});
+		
+		function doExit(){
+		    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
+		}
 		
 		
     </script>
