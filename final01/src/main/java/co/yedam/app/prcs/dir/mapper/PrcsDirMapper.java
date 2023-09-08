@@ -28,7 +28,7 @@ public interface PrcsDirMapper {
 	
 	
 	//미지시 생산계획 조회
-	public List<PrcsPlanVO> selectNotDirPlanList();
+	public List<PrcsPlanVO> selectNotDirPlanList(PrcsSearchVO prcsSearchVO);
 	
 	//미지시 상세생산계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);

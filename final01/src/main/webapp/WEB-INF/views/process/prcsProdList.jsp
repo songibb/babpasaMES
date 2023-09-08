@@ -108,7 +108,7 @@ td[data-column-name="prcsSeq"]{
 	<div class="modal" id="prcsListModal">
 		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
 			<div class="m_head">
-				<div class="modal_title"><h3>공정목록</h3></div>
+				<div class="modal_title"><h3>공정 목록</h3></div>
 				<div class="close_btn" id="close_btn_prcs">X</div>
 			</div>
 			<div class="m_body">
@@ -124,6 +124,13 @@ td[data-column-name="prcsSeq"]{
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
+				<form>
+					<input type="text" placeholder="검색어를 입력하세요" id ="searchProdName" name="searchProdName">
+					<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">
+						<i class="fas fa-search"></i>검색
+					</button>
+					<button type="reset" class="btn btn-info btn-icon-text">초기화</button>				
+				</form>
 				<div id="modal_label"></div>
 			</div>
 		</div>
@@ -148,26 +155,27 @@ td[data-column-name="prcsSeq"]{
 		grid2.removeCheckedRows(false);
 	}
 	
-	
-	var Grid;
+	//기존 제품 공정 정보 가져오기
+	var prGrid;
 	function getPrcsInfo(){
 		$("#pdModal").fadeIn();
-	    Grid = createProdGrid();
+		prGrid = createProdGrid();
 	    
-	    Grid.on('dblclick', () => {
-	        let rowKey = Grid.getFocusedCell().rowKey;
-	        let prodCode = Grid.getValue(rowKey, 'prodCode');        
+		prGrid.on('dblclick', () => {
+	        let rowKey = prGrid.getFocusedCell().rowKey;
+	        let prodCode = prGrid.getValue(rowKey, 'prodCode');        
 	        
 	        //모달창 닫기
 	        if(rowKey != null){
 				$(".modal").fadeOut();
-		        Grid.destroy();
+				prGrid.destroy();
 	        	
 	        	$.ajax({
 	    			url : 'selectPrcsProdList',
 	    			method : 'GET',
 	    			data : { prodCode : prodCode },
 	    			success : function(data){
+	    				grid2.clear();
 	     				grid2.appendRows(data);
 	     		    },
 	    			error : function(reject){
@@ -179,7 +187,7 @@ td[data-column-name="prcsSeq"]{
 	    });
 	}
 
-	//제품 조회
+	//제품 목록 그리드
 	var grid = new tui.Grid({
         el: document.getElementById('grid'),
         data: [
@@ -273,7 +281,7 @@ td[data-column-name="prcsSeq"]{
 	}
 	
 	
-	//제품별공정 조회
+	//제품별공정 목록 그리드
     var grid2 = new tui.Grid({
         el: document.getElementById('grid2'),
         scrollX: false,
@@ -372,6 +380,7 @@ td[data-column-name="prcsSeq"]{
     	}
 	})
 	
+	//공정 목록 그리드 생성 (모달창)
    	function createPrcsGrid(){  		
    		var prcsGrid = new tui.Grid({
    			el: document.getElementById('modal_label_prcs'),
@@ -428,7 +437,7 @@ td[data-column-name="prcsSeq"]{
 	});
 	
 
-
+	//제품 목록 그리드 생성 (제품별 공정정보 가져오기 - 모달창)
 	function createProdGrid(){
 	    var prodGrid = new tui.Grid({
 	        el: document.getElementById('modal_label'),
@@ -440,7 +449,7 @@ td[data-column-name="prcsSeq"]{
 	        pagination: true,
 	        pageOptions: {
 	            useClient: true,
-	            perPage: 10
+	            perPage: 8
 	        },
 	        columns: [
 	            {
@@ -468,30 +477,46 @@ td[data-column-name="prcsSeq"]{
 	    return prodGrid;
 	}
 	
+	//검색 버튼 누를때
+	$('#modalSearchBtn').click(function(){
+		
+	    let searchProdName = $('#searchProdName').val();
+
+		$.ajax({
+			url : 'selectProdList',
+			method : 'GET',
+			data : { searchProdName : searchProdName }, 
+			success : function(data){	
+				prGrid.resetData(data);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+	})
+	
 	
 	$("#close_btn").click(function(){
 	    $(".modal").fadeOut();
-	    if (Grid != null && Grid.el != null) {
-	        Grid.destroy();
+	    if (prGrid != null && prGrid.el != null) {
+	    	prGrid.destroy();
 	    }
 	});
 	
 	
 	//수정중일때 저장하지 않고 페이지 나가면 경고창 출력
-// 	$(document).ready(function(){ 
-// 	    window.onbeforeunload = function(){
-// 	        if(grid2.ismodified()){
-// 	        	doexit();
-// 	        }
-// 	    };
-// 	});
+	$(document).ready(function(){ 
+	    window.onbeforeunload = function(){
+	        if(grid2.isModified()){
+	        	doExit();
+	        }
+	    };
+	});
 	
-// 	function doexit(){
-// 	    event.returnvalue = '"저장되지 않은 데이터가 있습니다."';
-// 	}
-
-
-	    
+	function doExit(){
+	    event.returnValue = "저장되지 않은 데이터가 있습니다.";
+	}
+	
 	</script>
 </body>
 </html>

@@ -39,7 +39,7 @@
 			   emp_code,
 			   find_emp_name(emp_code) AS emp_name
 		  FROM prcs_dir
-		  <where>
+		<where>
 		 		prcs_dir_sts = 'P3'
 			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(prcs_dir_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
@@ -140,8 +140,16 @@
 			   p.prcs_start_date
 		  FROM prcs_plan p JOIN prcs_plan_de d
                              ON p.prcs_plan_code = d.prcs_plan_code
-         WHERE d.prcs_dir_sts = 'T1'
-         ORDER BY p.prcs_plan_code DESC
+		<where>
+			d.prcs_dir_sts = 'T1'
+			<if test="startDate != null and !startDate.equals('')">
+				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
+			</if>
+			<if test="endDate != null and !endDate.equals('')">
+				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[<=]]> #{endDate}
+			</if>
+		</where>
+         ORDER BY p.prcs_start_date DESC
 	</select>
 	
 	<!-- 미지시 상세생산계획 목록 조회 -->

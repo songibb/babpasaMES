@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.yedam.app.common.grid.service.GridVO;
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.prcs.prod.mapper.PrcsProdMapper;
 import co.yedam.app.prcs.prod.service.PrcsProdReqVO;
 import co.yedam.app.prcs.prod.service.PrcsProdService;
@@ -25,8 +26,8 @@ public class PrcsProdServiceImpl implements PrcsProdService {
 	
 	//제품 목록 조회
 	@Override
-	public List<PrcsProdVO> selectProdList() {
-		return prcsProdMapper.selectProdList();
+	public List<PrcsProdVO> selectProdList(PrcsSearchVO prcsSearchVO) {
+		return prcsProdMapper.selectProdList(prcsSearchVO);
 	}
 	
 	//제품별공정 등록, 수정, 삭제

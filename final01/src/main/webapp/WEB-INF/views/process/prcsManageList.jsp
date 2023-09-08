@@ -230,16 +230,16 @@ td[data-column-name="semiYn"]{
 //
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-//         data: [
-// 	           <c:forEach items="${prcsManageList}" var="p" varStatus="status">
-// 	           	{
-// 	           		prcsCode : "${p.prcsCode}",
-// 	           		prcsType : "${p.prcsType}",
-// 	           		prcsName : "${p.prcsName}",
-// 	           		semiYn : "${p.semiYn}"
-// 	           	} <c:if test="${not status.last}">,</c:if>
-// 	           </c:forEach>
-// 	    ] ,
+        data: [
+	           <c:forEach items="${prcsManageList}" var="p" varStatus="status">
+	           	{
+	           		prcsCode : "${p.prcsCode}",
+	           		prcsType : "${p.prcsType}",
+	           		prcsName : "${p.prcsName}",
+	           		semiYn : "${p.semiYn}"
+	           	} <c:if test="${not status.last}">,</c:if>
+	           </c:forEach>
+	    ] ,
         scrollX: false,
         scrollY: false,
         minBodyHeight: 30,
@@ -311,6 +311,20 @@ td[data-column-name="semiYn"]{
     		grid.removeRowClassName(selectKey, 'selected-cell');
 	    })	
 	})
+	
+	
+	//수정중일때 저장하지 않고 페이지 나가면 경고창 출력
+	$(document).ready(function(){ 
+	    window.onbeforeunload = function(){
+	        if(grid.isModified()){
+	        	doExit();
+	        }
+	    };
+	});
+	
+	function doExit(){
+	    event.returnValue = "저장되지 않은 데이터가 있습니다.";
+	}
     
 
 	</script>

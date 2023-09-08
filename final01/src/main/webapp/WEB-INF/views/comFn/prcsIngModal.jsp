@@ -474,10 +474,7 @@
 
     //작업 시작 버튼
    	$('#prcsStartBtn').click(function(){
-   		
-   		//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
-		$("#eqTitle").text("사용 중인 설비");
-   		
+	
    		//모달창에 담당자 정보 가져오기
     	let empCode = ${user.id};
     	let empName = `${user.empName}`;
@@ -496,7 +493,7 @@
    			swal("경고", "설비를 선택하세요.", "warning"); 	
    			
    		} else{
-   			
+	
    			//이전 공정이 완료되었을 시 작업시작버튼 작동 시킬 변수 
    	  		let btnOk = true;
    			//혼합공정일때 공정이 완료되었을 시 작업시작버튼 작동 시킬 변수
@@ -559,6 +556,9 @@
    			//이전 공정이 완료되었을 시
    			if(btnOk){
    				
+   				//'사용 가능한 설비' 문구 -> '사용 중인 설비' 로 바꾸기
+   	   			$("#eqTitle").text("사용 중인 설비");
+   				
    				//혼합 공정일때 검수완료된 반제품이 입고되었을 시
    				if(semiInOk){
    					//작업 시작 시간 입력
@@ -617,10 +617,7 @@
     	
    	//작업 종료 버튼
    	$('#prcsEndBtn').click(function(){
-   		
-   		//'사용 중인 설비' 문구 -> '사용 가능한 설비' 로 바꾸기
-		$("#eqTitle").text("사용 가능한 설비");
-   	
+
    		//모달창에 담당자 정보 가져오기
     	let empCode = ${user.id};
     	let empName = `${user.empName}`;
@@ -642,6 +639,9 @@
    			swal("경고", "불량량이 투입량보다 큽니다.", "warning");
    			
    		} else{
+   	   		//'사용 중인 설비' 문구 -> '사용 가능한 설비' 로 바꾸기
+   			$("#eqTitle").text("사용 가능한 설비");
+   	   		
 			//작업 종료 시간 입력
 			let endTime = getDateTime();
 			$('#prcsEndTime').val(endTime);		
@@ -787,7 +787,7 @@
 		//생산지시 조회해서 '공정진행중' 정보 update
 		let searchObj = {};
 		searchObj['startDate'] = $('#startDate').val();
-		searchObj['endDate'] = $('#endDate').val();	   
+		searchObj['endDate'] = $('#endDate').val();	  
 		$.ajax({
 			url : 'selectPrcsDirList',
 			method : 'GET',

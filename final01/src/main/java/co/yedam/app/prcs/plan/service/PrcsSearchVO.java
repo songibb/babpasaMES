@@ -22,4 +22,7 @@ public class PrcsSearchVO {
 	private String searchPrcsType;			//공정구분
 	private String semiYes;					//반제품생산 유
 	private String semiNo;					//반제품생산 무
+	
+	//제품 검색
+	private String searchProdName;			//제품명
 }	

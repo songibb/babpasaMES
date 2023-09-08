@@ -6,7 +6,14 @@
 <meta charset="UTF-8">
 <title>미지시 생산계획 목록</title>
 <style type="text/css">
- .selected-cell{
+.m_body p{
+	display: inline-block;
+}
+.m_body input[type="date"]{
+	width: 130px;
+}
+
+.selected-cell{
 	background-color: #ffd09e;
 }
 </style>
@@ -20,6 +27,15 @@
 				<div class="close_btn" id="close_btn">X</div>
 			</div>
 			<div class="m_body">
+				<form>
+					<p>생산예정일</p>
+					<input type="date" id="searchStartDate" name="searchStartDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="searchEndDate" name="searchEndDate" value="">		
+	
+					<button type="button" class="btn btn-info btn-icon-text" id="modalSearchBtn">
+						<i class="fas fa-search"></i>검색
+					</button>
+					<button type="reset" class="btn btn-info btn-icon-text">초기화</button>
+				</form>
 				<div id="modal_label"></div>
 			</div>
 <!-- 			<div class="m_footer"> -->
@@ -40,7 +56,8 @@
 			let rowKey = Grid.getFocusedCell().rowKey;
 	        let planCode = Grid.getValue(rowKey, 'prcsPlanCode');
 	        let prcsStartDate = Grid.getValue(rowKey, 'prcsStartDate');
-
+			
+	        
 	        //모달창 닫기
 	        if(rowKey != null){
 	        	
@@ -71,11 +88,10 @@
 	    	          	//선택한 계획의 내역(계획코드, 제품코드, 주문수량) 그리드에 가져오기
 	    	          	dirGrid.setColumnValues('prcsPlanCode', planCode);
 	    	          	dirGrid.setColumnValues('prcsStartDate', prcsStartDate);
-	    	          	console.log(data);
+
 	    	          	dirDeGrid.resetData(data);
 	    	          	dirDeGrid.setColumnValues('empCode', ${user.id});
 	    	          	dirDeGrid.setColumnValues('empName', `${user.empName}`);
-	    	          	
 
 	    			},
 	    			error : function(reject){
@@ -142,6 +158,8 @@
 	            {
 	            	header: '생산예정일',
 	            	name: 'prcsStartDate',
+	            	sortable: true,
+	                sortingType: 'asc',
 	            	align: 'center'
 	            }	            
 	        ]       
@@ -157,8 +175,8 @@
 					let psd = data[i]['prcsStartDate'];
 					data[i]['prcsPlanDate'] = getDate(ppd);
 					data[i]['prcsStartDate'] = getDate(psd);
-					
 				})
+				
 		    	Grid.resetData(data);
 		    },
 		    error : function(reject){
@@ -168,6 +186,33 @@
 	    return planGrid;
 	}
 	
+	//검색 버튼 누를때
+	$('#modalSearchBtn').click(function(){
+		
+	    let searchObj = {};
+		searchObj['startDate'] = $('#searchStartDate').val();
+		searchObj['endDate'] = $('#searchEndDate').val();	   
+		
+		$.ajax({
+			url : 'notDirPlanList',
+			method : 'GET',
+			data : searchObj, 
+			success : function(data){	
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let ppd = data[i]['prcsPlanDate'];
+					let psd = data[i]['prcsStartDate'];
+					data[i]['prcsPlanDate'] = getDate(ppd);
+					data[i]['prcsStartDate'] = getDate(psd);
+				})
+				
+		    	Grid.resetData(data);
+			},
+			error : function(reject){
+				console.log(reject);
+			}
+		});
+	})
 	
 	$("#close_btn").click(function(){
 	    $(".modal").fadeOut();

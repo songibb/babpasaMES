@@ -165,6 +165,7 @@ h1, h2{
 		$('#endDate').val(getToday());;
 	}
 	
+
 	
 	
 	//검색 버튼 클릭시
@@ -448,31 +449,34 @@ h1, h2{
         ]
     })  
 
-    $.ajax({
-		url : 'selectPrcsDirList',
-		method : 'GET',
-		data : { startDate : getToday(), endDate : getToday() },
-		success : function(data){	
-			
-			//오늘 날짜 input태그에 입력시켜놓기
-			todayInput();
-			
-			//날짜 츨력 포맷 변경
-			$.each(data, function(i, objDe){
-				let psd = data[i]['prcsStartDate'];
-				data[i]['prcsStartDate'] = getDate(psd);
-			})
-			dirGrid.resetData(data);
-			dirDeGrid.clear();	
-			ingGrid.clear();
-			
-			//생산지시 -> 생산완료 update	 ajax호출
-			updateDirPrcsStsAjax();
-		},
-	
-		error : function(reject){
-			console.log(reject);
-		}
+	$(document).ready(function(){
+		//로딩이 될 때마다 생산지시 조회
+		$.ajax({
+			url : 'selectPrcsDirList',
+			method : 'GET',
+			data : { startDate : getToday(), endDate : getToday() },
+			success : function(data){	
+				
+				//오늘 날짜 input태그에 입력시켜놓기
+				todayInput();
+				
+				//날짜 츨력 포맷 변경
+				$.each(data, function(i, objDe){
+					let psd = data[i]['prcsStartDate'];
+					data[i]['prcsStartDate'] = getDate(psd);
+				})
+				dirGrid.resetData(data);
+				dirDeGrid.clear();	
+				ingGrid.clear();
+				
+				//생산지시 -> 생산완료 update	 ajax호출
+				updateDirPrcsStsAjax();
+			},
+		
+			error : function(reject){
+				console.log(reject);
+			}
+		});
 	});
 	
 	//상세생산지시 조회

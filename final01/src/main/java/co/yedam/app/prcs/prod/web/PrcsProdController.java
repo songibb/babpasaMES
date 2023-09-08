@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.prcs.prod.service.PrcsProdReqVO;
 import co.yedam.app.prcs.prod.service.PrcsProdService;
 import co.yedam.app.prcs.prod.service.PrcsProdVO;
@@ -23,10 +24,10 @@ public class PrcsProdController {
 	
 	//제품별공정 조회 - 호출
 	@GetMapping("prcsProdList")
-	public String getPrcsProdAllList(Model model){
+	public String getPrcsProdAllList(Model model, PrcsSearchVO prcsSearchVO){
 
 		//제품 목록 조회
-		model.addAttribute("prodList", prcsProdService.selectProdList());
+		model.addAttribute("prodList", prcsProdService.selectProdList(prcsSearchVO));
 		
 		return "process/prcsProdList";
 	}
@@ -49,8 +50,8 @@ public class PrcsProdController {
 	//제품 목록 조회
 	@GetMapping("selectProdList")
 	@ResponseBody
-	public List<PrcsProdVO> selectProdList(){
-		List<PrcsProdVO> list = prcsProdService.selectProdList();
+	public List<PrcsProdVO> selectProdList(PrcsSearchVO prcsSearchVO){
+		List<PrcsProdVO> list = prcsProdService.selectProdList(prcsSearchVO);
 		return list;
 	}
 	

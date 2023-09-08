@@ -90,8 +90,8 @@ public class PrcsDirController {
 	//미지시 생산계획 조회
 	@GetMapping("notDirPlanList")
 	@ResponseBody
-	public List<PrcsPlanVO> getNotDirPlanList(){
-		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList();
+	public List<PrcsPlanVO> getNotDirPlanList(PrcsSearchVO prcsSearchVO){
+		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList(prcsSearchVO);
 		return list;
 	}
 	
