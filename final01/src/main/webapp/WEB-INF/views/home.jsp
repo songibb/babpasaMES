@@ -62,20 +62,34 @@
       <p class="title">총 판매량</p>
       <p class="yesterday">| Yesterday</p>
       <br>
-      <i class="fa-solid fa-cart-shopping"></i>
-      <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSaleAmt}"/></div>
+      <div style="display: flex;">
+	      <i class="fa-solid fa-cart-shopping"></i>
+	      <div id="my-box-content"style="display: flex; margin-top: 30px; margin-left: 10px;">
+	      	<fmt:formatNumber type="number" maxFractionDigits="3" value="${totalSaleAmt}"/>
+	      	<h3 style="margin-top: 20px; margin-left: 5px; font-weight: 1000">BOX</h3>
+	      </div>
+      </div>
       </div>
        <div class="my-box" style="width: 31%; height: 100%; min-width: 20%; min-height: 10%;">
-       <p class="title">총 생산량</p><p class="yesterday">| Yesterday</p>
-       <br>
-       <i class="fa-solid fa-arrow-up-right-dots"></i>
-       <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalpassAmt}"/></div>
+	       <p class="title">총 생산량</p><p class="yesterday">| Yesterday</p>
+	       <br>
+	        <div style="display: flex;">
+		       <i class="fa-solid fa-arrow-up-right-dots"></i>
+		       <div id="my-box-content" style="display: flex; margin-top: 30px; margin-left: 10px;">
+		       		<fmt:formatNumber type="number" maxFractionDigits="3" value="${totalpassAmt}"/>
+		     		<h3 style="margin-top: 20px; margin-left: 5px; font-weight: 1000">KG</h3>
+		       </div>
+	        </div>
        </div>
        <div class="my-box" style="width: 31%; height: 100%; min-width: 20%; min-height: 10%;">
-       <p class="title">총 불량량</p><p class="yesterday">| Yesterday</p>
-       <br>
-       <i class="fa-regular fa-circle-xmark"></i>
-       <div id="my-box-content"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNonPassAmt}"/></div>
+	       <p class="title">총 불량량</p><p class="yesterday">| Yesterday</p>
+	       <br>
+	       <div style="display: flex;">
+		       <i class="fa-regular fa-circle-xmark"></i>
+		       <div id="my-box-content" style="display: flex; margin-top: 30px; margin-left: 10px;"><fmt:formatNumber type="number" maxFractionDigits="3" value="${totalNonPassAmt}"/>
+		      	 <h3 style="margin-top: 20px; margin-left: 5px; font-weight: 1000">KG</h3>
+		       </div>
+		   </div>
        </div>
    </div>
    <div style="height: 110%; display: flex; justify-content: space-between;">
@@ -116,7 +130,7 @@
    const options = {
       chart: { title: '제품별 판매량 TOP5 (전일)', width:'auto',height: 'auto' }, 
       yAxis: {
-  	    title: '판매량'
+  	    title: '판매량(BOX)'
   	  },
   	  xAxis: {
   	    title: '제품명'
@@ -165,7 +179,7 @@
    const options = {
       chart: { title: '제품별 재고량 TOP5 (현재)', width:'auto',height: 'auto' }, 
       yAxis: {
-    	    title: '재고량'
+    	    title: '재고량(BOX)'
     	  },
     	  xAxis: {
     	    title: '제품명'
@@ -215,7 +229,7 @@
       const options = {
          chart: { title: '제품별 생산량 TOP5 (전일)', width:'auto',height: 'auto' }, 
          yAxis: {
-     	    title: '생산량'
+     	    title: '생산량(KG)'
      	  },
      	  xAxis: {
      	    title: '제품명'
