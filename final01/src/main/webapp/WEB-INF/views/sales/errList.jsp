@@ -260,6 +260,8 @@ form {
 						<p>폐기일자</p>
 						<input id="startDate" type="date">&nbsp;&nbsp;-&nbsp;&nbsp;
 						<input id="endDate" type="date" style="margin-right: 20px;">
+						<button type="button" class="btn btn-info btn-icon-text" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text" id="weekBtn">일주일</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i> 검색
 						</button>
@@ -296,7 +298,27 @@ form {
 		</div>
 	</div>
 
+	<div>
+	<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
 	<script>
+	//오늘
+	document.getElementById('todayBtn').addEventListener('click', todayBtn);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekBtn);
+
+	//오늘 버튼 클릭시
+	function todayBtn(){
+		$('#startDate').val(getToday());
+		$('#endDate').val(getToday());;
+	}
+	
+	//일주일 버튼 클릭시
+	function weekBtn(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
+	
     //제품 리스트 모달 시작
     var Grid;
     $("#prodModal").click(function () {
@@ -418,19 +440,19 @@ form {
     //전체 폐기 목록 조회 그리드
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
-        data: [<c:forEach items="${disList}" var="d" varStatus="status">
-            {
-                salesDpCode: "${d.salesDpCode}",
-                testNum: "${d.testNum}",
-                prodCode: "${d.prodCode}",
-                prodName: "${d.prodName}",
-                salesDpAmt: "${d.salesDpAmt}",
-                salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
-                empCode: "${d.empCode}",
-                empName: "${d.empName}"
-            }<c:if test="${not status.last}">,</c:if>
-        </c:forEach>
-            ],
+//         data: [<c:forEach items="${disList}" var="d" varStatus="status">
+//             {
+//                 salesDpCode: "${d.salesDpCode}",
+//                 testNum: "${d.testNum}",
+//                 prodCode: "${d.prodCode}",
+//                 prodName: "${d.prodName}",
+//                 salesDpAmt: "${d.salesDpAmt}",
+//                 salesDpDate: `<fmt:formatDate value="${d.salesDpDate}" pattern="yyyy-MM-dd"/>`,
+//                 empCode: "${d.empCode}",
+//                 empName: "${d.empName}"
+//             }<c:if test="${not status.last}">,</c:if>
+//         </c:forEach>
+//             ],
         scrollX: false,
         scrollY: false,
         minBodyHeight: 400,
@@ -493,6 +515,39 @@ form {
         ]
 
     });
+    
+	//공정실적 조회(오늘 날짜)
+// 	let searchObj = {};
+//  	searchObj['startDate'] = getToday();
+//  	searchObj['endDate'] = getToday();
+ 	
+ 	
+
+	$.ajax({
+        url : "errListFilter",
+        method :"GET",
+        data : { startDate:getToday(), endDate:getToday() },
+        success : function(data){
+        	
+        		//날짜 츨력 포맷 변경
+			      $.each(data, function (idx, obj) {
+                    let date = new Date(obj['salesDpDate']);
+                    let year = date.getFullYear(); //0000년 가져오기
+                    let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
+                    let day = date.getDate(); //일자 가져오기
+                    obj['salesDpDate'] = year + "-" + (
+                        ("00" + month.toString()).slice(-2)
+                    ) + "-" + (
+                        ("00" + day.toString()).slice(-2)
+                    );
+
+                })
+        	grid.resetData(data);
+        },
+        error : function(reject){
+ 			console.log(reject);
+ 		}
+	});
 
     grid.on('click', () => {
         //선택한 행 색깔 바꾸기

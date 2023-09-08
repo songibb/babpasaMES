@@ -19,9 +19,9 @@ public class ErrVO {
 	
 	private String prodName;
 	
-	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
-	@DateTimeFormat(pattern = "yyyy년 MM월 dd일")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	
 	private Date testDate;
