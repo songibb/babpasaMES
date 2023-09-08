@@ -32,6 +32,10 @@
 		td[data-column-name="testResult"]{
 			cursor : pointer;
 		}
+		
+		.pass-cell{
+		background-color:#b0e09a;
+		}
     </style>   
 </head>
 <body>
@@ -220,10 +224,35 @@
 	            grid2.setValue(change.rowKey, 'passYn', passYn);
 	            grid2.setValue(change.rowKey, 'passYn2', passYn2);
 	         }
+	         
+	       //안전재고량 > 현재고
+	         let data = grid2.getData();
+	        
+	    	    $.each(data, function (idx, obj) {
+
+	    	        if (obj['passYn2'] == '합격') {
+	    	            let rowKey = obj['rowKey'];
+	    	         	grid2.addCellClassName(rowKey, 'passYn2','pass-cell');
+	    	        }
+	    	    })
 	      }
+	      
+	      
 	      });
 	      //끝
 	      
+	        //안전재고량 > 현재고
+	        
+	        let data = grid2.getData();
+	        
+   		    $.each(data, function (idx, obj) {
+   	
+   		        if (Number(obj['passValue']) > Number(obj['testResult'])) {
+   		            let rowKey = obj['rowKey'];
+   		         	grid2.addCellClassName(rowKey, 'passYn2','pass-cell');
+   		        }
+   		    })
+	
 		grid.on('click', () => {
 			
 			 let selectKey = grid.getFocusedCell().rowKey;

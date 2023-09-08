@@ -118,7 +118,7 @@ public class EquipChkController {
 									, @RequestParam(value = "eqName", required = false) String eqName
 									, @RequestParam(value="before", required=false) String before 
 									, @RequestParam(value="comple", required=false) String comple) {
-		List<EquipChkVO> vo = equipChkService.searchChkEquip(startDate, startDate, eqName, before, comple);
+		List<EquipChkVO> vo = equipChkService.searchChkEquip(startDate, endDate, eqName, before, comple);
 		return vo;
 	}
 }
