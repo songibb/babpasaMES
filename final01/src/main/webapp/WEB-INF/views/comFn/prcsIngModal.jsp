@@ -806,6 +806,13 @@
 				let selectKey = dirGrid.getFocusedCell().rowKey;
 				dirGrid.addRowClassName(selectKey, 'selected-cell');
 				
+				//생산 완료된 행들은 사용불가
+				$.each(data, function(i, obj){
+					if(obj['prcsDirSts'] == '생산완료'){		
+						dirGrid.disableRow(obj['rowKey']);
+					}
+				});	
+				
 			},
 			error : function(reject){
 				console.log(reject);

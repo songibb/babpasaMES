@@ -116,8 +116,11 @@ public class PrcsDirController {
 	//진행공정 모두 공정완료시 생산지시 수정
 	@PostMapping("updateDirPrcsSts")
 	@ResponseBody
-	public int updateDirPrcsSts(@RequestBody List<PrcsDirVO> dirList) {
-		return prcsDirService.updateDirPrcsSts(dirList);
+//	public int updateDirPrcsSts(@RequestBody List<PrcsDirVO> dirList) {
+//		return prcsDirService.updateDirPrcsSts(dirList);
+//	}
+	public int updateDirPrcsSts(PrcsDirVO prcsDirVO){
+		return prcsDirService.updateDirPrcsSts(prcsDirVO);
 	}
 	
 	

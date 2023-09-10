@@ -16,7 +16,6 @@
 			   find_emp_name(emp_code) AS emp_name
 		  FROM prcs_dir
 		 <where>
-		 		prcs_dir_sts IN ('P1','P2')
 			<if test="startDate != null and !startDate.equals('')">
 				AND TO_CHAR(prcs_start_date, 'YYYY-MM-DD') <![CDATA[>=]]> #{startDate}
 			</if>
@@ -198,10 +197,17 @@
 
 
 	<!-- 진행공정 모두 공정완료시 생산지시 수정 -->
-	<update id="updateDirPrcsSts" parameterType="String">
+<!-- 	<update id="updateDirPrcsSts" parameterType="String"> -->
+<!-- 		{ -->
+<!-- 			CALL PR_UPDATE_DIR_STS( -->
+<!-- 				#{prcsDirCode} -->
+<!-- 			) -->
+<!-- 		} -->
+<!-- 	</update> -->
+	<update id="updateDirPrcsSts" parameterType="PrcsDirVO">
 		{
 			CALL PR_UPDATE_DIR_STS(
-				#{prcsDirCode}
+				#{result, mode=INOUT, jdbcType=NUMERIC}
 			)
 		}
 	</update>
