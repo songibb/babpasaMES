@@ -86,10 +86,24 @@ h1, h2{
 }
 #todayBtn {
 	margin-left: 2px !important;
-	border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 0 0 5px;
 	border : 1px solid #ccc;
 }
 #todayBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#weekBtn:hover{
+	background-color : #f4f4f4;
+	border : 1px solid #868e96;
+	color: black;
+}
+#monthBtn{
+	border-radius: 0 5px 5px 0;
+	border : 1px solid #ccc;
+}
+#monthBtn:hover{
 	background-color : #f4f4f4;
 	border : 1px solid #868e96;
 	color: black;
@@ -109,6 +123,8 @@ h1, h2{
 						<input type="date" id="startDate" name="startDate" value="">&nbsp;&nbsp;-&nbsp;&nbsp;<input type="date" id="endDate" name="endDate" value="">		
 						
 						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="todayBtn">오늘</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="weekBtn">일주일</button>
+						<button type="button" class="btn btn-info btn-icon-text btn-info2 btn-icon-text2" id="monthBtn">한달</button>
 						<button type="button" class="btn btn-info btn-icon-text" id="searchBtn">
 							<i class="fas fa-search"></i>검색
 						</button>
@@ -154,6 +170,11 @@ h1, h2{
 	document.getElementById('searchBtn').addEventListener('click', searchDirist);
 	//오늘
 	document.getElementById('todayBtn').addEventListener('click', todayInput);
+	//일주일
+	document.getElementById('weekBtn').addEventListener('click', weekInput);
+	//한달
+	document.getElementById('monthBtn').addEventListener('click', monthInput);
+
 	
 	//재지시
 	document.getElementById('reDir').addEventListener('click', reDirInsert);
@@ -165,10 +186,24 @@ h1, h2{
 		$('#endDate').val(getToday());;
 	}
 	
+	//일주일 버튼 클릭시 input태그에 일주일전~오늘 날짜 입력
+	function weekInput(){
+		$('#startDate').val(getWeek());
+		$('#endDate').val(getToday());;
+	}
 	
+	//한달 버튼 클릭시 input태그에 한달전~오늘 날짜 입력
+	function monthInput(){
+		$('#startDate').val(getMonth());
+		$('#endDate').val(getToday());;
+	}
 	
-	//검색 버튼 클릭시
+
+	//검색 버튼 클릭시 검색결과 조회
 	function searchDirist(){
+		//조회할때마다 조회하기 전에 생산지시 -> 생산완료 update	
+		updateDirPrcsStsAjax();
+		
 		let searchObj = {};
 		searchObj['startDate'] = $('#startDate').val();
 		searchObj['endDate'] = $('#endDate').val();	   
@@ -178,6 +213,7 @@ h1, h2{
 			method : 'GET',
 			data : searchObj,
 			success : function(data){	
+				
 				//날짜 츨력 포맷 변경
 				$.each(data, function(i, objDe){
 					let psd = data[i]['prcsStartDate'];
@@ -187,9 +223,13 @@ h1, h2{
 				dirDeGrid.clear();	
 				ingGrid.clear();
 				
-				//생산지시 -> 생산완료 update	 ajax호출
-				updateDirPrcsStsAjax();
-
+				//생산 완료된 행들은 사용불가
+				$.each(data, function(i, obj){
+					if(obj['prcsDirSts'] == '생산완료'){		
+						dirGrid.disableRow(obj['rowKey']);
+					}
+				});	
+				
 			},
 			error : function(reject){
 				console.log(reject);
@@ -447,34 +487,8 @@ h1, h2{
           },
         ]
     })  
+	
 
-    $.ajax({
-		url : 'selectPrcsDirList',
-		method : 'GET',
-		data : { startDate : getToday(), endDate : getToday() },
-		success : function(data){	
-			
-			//오늘 날짜 input태그에 입력시켜놓기
-			todayInput();
-			
-			//날짜 츨력 포맷 변경
-			$.each(data, function(i, objDe){
-				let psd = data[i]['prcsStartDate'];
-				data[i]['prcsStartDate'] = getDate(psd);
-			})
-			dirGrid.resetData(data);
-			dirDeGrid.clear();	
-			ingGrid.clear();
-			
-			//생산지시 -> 생산완료 update	 ajax호출
-			updateDirPrcsStsAjax();
-		},
-	
-		error : function(reject){
-			console.log(reject);
-		}
-	});
-	
 	//상세생산지시 조회
 	var dirDeGrid = new tui.Grid({
         el: document.getElementById('dirDeGrid'),
@@ -662,24 +676,38 @@ h1, h2{
         ]
     })  
 	
-	
+
   	//생산지시 -> 생산완료 update	
 	function updateDirPrcsStsAjax(){
-		let dirList = dirGrid.getData();	
-		
+  		//보이는 그리드만 update하지 않고 프로시저 내에서 P2상태인 지시들을 전부 확인해서 update하는 것으로 변경
+// 		let dirList = dirGrid.getData();	
+
 		$.ajax({
 			url : 'updateDirPrcsSts',
 			method : 'POST',
-			data : JSON.stringify(dirList),
-			contentType : "application/json",
+// 			data : JSON.stringify(dirList),
+// 			contentType : "application/json",
 			success : function(data){
+				//console.log(data);
 			},
 			error : function(reject){
 	 			console.log(reject);
 	 		}
 		})
 	}
+
+  	
+	//페이지 호출할 때마다 오늘 생산지시 조회
+	$(document).ready(function(){
+		todayInput();
+		searchDirist();
+	});
 	
+	//3초마다 생산지시 상태 업데이트
+// 	var timer = setInterval(function(){
+// 		updateDirPrcsStsAjax();
+// 	}, 3000);
+
 	
 	//생산지시 클릭시 해당 지시의 상세 생산지시 조회
     dirGrid.on('click', () => {
@@ -720,6 +748,7 @@ h1, h2{
 					}
 				});	
 				
+				ingGrid.clear();
  		    },
 			error : function(reject){
 	 			console.log(reject);

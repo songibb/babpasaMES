@@ -26,7 +26,7 @@ public interface PrcsDirService {
 	
 	
 	//미지시 생산계획 조회 
-	public List<PrcsPlanVO> selectNotDirPlanList();
+	public List<PrcsPlanVO> selectNotDirPlanList(PrcsSearchVO prcsSearchVO);
 	
 	//미지시 상세생산계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(String prcsPlanCode);
@@ -39,8 +39,8 @@ public interface PrcsDirService {
 		
 	
 	//진행공정 모두 공정완료시 생산지시 수정
-	public int updateDirPrcsSts(List<PrcsDirVO> dirList);
-	
+	//public int updateDirPrcsSts(List<PrcsDirVO> dirList);
+	public int updateDirPrcsSts(PrcsDirVO prcsDirVO);
 	
 	//재지시 등록 - 완제품 (상세생산지시)
 	public int insertReDirDe(List<PrcsDirVO> reDirList);

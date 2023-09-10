@@ -28,7 +28,7 @@ public interface PrcsDirMapper {
 	
 	
 	//미지시 생산계획 조회
-	public List<PrcsPlanVO> selectNotDirPlanList();
+	public List<PrcsPlanVO> selectNotDirPlanList(PrcsSearchVO prcsSearchVO);
 	
 	//미지시 상세생산계획 조회
 	public List<PrcsPlanVO> selectNotDirPlanDeList(@Param("prcsPlanCode") String prcsPlanCode);
@@ -46,7 +46,8 @@ public interface PrcsDirMapper {
 	
 	
 	//진행공정 모두 공정완료시 생산지시 수정
-	public int updateDirPrcsSts(@Param("prcsDirCode") String prcsDirCode);
+	//public int updateDirPrcsSts(@Param("prcsDirCode") String prcsDirCode);
+	public int updateDirPrcsSts(PrcsDirVO prcsDirVO);
 	
 	
 	//재지시 등록 (상세생산지시) 

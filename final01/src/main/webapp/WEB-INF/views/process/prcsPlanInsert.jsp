@@ -513,7 +513,8 @@ td[data-column-name="prcsPrio"]{
           },
           {
             header: '계획일자',
-            name: 'prcsPlanDate'
+            name: 'prcsPlanDate',
+            align: 'center'
           },
 		  {
             header: '담당자코드',
@@ -541,6 +542,7 @@ td[data-column-name="prcsPrio"]{
   		    	  selectableRanges: [[new Date(), new Date(2099,1,1)]]
   		      }
   		    },
+  		  	align: 'center',
   		  	className: 'yellow-background'
           },
           {
@@ -553,6 +555,7 @@ td[data-column-name="prcsPrio"]{
 				  selectableRanges: [[new Date(), new Date(2099,1,1)]]
   		      }
   		    },
+  		  	align: 'center',
   		  	className: 'yellow-background'
           }
           
@@ -603,7 +606,8 @@ td[data-column-name="prcsPrio"]{
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
 	            	}
-	            }
+	            },
+	            align: 'right'
 			},
 			{
 				header: '생산계획량',
@@ -616,7 +620,8 @@ td[data-column-name="prcsPrio"]{
 		                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 		                return val;
 	            	}
-	            }
+	            },
+	            align: 'right'
 			},
 			{
 				header: '우선순위',

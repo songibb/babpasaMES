@@ -12,6 +12,9 @@
 .m_body input[type="date"]{
 	width: 130px;
 }
+#save_btn{
+	cursor : pointer;
+}
 </style>
 </head>
 <body>\

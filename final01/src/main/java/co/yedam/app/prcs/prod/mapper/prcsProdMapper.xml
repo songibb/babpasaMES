@@ -26,7 +26,12 @@
 		SELECT prod_code, 
 			   prod_name
 		  FROM com_prod
-		 WHERE prod_kind = 'C'
+		<where>
+			prod_kind = 'C'
+			<if test="searchProdName != null">
+				AND prod_name LIKE '%' || #{searchProdName} || '%'
+			</if>
+		</where>
 		 ORDER BY prod_code DESC
 	</select>
 	

@@ -126,8 +126,8 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 
 	//미지시 생산계획 목록 조회 
 	@Override
-	public List<PrcsPlanVO> selectNotDirPlanList() {
-		return prcsDirMapper.selectNotDirPlanList();
+	public List<PrcsPlanVO> selectNotDirPlanList(PrcsSearchVO prcsSearchVO) {
+		return prcsDirMapper.selectNotDirPlanList(prcsSearchVO);
 	}
 	
 	//미지시 상세생산계획 목록 조회 
@@ -144,16 +144,26 @@ public class PrcsDirServiceImpl implements PrcsDirService {
 	}
 
 	//진행공정 모두 공정완료시 생산지시 수정
+//	@Override
+//	public int updateDirPrcsSts(List<PrcsDirVO> dirList) {
+//		int result = 0;
+//		for(PrcsDirVO vo : dirList) {
+//			prcsDirMapper.updateDirPrcsSts(vo.getPrcsDirCode());
+//			result++;
+//		}
+//		return result;
+//	}
+	
 	@Override
-	public int updateDirPrcsSts(List<PrcsDirVO> dirList) {
-		int result = 0;
-		for(PrcsDirVO vo : dirList) {
-			prcsDirMapper.updateDirPrcsSts(vo.getPrcsDirCode());
-			result++;
-		}
-		return result;
-	}
+	public int updateDirPrcsSts(PrcsDirVO prcsDirVO) {
+		prcsDirMapper.updateDirPrcsSts(prcsDirVO);
 
+		//프로시저 out값 찾기
+		int result = prcsDirVO.getResult();
+
+		return result;
+				
+	}
 	
 	//재지시 등록 - 완제품 (상세생산지시)
 	@Override

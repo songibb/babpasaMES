@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.yedam.app.prcs.plan.service.PrcsSearchVO;
 import co.yedam.app.prcs.prod.service.PrcsProdVO;
 
 public interface PrcsProdMapper {
@@ -12,7 +13,7 @@ public interface PrcsProdMapper {
 	public List<PrcsProdVO> selectPrcsProdList(@Param("prodCode") String prodCode);
 	
 	//제품 목록 조회
-	public List<PrcsProdVO> selectProdList();
+	public List<PrcsProdVO> selectProdList(PrcsSearchVO prcsSearchVO);
 	
 	//제품별공정 등록
 	public int insertPrcsProd(PrcsProdVO prcsProdVO);

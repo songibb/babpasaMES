@@ -90,8 +90,8 @@ public class PrcsDirController {
 	//미지시 생산계획 조회
 	@GetMapping("notDirPlanList")
 	@ResponseBody
-	public List<PrcsPlanVO> getNotDirPlanList(){
-		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList();
+	public List<PrcsPlanVO> getNotDirPlanList(PrcsSearchVO prcsSearchVO){
+		List<PrcsPlanVO> list = prcsDirService.selectNotDirPlanList(prcsSearchVO);
 		return list;
 	}
 	
@@ -116,8 +116,11 @@ public class PrcsDirController {
 	//진행공정 모두 공정완료시 생산지시 수정
 	@PostMapping("updateDirPrcsSts")
 	@ResponseBody
-	public int updateDirPrcsSts(@RequestBody List<PrcsDirVO> dirList) {
-		return prcsDirService.updateDirPrcsSts(dirList);
+//	public int updateDirPrcsSts(@RequestBody List<PrcsDirVO> dirList) {
+//		return prcsDirService.updateDirPrcsSts(dirList);
+//	}
+	public int updateDirPrcsSts(PrcsDirVO prcsDirVO){
+		return prcsDirService.updateDirPrcsSts(prcsDirVO);
 	}
 	
 	
