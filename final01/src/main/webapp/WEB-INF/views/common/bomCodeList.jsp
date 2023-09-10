@@ -77,15 +77,20 @@
 		            	
 	            	</form>
 	            	</div>
+	            	
 	            	<h2> BOM 목록 </h2>
-	           		<div id="grid"></div>
-	           		<h2> BOM 상세 목록 </h2>
-	           		<div id="grid2"></div>
+	           		<div style="display: flex; justify-content: space-between;">
+		           		<div id="grid" style="width: 800px; margin-right: 20px"></div>
+		           		<div id="grid2" style="width: 1000px;"></div>
+	           		</div>
 				
 	   		</div>
 		</div>
 	</div> 
-
+	
+	<div>
+	<jsp:include page="../comFn/dateFormat.jsp"></jsp:include>
+	</div>
     
 	<script>
 	
@@ -99,7 +104,20 @@
 		   method : 'GET',
 		   data : search ,
 		   success : function(data){
+			 //날짜 츨력 포맷 변경
+				$.each(data, function(i, obj){
+					let bomWdate = data[i]['bomWdate'];
+					data[i]['bomWdate'] = getDate(bomWdate);
+					let bomUdate = data[i]['bomUdate'];
+					data[i]['bomUdate'] = getDate(bomUdate);
+					
+					let bomPrcsYn = data[i]['bomPrcsYnName'];
+					data[i]['bomPrcsYn'] = bomPrcsYn;
+					let bomYn = data[i]['bomYnName'];
+					data[i]['bomYn'] = bomYn;
+				})
 			   grid.resetData(data);
+			   grid2.clear();
 		   },
 		   error : function(reject){
 			   console.log(reject);
@@ -125,12 +143,12 @@
 	          ],
         scrollX: false,
         scrollY: false,
-        minBodyHeight: 120,
+        minBodyHeight: 400,
 		rowHeaders: ['rowNum'],
 		pagination: true,
 		pageOptions: {
 			useClient: true,
-			perPage: 3,
+			perPage: 10,
 		},
         columns: [
           {
@@ -193,11 +211,6 @@
 			perPage: 10,
 		},
         columns: [
-          {
-            header: 'NO',
-            name: 'bomNo',
-            align: 'center'
-          },
           {
               header: 'BOM코드',
               name: 'bomCode',
