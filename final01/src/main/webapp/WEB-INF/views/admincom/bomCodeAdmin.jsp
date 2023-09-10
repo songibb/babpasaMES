@@ -746,7 +746,8 @@ td[data-column-name="bomAmt"]
           {
             header: 'NO',
             name: 'bomNo',
-            align: 'center'
+            align: 'center',
+            hidden: true
           },
           {
               header: 'BOM코드',
@@ -1025,6 +1026,7 @@ td[data-column-name="bomAmt"]
 								method : 'GET',
 								data : { bomNo : bomNo },
 								success : function(data){
+									deBomgrid.clear();
 									deBomgrid.appendRows(data);
 					 		    },
 								error : function(reject){
