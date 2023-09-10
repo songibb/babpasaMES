@@ -25,6 +25,7 @@
 					ON(a.act_code = c.act_code)
 						LEFT JOIN com_emp d
 							ON(a.emp_code = d.emp_code)
+		WHERE TRUNC(mat_ind) = TRUNC(sysdate)
 		ORDER BY a.mat_ind DESC
 	</select>
 	<!-- 검색 -->

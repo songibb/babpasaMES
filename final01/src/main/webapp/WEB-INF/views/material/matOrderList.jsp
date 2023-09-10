@@ -784,6 +784,9 @@
 		    		  grid2.removeRowClassName(selectKey, 'selected-cell');
 		    	  })
 		})
+		
+		document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+		document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
    		
 		
 		

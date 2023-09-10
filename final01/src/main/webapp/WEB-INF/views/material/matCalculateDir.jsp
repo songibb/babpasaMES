@@ -55,12 +55,13 @@
 	  	border-radius: 4px;	
 	}
 	
-	input[type="date"]{
+	#searchP input[type="date"]{
 	  width: 15%;
-	  padding: 7px;
+	  padding: 5px;
 	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
+	  margin-left: 3px;
 	}
 	
 	#searchP p{
@@ -1040,7 +1041,8 @@
 		    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
 		}
 		
-		
+		document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+		document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
 		
 		
 		

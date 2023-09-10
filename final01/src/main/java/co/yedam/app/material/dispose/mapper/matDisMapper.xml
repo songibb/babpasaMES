@@ -28,6 +28,7 @@
         					ON(a.mat_identi_code = d.mat_rt_code)
         						LEFT JOIN mat_in e
         							ON(a.mat_identi_code = e.mat_lot)
+        WHERE TRUNC(mat_dp_date) = TRUNC(sysdate)
 		ORDER BY mat_dp_date DESC
 	</select>
 	
@@ -78,7 +79,7 @@
 			 , mat_exd
 		FROM mat_in a LEFT JOIN com_mat b
 			ON(a.mat_code = b.mat_code)
-		WHERE TRUNC(mat_exd) <![CDATA[<=]]> SYSDATE 
+		WHERE TRUNC(mat_exd) <![CDATA[<=]]> TRUNC(sysdate) 
 			AND mat_stock <![CDATA[>]]> 0
 		ORDER BY mat_exd DESC
 	</select>

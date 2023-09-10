@@ -28,6 +28,7 @@
             				ON (b.emp_code = d.emp_code)
             					LEFT JOIN com_mat e
             						ON (a.mat_code = e.mat_code)
+        WHERE TRUNC(mat_od_rq) = TRUNC(sysdate)
 		ORDER BY b.mat_od_rq DESC
 	</select>
 	
@@ -38,6 +39,7 @@
 		ON(a.emp_code = b.emp_code)
 		JOIN com_act c
 		ON(a.act_code = c.act_code)
+		WHERE TRUNC(mat_od_rq) = TRUNC(sysdate)
 		ORDER BY mat_od_rq DESC
 	</select>
 	
@@ -231,7 +233,7 @@
 	        			 ON(a.prcs_plan_code = m.prcs_plan_code)
         			 WHERE prcs_dir_sts= 'T1'
         			 	AND b.bom_yn = 'O'
-        			 	AND prcs_start_date - 7 <![CDATA[<=]]> sysdate
+        			 	AND prcs_start_date - 7 <![CDATA[<=]]> TRUNC(sysdate)
         			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
                      			   WHEN c.mp_kind='M' THEN c.mp_code
                      			   END) f
