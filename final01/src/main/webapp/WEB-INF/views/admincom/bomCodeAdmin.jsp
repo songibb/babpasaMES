@@ -1089,7 +1089,7 @@ td[data-column-name="bomAmt"]
             },
           {
             header: '사용여부',
-            name: 'bomYn',
+            name: 'bomYnName',
             align: 'center' 
           },
           {

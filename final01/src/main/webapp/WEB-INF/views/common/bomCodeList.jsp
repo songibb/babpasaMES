@@ -110,6 +110,11 @@
 					data[i]['bomWdate'] = getDate(bomWdate);
 					let bomUdate = data[i]['bomUdate'];
 					data[i]['bomUdate'] = getDate(bomUdate);
+					
+					let bomPrcsYn = data[i]['bomPrcsYnName'];
+					data[i]['bomPrcsYn'] = bomPrcsYn;
+					let bomYn = data[i]['bomYnName'];
+					data[i]['bomYn'] = bomYn;
 				})
 			   grid.resetData(data);
 			   grid2.clear();
