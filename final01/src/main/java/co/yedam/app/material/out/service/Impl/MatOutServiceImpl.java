@@ -14,11 +14,18 @@ public class MatOutServiceImpl implements MatOutService {
 	//전체조회
 	@Autowired
 	MatOutMapper mom;
-	//전체조회
+	//전체조회 검색
 	@Override
 	public List<MatOutVO> selectMatOutList(String materialCode, String accountCode, String startDate, String endDate) {
 		
 		return mom.selectMatOutList(materialCode, accountCode, startDate, endDate);
+	}
+	
+	//전체조회
+	@Override
+	public List<MatOutVO> selectMatOutListAll() {
+		
+		return mom.selectMatOutListAll();
 	}
 
 }

@@ -19,6 +19,7 @@
 			ON(a.prod_code = b.prod_code)
 				LEFT JOIN com_emp c
 					ON(a.emp_code = c.emp_code)
+		WHERE TRUNC(semi_ind) = TRUNC(sysdate)
 		ORDER BY a.semi_ind DESC
 	</select>
 	

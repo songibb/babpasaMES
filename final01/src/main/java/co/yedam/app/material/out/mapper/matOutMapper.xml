@@ -3,7 +3,31 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="co.yedam.app.material.out.mapper.MatOutMapper">
-<!-- 전체조회 -->
+	<!-- 전체 조회 -->
+	<select id="selectMatOutListAll" resultType="MatOutVO">
+		SELECT a.mat_lot
+			 , a.mat_code
+			 , b.mat_name
+			 , b.mat_unit
+			 , b.mat_std
+			 , c.act_name
+			 , a.mat_out_amt
+			 , a.prcs_dir_de_code
+			 , d.emp_name
+			 , a.mat_outd
+			 , a.mat_exd 
+			 , a.mat_out_code
+		FROM mat_out a LEFT JOIN com_mat b
+			ON(a.mat_code = b.mat_code)
+				LEFT JOIN com_act c
+					ON(a.act_code = c.act_code)
+						LEFT JOIN com_emp d
+							ON(a.emp_code = d.emp_code)
+		WHERE TRUNC(mat_outd) = TRUNC(sysdate)
+		ORDER BY a.mat_outd DESC
+	</select>
+
+<!-- 전체조회에서 검색 -->
 	<select id="selectMatOutList" resultType="MatOutVO">
 		SELECT a.mat_lot
 			 , a.mat_code

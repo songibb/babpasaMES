@@ -55,6 +55,7 @@
 	  margin-bottom: 15px;
 	  border: 1px solid #ccc;
 	  border-radius: 4px;
+	  margin-left: 3px;
 	}
 	
 	#searchP p{
@@ -566,6 +567,9 @@
 		$('#endDate').on('change', function () {
 		    $('#startDate').attr('max', $('#endDate').val());
 		});
+		
+		document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+		document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
    
 
 </script>

@@ -1078,6 +1078,9 @@
 		function doExit(){
 		    event.returnValue = '"페이지를 벗어 나시겠습니까?"';
 		}
+		
+		document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+		document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
     </script>
 </body>
 </html>

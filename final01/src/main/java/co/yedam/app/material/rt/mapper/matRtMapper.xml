@@ -32,6 +32,7 @@
 									ON(b.err_code = e.commde_code)
 										LEFT JOIN com_emp f
 											ON(a.emp_code = f.emp_code)
+		WHERE TRUNC(mat_rt_date) = TRUNC(sysdate)
 		ORDER BY a.mat_rt_date DESC
 	</select>
 	
