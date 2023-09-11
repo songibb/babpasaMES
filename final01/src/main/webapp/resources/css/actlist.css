@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+	label {
+	  display: block;
+	  margin-bottom: 7px;
+	  margin-top: 2px;
+	  font-weight: bold;
+	}
+	input[type="text"],
+	select {
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  width: 21%;
+	  padding: 6px;
+	  margin-bottom: 15px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	}
+	
+	select {
+	  background-color: white; 
+	}
+	form p{
+		width: 100px;
+		display: inline-block;
+		font-size: 20px;
+	}
+	h1{
+		margin-left: 15px;
+	}
+	h1, h2{
+		font-weight: 800;
+	}
+	#id input, 
+	#id select{
+		width: 100%;
+		 padding: 8px;
+		
+	}
+	#id label {
+		margin-top: 15px;
+		margin-bottom : 13px;
+		font-size: 20px;
+		font-weight: 400;
+	}
+	
+	#deleteAct{
+		float : right;
+	}
+	h2{
+		display: inline-block;
+	}
+	
+	.selected-cell{
+	   background-color: #ffd09e;
+	}
+	
