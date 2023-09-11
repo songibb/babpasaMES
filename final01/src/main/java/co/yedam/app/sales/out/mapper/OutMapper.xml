@@ -18,6 +18,7 @@
 	                  ON (o.act_code = a.act_code)
 	                  JOIN sales_in i
 	                  ON (o.prod_code = i.prod_code)
+	   
 	   ORDER BY sales_out_code DESC
      </select>
      
@@ -119,6 +120,7 @@
 	                  LEFT JOIN sales_rt r
 	                  ON (o.sales_out_code = r.sales_out_code)
        WHERE i.prod_save_amt <![CDATA[>]]> 0
+       AND TO_CHAR(o.sales_out_date, 'YYYY-MM-DD') = TRUNC(sysdate)
 	   ORDER BY sales_out_code DESC
      </select>
    
@@ -174,7 +176,7 @@
      
     <!-- orderde list -->
     <select id="selectOrderDeList" resultType="OutVO">
-	     SELECT d.sales_ord_de_code sales_ord_de_code
+      SELECT d.sales_ord_de_code sales_ord_de_code
 	         , o.ord_date ord_date
 	         , a.act_code act_code
 	         , a.act_name act_name
@@ -185,20 +187,34 @@
 	         , d.dev_yn dev_yn
 	         , e.emp_code
 	         , e.emp_name
-	         , r.prcs_dir_sts
 	         , d.prod_code
+             , r.prcs_ing_sts
 	   FROM sales_ord o JOIN sales_ord_de d
 	                ON (o.ord_code = d.ord_code)
 	                JOIN com_prod p
 	                ON (d.prod_code = p.prod_code)
 	                JOIN com_act a
 	                ON (o.act_code = a.act_code)
-	                JOIN prcs_dir r
-	                ON (o.prcs_plan_code = r.prcs_plan_code)
-	                JOIN com_emp e
+                    JOIN com_emp e
 	                ON (o.emp_code = e.emp_code)
+                    JOIN prcs_dir_de r
+                    ON (r.prod_code = p.prod_code)
 	   WHERE d.dev_yn = 'N'
 	   AND o.ord_sts = 'P2'
+	   AND r.prcs_ing_sts = 'S5'
+       group by d.sales_ord_de_code
+	         , o.ord_date
+	         , a.act_code
+	         , a.act_name
+	         , o.ord_sts
+	         , p.prod_name
+	         , d.prcs_rq_amt
+	         , d.dev_date
+	         , d.dev_yn
+	         , e.emp_code
+	         , e.emp_name
+	         , d.prod_code
+             , r.prcs_ing_sts
 	   ORDER BY d.sales_ord_de_code DESC
      </select>
      
@@ -229,32 +245,47 @@
    <select id="selectOrdDeSearchList" resultType="OutVO">
    
     SELECT d.sales_ord_de_code sales_ord_de_code
-         , o.ord_date ord_date
-         , a.act_code act_code
-         , a.act_name act_name
-         , o.ord_sts ord_sts
-         , p.prod_name prod_name
-         , d.prcs_rq_amt prcs_rq_amt
-         , d.dev_date dev_date
-         , d.dev_yn dev_yn
-         , e.emp_code
-         , e.emp_name
-         , r.prcs_dir_sts
-   FROM sales_ord o JOIN sales_ord_de d
-                ON (o.ord_code = d.ord_code)
-                JOIN com_prod p
-                ON (d.prod_code = p.prod_code)
-                JOIN com_act a
-                ON (o.act_code = a.act_code)
-                JOIN prcs_dir r
-                ON (o.prcs_plan_code = r.prcs_plan_code)
-                JOIN com_emp e
-                ON (o.emp_code = e.emp_code)
-   WHERE d.dev_yn = 'N'
-   AND act_name LIKE '%' || #{actName} || '%'
-   AND o.ord_sts = 'P2'
-   AND prcs_dir_sts = 'P3'
-   ORDER BY d.sales_ord_de_code DESC
+	         , o.ord_date ord_date
+	         , a.act_code act_code
+	         , a.act_name act_name
+	         , o.ord_sts ord_sts
+	         , p.prod_name prod_name
+	         , d.prcs_rq_amt prcs_rq_amt
+	         , d.dev_date dev_date
+	         , d.dev_yn dev_yn
+	         , e.emp_code
+	         , e.emp_name
+	         , d.prod_code
+             , r.prcs_ing_sts
+	   FROM sales_ord o JOIN sales_ord_de d
+	                ON (o.ord_code = d.ord_code)
+	                JOIN com_prod p
+	                ON (d.prod_code = p.prod_code)
+	                JOIN com_act a
+	                ON (o.act_code = a.act_code)
+                    JOIN com_emp e
+	                ON (o.emp_code = e.emp_code)
+                    JOIN prcs_dir_de r
+                    ON (r.prod_code = p.prod_code)
+                    
+   	   WHERE d.dev_yn = 'N'
+   	   AND act_name LIKE '%' || #{actName} || '%'
+	   AND o.ord_sts = 'P2'
+	   AND r.prcs_ing_sts = 'S5'
+       GROUP BY d.sales_ord_de_code
+	         , o.ord_date
+	         , a.act_code
+	         , a.act_name
+	         , o.ord_sts
+	         , p.prod_name
+	         , d.prcs_rq_amt
+	         , d.dev_date
+	         , d.dev_yn
+	         , e.emp_code
+	         , e.emp_name
+	         , d.prod_code
+             , r.prcs_ing_sts
+	   ORDER BY d.sales_ord_de_code DESC
    </select>
    
   </mapper>

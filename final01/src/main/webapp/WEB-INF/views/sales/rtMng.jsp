@@ -899,8 +899,8 @@ td[data-column-name="salesOutCode"], td[data-column-name="salesRtWhy"] {
 
         let search = {
             prodCode: prodInsert,
-            startDate: getToday(),
-            endDate: getToday()
+            startDate: sd,
+            endDate: ed
         };
         $.ajax({
             url: 'rtListFilter',
@@ -1045,6 +1045,9 @@ td[data-column-name="salesOutCode"], td[data-column-name="salesRtWhy"] {
         $('html, body').css({'overflow': 'visible', 'height': '100%'}); //scroll hidden 해제
         $('#element').off('scroll touchmove mousewheel'); // 터치무브 및 마우스휠 스크롤 가능
     }
+    
+    document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+	document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
 </script>
 </body>
 </html>
