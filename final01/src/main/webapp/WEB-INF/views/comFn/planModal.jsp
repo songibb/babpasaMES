@@ -122,7 +122,7 @@
 	        pagination: true,
 	        pageOptions: {
 	            useClient: true,
-	            perPage: 10
+	            perPage: 8
 	        },
 	        columns: [
 	            {

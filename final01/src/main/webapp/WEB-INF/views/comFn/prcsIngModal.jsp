@@ -62,7 +62,7 @@
 <body>
 
 	<div class="modal">
-		<div class="modal_content" title="클릭하면 창이 닫힙니다.">
+		<div class="modal_content">
 			<div class="m_head">
 				<div class="modal_title"><h3>공정 작업 관리</h3></div>
 				<div class="close_btn" id="close_btn">X</div>

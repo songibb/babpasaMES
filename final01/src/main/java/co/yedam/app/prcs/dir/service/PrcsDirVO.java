@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -26,8 +28,9 @@ public class PrcsDirVO {
 	private String prcsDirDeCode;
 	private String prodCode;
 	private int prcsPlanAmt;
-	private int prcsDirAmt;
+	private int prcsDirAmt;	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date prcsStartDeDate;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date prcsEndDeDate;
