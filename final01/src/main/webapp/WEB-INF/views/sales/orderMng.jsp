@@ -401,6 +401,7 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
     document
         .getElementById('dirAdd')
         .addEventListener('click', addDirRow);
+    
     //삭제버튼
     $('#delete').on("click", function () {
         //그리드에서 행 지움
@@ -932,8 +933,8 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
         let search = {
             actCode: actInsert,
             prodCode: prodInsert,
-            startDate: getToday(),
-            endDate: getToday(),
+            startDate: sd,
+            endDate: ed,
             before: before,
             comple: comple
         };
@@ -1104,6 +1105,9 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
 	function doExit(){
 	    event.returnValue = '"저장되지 않은 데이터가 있습니다."';
 	}
+	
+	document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+	document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
 </script>
 </body>
 </html>

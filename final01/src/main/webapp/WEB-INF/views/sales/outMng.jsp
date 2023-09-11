@@ -1225,8 +1225,8 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
         let search = {
             actCode: actInsert,
             prodCode: prodInsert,
-            startDate: getToday(),
-            endDate: getToday(),
+            startDate: sd,
+            endDate: ed,
             before: before,
             comple: comple
         };
@@ -1395,6 +1395,9 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
             }
         })
     }
+    
+    document.getElementById('startDate').value = new Date().toISOString().substring(0, 10);
+	document.getElementById('endDate').value = new Date().toISOString().substring(0, 10);
 </script>
 </body>
 </html>
