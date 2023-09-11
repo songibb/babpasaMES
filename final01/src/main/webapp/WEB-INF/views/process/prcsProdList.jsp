@@ -166,23 +166,22 @@ td[data-column-name="prcsSeq"]{
 	        let prodCode = prGrid.getValue(rowKey, 'prodCode');        
 	        
 	        //모달창 닫기
-	        if(rowKey != null){
-				$(".modal").fadeOut();
-				prGrid.destroy();
-	        	
-	        	$.ajax({
-	    			url : 'selectPrcsProdList',
-	    			method : 'GET',
-	    			data : { prodCode : prodCode },
-	    			success : function(data){
-	    				grid2.clear();
-	     				grid2.appendRows(data);
-	     		    },
-	    			error : function(reject){
-	    	 			console.log(reject);
-	    	 		}	
-	    		})
-	        }
+			$(".modal").fadeOut();
+			prGrid.destroy();
+        	
+        	$.ajax({
+    			url : 'selectPrcsProdList',
+    			method : 'GET',
+    			data : { prodCode : prodCode },
+    			success : function(data){
+    				grid2.clear();
+     				grid2.appendRows(data);
+     		    },
+    			error : function(reject){
+    	 			console.log(reject);
+    	 		}	
+    		})
+
 
 	    });
 	}

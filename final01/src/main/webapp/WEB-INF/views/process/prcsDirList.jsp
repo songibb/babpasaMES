@@ -720,6 +720,8 @@ h1, h2{
     		dirGrid.removeRowClassName(selectKey, 'selected-cell');
 	    })
 	    
+	    dirGrid.prevRowKey()
+	    
     	//클릭한 지시의 지시코드 가져오기
     	let rowKey = dirGrid.getFocusedCell().rowKey;
     	let dirCode = dirGrid.getValue(rowKey, 'prcsDirCode');

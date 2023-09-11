@@ -71,7 +71,7 @@
 		})
 		
 		//모달창 닫기
-		if(deList != null){
+		if(deList.length > 0){
             $(".modal").fadeOut();
             Grid.destroy();   
 			
@@ -128,7 +128,7 @@
 	        pagination: true,
 	        pageOptions: {
 	            useClient: true,
-	            perPage: 10
+	            perPage: 8
 	        },
 	        columns: [
 	            {

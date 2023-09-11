@@ -425,7 +425,7 @@ td[data-column-name="prcsPrio"]{
 				contentType : 'application/json',
 				success : function(data){	
 					searchPlanList();
-					swal("수정이 완료되었습니다.", "", "success");
+					swal("성공", "수정이 완료되었습니다.", "success");
 			
 				},
 				error : function(reject){
