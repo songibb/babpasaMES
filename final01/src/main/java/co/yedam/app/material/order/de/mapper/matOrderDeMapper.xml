@@ -29,7 +29,7 @@
             					LEFT JOIN com_mat e
             						ON (a.mat_code = e.mat_code)
         WHERE TRUNC(mat_od_rq) = TRUNC(sysdate)
-		ORDER BY b.mat_od_rq DESC
+		ORDER BY b.mat_od_rq DESC, a.mat_od_cd
 	</select>
 	
 	<!-- 조회 페이지에서 헤더 그리드 -->
@@ -118,7 +118,7 @@
 					AND a.mat_test_yn != 'Y'
 				</if>
 			</where>
-			ORDER BY b.mat_od_rq DESC
+			ORDER BY b.mat_od_rq DESC, a.mat_od_cd
 	</select>
 	
 	<!-- 등록 -->
@@ -205,16 +205,7 @@
 	
 	<!-- 관리페이지 신규 생산계획 자재 소모량 -->
 	<select id="selectNewPrcsPlan" resultType="MatStockVO">
-		SELECT NVL(f.bom_amt, 0) will_use_amt
-                         , g.mat_name
-                         , g.mat_code
-                         , g.mat_unit
-                         , g.mat_std
-                         , g.mat_safe
-                         , NVL(h.mat_stock, 0) total_stock
-                         , NVL(l.will_od_amt, 0 ) will_od_amt  
-        FROM
-                    (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
+	with f as (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
                      				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
                     				 END) AS bom_amt
                     	    , CASE WHEN c.mp_kind='P' THEN e.mp_code
@@ -236,14 +227,8 @@
         			 	AND prcs_start_date - 7 <![CDATA[<=]]> TRUNC(sysdate)
         			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
                      			   WHEN c.mp_kind='M' THEN c.mp_code
-                     			   END) f
-		RIGHT JOIN com_mat g
-        ON(f.mat_code = g.mat_code)
-        LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
-
-        ON(h.mat_code = g.mat_code)
-
-        LEFT JOIN (
+                     			   END),
+l as (
                     SELECT i.mat_code, sum(NVL(mat_yamt, i.mat_amt)) as will_od_amt
                     FROM mat_order_de i
                     LEFT JOIN mat_test j
@@ -252,8 +237,25 @@
                     ON(j.mat_test_code = k.mat_test_code)
                     WHERE mat_lot IS NULL
                     GROUP BY i.mat_code
-        ) l
-        ON(l.mat_code = g.mat_code)
+        )                     			   
+                     			   
+                     			   
+		SELECT NVL(f.bom_amt, 0) will_use_amt
+                         , g.mat_name
+                         , g.mat_code
+                         , g.mat_unit
+                         , g.mat_std
+                         , g.mat_safe
+                         , NVL(h.mat_stock, 0) total_stock
+                         , NVL(l.will_od_amt, 0 ) will_od_amt  
+        FROM  f
+		RIGHT JOIN com_mat g
+        ON(f.mat_code = g.mat_code)
+        LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
+             ON(h.mat_code = g.mat_code)
+
+        LEFT JOIN  l
+             ON(l.mat_code = g.mat_code)
         <if test="materialName != null and !materialName.equals('')">
 			WHERE g.mat_name LIKE '%' || #{materialName} || '%'
 		</if>
