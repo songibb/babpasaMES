@@ -120,7 +120,6 @@
 	                  LEFT JOIN sales_rt r
 	                  ON (o.sales_out_code = r.sales_out_code)
        WHERE i.prod_save_amt <![CDATA[>]]> 0
-       AND TO_CHAR(o.sales_out_date, 'YYYY-MM-DD') = TRUNC(sysdate)
 	   ORDER BY sales_out_code DESC
      </select>
    

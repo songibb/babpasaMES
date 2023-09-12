@@ -678,12 +678,7 @@ td[data-column-name="salesOutCode"], td[data-column-name="salesRtWhy"] {
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
                 let prodName = Grid.getValue(rowKey2, 'prodName');
                 let salesOutAmt = Grid.getValue(rowKey2, 'salesOutAmt');
-                console.log(salesOutCode);
-                console.log(prodLot);
-                console.log(prodCode);
-                console.log(prodName);
-                console.log(salesOutAmt);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                
                 rtGrid.setValue(rowKey, 'salesOutCode', salesOutCode);
                 rtGrid.setValue(rowKey, 'prodLot', prodLot);
                 rtGrid.setValue(rowKey, 'prodCode', prodCode);

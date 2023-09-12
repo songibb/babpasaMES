@@ -650,7 +650,6 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
             $("#actCodeInput").val(actCode);
             $("#actNameFix").val(actName);
             //모달창 닫기
-            console.log(rowKey);
             if (rowKey != null) {
                 $(".modal").fadeOut();
                 Grid.destroy();
@@ -718,9 +717,6 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
                     .rowKey;
                 let actCode = Grid.getValue(rowKey2, 'actCode');
                 let actName = Grid.getValue(rowKey2, 'actName');
-                console.log(actCode);
-                console.log(actName);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
 
                 let beforeAct = orderGrid
                     .getModifiedRows()
@@ -747,9 +743,7 @@ td[data-column-name="actName"], td[data-column-name="prodName"], td[data-column-
                     .rowKey;
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
                 let prodName = Grid.getValue(rowKey2, 'prodName');
-                console.log(prodCode);
-                console.log(prodName);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                
                 orderGrid.setValue(rowKey, 'prodCode', prodCode);
                 orderGrid.setValue(rowKey, 'prodName', prodName);
                 //선택시 모달창 닫기

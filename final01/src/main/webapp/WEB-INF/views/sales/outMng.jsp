@@ -604,7 +604,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
             $("#actCodeInput").val(actCode);
             $("#actNameFix").val(actName);
             //모달창 닫기
-            console.log(rowKey);
             if (rowKey != null) {
                 $(".modal").fadeOut();
                 Grid.destroy();
@@ -700,10 +699,7 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
                 let prodLot = Grid.getValue(rowKey2, 'prodLot');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
                 let prodSaveAmt = Grid.getValue(rowKey2, 'prodSaveAmt');
-                console.log(prodLot);
-                console.log(prodCode);
-                console.log(prodSaveAmt);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                
                 outGrid.setValue(rowKey, 'prodLot', prodLot);
                 outGrid.setValue(rowKey, 'prodCode', prodCode);
                 outGrid.setValue(rowKey, 'prodSaveAmt', prodSaveAmt);
@@ -729,13 +725,7 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
                 let prcsRqAmt = Grid.getValue(rowKey2, 'prcsRqAmt');
                 let prodCode = Grid.getValue(rowKey2, 'prodCode');
                 let prodName = Grid.getValue(rowKey2, 'prodName');
-                console.log(salesOrdDeCode);
-                console.log(actName);
-                console.log(actCode);
-                console.log(prcsRqAmt);
-                console.log(prodCode);
-                console.log(prodName);
-                //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                
                 outGrid.setValue(rowKey, 'salesOrdDeCode', salesOrdDeCode);
                 outGrid.setValue(rowKey, 'actName', actName);
                 outGrid.setValue(rowKey, 'actCode', actCode);
@@ -1071,7 +1061,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
                 prodCode: prodCode
             },
             success: function (data) {
-                console.log(data);
                 $.each(data, function (idx, obj) {
 
                     let date = new Date(obj['salesInDate']);
@@ -1095,7 +1084,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
                     );
 
                 })
-                console.log(data);
                 odGrid.resetData(data);
             },
             error: function (reject) {
@@ -1237,8 +1225,6 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
             success: function (data2) {
 
                 $.each(data2, function (idx, obj) {
-                    console.log(obj);
-
                     let date = new Date(obj['salesOutDate']);
                     let year = date.getFullYear(); //0000년 가져오기
                     let month = date.getMonth() + 1; //월은 0부터 시작하니 +1하기
@@ -1285,12 +1271,8 @@ td[data-column-name="salesOrdDeCode"], td[data-column-name="prodLot"] {
 	   
 		
 	    if (change.columnName == 'prodSaveAmt') {
-	    	console.log(rowData);
-			console.log(rowData.salesOutAmt +','+rowData.prodSaveAmt);
 			
 	        if (Number(rowData.salesOutAmt) > Number(rowData.prodSaveAmt) ) {
-	        	
-	        	console.log('test');
 	        	
 	            swal("경고", "재고량을 넘을 수 없습니다", "warning");
 	            outGrid.setValue(change.rowKey, 'salesOutAmt', rowData.prodSaveAmt);
