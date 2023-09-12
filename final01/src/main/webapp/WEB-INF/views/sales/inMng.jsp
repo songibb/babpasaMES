@@ -850,6 +850,7 @@ form {
         		"-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
         }
 
+        let expDate = StringToDate(dateString, 365);
         testGrid.removeRow(rowKey);
 
         testGrid.blur();
