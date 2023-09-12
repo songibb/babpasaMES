@@ -11,7 +11,7 @@
 			, r.sales_out_code
 			, r.sales_rt_amt
 			, o.sales_out_amt
-			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+			, (o.sales_out_amt - r.sales_rt_amt) as total
 			, r.sales_rt_date
 			, r.sales_rt_why
 			, r.emp_code
@@ -39,7 +39,7 @@
 		, r.sales_out_code
 		, r.sales_rt_amt
 		, o.sales_out_amt
-		, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+		, (o.sales_out_amt - r.sales_rt_amt) as total
 		, r.sales_rt_date
 		, r.sales_rt_why
 		, r.emp_code
@@ -73,7 +73,7 @@
 			, r.sales_out_code
 			, r.sales_rt_amt
 			, o.sales_out_amt
-			, (o.sales_out_amt <![CDATA[-]]> r.sales_rt_amt) as total
+			, (o.sales_out_amt - r.sales_rt_amt) as total
 			, r.sales_rt_date
 			, r.sales_rt_why
 			, r.emp_code

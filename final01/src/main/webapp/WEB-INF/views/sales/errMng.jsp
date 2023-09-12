@@ -615,11 +615,7 @@ td[data-column-name="testNum"] {
                     let prodCode = Grid.getValue(rowKey2, 'prodCode');
                     let prodName = Grid.getValue(rowKey2, 'prodName');
                     let testAmt = Grid.getValue(rowKey2, 'testAmt');
-                    console.log(testNum);
-                    console.log(prodCode);
-                    console.log(prodName);
-                    console.log(testAmt);
-                    //$("#actCodeInput").val(actCode); $("#actNameFix").val(actName);
+                    
                     disGrid.setValue(rowKey, 'testNum', testNum);
                     disGrid.setValue(rowKey, 'prodCode', prodCode);
                     disGrid.setValue(rowKey, 'prodName', prodName);

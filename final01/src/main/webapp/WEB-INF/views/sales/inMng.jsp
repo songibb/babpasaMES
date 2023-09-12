@@ -835,8 +835,6 @@ form {
 
         let dateString = year + '-' + month  + '-' + day;
 
-        console.log(dateString);
-        
         // Date(YYYY-MM-DD) + n일
         function StringToDate(date, n) {
         	let yyyy = date.substring(0, 4);
@@ -851,20 +849,6 @@ form {
         		"-" + ((stringNewDate.getMonth() + 1) > 9 ? (stringNewDate.getMonth() + 1).toString() : "0" + (stringNewDate.getMonth() + 1)) +
         		"-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
         }
-
-
-        let expDate = StringToDate(dateString, 365);
-        console.log(StringToDate(dateString, 365));
-        
-        console.log(testNum);
-        console.log(prodCode);
-        console.log(prodName);
-        console.log(testAmt);
-        console.log(prodLot);
-        console.log(salesInDate);
-        console.log(salesInAmt);
-        console.log(prodSaveAmt);
-        console.log(salesInExd);
 
         testGrid.removeRow(rowKey);
 
