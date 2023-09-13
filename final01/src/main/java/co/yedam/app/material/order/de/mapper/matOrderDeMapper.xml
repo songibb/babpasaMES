@@ -203,32 +203,29 @@
 		ORDER BY act_code
 	</select>
 	
-	<!-- 관리페이지 신규 생산계획 자재 소모량 -->
+	
 	<select id="selectNewPrcsPlan" resultType="MatStockVO">
+	<!-- 일주일 내 소모 예정량 -->
 	with f as (SELECT SUM(CASE WHEN c.mp_kind='P' THEN e.bom_amt * a.prcs_plan_amt
-                     				 WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
-                    				 END) AS bom_amt
-                    	    , CASE WHEN c.mp_kind='P' THEN e.mp_code
-                    			   WHEN c.mp_kind='M' THEN c.mp_code
-                    			   END AS mat_code
-        			 FROM prcs_plan_de a
-	        			 JOIN bom_header b
-	        			 ON(a.prod_code = b.prod_code)
-	        			 RIGHT JOIN bom_detail c
-	        			 ON(b.bom_no = c.bom_no)
-	        			 LEFT JOIN(SELECT * FROM bom_header WHERE bom_yn = 'O') d
-	        			 ON(c.mp_code = d.prod_code)
-	        			 LEFT JOIN bom_detail e
-	        			 ON(d.bom_no = e.bom_no)
-	        			 LEFT JOIN prcs_plan m
-	        			 ON(a.prcs_plan_code = m.prcs_plan_code)
-        			 WHERE prcs_dir_sts= 'T1'
-        			 	AND b.bom_yn = 'O'
-        			 	AND prcs_start_date - 7 <![CDATA[<=]]> TRUNC(sysdate)
-        			 GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
-                     			   WHEN c.mp_kind='M' THEN c.mp_code
-                     			   END),
-l as (
+                     		   WHEN c.mp_kind='M' THEN c.bom_amt * a.prcs_plan_amt
+                    		   END) AS bom_amt
+                    	, CASE WHEN c.mp_kind='P' THEN e.mp_code
+                    		   WHEN c.mp_kind='M' THEN c.mp_code
+                    		   END AS mat_code
+        		FROM prcs_plan_de a JOIN bom_header b ON(a.prod_code = b.prod_code)
+	        			 		    RIGHT JOIN bom_detail c ON(b.bom_no = c.bom_no)
+	        			 			LEFT JOIN(SELECT * FROM bom_header WHERE bom_yn = 'O') d
+	        			 				ON(c.mp_code = d.prod_code)
+	        			 			LEFT JOIN bom_detail e ON(d.bom_no = e.bom_no)
+	        			 			LEFT JOIN prcs_plan m ON(a.prcs_plan_code = m.prcs_plan_code)
+        		WHERE prcs_dir_sts= 'T1'
+        		AND b.bom_yn = 'O'
+        		AND prcs_start_date - 7 <![CDATA[<=]]> TRUNC(sysdate)
+        		GROUP BY CASE WHEN c.mp_kind='P' THEN e.mp_code
+                     		  WHEN c.mp_kind='M' THEN c.mp_code
+                     		  END),
+	<!-- 입고 예정량 -->
+		 l as (
                     SELECT i.mat_code, sum(NVL(mat_yamt, i.mat_amt)) as will_od_amt
                     FROM mat_order_de i
                     LEFT JOIN mat_test j
@@ -239,7 +236,7 @@ l as (
                     GROUP BY i.mat_code
         )                     			   
                      			   
-                     			   
+	<!-- 자재명, 단위, 규격, 현재고, 안전재고  -->              			   
 		SELECT NVL(f.bom_amt, 0) will_use_amt
                          , g.mat_name
                          , g.mat_code
@@ -248,14 +245,10 @@ l as (
                          , g.mat_safe
                          , NVL(h.mat_stock, 0) total_stock
                          , NVL(l.will_od_amt, 0 ) will_od_amt  
-        FROM  f
-		RIGHT JOIN com_mat g
-        ON(f.mat_code = g.mat_code)
-        LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
-             ON(h.mat_code = g.mat_code)
-
-        LEFT JOIN  l
-             ON(l.mat_code = g.mat_code)
+        FROM f RIGHT JOIN com_mat g ON(f.mat_code = g.mat_code)
+        	   LEFT JOIN (SELECT SUM(mat_stock) AS mat_stock, mat_code from mat_in group by mat_code) h
+        	   	ON(h.mat_code = g.mat_code)
+			   LEFT JOIN  l ON(l.mat_code = g.mat_code)
         <if test="materialName != null and !materialName.equals('')">
 			WHERE g.mat_name LIKE '%' || #{materialName} || '%'
 		</if>
